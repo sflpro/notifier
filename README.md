@@ -2,7 +2,7 @@
 [![Build Status](https://travis-ci.org/sflpro/ms_notifications.svg?branch=master)](https://travis-ci.org/sflpro/ms_notifications)
 
 # Notifications Microservice
-The notifications microservice is a seprataely deployable component intended for sending various types of notifications. It provides a common abstraction layer on top of the various notification types and actual sending, tracking routines.
+The notifications microservice is a separataely deployable component intended for sending various types of notifications. It provides a common abstraction layer on top of the various notification types and actual sending, tracking routines.
 Currently microservice supports :
 * Email notifications
 * SMS notifications
@@ -25,7 +25,7 @@ The microservice supports sendong push notifications. The supported transposrts 
 
 ## Microservice API
 
-The public API of the microservice is exposed via HTTP REST. API client libraries are available in teh followign languages :
+The public API of the microservice is exposed via HTTP REST. API client libraries are available in the followign languages :
 * Java
 
 However, any platform supporting HTTP calls can use the microservice by manually implementing HTTP calls execution logic.

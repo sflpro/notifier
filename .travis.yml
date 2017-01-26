@@ -7,6 +7,3 @@ directories:
         - $HOME/.m2
 install: true
 script: mvn clean install package -q
-
-
-

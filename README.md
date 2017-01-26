@@ -43,3 +43,4 @@ Below you may find some of the actions planned for the near future :
 * Document the REST API in [Apiary](https://apiary.io/)
 * Add client libraries in Python
 * Add support for other SMS providers
+* Expose the API via [GRPC](http://www.grpc.io/)

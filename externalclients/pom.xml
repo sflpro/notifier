@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <artifactId>notification</artifactId>
+        <groupId>com.sfl.ms.notification</groupId>
+        <version>1.0</version>
+    </parent>
+    <groupId>com.sfl.ms.notification.externalclients</groupId>
+    <packaging>pom</packaging>
+    <version>1.0</version>
+
+    <artifactId>externalclients</artifactId>
+    <name>Externalclients</name>
+
+    <modules>
+        <module>externalclients_common</module>
+        <module>externalclients_push</module>
+        <module>externalclients_push_integrationtest</module>
+        <module>externalclients_sms</module>
+        <module>externalclients_sms_integrationtest</module>
+    </modules>
+
+    <description>Externalclients sub module represents external web clients layer of SFL NMS project for interaction with
+        third party services.
+    </description>
+</project>

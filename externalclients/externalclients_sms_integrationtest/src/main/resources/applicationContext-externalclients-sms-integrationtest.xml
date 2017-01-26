@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans-4.0.xsd"
+
+       default-lazy-init="true" default-autowire="byName">
+
+    <import resource="classpath:applicationContext-externalclients-sms-communicators.xml"/>
+
+    <!--Load application properties-->
+    <bean id="appProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+        <property name="locations">
+            <list>
+                <value>classpath:externalclients_sms_integrationtest.properties</value>
+                <value>file:${user.home}/externalclients_sms_integrationtest.properties</value>
+            </list>
+        </property>
+        <property name="ignoreResourceNotFound" value="true"/>
+    </bean>
+
+</beans>

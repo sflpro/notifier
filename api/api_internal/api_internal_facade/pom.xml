@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>api_internal</artifactId>
+        <groupId>com.sfl.ms.notification.api</groupId>
+        <version>1.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <name>API Internal Facade</name>
+    <artifactId>api_internal_facade</artifactId>
+    <packaging>jar</packaging>
+    <version>1.0</version>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.sfl.ms.notification.api.internal</groupId>
+            <artifactId>sfl_notification_api_internal_model</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sfl.ms.notification.services</groupId>
+            <artifactId>services_impl</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
+
+    <description>Project is representing facade layer for outgoing gateway of SFL NMS Internal API</description>
+</project>

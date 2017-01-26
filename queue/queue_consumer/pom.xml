@@ -1,0 +1,23 @@
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.sfl.ms.notification.queue</groupId>
+        <artifactId>queue</artifactId>
+        <version>1.0</version>
+    </parent>
+    <groupId>com.sfl.ms.notification.queue.consumer</groupId>
+    <artifactId>queue_consumer</artifactId>
+    <packaging>pom</packaging>
+    <name>Queue Consumer</name>
+    <version>1.0</version>
+    <modules>
+        <module>queue_consumer_core</module>
+        <module>queue_consumer_impl</module>
+        <module>queue_consumer_integrationtest</module>
+        <module>queue_consumer_web</module>
+    </modules>
+
+    <description>Queue consumer module represents queue consumer layer of SFL NMS project.</description>
+</project>	

@@ -1,0 +1,21 @@
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.sfl.ms.notification</groupId>
+        <artifactId>notification</artifactId>
+        <version>1.0</version>
+    </parent>
+    <groupId>com.sfl.ms.notification.persistence</groupId>
+    <artifactId>persistence</artifactId>
+    <packaging>pom</packaging>
+    <name>Persistence</name>
+    <version>1.0</version>
+    <modules>
+        <module>persistence_core</module>
+        <module>persistence_impl</module>
+        <module>persistence_integrationtest</module>
+    </modules>
+    <description>Persistence sub module represents persistence layer of Future project.</description>
+</project>	

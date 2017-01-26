@@ -42,4 +42,4 @@ Below you may find some of the actions planned for the near future :
 * Convert the application to use [Spring Boot/Cloud](http://projects.spring.io/spring-cloud/)
 * Document the REST API in [Apiary](https://apiary.io/)
 * Add client libraries in Python
-* Add support of other SMS providers
+* Add support for other SMS providers

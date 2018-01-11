@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <parent>
-        <groupId>com.sfl.ms.notification.queue.consumer</groupId>
+        <groupId>com.sflpro.notifier.queue.consumer</groupId>
         <artifactId>queue-consumer</artifactId>
         <version>1.0</version>
     </parent>
@@ -120,12 +120,12 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.sfl.ms.notification.queue.consumer</groupId>
+            <groupId>com.sflpro.notifier.queue.consumer</groupId>
             <artifactId>queue-consumer-impl</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.sfl.ms.notification.services</groupId>
+            <groupId>com.sflpro.notifier.services</groupId>
             <artifactId>services-impl</artifactId>
             <version>${project.version}</version>
         </dependency>

@@ -1,11 +1,11 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.sfl.ms.notification</groupId>
-    <artifactId>notification</artifactId>
+    <groupId>com.sflpro.notifier</groupId>
+    <artifactId>notifier</artifactId>
     <version>1.0</version>
     <packaging>pom</packaging>
-    <name>Notifications 1.0</name>
+    <name>Notifications 1.0 - Monica</name>
 
     <modules>
         <module>services</module>
@@ -24,15 +24,19 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <javax.servlet.version>3.1.0</javax.servlet.version>
-        <jackson.version>2.6.1</jackson.version>
+        <jackson.version>2.9.2</jackson.version>
         <jersey.version>2.21</jersey.version>
 
-        <spring.version>4.2.0.RELEASE</spring.version>
+        <spring.version>4.3.13.RELEASE</spring.version>
         <spring.data.version>1.8.2.RELEASE</spring.data.version>
         <spring.security.version>3.2.5.RELEASE</spring.security.version>
         <spring.amqp.version>1.4.5.RELEASE</spring.amqp.version>
 
+        <spring.boot.version>1.5.9.RELEASE</spring.boot.version>
+
+        <postgresql.version>42.1.4</postgresql.version>
         <mysql.connector.version>5.1.36</mysql.connector.version>
+        <h2.version>1.4.196</h2.version>
         <c3po.version>0.9.5.1</c3po.version>
         <hibernate.version>5.0.0.Final</hibernate.version>
         <hibernate.javax.persistence.version>1.0.0.Final</hibernate.javax.persistence.version>
@@ -42,13 +46,16 @@
         <junit.version>4.12</junit.version>
         <hsqldb.version>2.3.3</hsqldb.version>
 
-        <logback.version>1.1.3</logback.version>
-        <slf4j.version>1.7.12</slf4j.version>
+        <logback.version>1.1.7</logback.version>
+        <logstash-encoder.version>4.7</logstash-encoder.version>
+        <slf4j.version>1.7.21</slf4j.version>
         <logback.logstash.encoder.version>4.5.1</logback.logstash.encoder.version>
 
+        <commons.collections.version>3.2.1</commons.collections.version>
         <commons.lang3.version>3.4</commons.lang3.version>
         <commons.io.version>2.4</commons.io.version>
         <commons.validator>1.4.1</commons.validator>
+        <commons.beanutils.version>1.8.3</commons.beanutils.version>
         <commons.codec.version>1.10</commons.codec.version>
         <http.client.version>4.5</http.client.version>
 
@@ -57,11 +64,14 @@
 
         <bouncycastle.version>140</bouncycastle.version>
 
-        <aspectj.version>1.8.4</aspectj.version>
+        <aspectj.version>1.8.9</aspectj.version>
 
         <joda.time.version>2.8.2</joda.time.version>
+        <swagger.version>1.5.16</swagger.version>
 
         <findbugs.jsr305.version>2.0.3</findbugs.jsr305.version>
+
+        <!--Sonar config-->
         <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
         <sonar.language>java</sonar.language>
         <sonar.jacoco.includes>com.sfl.*</sonar.jacoco.includes>
@@ -70,34 +80,46 @@
         <sonar.jacoco.version>0.7.2.201409121644</sonar.jacoco.version>
         <sonar.jacoco.jar>${projectbasedir}/lib/jacocoagent.jar</sonar.jacoco.jar>
         <google.guave.version>18.0</google.guave.version>
+        <apache.tika.version>1.16</apache.tika.version>
+
+        <!--Maven plugins-->
+        <maven.failsafe.plugin.version>2.20.1</maven.failsafe.plugin.version>
+        <maven.surefire.plugin.version>2.20.1</maven.surefire.plugin.version>
+        <dockerfile.maven.plugin.version>1.3.6</dockerfile.maven.plugin.version>
 
     </properties>
 
+    <profiles>
+        <profile>
+            <id>snapshot</id>
+            <properties>
+                <docker.tag>snapshot</docker.tag>
+            </properties>
+        </profile>
+        <profile>
+            <id>release</id>
+            <properties>
+                <docker.tag>latest</docker.tag>
+            </properties>
+        </profile>
+        <profile>
+            <id>docker-snapshot</id>
+        </profile>
+        <profile>
+            <id>docker-release</id>
+        </profile>
+    </profiles>
+
     <dependencies>
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-core</artifactId>
-            <version>${spring.version}</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <version>${spring.boot.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-test</artifactId>
-            <version>${spring.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-aop</artifactId>
-            <version>${spring.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context-support</artifactId>
-            <version>${spring.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
-            <version>${spring.version}</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jersey</artifactId>
+            <version>${spring.boot.version}</version>
         </dependency>
         <!-- Spring Security -->
         <dependency>
@@ -126,6 +148,11 @@
                     <artifactId>spring-expression</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>${aspectj.version}</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -171,9 +198,19 @@
             <version>${commons.lang3.version}</version>
         </dependency>
         <dependency>
+            <groupId>commons-collections</groupId>
+            <artifactId>commons-collections</artifactId>
+            <version>${commons.collections.version}</version>
+        </dependency>
+        <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
             <version>${commons.io.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+            <version>${commons.beanutils.version}</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -212,8 +249,12 @@
             <artifactId>jsr305</artifactId>
             <version>${findbugs.jsr305.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.tika</groupId>
+            <artifactId>tika-core</artifactId>
+            <version>${apache.tika.version}</version>
+        </dependency>
     </dependencies>
-
 
     <build>
         <plugins>
@@ -223,6 +264,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven.surefire.plugin.version}</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -266,17 +308,93 @@
                     <artifactId>maven-site-plugin</artifactId>
                     <version>3.3</version>
                 </plugin>
+
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${maven.surefire.plugin.version}</version>
+                    <configuration>
+                        <excludes>
+                            <exclude>**IntegrationTest</exclude>
+                        </excludes>
+                        <argLine>${jacoco.surefire.argLine}</argLine>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${maven.surefire.plugin.version}</version>
+                    <configuration>
+                        <excludes>
+                            <exclude>**IntegrationTest</exclude>
+                        </excludes>
+                        <argLine>${jacoco.surefire.argLine}</argLine>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <version>${maven.failsafe.plugin.version}</version>
+                    <configuration>
+                        <includes>
+                            <include>%regex[.*IntegrationTest.*]</include>
+                        </includes>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>default</id>
+                            <goals>
+                                <goal>integration-test</goal>
+                            </goals>
+                            <configuration>
+                                <argLine>${jacoco.failsafe.argLine}</argLine>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>verify</id>
+                            <goals>
+                                <goal>verify</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
             </plugins>
         </pluginManagement>
     </build>
 
     <repositories>
         <repository>
-            <id>terracotta-repository</id>
-            <url>http://www.terracotta.org/download/reflector/releases</url>
-            <releases>
+            <id>weadapt-releases</id>
+            <url>https://nexus.dev.weadapt.digital/repository/maven-releases/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>weadapt-snapshots</id>
+            <url>https://nexus.dev.weadapt.digital/repository/maven-snapshots/</url>
+            <snapshots>
                 <enabled>true</enabled>
-            </releases>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>spring-snapshots</id>
+            <name>Spring Snapshots</name>
+            <url>https://repo.spring.io/snapshot</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>spring-milestones</id>
+            <name>Spring Milestones</name>
+            <url>https://repo.spring.io/milestone</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
         </repository>
     </repositories>
 

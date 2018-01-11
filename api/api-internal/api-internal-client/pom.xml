@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.sfl.ms.notification.api.internal</groupId>
+    <groupId>com.sflpro.notifier.api.internal</groupId>
     <version>1.0</version>
     <artifactId>api-internal-client</artifactId>
     <name>API REST Client</name>
@@ -30,7 +30,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.sfl.ms.notification.api.internal</groupId>
+            <groupId>com.sflpro.notifier.api.internal</groupId>
             <artifactId>api-internal-model</artifactId>
             <version>${project.version}</version>
         </dependency>

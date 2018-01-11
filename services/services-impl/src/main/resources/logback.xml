@@ -40,7 +40,7 @@
         <appender-ref ref="STDOUT"/>
     </root>
 
-    <logger name="com.sfl.pms.api.amqp.rpc.impl.RPCQueueMessageHandlerImpl">
+    <logger name="com.sflpro.notifier.api.amqp.rpc.impl.RPCQueueMessageHandlerImpl">
         <level value="ERROR"/>
     </logger>
 

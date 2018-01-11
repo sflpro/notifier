@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context.xsd"
+       default-lazy-init="true" default-autowire="byName">
+
+    <import resource="applicationContext-persistence-jpa.xml"/>
+    <import resource="applicationContext-externalclients-email.xml"/>
+    <import resource="applicationContext-externalclients-sms.xml"/>
+    <import resource="applicationContext-externalclients-push.xml"/>
+
+    <!--Load application properties-->
+    <bean id="appProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+        <property name="locations">
+            <list>
+                <value>classpath:ms_notifications.properties</value>
+                <value>file:${user.home}/ms_notifications.properties</value>
+                <value>file:${user.home}/.msnotification/ms_notifications.properties</value>
+            </list>
+        </property>
+        <property name="ignoreResourceNotFound" value="true"/>
+    </bean>
+
+    <bean id="passwordEncoder" class="org.springframework.security.crypto.password.StandardPasswordEncoder"/>
+
+    <bean id="executorService" class="java.util.concurrent.ExecutorService" factory-bean="executorBuilder" factory-method="createExecutorService"></bean>
+
+    <context:annotation-config/>
+    <context:component-scan base-package="com.sflpro.notifier.services.*"/>
+
+</beans>

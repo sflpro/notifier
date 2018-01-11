@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.sfl.ms.notification</groupId>
-        <artifactId>notification</artifactId>
+        <artifactId>sfl-notifier</artifactId>
         <version>1.0</version>
     </parent>
     <groupId>com.sfl.ms.notification.services</groupId>
@@ -14,9 +14,9 @@
     <version>1.0</version>
 
     <modules>
-        <module>services_core</module>
-        <module>services_impl</module>
-        <module>services_integrationtest</module>
+        <module>services-core</module>
+        <module>services-impl</module>
+        <module>services-integrationtest</module>
     </modules>
 
     <description>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <artifactId>externalclients</artifactId>
+        <groupId>com.sfl.ms.notification.externalclients</groupId>
+        <version>1.0</version>
+    </parent>
+    <artifactId>externalclients-email</artifactId>
+    <packaging>jar</packaging>
+    <version>1.0</version>
+
+    <name>Externalclients Email</name>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.sfl.ms.notification.externalclients</groupId>
+            <artifactId>externalclients-common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.mandrillapp.wrapper.lutung</groupId>
+            <artifactId>lutung</artifactId>
+            <version>0.0.8</version>
+        </dependency>
+    </dependencies>
+
+    <description>Externalclients Email module acts as a project for various Email notifications API clients
+        implementations
+    </description>
+</project>

@@ -4,7 +4,7 @@
 
     <parent>
         <groupId>com.sfl.ms.notification</groupId>
-        <artifactId>notification</artifactId>
+        <artifactId>sfl-notifier</artifactId>
         <version>1.0</version>
     </parent>
     <groupId>com.sfl.ms.notification.api</groupId>
@@ -20,7 +20,7 @@
     </properties>
 
     <modules>
-        <module>api_internal</module>
+        <module>api-internal</module>
     </modules>
 
     <description>Project acts as a root API grouping project</description>

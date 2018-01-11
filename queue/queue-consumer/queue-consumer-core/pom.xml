@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <parent>
+        <groupId>com.sfl.ms.notification.queue.consumer</groupId>
+        <artifactId>queue-consumer</artifactId>
+        <version>1.0</version>
+    </parent>
+    <packaging>jar</packaging>
+    <name>Queue Consumer Core</name>
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>queue-consumer-core</artifactId>
+    <version>1.0</version>
+
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.sfl.ms.notification.services</groupId>
+            <artifactId>services-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
+
+
+    <description>
+        Queue consumer core sub module represents interfaces for queue consumer layer of SFL NMS project.
+    </description>
+</project>

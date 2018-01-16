@@ -1,5 +1,5 @@
 # CI Status
-[![Build Status](https://travis-ci.org/sflpro/ms_notifications.svg?branch=master)](https://travis-ci.org/sflpro/ms_notifications)
+[![Build Status](https://travis-ci.org/sflpro/notifier.svg?branch=master)](https://travis-ci.org/sflpro/notifier)
 
 # Notifications Microservice
 The notifications microservice is a separataely deployable component intended for sending various types of notifications. It provides a common abstraction layer on top of the various notification types and actual sending, tracking routines.

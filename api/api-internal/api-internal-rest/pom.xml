@@ -41,7 +41,7 @@
                             <buildArgs>
                                 <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
                             </buildArgs>
-                            <useMavenSettingsForAuth>true</useMavenSettingsForAuth>
+                            <googleContainerRegistryEnabled>false</googleContainerRegistryEnabled>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -106,10 +106,10 @@
                         </executions>
                         <configuration>
                             <repository>sflpro/notifier</repository>
+                            <googleContainerRegistryEnabled>false</googleContainerRegistryEnabled>
                             <buildArgs>
                                 <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
                             </buildArgs>
-                            <useMavenSettingsForAuth>true</useMavenSettingsForAuth>
                         </configuration>
                     </plugin>
                 </plugins>

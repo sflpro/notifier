@@ -27,11 +27,11 @@
         <jackson.version>2.9.2</jackson.version>
         <jersey.version>2.21</jersey.version>
 
+        <!-- Spring -->
         <spring.version>4.3.13.RELEASE</spring.version>
         <spring.data.version>1.8.2.RELEASE</spring.data.version>
         <spring.security.version>3.2.5.RELEASE</spring.security.version>
         <spring.amqp.version>1.4.5.RELEASE</spring.amqp.version>
-
         <spring.boot.version>1.5.9.RELEASE</spring.boot.version>
 
         <postgresql.version>42.1.4</postgresql.version>

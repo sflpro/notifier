@@ -365,39 +365,6 @@
         </pluginManagement>
     </build>
 
-    <repositories>
-        <repository>
-            <id>weadapt-releases</id>
-            <url>https://nexus.dev.weadapt.digital/repository/maven-releases/</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>weadapt-snapshots</id>
-            <url>https://nexus.dev.weadapt.digital/repository/maven-snapshots/</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>spring-snapshots</id>
-            <name>Spring Snapshots</name>
-            <url>https://repo.spring.io/snapshot</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>spring-milestones</id>
-            <name>Spring Milestones</name>
-            <url>https://repo.spring.io/milestone</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
-
     <description>
         Java backend implementation of Notifications project.
     </description>

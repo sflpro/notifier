@@ -102,12 +102,6 @@
                 <docker.tag>latest</docker.tag>
             </properties>
         </profile>
-        <profile>
-            <id>docker-snapshot</id>
-        </profile>
-        <profile>
-            <id>docker-release</id>
-        </profile>
     </profiles>
 
     <dependencies>

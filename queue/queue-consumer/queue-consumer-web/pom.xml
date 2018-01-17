@@ -20,7 +20,7 @@
 
     <profiles>
         <profile>
-            <id>docker-snapshot</id>
+            <id>snapshot</id>
             <build>
                 <plugins>
                     <plugin>
@@ -106,7 +106,7 @@
                             </execution>
                         </executions>
                         <configuration>
-                            <repository>sflpro/ms-notifications-consumer</repository>
+                            <repository>sflpro/notifier-consumer</repository>
                             <buildArgs>
                                 <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
                             </buildArgs>

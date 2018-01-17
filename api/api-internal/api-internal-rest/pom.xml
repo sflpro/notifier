@@ -19,7 +19,7 @@
 
     <profiles>
         <profile>
-            <id>docker-snapshot</id>
+            <id>snapshot</id>
             <build>
                 <plugins>
                     <plugin>
@@ -48,7 +48,7 @@
             </build>
         </profile>
         <profile>
-            <id>docker-release</id>
+            <id>release</id>
             <build>
                 <plugins>
                     <plugin>

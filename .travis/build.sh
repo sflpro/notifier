@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+docker login -u "$DOCKER_USER" -p "$DOCKER_PASS"
 
 if [ $TRAVIS_BRANCH == 'develop' ]
 then

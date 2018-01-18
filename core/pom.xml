@@ -18,7 +18,7 @@
         <module>core-db-repositories</module>
         <module>core-services</module>
         <module>core-services-impl</module>
-        <module>core-services-test</module>
+        <module>core-services-test-toolkit</module>
     </modules>
 
     <description>

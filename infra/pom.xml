@@ -15,7 +15,7 @@
 
     <modules>
         <module>queue</module>
-        <module>externalclients</module>
+        <module>infra-integrations</module>
     </modules>
 
     <description>Infrastructural components</description>

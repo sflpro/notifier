@@ -20,7 +20,7 @@
     </properties>
 
     <modules>
-        <module>api-common</module>
+        <module>api-model</module>
         <module>api-client-library</module>
         <module>api-facade</module>
         <module>api-web</module>

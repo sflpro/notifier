@@ -20,7 +20,10 @@
     </properties>
 
     <modules>
-        <module>api-internal</module>
+        <module>api-common</module>
+        <module>api-client-library</module>
+        <module>api-facade</module>
+        <module>api-web</module>
     </modules>
 
     <description>Project acts as a root API grouping project</description>

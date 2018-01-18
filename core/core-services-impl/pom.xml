@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <parent>
+        <groupId>com.sflpro.notifier.services</groupId>
+        <artifactId>services</artifactId>
+        <version>1.0</version>
+    </parent>
+    <packaging>jar</packaging>
+    <name>Services Implementation</name>
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>services-impl</artifactId>
+    <version>1.0</version>
+    <properties>
+        <mail.version>1.5.2</mail.version>
+        <velocity.version>1.6.2</velocity.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.sflpro.notifier.persistence</groupId>
+            <artifactId>persistence-impl</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.sflpro.notifier.externalclients</groupId>
+            <artifactId>externalclients-email</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.sflpro.notifier.externalclients</groupId>
+            <artifactId>externalclients-push</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.sflpro.notifier.externalclients</groupId>
+            <artifactId>externalclients-sms</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.sflpro.notifier</groupId>
+            <artifactId>services-test</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>javax.mail</artifactId>
+            <version>${mail.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.velocity</groupId>
+            <artifactId>velocity</artifactId>
+            <version>${velocity.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>bouncycastle</groupId>
+            <artifactId>bcprov-jdk16</artifactId>
+            <version>${bouncycastle.version}</version>
+        </dependency>
+    </dependencies>
+
+    <description>Services implementation sub module represents implementation of services layer for Future project.
+    </description>
+</project>

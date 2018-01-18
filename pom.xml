@@ -8,11 +8,10 @@
     <name>Notifications 1.0 - Monica</name>
 
     <modules>
-        <module>services</module>
-        <module>persistence</module>
-        <module>queue</module>
+        <module>core</module>
+        <module>infra</module>
+        <module>worker</module>
         <module>api</module>
-        <module>externalclients</module>
     </modules>
 
     <properties>

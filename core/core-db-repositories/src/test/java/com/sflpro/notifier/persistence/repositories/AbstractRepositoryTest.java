@@ -1,10 +1,12 @@
 package com.sflpro.notifier.persistence.repositories;
 
-import com.sflpro.notifier.persistence.repositories.helper.RepositoriesTestHelper;
 import org.junit.Ignore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 /**
  * User: Ruben Dilanyan
@@ -12,13 +14,13 @@ import org.springframework.test.context.junit4.AbstractTransactionalJUnit4Spring
  * Date: 10/01/14
  * Time: 10:18 PM
  */
-@ContextConfiguration("src/test/resources/applicationContext-persistence-integrationtest.xml")
+@ContextConfiguration("classpath:applicationContext-persistence-integrationtest.xml")
 @Ignore
-public class AbstractRepositoryTest extends AbstractTransactionalJUnit4SpringContextTests {
+public abstract class AbstractRepositoryTest extends AbstractTransactionalJUnit4SpringContextTests {
 
     /* Dependencies */
-    @Autowired
-    private RepositoriesTestHelper repositoriesTestHelper;
+    @PersistenceContext
+    private EntityManager em;
 
     /* Constructors */
     public AbstractRepositoryTest() {
@@ -27,19 +29,15 @@ public class AbstractRepositoryTest extends AbstractTransactionalJUnit4SpringCon
 
     /* Utility methods */
     protected void flush() {
-        repositoriesTestHelper.flush();
+        em.flush();
     }
 
     protected void clear() {
-        repositoriesTestHelper.clear();
+        em.clear();
     }
 
     protected void flushAndClear() {
-        repositoriesTestHelper.flushAndClear();
-    }
-
-    /* Properties */
-    protected RepositoriesTestHelper getRepositoriesTestHelper() {
-        return repositoriesTestHelper;
+        em.flush();
+        em.clear();
     }
 }

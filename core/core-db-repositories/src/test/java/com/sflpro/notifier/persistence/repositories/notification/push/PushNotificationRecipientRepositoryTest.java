@@ -33,7 +33,7 @@ public class PushNotificationRecipientRepositoryTest extends AbstractRepositoryT
     @Test
     public void testGetPushNotificationRecipientsCount() {
         // Prepare data
-        final PushNotificationRecipientSearchParameters parameters = createPushNotificationRecipientSearchParameters();
+        final PushNotificationRecipientSearchFilter parameters = createPushNotificationRecipientSearchParameters();
         // Get recipients count
         final Long recipientsCount = pushNotificationRecipientRepository.getPushNotificationRecipientsCount(parameters);
         assertNotNull(recipientsCount);
@@ -43,7 +43,7 @@ public class PushNotificationRecipientRepositoryTest extends AbstractRepositoryT
     @Test
     public void testFindPushNotificationRecipients() {
         // Prepare data
-        final PushNotificationRecipientSearchParameters parameters = createPushNotificationRecipientSearchParameters();
+        final PushNotificationRecipientSearchFilter parameters = createPushNotificationRecipientSearchParameters();
         final Long startFrom = 0l;
         final Integer maxResults = Integer.MAX_VALUE;
         // Load push notifications recipients
@@ -53,8 +53,8 @@ public class PushNotificationRecipientRepositoryTest extends AbstractRepositoryT
     }
 
     /* Utility methods */
-    private PushNotificationRecipientSearchParameters createPushNotificationRecipientSearchParameters() {
-        final PushNotificationRecipientSearchParameters parameters = new PushNotificationRecipientSearchParameters();
+    private PushNotificationRecipientSearchFilter createPushNotificationRecipientSearchParameters() {
+        final PushNotificationRecipientSearchFilter parameters = new PushNotificationRecipientSearchFilter();
         parameters.setStatus(PushNotificationRecipientStatus.ENABLED);
         parameters.setDeviceOperatingSystemType(DeviceOperatingSystemType.IOS);
         parameters.setDestinationRouteToken("GGFTF%*^D(RD*RDFXR58drS&D*");

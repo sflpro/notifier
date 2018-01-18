@@ -2,7 +2,7 @@ package com.sflpro.notifier.services.notification.impl.push;
 
 import com.sflpro.notifier.persistence.repositories.notification.push.AbstractPushNotificationRecipientRepository;
 import com.sflpro.notifier.persistence.repositories.notification.push.PushNotificationRecipientRepository;
-import com.sflpro.notifier.persistence.repositories.notification.push.PushNotificationRecipientSearchParameters;
+import com.sflpro.notifier.persistence.repositories.notification.push.PushNotificationRecipientSearchFilter;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipient;
 import com.sflpro.notifier.services.notification.push.PushNotificationRecipientService;
 import org.slf4j.Logger;
@@ -35,7 +35,7 @@ public class PushNotificationRecipientServiceImpl extends AbstractPushNotificati
 
     @Nonnull
     @Override
-    public List<PushNotificationRecipient> getPushNotificationRecipientsForSearchParameters(@Nonnull final PushNotificationRecipientSearchParameters searchParameters, @Nonnull final Long startFrom, @Nonnull final Integer maxCount) {
+    public List<PushNotificationRecipient> getPushNotificationRecipientsForSearchParameters(@Nonnull final PushNotificationRecipientSearchFilter searchParameters, @Nonnull final Long startFrom, @Nonnull final Integer maxCount) {
         assertSearchParameters(searchParameters);
         Assert.notNull(startFrom, "Start from should not be null");
         Assert.isTrue(startFrom >= 0L, "Start from should be greater or equal then 0");
@@ -49,7 +49,7 @@ public class PushNotificationRecipientServiceImpl extends AbstractPushNotificati
 
     @Nonnull
     @Override
-    public Long getPushNotificationRecipientsCountForSearchParameters(@Nonnull final PushNotificationRecipientSearchParameters searchParameters) {
+    public Long getPushNotificationRecipientsCountForSearchParameters(@Nonnull final PushNotificationRecipientSearchFilter searchParameters) {
         assertSearchParameters(searchParameters);
         LOGGER.debug("Getting push notification recipients count for payment search parameters - {}", searchParameters);
         final Long count = pushNotificationRecipientRepository.getPushNotificationRecipientsCount(searchParameters);
@@ -68,7 +68,7 @@ public class PushNotificationRecipientServiceImpl extends AbstractPushNotificati
         return PushNotificationRecipient.class;
     }
 
-    private void assertSearchParameters(final PushNotificationRecipientSearchParameters searchParameters) {
+    private void assertSearchParameters(final PushNotificationRecipientSearchFilter searchParameters) {
         Assert.notNull(searchParameters, "Search parameters should not be null");
     }
 

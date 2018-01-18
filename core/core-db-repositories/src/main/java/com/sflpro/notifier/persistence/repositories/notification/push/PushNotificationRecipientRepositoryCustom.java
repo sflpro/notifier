@@ -20,7 +20,7 @@ public interface PushNotificationRecipientRepositoryCustom {
      * @return recipientsCount
      */
     @Nonnull
-    Long getPushNotificationRecipientsCount(@Nonnull final PushNotificationRecipientSearchParameters parameters);
+    Long getPushNotificationRecipientsCount(@Nonnull final PushNotificationRecipientSearchFilter parameters);
 
     /**
      * Loads push notification recipients for search parameters
@@ -30,5 +30,5 @@ public interface PushNotificationRecipientRepositoryCustom {
      * @return recipients
      */
     @Nonnull
-    List<PushNotificationRecipient> findPushNotificationRecipients(@Nonnull final PushNotificationRecipientSearchParameters parameters, final long startFrom, final int maxCount);
+    List<PushNotificationRecipient> findPushNotificationRecipients(@Nonnull final PushNotificationRecipientSearchFilter parameters, final long startFrom, final int maxCount);
 }

@@ -20,7 +20,6 @@
 
     <modules>
         <module>core-db-entities</module>
-        <module>core-db-migration</module>
         <module>core-db-repositories</module>
         <module>core-services</module>
         <module>core-services-impl</module>

@@ -1,4 +1,4 @@
-package com.sflpro.notifier.persistence.repositories.notification.push;
+package com.sflpro.notifier.services.notification.push;
 
 import com.sflpro.notifier.db.entities.device.mobile.DeviceOperatingSystemType;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationProviderType;

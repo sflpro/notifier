@@ -2,7 +2,7 @@ package com.sflpro.notifier.services.notification.impl.push;
 
 import com.sflpro.notifier.persistence.repositories.notification.push.AbstractPushNotificationRecipientRepository;
 import com.sflpro.notifier.db.entities.device.mobile.DeviceOperatingSystemType;
-import com.sflpro.notifier.persistence.repositories.notification.push.PushNotificationRecipientSearchParameters;
+import com.sflpro.notifier.persistence.repositories.notification.push.PushNotificationRecipientSearchFilter;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationProviderType;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipient;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipientStatus;
@@ -54,7 +54,7 @@ public class PushNotificationRecipientServiceImplTest extends AbstractPushNotifi
     @Test
     public void testGetPushNotificationRecipientsCountForSearchParameters() {
         // Test data
-        final PushNotificationRecipientSearchParameters parameters = createPushNotificationRecipientSearchParameters();
+        final PushNotificationRecipientSearchFilter parameters = createPushNotificationRecipientSearchParameters();
         final Long recipientsCount = 10L;
         // Reset
         resetAll();
@@ -72,7 +72,7 @@ public class PushNotificationRecipientServiceImplTest extends AbstractPushNotifi
     @Test
     public void testGetPushNotificationRecipientsForSearchParametersWithInvalidArguments() {
         // Test data
-        final PushNotificationRecipientSearchParameters parameters = createPushNotificationRecipientSearchParameters();
+        final PushNotificationRecipientSearchFilter parameters = createPushNotificationRecipientSearchParameters();
         final Long startFrom = 0l;
         final Integer maxResults = 10;
         // Reset
@@ -117,7 +117,7 @@ public class PushNotificationRecipientServiceImplTest extends AbstractPushNotifi
     @Test
     public void testGetPushNotificationRecipientsForSearchParameters() {
         // Test data
-        final PushNotificationRecipientSearchParameters parameters = createPushNotificationRecipientSearchParameters();
+        final PushNotificationRecipientSearchFilter parameters = createPushNotificationRecipientSearchParameters();
         final Long startFrom = 0l;
         final Integer maxResults = 10;
         final List<PushNotificationRecipient> recipients = createRecipients(10);
@@ -155,8 +155,8 @@ public class PushNotificationRecipientServiceImplTest extends AbstractPushNotifi
         return getPushNotificationRecipientRepository();
     }
 
-    private PushNotificationRecipientSearchParameters createPushNotificationRecipientSearchParameters() {
-        final PushNotificationRecipientSearchParameters parameters = new PushNotificationRecipientSearchParameters();
+    private PushNotificationRecipientSearchFilter createPushNotificationRecipientSearchParameters() {
+        final PushNotificationRecipientSearchFilter parameters = new PushNotificationRecipientSearchFilter();
         parameters.setStatus(PushNotificationRecipientStatus.ENABLED);
         parameters.setDeviceOperatingSystemType(DeviceOperatingSystemType.IOS);
         parameters.setDestinationRouteToken("GGFTF%*^D(RD*RDFXR58drS&D*");

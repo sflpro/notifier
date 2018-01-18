@@ -2,7 +2,7 @@ package com.sflpro.notifier.persistence.repositories.notification.push.impl;
 
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipient;
 import com.sflpro.notifier.persistence.repositories.notification.push.PushNotificationRecipientRepositoryCustom;
-import com.sflpro.notifier.persistence.repositories.notification.push.PushNotificationRecipientSearchParameters;
+import com.sflpro.notifier.persistence.repositories.notification.push.PushNotificationRecipientSearchFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
@@ -24,8 +24,6 @@ public class PushNotificationRecipientRepositoryImpl implements PushNotification
     private static final Logger LOGGER = LoggerFactory.getLogger(PushNotificationRecipientRepositoryImpl.class);
 
     /* Constants */
-    private static final String CRITERIA_AND = " and ";
-
     private static final String PARAMETER_NAME_DESTINATION_ROUTE_TOKEN = "destinationRouteToken";
 
     private static final String PARAMETER_NAME_STATUS = "status";
@@ -49,7 +47,7 @@ public class PushNotificationRecipientRepositoryImpl implements PushNotification
 
     @Nonnull
     @Override
-    public Long getPushNotificationRecipientsCount(@Nonnull final PushNotificationRecipientSearchParameters parameters) {
+    public Long getPushNotificationRecipientsCount(@Nonnull final PushNotificationRecipientSearchFilter parameters) {
         assertSearchParametersNotNull(parameters);
         LOGGER.debug("Executing push notification recipients count lookup request for search parameters, parameters - {}", parameters);
         // Build query
@@ -62,7 +60,7 @@ public class PushNotificationRecipientRepositoryImpl implements PushNotification
 
     @Nonnull
     @Override
-    public List<PushNotificationRecipient> findPushNotificationRecipients(@Nonnull final PushNotificationRecipientSearchParameters parameters, final long startFrom, final int maxCount) {
+    public List<PushNotificationRecipient> findPushNotificationRecipients(@Nonnull final PushNotificationRecipientSearchFilter parameters, final long startFrom, final int maxCount) {
         assertSearchParametersNotNull(parameters);
         Assert.isTrue(maxCount > 0, "Max count should be positive integer");
         Assert.isTrue(startFrom >= 0, "Start from should be positive integer or zero");
@@ -79,36 +77,24 @@ public class PushNotificationRecipientRepositoryImpl implements PushNotification
     }
 
     /* Utility methods */
-    private void assertSearchParametersNotNull(final PushNotificationRecipientSearchParameters parameters) {
+    private void assertSearchParametersNotNull(final PushNotificationRecipientSearchFilter parameters) {
         Assert.notNull(parameters, "Search parameters should not be null");
     }
 
-    private <T> TypedQuery<T> buildFindRecipientsForSearchParametersTypedQuery(final PushNotificationRecipientSearchParameters parameters, final boolean countQuery, final Class<T> queryResultType) {
+    private <T> TypedQuery<T> buildFindRecipientsForSearchParametersTypedQuery(final PushNotificationRecipientSearchFilter parameters, final boolean countQuery, final Class<T> queryResultType) {
         final String queryString = buildFindRecipientsForSearchParametersQueryString(parameters, countQuery);
         // Create typed query
         final TypedQuery<T> typedQuery = entityManager.createQuery(queryString, queryResultType);
-        if (parameters.getSubscriptionId() != null) {
-            typedQuery.setParameter(PARAMETER_NAME_SUBSCRIPTION_ID, parameters.getSubscriptionId());
-        }
-        if (parameters.getProviderType() != null) {
-            typedQuery.setParameter(PARAMETER_NAME_PROVIDER_TYPE, parameters.getProviderType());
-        }
-        if (parameters.getDeviceOperatingSystemType() != null) {
-            typedQuery.setParameter(PARAMETER_NAME_DEVICE_OPERATING_SYSTEM, parameters.getDeviceOperatingSystemType());
-        }
-        if (parameters.getDestinationRouteToken() != null) {
-            typedQuery.setParameter(PARAMETER_NAME_DESTINATION_ROUTE_TOKEN, parameters.getDestinationRouteToken());
-        }
-        if (parameters.getStatus() != null) {
-            typedQuery.setParameter(PARAMETER_NAME_STATUS, parameters.getStatus());
-        }
-        if (parameters.getApplicationType() != null) {
-            typedQuery.setParameter(PARAMETER_NAME_APPLICATION_TYPE, parameters.getApplicationType());
-        }
+        typedQuery.setParameter(PARAMETER_NAME_SUBSCRIPTION_ID, parameters.getSubscriptionId());
+        typedQuery.setParameter(PARAMETER_NAME_PROVIDER_TYPE, parameters.getProviderType());
+        typedQuery.setParameter(PARAMETER_NAME_DEVICE_OPERATING_SYSTEM, parameters.getDeviceOperatingSystemType());
+        typedQuery.setParameter(PARAMETER_NAME_DESTINATION_ROUTE_TOKEN, parameters.getDestinationRouteToken());
+        typedQuery.setParameter(PARAMETER_NAME_STATUS, parameters.getStatus());
+        typedQuery.setParameter(PARAMETER_NAME_APPLICATION_TYPE, parameters.getApplicationType());
         return typedQuery;
     }
 
-    private String buildFindRecipientsForSearchParametersQueryString(final PushNotificationRecipientSearchParameters parameters, final boolean countQuery) {
+    private String buildFindRecipientsForSearchParametersQueryString(final PushNotificationRecipientSearchFilter parameters, final boolean countQuery) {
         // Build query string
         final StringBuilder queryBuilder = new StringBuilder();
         if (countQuery) {
@@ -117,84 +103,19 @@ public class PushNotificationRecipientRepositoryImpl implements PushNotification
             queryBuilder.append(" select pnr ");
         }
         queryBuilder.append(" from PushNotificationRecipient pnr ");
-        String criteriaPrefix = " where ";
-        // Add destination route token criteria
-        criteriaPrefix = appendRecipientDestinationRouteTokenCriteria(parameters, criteriaPrefix, queryBuilder);
-        // Add status criteria
-        criteriaPrefix = appendRecipientStatusCriteria(parameters, criteriaPrefix, queryBuilder);
-        // Add operating system criteria
-        criteriaPrefix = appendRecipientOperatingSystemCriteria(parameters, criteriaPrefix, queryBuilder);
-        // Add provider type criteria
-        criteriaPrefix = appendRecipientProviderTypeCriteria(parameters, criteriaPrefix, queryBuilder);
-        // Add subscription criteria
-        criteriaPrefix = appendRecipientSubscriptionCriteria(parameters, criteriaPrefix, queryBuilder);
-        // Add application type criteria
-        criteriaPrefix = appendRecipientApplicationTypeCriteria(parameters, criteriaPrefix, queryBuilder);
+        queryBuilder.append(" where ");
+        queryBuilder.append("( :" + PARAMETER_NAME_DESTINATION_ROUTE_TOKEN + " is not null and pnr.destinationRouteToken=:" + PARAMETER_NAME_DESTINATION_ROUTE_TOKEN + ") ");
+        queryBuilder.append(" and ( :" + PARAMETER_NAME_STATUS + " is not null and pnr.status=:" + PARAMETER_NAME_STATUS + ") ");
+        queryBuilder.append(" and ( :" + PARAMETER_NAME_DEVICE_OPERATING_SYSTEM + " is not null and pnr.deviceOperatingSystemType=:" + PARAMETER_NAME_DEVICE_OPERATING_SYSTEM + ") ");
+        queryBuilder.append(" and ( :" + PARAMETER_NAME_PROVIDER_TYPE + " is not null and pnr.type=:" + PARAMETER_NAME_PROVIDER_TYPE + ") ");
+        queryBuilder.append(" and ( :" + PARAMETER_NAME_APPLICATION_TYPE + " is not null and pnr.applicationType=:" + PARAMETER_NAME_APPLICATION_TYPE + ") ");
+        queryBuilder.append(" and ( :" + PARAMETER_NAME_STATUS + " is not null and pnr.status=:" + PARAMETER_NAME_STATUS + ") ");
+        queryBuilder.append(" and ( :" + PARAMETER_NAME_SUBSCRIPTION_ID + " is not null and pnr.subscription.id=:" + PARAMETER_NAME_SUBSCRIPTION_ID + ") ");
         // Append order by query
         if (!countQuery) {
             queryBuilder.append(" order by pnr.id asc ");
         }
         // Return query
         return queryBuilder.toString();
-    }
-
-    private String appendRecipientDestinationRouteTokenCriteria(final PushNotificationRecipientSearchParameters parameters, final String criteriaPrefix, final StringBuilder queryBuilder) {
-        String updatedCriteriaPrefix = criteriaPrefix;
-        if (parameters.getDestinationRouteToken() != null) {
-            queryBuilder.append(criteriaPrefix);
-            updatedCriteriaPrefix = CRITERIA_AND;
-            queryBuilder.append(" pnr.destinationRouteToken=:" + PARAMETER_NAME_DESTINATION_ROUTE_TOKEN + " ");
-        }
-        return updatedCriteriaPrefix;
-    }
-
-    private String appendRecipientStatusCriteria(final PushNotificationRecipientSearchParameters parameters, final String criteriaPrefix, final StringBuilder queryBuilder) {
-        String updatedCriteriaPrefix = criteriaPrefix;
-        if (parameters.getStatus() != null) {
-            queryBuilder.append(criteriaPrefix);
-            updatedCriteriaPrefix = CRITERIA_AND;
-            queryBuilder.append(" pnr.status=:" + PARAMETER_NAME_STATUS + " ");
-        }
-        return updatedCriteriaPrefix;
-    }
-
-    private String appendRecipientOperatingSystemCriteria(final PushNotificationRecipientSearchParameters parameters, final String criteriaPrefix, final StringBuilder queryBuilder) {
-        String updatedCriteriaPrefix = criteriaPrefix;
-        if (parameters.getDeviceOperatingSystemType() != null) {
-            queryBuilder.append(criteriaPrefix);
-            updatedCriteriaPrefix = CRITERIA_AND;
-            queryBuilder.append(" pnr.deviceOperatingSystemType=:" + PARAMETER_NAME_DEVICE_OPERATING_SYSTEM + " ");
-        }
-        return updatedCriteriaPrefix;
-    }
-
-    private String appendRecipientProviderTypeCriteria(final PushNotificationRecipientSearchParameters parameters, final String criteriaPrefix, final StringBuilder queryBuilder) {
-        String updatedCriteriaPrefix = criteriaPrefix;
-        if (parameters.getProviderType() != null) {
-            queryBuilder.append(criteriaPrefix);
-            updatedCriteriaPrefix = CRITERIA_AND;
-            queryBuilder.append(" pnr.type=:" + PARAMETER_NAME_PROVIDER_TYPE + " ");
-        }
-        return updatedCriteriaPrefix;
-    }
-
-    private String appendRecipientApplicationTypeCriteria(final PushNotificationRecipientSearchParameters parameters, final String criteriaPrefix, final StringBuilder queryBuilder) {
-        String updatedCriteriaPrefix = criteriaPrefix;
-        if (parameters.getApplicationType() != null) {
-            queryBuilder.append(criteriaPrefix);
-            updatedCriteriaPrefix = CRITERIA_AND;
-            queryBuilder.append(" pnr.applicationType=:" + PARAMETER_NAME_APPLICATION_TYPE + " ");
-        }
-        return updatedCriteriaPrefix;
-    }
-
-    private String appendRecipientSubscriptionCriteria(final PushNotificationRecipientSearchParameters parameters, final String criteriaPrefix, final StringBuilder queryBuilder) {
-        String updatedCriteriaPrefix = criteriaPrefix;
-        if (parameters.getSubscriptionId() != null) {
-            queryBuilder.append(criteriaPrefix);
-            updatedCriteriaPrefix = CRITERIA_AND;
-            queryBuilder.append(" pnr.subscription.id=:" + PARAMETER_NAME_SUBSCRIPTION_ID + " ");
-        }
-        return updatedCriteriaPrefix;
     }
 }

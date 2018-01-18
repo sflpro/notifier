@@ -6,7 +6,7 @@ import com.sflpro.notifier.services.notification.UserNotificationService;
 import com.sflpro.notifier.services.notification.dto.UserNotificationDto;
 import com.sflpro.notifier.services.notification.dto.push.PushNotificationDto;
 import com.sflpro.notifier.services.notification.dto.push.PushNotificationPropertyDto;
-import com.sflpro.notifier.persistence.repositories.notification.push.PushNotificationRecipientSearchParameters;
+import com.sflpro.notifier.persistence.repositories.notification.push.PushNotificationRecipientSearchFilter;
 import com.sflpro.notifier.services.notification.impl.AbstractNotificationServiceImpl;
 import com.sflpro.notifier.services.notification.impl.AbstractNotificationServiceImplTest;
 import com.sflpro.notifier.services.notification.model.UserNotification;
@@ -133,7 +133,7 @@ public class PushNotificationServiceImplTest extends AbstractNotificationService
         final PushNotificationSubscription subscription = getServicesImplTestHelper().createPushNotificationSubscription();
         subscription.setId(subscriptionId);
         // Expected recipients search parameters
-        final PushNotificationRecipientSearchParameters searchParameters = new PushNotificationRecipientSearchParameters();
+        final PushNotificationRecipientSearchFilter searchParameters = new PushNotificationRecipientSearchFilter();
         searchParameters.setStatus(PushNotificationRecipientStatus.ENABLED);
         searchParameters.setSubscriptionId(subscriptionId);
         // Expected list of recipients

@@ -9,7 +9,7 @@
         <version>1.0</version>
     </parent>
 
-    <artifactId>externalclients-push</artifactId>
+    <artifactId>infra-integrations-push</artifactId>
     <packaging>jar</packaging>
 
     <description>Externalclients Push module acts as a project for various Push notifications API clients

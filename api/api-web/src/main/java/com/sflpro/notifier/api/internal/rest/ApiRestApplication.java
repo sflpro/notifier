@@ -26,7 +26,7 @@ import java.util.HashMap;
  */
 @SpringBootApplication
 @ComponentScan("com.sflpro.notifier.api.internal.rest")
-@ImportResource({"classpath:applicationContext-api-internal-rest.xml", "classpath:applicationContext-queue-producer.xml"})
+@ImportResource({"classpath:applicationContext-api-internal-rest.xml", "classpath:src/main/resource/applicationContext-queue-producer.xml"})
 public class ApiRestApplication {
 
     @Value("${server.servlet.context-path}")

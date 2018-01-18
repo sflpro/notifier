@@ -10,7 +10,7 @@
     </parent>
 
     <packaging>jar</packaging>
-    <artifactId>services-impl</artifactId>
+    <artifactId>core-services-impl</artifactId>
 
     <description>Services implementation sub module represents implementation of services layer for Future project.</description>
 

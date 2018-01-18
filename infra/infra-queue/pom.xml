@@ -1,0 +1,21 @@
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.sflpro.notifier</groupId>
+        <artifactId>infra</artifactId>
+        <version>1.0</version>
+    </parent>
+
+    <artifactId>infra-queue</artifactId>
+    <packaging>pom</packaging>
+
+    <description>Queue sub module represents queue layer of SFL NMS project.</description>
+
+    <modules>
+        <module>queue-common</module>
+        <module>queue-consumer</module>
+        <module>queue-producer</module>
+    </modules>
+</project>	

@@ -13,8 +13,10 @@ import com.sflpro.notifier.core.api.internal.model.push.request.CreatePushNotifi
 import com.sflpro.notifier.core.api.internal.model.push.request.UpdatePushNotificationSubscriptionRequest;
 import com.sflpro.notifier.core.api.internal.model.sms.SmsNotificationModel;
 import com.sflpro.notifier.core.api.internal.model.sms.request.CreateSmsNotificationRequest;
+import com.sflpro.notifier.db.entities.device.UserDevice;
+import com.sflpro.notifier.db.entities.notification.*;
+import com.sflpro.notifier.db.entities.user.User;
 import com.sflpro.notifier.services.device.dto.UserDeviceDto;
-import com.sflpro.notifier.services.device.model.UserDevice;
 import com.sflpro.notifier.db.entities.device.mobile.DeviceOperatingSystemType;
 import com.sflpro.notifier.services.notification.dto.NotificationDto;
 import com.sflpro.notifier.services.notification.dto.UserNotificationDto;
@@ -24,16 +26,10 @@ import com.sflpro.notifier.services.notification.dto.push.PushNotificationProper
 import com.sflpro.notifier.services.notification.dto.push.PushNotificationSubscriptionRequestDto;
 import com.sflpro.notifier.services.notification.dto.push.sns.PushNotificationSnsRecipientDto;
 import com.sflpro.notifier.services.notification.dto.sms.SmsNotificationDto;
-import com.sflpro.notifier.services.notification.model.Notification;
-import com.sflpro.notifier.services.notification.model.NotificationProviderType;
-import com.sflpro.notifier.services.notification.model.NotificationState;
-import com.sflpro.notifier.services.notification.model.UserNotification;
 import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
 import com.sflpro.notifier.db.entities.notification.push.*;
 import com.sflpro.notifier.db.entities.notification.push.sns.PushNotificationSnsRecipient;
-import com.sflpro.notifier.db.entities.notification.sms.SmsNotification;
 import com.sflpro.notifier.services.user.dto.UserDto;
-import com.sflpro.notifier.services.user.model.User;
 import org.apache.commons.lang3.mutable.MutableInt;
 
 import java.util.ArrayList;

@@ -1,14 +1,14 @@
 package com.sflpro.notifier.services.device.impl;
 
+import com.sflpro.notifier.db.entities.device.UserDevice;
+import com.sflpro.notifier.db.entities.user.User;
 import com.sflpro.notifier.persistence.repositories.device.UserDeviceRepository;
 import com.sflpro.notifier.services.device.dto.UserDeviceDto;
 import com.sflpro.notifier.services.device.exception.UserDeviceAlreadyExistsException;
 import com.sflpro.notifier.services.device.exception.UserDeviceNotFoundForIdException;
 import com.sflpro.notifier.services.device.exception.UserDeviceNotFoundForUuIdException;
-import com.sflpro.notifier.services.device.model.UserDevice;
 import com.sflpro.notifier.services.test.AbstractServicesUnitTest;
 import com.sflpro.notifier.services.user.UserService;
-import com.sflpro.notifier.services.user.model.User;
 import org.easymock.Mock;
 import org.easymock.TestSubject;
 import org.junit.Assert;

@@ -1,10 +1,10 @@
 package com.sflpro.notifier.services.notification.impl.push;
 
+import com.sflpro.notifier.db.entities.notification.NotificationState;
 import com.sflpro.notifier.persistence.utility.PersistenceUtilityService;
 import com.sflpro.notifier.services.common.exception.ServicesRuntimeException;
 import com.sflpro.notifier.services.notification.exception.NotificationInvalidStateException;
 import com.sflpro.notifier.services.notification.impl.push.sns.PushNotificationSnsProviderProcessor;
-import com.sflpro.notifier.services.notification.model.NotificationState;
 import com.sflpro.notifier.db.entities.notification.push.PushNotification;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationProviderType;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipient;

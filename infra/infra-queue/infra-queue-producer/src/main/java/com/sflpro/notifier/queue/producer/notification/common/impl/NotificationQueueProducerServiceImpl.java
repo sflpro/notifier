@@ -4,6 +4,7 @@ import com.sflpro.notifier.queue.amqp.model.notification.NotificationRPCTransfer
 import com.sflpro.notifier.queue.amqp.rpc.RPCCallType;
 import com.sflpro.notifier.queue.producer.connector.AmqpConnectorService;
 import com.sflpro.notifier.queue.producer.connector.AmqpResponseHandler;
+import com.sflpro.notifier.queue.producer.notification.common.NotificationQueueProducerService;
 import com.sflpro.notifier.services.notification.event.sms.StartSendingNotificationEvent;
 import com.sflpro.notifier.services.notification.event.sms.StartSendingNotificationEventListenerAdapter;
 import com.sflpro.notifier.services.system.event.ApplicationEventDistributionService;

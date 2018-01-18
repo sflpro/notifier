@@ -11,9 +11,10 @@ import com.sflpro.notifier.core.api.internal.model.push.request.CreatePushNotifi
 import com.sflpro.notifier.core.api.internal.model.push.request.UpdatePushNotificationSubscriptionRequest;
 import com.sflpro.notifier.core.api.internal.model.push.response.CreatePushNotificationResponse;
 import com.sflpro.notifier.core.api.internal.model.push.response.UpdatePushNotificationSubscriptionResponse;
+import com.sflpro.notifier.db.entities.device.UserDevice;
+import com.sflpro.notifier.db.entities.user.User;
 import com.sflpro.notifier.services.device.UserDeviceService;
 import com.sflpro.notifier.services.device.dto.UserDeviceDto;
-import com.sflpro.notifier.services.device.model.UserDevice;
 import com.sflpro.notifier.db.entities.device.mobile.DeviceOperatingSystemType;
 import com.sflpro.notifier.services.notification.dto.push.PushNotificationDto;
 import com.sflpro.notifier.services.notification.dto.push.PushNotificationPropertyDto;
@@ -26,7 +27,6 @@ import com.sflpro.notifier.db.entities.notification.push.PushNotificationSubscri
 import com.sflpro.notifier.services.notification.push.PushNotificationService;
 import com.sflpro.notifier.services.notification.push.PushNotificationSubscriptionRequestService;
 import com.sflpro.notifier.services.system.event.ApplicationEventDistributionService;
-import com.sflpro.notifier.services.user.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

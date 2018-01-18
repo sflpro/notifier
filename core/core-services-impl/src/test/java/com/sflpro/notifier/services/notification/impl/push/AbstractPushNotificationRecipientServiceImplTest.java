@@ -1,10 +1,11 @@
 package com.sflpro.notifier.services.notification.impl.push;
 
+import com.sflpro.notifier.db.entities.device.UserDevice;
+import com.sflpro.notifier.db.entities.user.User;
 import com.sflpro.notifier.persistence.repositories.notification.push.AbstractPushNotificationRecipientRepository;
 import com.sflpro.notifier.persistence.repositories.notification.push.PushNotificationRecipientDeviceRepository;
 import com.sflpro.notifier.persistence.repositories.notification.push.PushNotificationRecipientRepository;
 import com.sflpro.notifier.services.device.UserDeviceService;
-import com.sflpro.notifier.services.device.model.UserDevice;
 import com.sflpro.notifier.services.notification.exception.push.PushNotificationRecipientAlreadyExistsException;
 import com.sflpro.notifier.services.notification.exception.push.PushNotificationRecipientInvalidDeviceUserException;
 import com.sflpro.notifier.services.notification.exception.push.PushNotificationRecipientNotFoundForIdException;
@@ -12,7 +13,6 @@ import com.sflpro.notifier.services.notification.exception.push.PushNotification
 import com.sflpro.notifier.db.entities.notification.push.*;
 import com.sflpro.notifier.services.notification.push.PushNotificationSubscriptionService;
 import com.sflpro.notifier.services.test.AbstractServicesUnitTest;
-import com.sflpro.notifier.services.user.model.User;
 import com.sflpro.notifier.services.util.mutable.MutableHolder;
 import org.easymock.Mock;
 import org.junit.Assert;

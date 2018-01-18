@@ -1,11 +1,11 @@
 package com.sflpro.notifier.services.notification.impl;
 
+import com.sflpro.notifier.db.entities.notification.Notification;
+import com.sflpro.notifier.db.entities.notification.NotificationState;
 import com.sflpro.notifier.persistence.repositories.notification.AbstractNotificationRepository;
 import com.sflpro.notifier.services.notification.AbstractNotificationService;
 import com.sflpro.notifier.services.notification.dto.NotificationDto;
 import com.sflpro.notifier.services.notification.exception.NotificationNotFoundForIdException;
-import com.sflpro.notifier.services.notification.model.Notification;
-import com.sflpro.notifier.services.notification.model.NotificationState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;

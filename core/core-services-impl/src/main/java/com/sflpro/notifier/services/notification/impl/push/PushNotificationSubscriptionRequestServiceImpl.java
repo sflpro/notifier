@@ -1,8 +1,9 @@
 package com.sflpro.notifier.services.notification.impl.push;
 
+import com.sflpro.notifier.db.entities.device.UserDevice;
+import com.sflpro.notifier.db.entities.user.User;
 import com.sflpro.notifier.persistence.repositories.notification.push.PushNotificationSubscriptionRequestRepository;
 import com.sflpro.notifier.services.device.UserDeviceService;
-import com.sflpro.notifier.services.device.model.UserDevice;
 import com.sflpro.notifier.services.notification.dto.push.PushNotificationSubscriptionRequestDto;
 import com.sflpro.notifier.services.notification.exception.push.PushNotificationSubscriptionInvalidDeviceUserException;
 import com.sflpro.notifier.services.notification.exception.push.PushNotificationSubscriptionRequestInvalidRecipientUserException;
@@ -14,7 +15,6 @@ import com.sflpro.notifier.db.entities.notification.push.PushNotificationSubscri
 import com.sflpro.notifier.services.notification.push.PushNotificationRecipientService;
 import com.sflpro.notifier.services.notification.push.PushNotificationSubscriptionRequestService;
 import com.sflpro.notifier.services.user.UserService;
-import com.sflpro.notifier.services.user.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

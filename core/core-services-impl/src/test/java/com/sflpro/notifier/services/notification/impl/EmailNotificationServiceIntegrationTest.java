@@ -4,6 +4,7 @@ import com.sflpro.notifier.services.notification.AbstractNotificationService;
 import com.sflpro.notifier.services.notification.AbstractNotificationServiceIntegrationTest;
 import com.sflpro.notifier.services.notification.dto.email.EmailNotificationDto;
 import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
+import com.sflpro.notifier.services.notification.email.EmailNotificationService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

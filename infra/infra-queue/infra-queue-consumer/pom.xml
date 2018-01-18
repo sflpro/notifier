@@ -32,5 +32,15 @@
             <artifactId>infra-queue-common</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.sflpro.notifier</groupId>
+            <artifactId>core-db-repositories</artifactId>
+            <version>${project.version}</version>
+            <!--TODO chk with Mr. Smith-->
+        </dependency>
+        <dependency>
+            <groupId>org.easymock</groupId>
+            <artifactId>easymock</artifactId>
+        </dependency>
     </dependencies>
 </project>

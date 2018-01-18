@@ -1,5 +1,7 @@
 package com.sflpro.notifier.services.notification.impl.email;
 
+import com.sflpro.notifier.db.entities.notification.Notification;
+import com.sflpro.notifier.db.entities.notification.NotificationProviderType;
 import com.sflpro.notifier.services.notification.dto.email.ThirdPartyEmailNotificationDto;
 import com.sflpro.notifier.services.notification.dto.email.ThirdPartyEmailNotificationPropertyDto;
 import com.sflpro.notifier.services.notification.email.EmailPreparationService;
@@ -7,8 +9,6 @@ import com.sflpro.notifier.services.notification.email.ThirdPartyEmailNotificati
 import com.sflpro.notifier.services.notification.email.template.model.NotificationTemplateType;
 import com.sflpro.notifier.services.notification.email.template.model.forgotpassword.ResetPasswordEmailTemplateModel;
 import com.sflpro.notifier.services.notification.event.sms.StartSendingNotificationEvent;
-import com.sflpro.notifier.services.notification.model.Notification;
-import com.sflpro.notifier.services.notification.model.NotificationProviderType;
 import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
 import com.sflpro.notifier.db.entities.notification.email.ThirdPartyEmailNotification;
 import com.sflpro.notifier.services.system.event.ApplicationEventDistributionService;

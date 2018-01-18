@@ -1,23 +1,23 @@
 package com.sflpro.notifier.services.notification.impl.push;
 
+import com.sflpro.notifier.db.entities.notification.UserNotification;
+import com.sflpro.notifier.db.entities.notification.push.PushNotification;
+import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipient;
+import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipientStatus;
+import com.sflpro.notifier.db.entities.notification.push.PushNotificationSubscription;
+import com.sflpro.notifier.db.entities.user.User;
 import com.sflpro.notifier.persistence.repositories.notification.AbstractNotificationRepository;
 import com.sflpro.notifier.persistence.repositories.notification.push.PushNotificationRepository;
 import com.sflpro.notifier.services.notification.UserNotificationService;
 import com.sflpro.notifier.services.notification.dto.UserNotificationDto;
 import com.sflpro.notifier.services.notification.dto.push.PushNotificationDto;
 import com.sflpro.notifier.services.notification.dto.push.PushNotificationPropertyDto;
-import com.sflpro.notifier.persistence.repositories.notification.push.PushNotificationRecipientSearchFilter;
 import com.sflpro.notifier.services.notification.impl.AbstractNotificationServiceImpl;
 import com.sflpro.notifier.services.notification.impl.AbstractNotificationServiceImplTest;
-import com.sflpro.notifier.services.notification.model.UserNotification;
-import com.sflpro.notifier.db.entities.notification.push.PushNotification;
-import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipient;
-import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipientStatus;
-import com.sflpro.notifier.db.entities.notification.push.PushNotificationSubscription;
+import com.sflpro.notifier.services.notification.push.PushNotificationRecipientSearchParameters;
 import com.sflpro.notifier.services.notification.push.PushNotificationRecipientService;
 import com.sflpro.notifier.services.notification.push.PushNotificationSubscriptionService;
 import com.sflpro.notifier.services.user.UserService;
-import com.sflpro.notifier.services.user.model.User;
 import org.apache.commons.lang3.mutable.MutableInt;
 import org.apache.commons.lang3.mutable.MutableLong;
 import org.easymock.EasyMock;
@@ -133,7 +133,7 @@ public class PushNotificationServiceImplTest extends AbstractNotificationService
         final PushNotificationSubscription subscription = getServicesImplTestHelper().createPushNotificationSubscription();
         subscription.setId(subscriptionId);
         // Expected recipients search parameters
-        final PushNotificationRecipientSearchFilter searchParameters = new PushNotificationRecipientSearchFilter();
+        final PushNotificationRecipientSearchParameters searchParameters = new PushNotificationRecipientSearchParameters();
         searchParameters.setStatus(PushNotificationRecipientStatus.ENABLED);
         searchParameters.setSubscriptionId(subscriptionId);
         // Expected list of recipients

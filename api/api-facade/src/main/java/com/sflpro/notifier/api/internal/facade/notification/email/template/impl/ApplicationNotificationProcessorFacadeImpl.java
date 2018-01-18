@@ -12,12 +12,12 @@ import com.sflpro.notifier.core.api.internal.model.email.template.request.Forgot
 import com.sflpro.notifier.core.api.internal.model.notification.NotificationClientType;
 import com.sflpro.notifier.core.api.internal.model.notification.NotificationModel;
 import com.sflpro.notifier.core.api.internal.model.notification.NotificationStateClientType;
+import com.sflpro.notifier.db.entities.notification.Notification;
 import com.sflpro.notifier.services.common.exception.ServicesRuntimeException;
 import com.sflpro.notifier.services.notification.email.ApplicationTransactionalEmailService;
 import com.sflpro.notifier.services.notification.email.EmailPreparationService;
 import com.sflpro.notifier.services.notification.email.template.model.BaseEmailTemplateModel;
 import com.sflpro.notifier.services.notification.email.template.model.forgotpassword.ResetPasswordEmailTemplateModel;
-import com.sflpro.notifier.services.notification.model.Notification;
 import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

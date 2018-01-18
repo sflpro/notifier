@@ -1,5 +1,6 @@
 package com.sflpro.notifier.services.notification.impl.push;
 
+import com.sflpro.notifier.db.entities.user.User;
 import com.sflpro.notifier.persistence.repositories.notification.push.PushNotificationSubscriptionRepository;
 import com.sflpro.notifier.services.notification.dto.push.PushNotificationSubscriptionDto;
 import com.sflpro.notifier.services.notification.exception.push.PushNotificationSubscriptionAlreadyExistsForUserException;
@@ -8,7 +9,6 @@ import com.sflpro.notifier.services.notification.exception.push.PushNotification
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationSubscription;
 import com.sflpro.notifier.services.notification.push.PushNotificationSubscriptionService;
 import com.sflpro.notifier.services.user.UserService;
-import com.sflpro.notifier.services.user.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

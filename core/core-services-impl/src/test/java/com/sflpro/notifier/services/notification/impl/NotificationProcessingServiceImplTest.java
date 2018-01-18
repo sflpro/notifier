@@ -1,10 +1,10 @@
 package com.sflpro.notifier.services.notification.impl;
 
+import com.sflpro.notifier.db.entities.notification.Notification;
+import com.sflpro.notifier.db.entities.notification.NotificationType;
 import com.sflpro.notifier.services.notification.NotificationService;
 import com.sflpro.notifier.services.notification.email.EmailNotificationProcessor;
 import com.sflpro.notifier.services.notification.exception.UnsupportedNotificationTypeException;
-import com.sflpro.notifier.services.notification.model.Notification;
-import com.sflpro.notifier.services.notification.model.NotificationType;
 import com.sflpro.notifier.services.notification.push.PushNotificationProcessor;
 import com.sflpro.notifier.services.notification.sms.SmsNotificationProcessor;
 import com.sflpro.notifier.services.test.AbstractServicesUnitTest;

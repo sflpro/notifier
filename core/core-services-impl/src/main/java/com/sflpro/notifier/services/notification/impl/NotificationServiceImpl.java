@@ -1,9 +1,9 @@
 package com.sflpro.notifier.services.notification.impl;
 
+import com.sflpro.notifier.db.entities.notification.Notification;
 import com.sflpro.notifier.persistence.repositories.notification.AbstractNotificationRepository;
 import com.sflpro.notifier.persistence.repositories.notification.NotificationRepository;
 import com.sflpro.notifier.services.notification.NotificationService;
-import com.sflpro.notifier.services.notification.model.Notification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

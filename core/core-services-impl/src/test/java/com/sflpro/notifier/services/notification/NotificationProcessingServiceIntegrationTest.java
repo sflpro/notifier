@@ -1,11 +1,10 @@
 package com.sflpro.notifier.services.notification;
 
-import com.sflpro.notifier.services.notification.model.Notification;
-import com.sflpro.notifier.services.notification.model.NotificationState;
+import com.sflpro.notifier.db.entities.notification.Notification;
+import com.sflpro.notifier.db.entities.notification.NotificationState;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipient;
+import com.sflpro.notifier.db.entities.user.User;
 import com.sflpro.notifier.services.test.AbstractServiceIntegrationTest;
-import com.sflpro.notifier.services.user.model.User;
-import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;

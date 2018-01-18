@@ -1,5 +1,8 @@
 package com.sflpro.notifier.services.notification.impl.email;
 
+import com.sflpro.notifier.db.entities.notification.Notification;
+import com.sflpro.notifier.db.entities.notification.NotificationProviderType;
+import com.sflpro.notifier.db.entities.notification.NotificationState;
 import com.sflpro.notifier.externalclients.email.mandrill.communicator.MandrillApiCommunicator;
 import com.sflpro.notifier.externalclients.email.mandrill.model.request.SendEmailRequest;
 import com.sflpro.notifier.persistence.utility.PersistenceUtilityService;
@@ -8,9 +11,6 @@ import com.sflpro.notifier.services.notification.dto.email.MailSendConfiguration
 import com.sflpro.notifier.services.notification.email.EmailNotificationProcessor;
 import com.sflpro.notifier.services.notification.email.EmailNotificationService;
 import com.sflpro.notifier.services.notification.email.SmtpTransportService;
-import com.sflpro.notifier.services.notification.model.Notification;
-import com.sflpro.notifier.services.notification.model.NotificationProviderType;
-import com.sflpro.notifier.services.notification.model.NotificationState;
 import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
 import com.sflpro.notifier.db.entities.notification.email.ThirdPartyEmailNotification;
 import com.sflpro.notifier.db.entities.notification.email.ThirdPartyEmailNotificationProperty;

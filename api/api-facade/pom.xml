@@ -22,13 +22,13 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.sflpro.notifier.services</groupId>
-            <artifactId>services</artifactId>
+            <groupId>com.sflpro.notifier</groupId>
+            <artifactId>core-services</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.sflpro.notifier.services</groupId>
-            <artifactId>services-impl</artifactId>
+            <groupId>com.sflpro.notifier</groupId>
+            <artifactId>core-services-impl</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
@@ -47,6 +47,10 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.easymock</groupId>
+            <artifactId>easymock</artifactId>
         </dependency>
     </dependencies>
 

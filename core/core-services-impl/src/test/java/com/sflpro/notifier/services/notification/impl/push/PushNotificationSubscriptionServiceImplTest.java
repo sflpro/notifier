@@ -1,5 +1,6 @@
 package com.sflpro.notifier.services.notification.impl.push;
 
+import com.sflpro.notifier.db.entities.user.User;
 import com.sflpro.notifier.persistence.repositories.notification.push.PushNotificationSubscriptionRepository;
 import com.sflpro.notifier.services.notification.dto.push.PushNotificationSubscriptionDto;
 import com.sflpro.notifier.services.notification.exception.push.PushNotificationSubscriptionAlreadyExistsForUserException;
@@ -8,7 +9,6 @@ import com.sflpro.notifier.services.notification.exception.push.PushNotification
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationSubscription;
 import com.sflpro.notifier.services.test.AbstractServicesUnitTest;
 import com.sflpro.notifier.services.user.UserService;
-import com.sflpro.notifier.services.user.model.User;
 import org.easymock.Mock;
 import org.easymock.TestSubject;
 import org.junit.Assert;

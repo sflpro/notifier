@@ -14,7 +14,8 @@
     <artifactId>core-services-impl</artifactId>
     <version>1.0</version>
 
-    <description>Services implementation sub module represents implementation of services layer for Future project.</description>
+    <description>Services implementation sub module represents implementation of services layer for Future project.
+    </description>
 
     <dependencies>
         <dependency>
@@ -71,6 +72,10 @@
         <dependency>
             <groupId>bouncycastle</groupId>
             <artifactId>bcprov-jdk16</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.easymock</groupId>
+            <artifactId>easymock</artifactId>
         </dependency>
     </dependencies>
 </project>

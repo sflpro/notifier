@@ -1,11 +1,12 @@
 package com.sflpro.notifier.services.notification.impl.push;
 
-import com.sflpro.notifier.persistence.repositories.notification.push.AbstractPushNotificationRecipientRepository;
 import com.sflpro.notifier.db.entities.device.mobile.DeviceOperatingSystemType;
-import com.sflpro.notifier.persistence.repositories.notification.push.PushNotificationRecipientSearchFilter;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationProviderType;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipient;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipientStatus;
+import com.sflpro.notifier.persistence.repositories.notification.push.AbstractPushNotificationRecipientRepository;
+import com.sflpro.notifier.persistence.repositories.notification.push.PushNotificationRecipientSearchFilter;
+import com.sflpro.notifier.services.notification.push.PushNotificationRecipientSearchParameters;
 import org.easymock.TestSubject;
 import org.junit.Test;
 
@@ -54,12 +55,13 @@ public class PushNotificationRecipientServiceImplTest extends AbstractPushNotifi
     @Test
     public void testGetPushNotificationRecipientsCountForSearchParameters() {
         // Test data
-        final PushNotificationRecipientSearchFilter parameters = createPushNotificationRecipientSearchParameters();
+        final PushNotificationRecipientSearchParameters parameters = createPushNotificationRecipientSearchParameters();
+        final PushNotificationRecipientSearchFilter filters = createPushNotificationRecipientSearchFilters(parameters);
         final Long recipientsCount = 10L;
         // Reset
         resetAll();
         // Expectations
-        expect(getPushNotificationRecipientRepository().getPushNotificationRecipientsCount(eq(parameters))).andReturn(recipientsCount).once();
+        expect(getPushNotificationRecipientRepository().getPushNotificationRecipientsCount(eq(filters))).andReturn(recipientsCount).once();
         // Replay
         replayAll();
         // Run test scenario
@@ -72,7 +74,7 @@ public class PushNotificationRecipientServiceImplTest extends AbstractPushNotifi
     @Test
     public void testGetPushNotificationRecipientsForSearchParametersWithInvalidArguments() {
         // Test data
-        final PushNotificationRecipientSearchFilter parameters = createPushNotificationRecipientSearchParameters();
+        final PushNotificationRecipientSearchParameters parameters = createPushNotificationRecipientSearchParameters();
         final Long startFrom = 0l;
         final Integer maxResults = 10;
         // Reset
@@ -117,14 +119,15 @@ public class PushNotificationRecipientServiceImplTest extends AbstractPushNotifi
     @Test
     public void testGetPushNotificationRecipientsForSearchParameters() {
         // Test data
-        final PushNotificationRecipientSearchFilter parameters = createPushNotificationRecipientSearchParameters();
+        final PushNotificationRecipientSearchParameters parameters = createPushNotificationRecipientSearchParameters();
+        final PushNotificationRecipientSearchFilter filter = createPushNotificationRecipientSearchFilters(parameters);
         final Long startFrom = 0l;
         final Integer maxResults = 10;
         final List<PushNotificationRecipient> recipients = createRecipients(10);
         // Reset
         resetAll();
         // Expectations
-        expect(getPushNotificationRecipientRepository().findPushNotificationRecipients(eq(parameters), eq(startFrom.longValue()), eq(maxResults.intValue()))).andReturn(recipients).once();
+        expect(getPushNotificationRecipientRepository().findPushNotificationRecipients(eq(filter), eq(startFrom.longValue()), eq(maxResults.intValue()))).andReturn(recipients).once();
         // Replay
         replayAll();
         // Run test scenario
@@ -155,14 +158,24 @@ public class PushNotificationRecipientServiceImplTest extends AbstractPushNotifi
         return getPushNotificationRecipientRepository();
     }
 
-    private PushNotificationRecipientSearchFilter createPushNotificationRecipientSearchParameters() {
-        final PushNotificationRecipientSearchFilter parameters = new PushNotificationRecipientSearchFilter();
+    private PushNotificationRecipientSearchParameters createPushNotificationRecipientSearchParameters() {
+        final PushNotificationRecipientSearchParameters parameters = new PushNotificationRecipientSearchParameters();
         parameters.setStatus(PushNotificationRecipientStatus.ENABLED);
         parameters.setDeviceOperatingSystemType(DeviceOperatingSystemType.IOS);
         parameters.setDestinationRouteToken("GGFTF%*^D(RD*RDFXR58drS&D*");
         parameters.setProviderType(PushNotificationProviderType.SNS);
         parameters.setSubscriptionId(1L);
         return parameters;
+    }
+
+    private PushNotificationRecipientSearchFilter createPushNotificationRecipientSearchFilters(PushNotificationRecipientSearchParameters parameters) {
+        final PushNotificationRecipientSearchFilter filter = new PushNotificationRecipientSearchFilter();
+        filter.setStatus(parameters.getStatus());
+        filter.setDeviceOperatingSystemType(parameters.getDeviceOperatingSystemType());
+        filter.setDestinationRouteToken(parameters.getApplicationType());
+        filter.setProviderType(parameters.getProviderType());
+        filter.setSubscriptionId(parameters.getSubscriptionId());
+        return filter;
     }
 
     private List<PushNotificationRecipient> createRecipients(final int count) {

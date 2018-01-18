@@ -7,10 +7,10 @@ import com.sflpro.notifier.core.api.internal.model.common.result.ResultResponseM
 import com.sflpro.notifier.core.api.internal.model.email.EmailNotificationModel;
 import com.sflpro.notifier.core.api.internal.model.email.request.CreateEmailNotificationRequest;
 import com.sflpro.notifier.core.api.internal.model.email.response.CreateEmailNotificationResponse;
+import com.sflpro.notifier.db.entities.notification.NotificationProviderType;
 import com.sflpro.notifier.services.notification.dto.email.EmailNotificationDto;
 import com.sflpro.notifier.services.notification.email.EmailNotificationService;
 import com.sflpro.notifier.services.notification.event.sms.StartSendingNotificationEvent;
-import com.sflpro.notifier.services.notification.model.NotificationProviderType;
 import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
 import com.sflpro.notifier.services.system.event.ApplicationEventDistributionService;
 import org.slf4j.Logger;

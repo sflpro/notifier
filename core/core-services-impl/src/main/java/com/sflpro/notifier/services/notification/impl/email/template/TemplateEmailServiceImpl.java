@@ -1,12 +1,12 @@
 package com.sflpro.notifier.services.notification.impl.email.template;
 
+import com.sflpro.notifier.db.entities.notification.NotificationProviderType;
 import com.sflpro.notifier.services.notification.dto.email.EmailNotificationDto;
 import com.sflpro.notifier.services.notification.email.EmailNotificationService;
 import com.sflpro.notifier.services.notification.email.template.TemplateEmailService;
 import com.sflpro.notifier.services.notification.email.template.model.EmailTemplateModel;
 import com.sflpro.notifier.services.notification.email.template.model.NotificationTemplateType;
 import com.sflpro.notifier.services.notification.event.sms.StartSendingNotificationEvent;
-import com.sflpro.notifier.services.notification.model.NotificationProviderType;
 import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
 import com.sflpro.notifier.services.system.event.ApplicationEventDistributionService;
 import org.slf4j.Logger;

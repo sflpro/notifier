@@ -1,12 +1,12 @@
 package com.sflpro.notifier.services.user.impl;
 
+import com.sflpro.notifier.db.entities.user.User;
 import com.sflpro.notifier.persistence.repositories.user.UserRepository;
 import com.sflpro.notifier.services.user.UserService;
 import com.sflpro.notifier.services.user.dto.UserDto;
 import com.sflpro.notifier.services.user.exception.UserAlreadyExistsForUuIdException;
 import com.sflpro.notifier.services.user.exception.UserNotFoundForIdException;
 import com.sflpro.notifier.services.user.exception.UserNotFoundForUuidException;
-import com.sflpro.notifier.services.user.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

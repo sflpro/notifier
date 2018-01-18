@@ -1,10 +1,10 @@
 package com.sflpro.notifier.services.notification.push;
 
-import com.sflpro.notifier.services.notification.model.NotificationState;
+import com.sflpro.notifier.db.entities.notification.NotificationState;
 import com.sflpro.notifier.db.entities.notification.push.PushNotification;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipient;
+import com.sflpro.notifier.db.entities.user.User;
 import com.sflpro.notifier.services.test.AbstractServiceIntegrationTest;
-import com.sflpro.notifier.services.user.model.User;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;

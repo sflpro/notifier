@@ -5,7 +5,6 @@ import com.sflpro.notifier.queue.amqp.rpc.RPCCallType;
 import com.sflpro.notifier.queue.producer.AbstractQueueProducerUnitTest;
 import com.sflpro.notifier.queue.producer.connector.AmqpConnectorService;
 import com.sflpro.notifier.queue.producer.connector.AmqpResponseHandler;
-import com.sflpro.notifier.queue.producer.notification.common.NotificationQueueProducerServiceImpl;
 import org.easymock.Mock;
 import org.easymock.TestSubject;
 import org.junit.Test;

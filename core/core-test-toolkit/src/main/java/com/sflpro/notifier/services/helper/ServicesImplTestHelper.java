@@ -1,8 +1,14 @@
 package com.sflpro.notifier.services.helper;
 
-import com.sflpro.notifier.services.device.dto.UserDeviceDto;
-import com.sflpro.notifier.services.device.model.UserDevice;
+import com.sflpro.notifier.db.entities.device.UserDevice;
 import com.sflpro.notifier.db.entities.device.mobile.DeviceOperatingSystemType;
+import com.sflpro.notifier.db.entities.notification.*;
+import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
+import com.sflpro.notifier.db.entities.notification.email.ThirdPartyEmailNotification;
+import com.sflpro.notifier.db.entities.notification.push.*;
+import com.sflpro.notifier.db.entities.notification.push.sns.PushNotificationSnsRecipient;
+import com.sflpro.notifier.db.entities.user.User;
+import com.sflpro.notifier.services.device.dto.UserDeviceDto;
 import com.sflpro.notifier.services.notification.dto.NotificationDto;
 import com.sflpro.notifier.services.notification.dto.UserNotificationDto;
 import com.sflpro.notifier.services.notification.dto.email.EmailNotificationDto;
@@ -15,24 +21,13 @@ import com.sflpro.notifier.services.notification.dto.push.PushNotificationSubscr
 import com.sflpro.notifier.services.notification.dto.push.sns.PushNotificationSnsRecipientDto;
 import com.sflpro.notifier.services.notification.dto.sms.SmsNotificationDto;
 import com.sflpro.notifier.services.notification.email.template.model.NotificationTemplateType;
-import com.sflpro.notifier.services.notification.model.Notification;
-import com.sflpro.notifier.services.notification.model.NotificationProviderType;
-import com.sflpro.notifier.services.notification.model.NotificationState;
-import com.sflpro.notifier.services.notification.model.UserNotification;
-import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
-import com.sflpro.notifier.db.entities.notification.email.ThirdPartyEmailNotification;
-import com.sflpro.notifier.db.entities.notification.push.*;
-import com.sflpro.notifier.db.entities.notification.push.sns.PushNotificationSnsRecipient;
-import com.sflpro.notifier.db.entities.notification.sms.SmsNotification;
 import com.sflpro.notifier.services.user.dto.UserDto;
-import com.sflpro.notifier.services.user.model.User;
 import org.junit.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 /**

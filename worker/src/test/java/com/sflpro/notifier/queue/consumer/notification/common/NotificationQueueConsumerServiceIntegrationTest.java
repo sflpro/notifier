@@ -1,8 +1,8 @@
 package com.sflpro.notifier.queue.consumer.notification.common;
 
+import com.sflpro.notifier.db.entities.notification.NotificationState;
+import com.sflpro.notifier.db.entities.notification.SmsNotification;
 import com.sflpro.notifier.queue.consumer.test.AbstractQueueConsumerIntegrationTest;
-import com.sflpro.notifier.services.notification.model.NotificationState;
-import com.sflpro.notifier.db.entities.notification.sms.SmsNotification;
 import com.sflpro.notifier.services.notification.sms.SmsNotificationService;
 import org.junit.Ignore;
 import org.junit.Test;

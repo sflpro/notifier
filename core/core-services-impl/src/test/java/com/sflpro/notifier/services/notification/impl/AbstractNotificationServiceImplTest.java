@@ -1,9 +1,9 @@
 package com.sflpro.notifier.services.notification.impl;
 
+import com.sflpro.notifier.db.entities.notification.Notification;
+import com.sflpro.notifier.db.entities.notification.NotificationState;
 import com.sflpro.notifier.persistence.repositories.notification.AbstractNotificationRepository;
 import com.sflpro.notifier.services.notification.exception.NotificationNotFoundForIdException;
-import com.sflpro.notifier.services.notification.model.Notification;
-import com.sflpro.notifier.services.notification.model.NotificationState;
 import com.sflpro.notifier.services.test.AbstractServicesUnitTest;
 import org.junit.Assert;
 import org.junit.Test;

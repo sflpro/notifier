@@ -1,10 +1,10 @@
 package com.sflpro.notifier.services.notification.impl.push;
 
+import com.sflpro.notifier.db.entities.device.UserDevice;
 import com.sflpro.notifier.persistence.repositories.notification.push.AbstractPushNotificationRecipientRepository;
 import com.sflpro.notifier.persistence.repositories.notification.push.PushNotificationRecipientDeviceRepository;
 import com.sflpro.notifier.persistence.repositories.notification.push.PushNotificationRecipientRepository;
 import com.sflpro.notifier.services.device.UserDeviceService;
-import com.sflpro.notifier.services.device.model.UserDevice;
 import com.sflpro.notifier.services.notification.dto.push.PushNotificationRecipientDto;
 import com.sflpro.notifier.services.notification.exception.push.PushNotificationRecipientAlreadyExistsException;
 import com.sflpro.notifier.services.notification.exception.push.PushNotificationRecipientInvalidDeviceUserException;

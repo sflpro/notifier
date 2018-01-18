@@ -1,7 +1,8 @@
 package com.sflpro.notifier.services.notification.impl.push;
 
+import com.sflpro.notifier.db.entities.device.UserDevice;
+import com.sflpro.notifier.db.entities.user.User;
 import com.sflpro.notifier.services.device.UserDeviceService;
-import com.sflpro.notifier.services.device.model.UserDevice;
 import com.sflpro.notifier.db.entities.device.mobile.DeviceOperatingSystemType;
 import com.sflpro.notifier.persistence.repositories.notification.push.PushNotificationRecipientSearchFilter;
 import com.sflpro.notifier.services.notification.dto.push.PushNotificationSubscriptionDto;
@@ -12,11 +13,11 @@ import com.sflpro.notifier.db.entities.notification.push.PushNotificationProvide
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipient;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipientStatus;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationSubscription;
+import com.sflpro.notifier.services.notification.push.PushNotificationRecipientSearchParameters;
 import com.sflpro.notifier.services.notification.push.PushNotificationRecipientService;
 import com.sflpro.notifier.services.notification.push.PushNotificationSubscriptionService;
 import com.sflpro.notifier.services.test.AbstractServicesUnitTest;
 import com.sflpro.notifier.services.user.UserService;
-import com.sflpro.notifier.services.user.model.User;
 import org.easymock.EasyMock;
 import org.easymock.Mock;
 import org.easymock.TestSubject;
@@ -216,9 +217,9 @@ public class PushNotificationSubscriptionProcessingServiceImplTest extends Abstr
         // Push notification provider token to be created
         final String newlyRegisteredPushNotificationProviderToken = oldProviderTokenIsDifferentThenNewOne ? "(*&*BYFTCFDJRCGHKRTDLFRUYJFTYDIRDTJRU" : parameters.getCurrentProviderToken();
         // Create push notification search parameters
-        final PushNotificationRecipientSearchFilter searchParametersForSearchingRecipientsToBeDisabledWithNewProviderToken = createSearchParametersForSearchingRecipientsToBeDisabled(userMobileDevice.getOsType(), newlyRegisteredPushNotificationProviderToken, applicationType);
-        final PushNotificationRecipientSearchFilter searchParametersForSearchingRecipientsToBeDisabledWithOldProviderToken = createSearchParametersForSearchingRecipientsToBeDisabled(userMobileDevice.getOsType(), parameters.getCurrentProviderToken(), applicationType);
-        final PushNotificationRecipientSearchFilter searchParametersForSearchingRecipientWithNewProviderToken = createSearchParametersForSearchingRecipientWithNewProviderToken(userMobileDevice.getOsType(), newlyRegisteredPushNotificationProviderToken, subscriptionId, applicationType);
+        final PushNotificationRecipientSearchParameters searchParametersForSearchingRecipientsToBeDisabledWithNewProviderToken = createSearchParametersForSearchingRecipientsToBeDisabled(userMobileDevice.getOsType(), newlyRegisteredPushNotificationProviderToken, applicationType);
+        final PushNotificationRecipientSearchParameters searchParametersForSearchingRecipientsToBeDisabledWithOldProviderToken = createSearchParametersForSearchingRecipientsToBeDisabled(userMobileDevice.getOsType(), parameters.getCurrentProviderToken(), applicationType);
+        final PushNotificationRecipientSearchParameters searchParametersForSearchingRecipientWithNewProviderToken = createSearchParametersForSearchingRecipientWithNewProviderToken(userMobileDevice.getOsType(), newlyRegisteredPushNotificationProviderToken, subscriptionId, applicationType);
         // Current provider token to be used
         final String currentProviderTokenToBeUsed = currentTokenProviderIsDifferent ? null : parameters.getCurrentProviderToken();
         // Reset
@@ -262,8 +263,8 @@ public class PushNotificationSubscriptionProcessingServiceImplTest extends Abstr
         verifyAll();
     }
 
-    private PushNotificationRecipientSearchFilter createSearchParametersForSearchingRecipientsToBeDisabled(final DeviceOperatingSystemType operatingSystemType, final String pushNotificationProviderToken, final String applicationType) {
-        final PushNotificationRecipientSearchFilter parameters = new PushNotificationRecipientSearchFilter();
+    private PushNotificationRecipientSearchParameters createSearchParametersForSearchingRecipientsToBeDisabled(final DeviceOperatingSystemType operatingSystemType, final String pushNotificationProviderToken, final String applicationType) {
+        final PushNotificationRecipientSearchParameters parameters = new PushNotificationRecipientSearchParameters();
         parameters.setProviderType(activeProvider);
         parameters.setDeviceOperatingSystemType(operatingSystemType);
         parameters.setStatus(PushNotificationRecipientStatus.ENABLED);
@@ -272,8 +273,8 @@ public class PushNotificationSubscriptionProcessingServiceImplTest extends Abstr
         return parameters;
     }
 
-    private PushNotificationRecipientSearchFilter createSearchParametersForSearchingRecipientWithNewProviderToken(final DeviceOperatingSystemType operatingSystemType, final String pushNotificationProviderToken, final Long subscriptionId, final String applicationType) {
-        final PushNotificationRecipientSearchFilter parameters = new PushNotificationRecipientSearchFilter();
+    private PushNotificationRecipientSearchParameters createSearchParametersForSearchingRecipientWithNewProviderToken(final DeviceOperatingSystemType operatingSystemType, final String pushNotificationProviderToken, final Long subscriptionId, final String applicationType) {
+        final PushNotificationRecipientSearchParameters parameters = new PushNotificationRecipientSearchParameters();
         parameters.setProviderType(activeProvider);
         parameters.setDeviceOperatingSystemType(operatingSystemType);
         parameters.setSubscriptionId(subscriptionId);

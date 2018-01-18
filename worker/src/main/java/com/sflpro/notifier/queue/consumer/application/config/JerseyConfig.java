@@ -2,7 +2,7 @@ package com.sflpro.notifier.queue.consumer.application.config;
 
 import org.glassfish.jersey.filter.LoggingFilter;
 import org.glassfish.jersey.server.ResourceConfig;
-import org.glassfish.jersey.server.spring.scope.RequestContextFilter;
+import org.springframework.web.filter.RequestContextFilter;
 
 /**
  * Company: SFL LLC

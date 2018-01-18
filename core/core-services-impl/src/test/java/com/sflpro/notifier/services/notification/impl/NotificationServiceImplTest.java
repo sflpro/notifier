@@ -1,8 +1,8 @@
 package com.sflpro.notifier.services.notification.impl;
 
+import com.sflpro.notifier.db.entities.notification.Notification;
 import com.sflpro.notifier.persistence.repositories.notification.AbstractNotificationRepository;
 import com.sflpro.notifier.persistence.repositories.notification.NotificationRepository;
-import com.sflpro.notifier.services.notification.model.Notification;
 import org.easymock.Mock;
 import org.easymock.TestSubject;
 

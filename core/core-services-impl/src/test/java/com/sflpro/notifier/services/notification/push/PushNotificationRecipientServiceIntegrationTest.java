@@ -1,13 +1,13 @@
 package com.sflpro.notifier.services.notification.push;
 
 import com.sflpro.notifier.db.entities.device.mobile.DeviceOperatingSystemType;
+import com.sflpro.notifier.db.entities.user.User;
 import com.sflpro.notifier.persistence.repositories.notification.push.PushNotificationRecipientSearchFilter;
 import com.sflpro.notifier.services.notification.dto.push.sns.PushNotificationSnsRecipientDto;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationProviderType;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipient;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipientStatus;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationSubscription;
-import com.sflpro.notifier.services.user.model.User;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -47,17 +47,17 @@ public class PushNotificationRecipientServiceIntegrationTest extends AbstractPus
         final PushNotificationRecipient secondRecipient = getServicesTestHelper().createPushNotificationSnsRecipient(subscription, secondSnsRecipientDto);
         flushAndClear();
         // Load recipients and assert
-        PushNotificationRecipientSearchFilter parameters = new PushNotificationRecipientSearchFilter();
+        PushNotificationRecipientSearchParameters parameters = new PushNotificationRecipientSearchParameters();
         // Execute search with all recipients
         List<PushNotificationRecipient> result = pushNotificationRecipientService.getPushNotificationRecipientsForSearchParameters(parameters, 0L, Integer.MAX_VALUE);
         assertPushNotificationRecipients(result, new LinkedHashSet<>(Arrays.asList(firstRecipient.getId(), secondRecipient.getId())));
         // Execute search with first recipient
-        parameters = new PushNotificationRecipientSearchFilter();
+        parameters = new PushNotificationRecipientSearchParameters();
         parameters.setProviderType(PushNotificationProviderType.SNS);
         result = pushNotificationRecipientService.getPushNotificationRecipientsForSearchParameters(parameters, 0L, Integer.MAX_VALUE);
         assertPushNotificationRecipients(result, new LinkedHashSet<>(Arrays.asList(firstRecipient.getId(), secondRecipient.getId())));
         // Execute search with second recipient
-        parameters = new PushNotificationRecipientSearchFilter();
+        parameters = new PushNotificationRecipientSearchParameters();
         parameters.setProviderType(PushNotificationProviderType.APNS);
         result = pushNotificationRecipientService.getPushNotificationRecipientsForSearchParameters(parameters, 0L, Integer.MAX_VALUE);
         assertPushNotificationRecipients(result, new LinkedHashSet<>());
@@ -74,17 +74,17 @@ public class PushNotificationRecipientServiceIntegrationTest extends AbstractPus
         final PushNotificationRecipient secondRecipient = getServicesTestHelper().createPushNotificationSnsRecipient(subscription, secondSnsRecipientDto);
         flushAndClear();
         // Load recipients and assert
-        PushNotificationRecipientSearchFilter parameters = new PushNotificationRecipientSearchFilter();
+        PushNotificationRecipientSearchParameters parameters = new PushNotificationRecipientSearchParameters();
         // Execute search with all recipients
         Long result = pushNotificationRecipientService.getPushNotificationRecipientsCountForSearchParameters(parameters);
         assertPushNotificationRecipientsCount(result, new LinkedHashSet<>(Arrays.asList(firstRecipient.getId(), secondRecipient.getId())));
         // Execute search with first recipient
-        parameters = new PushNotificationRecipientSearchFilter();
+        parameters = new PushNotificationRecipientSearchParameters();
         parameters.setProviderType(PushNotificationProviderType.SNS);
         result = pushNotificationRecipientService.getPushNotificationRecipientsCountForSearchParameters(parameters);
         assertPushNotificationRecipientsCount(result, new LinkedHashSet<>(Arrays.asList(firstRecipient.getId(), secondRecipient.getId())));
         // Execute search with second recipient
-        parameters = new PushNotificationRecipientSearchFilter();
+        parameters = new PushNotificationRecipientSearchParameters();
         parameters.setProviderType(PushNotificationProviderType.APNS);
         result = pushNotificationRecipientService.getPushNotificationRecipientsCountForSearchParameters(parameters);
         assertPushNotificationRecipientsCount(result, new LinkedHashSet<>());
@@ -103,17 +103,17 @@ public class PushNotificationRecipientServiceIntegrationTest extends AbstractPus
         final PushNotificationRecipient secondRecipient = getServicesTestHelper().createPushNotificationSnsRecipient(subscription, secondSnsRecipientDto);
         flushAndClear();
         // Load recipients and assert
-        PushNotificationRecipientSearchFilter parameters = new PushNotificationRecipientSearchFilter();
+        PushNotificationRecipientSearchParameters parameters = new PushNotificationRecipientSearchParameters();
         // Execute search with all recipients
         List<PushNotificationRecipient> result = pushNotificationRecipientService.getPushNotificationRecipientsForSearchParameters(parameters, 0L, Integer.MAX_VALUE);
         assertPushNotificationRecipients(result, new LinkedHashSet<>(Arrays.asList(firstRecipient.getId(), secondRecipient.getId())));
         // Execute search with first recipient
-        parameters = new PushNotificationRecipientSearchFilter();
+        parameters = new PushNotificationRecipientSearchParameters();
         parameters.setApplicationType("customer");
         result = pushNotificationRecipientService.getPushNotificationRecipientsForSearchParameters(parameters, 0L, Integer.MAX_VALUE);
         assertPushNotificationRecipients(result, new LinkedHashSet<>(Arrays.asList(firstRecipient.getId())));
         // Execute search with second recipient
-        parameters = new PushNotificationRecipientSearchFilter();
+        parameters = new PushNotificationRecipientSearchParameters();
         parameters.setApplicationType("operator");
         result = pushNotificationRecipientService.getPushNotificationRecipientsForSearchParameters(parameters, 0L, Integer.MAX_VALUE);
         assertPushNotificationRecipients(result, new LinkedHashSet<>(Arrays.asList(secondRecipient.getId())));
@@ -132,17 +132,17 @@ public class PushNotificationRecipientServiceIntegrationTest extends AbstractPus
         final PushNotificationRecipient secondRecipient = getServicesTestHelper().createPushNotificationSnsRecipient(subscription, secondSnsRecipientDto);
         flushAndClear();
         // Load recipients and assert
-        PushNotificationRecipientSearchFilter parameters = new PushNotificationRecipientSearchFilter();
+        PushNotificationRecipientSearchParameters parameters = new PushNotificationRecipientSearchParameters();
         // Execute search with all recipients
         List<PushNotificationRecipient> result = pushNotificationRecipientService.getPushNotificationRecipientsForSearchParameters(parameters, 0L, Integer.MAX_VALUE);
         assertPushNotificationRecipients(result, new LinkedHashSet<>(Arrays.asList(firstRecipient.getId(), secondRecipient.getId())));
         // Execute search with first recipient
-        parameters = new PushNotificationRecipientSearchFilter();
+        parameters = new PushNotificationRecipientSearchParameters();
         parameters.setDeviceOperatingSystemType(DeviceOperatingSystemType.IOS);
         result = pushNotificationRecipientService.getPushNotificationRecipientsForSearchParameters(parameters, 0L, Integer.MAX_VALUE);
         assertPushNotificationRecipients(result, new LinkedHashSet<>(Arrays.asList(firstRecipient.getId())));
         // Execute search with second recipient
-        parameters = new PushNotificationRecipientSearchFilter();
+        parameters = new PushNotificationRecipientSearchParameters();
         parameters.setDeviceOperatingSystemType(DeviceOperatingSystemType.ANDROID);
         result = pushNotificationRecipientService.getPushNotificationRecipientsForSearchParameters(parameters, 0L, Integer.MAX_VALUE);
         assertPushNotificationRecipients(result, new LinkedHashSet<>(Arrays.asList(secondRecipient.getId())));
@@ -161,17 +161,17 @@ public class PushNotificationRecipientServiceIntegrationTest extends AbstractPus
         final PushNotificationRecipient secondRecipient = getServicesTestHelper().createPushNotificationSnsRecipient(subscription, secondSnsRecipientDto);
         flushAndClear();
         // Load recipients and assert
-        PushNotificationRecipientSearchFilter parameters = new PushNotificationRecipientSearchFilter();
+        PushNotificationRecipientSearchParameters parameters = new PushNotificationRecipientSearchParameters();
         // Execute search with all recipients
         Long result = pushNotificationRecipientService.getPushNotificationRecipientsCountForSearchParameters(parameters);
         assertPushNotificationRecipientsCount(result, new LinkedHashSet<>(Arrays.asList(firstRecipient.getId(), secondRecipient.getId())));
         // Execute search with first recipient
-        parameters = new PushNotificationRecipientSearchFilter();
+        parameters = new PushNotificationRecipientSearchParameters();
         parameters.setDeviceOperatingSystemType(DeviceOperatingSystemType.IOS);
         result = pushNotificationRecipientService.getPushNotificationRecipientsCountForSearchParameters(parameters);
         assertPushNotificationRecipientsCount(result, new LinkedHashSet<>(Arrays.asList(firstRecipient.getId())));
         // Execute search with second recipient
-        parameters = new PushNotificationRecipientSearchFilter();
+        parameters = new PushNotificationRecipientSearchParameters();
         parameters.setDeviceOperatingSystemType(DeviceOperatingSystemType.ANDROID);
         result = pushNotificationRecipientService.getPushNotificationRecipientsCountForSearchParameters(parameters);
         assertPushNotificationRecipientsCount(result, new LinkedHashSet<>(Arrays.asList(secondRecipient.getId())));
@@ -191,17 +191,17 @@ public class PushNotificationRecipientServiceIntegrationTest extends AbstractPus
         assertEquals(PushNotificationRecipientStatus.DISABLED, secondRecipient.getStatus());
         flushAndClear();
         // Load recipients and assert
-        PushNotificationRecipientSearchFilter parameters = new PushNotificationRecipientSearchFilter();
+        PushNotificationRecipientSearchParameters parameters = new PushNotificationRecipientSearchParameters();
         // Execute search with all recipients
         List<PushNotificationRecipient> result = pushNotificationRecipientService.getPushNotificationRecipientsForSearchParameters(parameters, 0L, Integer.MAX_VALUE);
         assertPushNotificationRecipients(result, new LinkedHashSet<>(Arrays.asList(firstRecipient.getId(), secondRecipient.getId())));
         // Execute search with first recipient
-        parameters = new PushNotificationRecipientSearchFilter();
+        parameters = new PushNotificationRecipientSearchParameters();
         parameters.setStatus(PushNotificationRecipientStatus.ENABLED);
         result = pushNotificationRecipientService.getPushNotificationRecipientsForSearchParameters(parameters, 0L, Integer.MAX_VALUE);
         assertPushNotificationRecipients(result, new LinkedHashSet<>(Arrays.asList(firstRecipient.getId())));
         // Execute search with second recipient
-        parameters = new PushNotificationRecipientSearchFilter();
+        parameters = new PushNotificationRecipientSearchParameters();
         parameters.setStatus(PushNotificationRecipientStatus.DISABLED);
         result = pushNotificationRecipientService.getPushNotificationRecipientsForSearchParameters(parameters, 0L, Integer.MAX_VALUE);
         assertPushNotificationRecipients(result, new LinkedHashSet<>(Arrays.asList(secondRecipient.getId())));
@@ -221,17 +221,17 @@ public class PushNotificationRecipientServiceIntegrationTest extends AbstractPus
         assertEquals(PushNotificationRecipientStatus.DISABLED, secondRecipient.getStatus());
         flushAndClear();
         // Load recipients and assert
-        PushNotificationRecipientSearchFilter parameters = new PushNotificationRecipientSearchFilter();
+        PushNotificationRecipientSearchParameters parameters = new PushNotificationRecipientSearchParameters();
         // Execute search with all recipients
         Long result = pushNotificationRecipientService.getPushNotificationRecipientsCountForSearchParameters(parameters);
         assertPushNotificationRecipientsCount(result, new LinkedHashSet<>(Arrays.asList(firstRecipient.getId(), secondRecipient.getId())));
         // Execute search with first recipient
-        parameters = new PushNotificationRecipientSearchFilter();
+        parameters = new PushNotificationRecipientSearchParameters();
         parameters.setStatus(PushNotificationRecipientStatus.ENABLED);
         result = pushNotificationRecipientService.getPushNotificationRecipientsCountForSearchParameters(parameters);
         assertPushNotificationRecipientsCount(result, new LinkedHashSet<>(Arrays.asList(firstRecipient.getId())));
         // Execute search with second recipient
-        parameters = new PushNotificationRecipientSearchFilter();
+        parameters = new PushNotificationRecipientSearchParameters();
         parameters.setStatus(PushNotificationRecipientStatus.DISABLED);
         result = pushNotificationRecipientService.getPushNotificationRecipientsCountForSearchParameters(parameters);
         assertPushNotificationRecipientsCount(result, new LinkedHashSet<>(Arrays.asList(secondRecipient.getId())));
@@ -251,17 +251,17 @@ public class PushNotificationRecipientServiceIntegrationTest extends AbstractPus
         final PushNotificationRecipient secondRecipient = getServicesTestHelper().createPushNotificationSnsRecipient(secondSubscription, secondSnsRecipientDto);
         flushAndClear();
         // Load recipients and assert
-        PushNotificationRecipientSearchFilter parameters = new PushNotificationRecipientSearchFilter();
+        PushNotificationRecipientSearchParameters parameters = new PushNotificationRecipientSearchParameters();
         // Execute search with all recipients
         List<PushNotificationRecipient> result = pushNotificationRecipientService.getPushNotificationRecipientsForSearchParameters(parameters, 0L, Integer.MAX_VALUE);
         assertPushNotificationRecipients(result, new LinkedHashSet<>(Arrays.asList(firstRecipient.getId(), secondRecipient.getId())));
         // Execute search with first recipient
-        parameters = new PushNotificationRecipientSearchFilter();
+        parameters = new PushNotificationRecipientSearchParameters();
         parameters.setSubscriptionId(firstSubscription.getId());
         result = pushNotificationRecipientService.getPushNotificationRecipientsForSearchParameters(parameters, 0L, Integer.MAX_VALUE);
         assertPushNotificationRecipients(result, new LinkedHashSet<>(Arrays.asList(firstRecipient.getId())));
         // Execute search with second recipient
-        parameters = new PushNotificationRecipientSearchFilter();
+        parameters = new PushNotificationRecipientSearchParameters();
         parameters.setSubscriptionId(secondSubscription.getId());
         result = pushNotificationRecipientService.getPushNotificationRecipientsForSearchParameters(parameters, 0L, Integer.MAX_VALUE);
         assertPushNotificationRecipients(result, new LinkedHashSet<>(Arrays.asList(secondRecipient.getId())));
@@ -281,17 +281,17 @@ public class PushNotificationRecipientServiceIntegrationTest extends AbstractPus
         final PushNotificationRecipient secondRecipient = getServicesTestHelper().createPushNotificationSnsRecipient(secondSubscription, secondSnsRecipientDto);
         flushAndClear();
         // Load recipients and assert
-        PushNotificationRecipientSearchFilter parameters = new PushNotificationRecipientSearchFilter();
+        PushNotificationRecipientSearchParameters parameters = new PushNotificationRecipientSearchParameters();
         // Execute search with all recipients
         Long result = pushNotificationRecipientService.getPushNotificationRecipientsCountForSearchParameters(parameters);
         assertPushNotificationRecipientsCount(result, new LinkedHashSet<>(Arrays.asList(firstRecipient.getId(), secondRecipient.getId())));
         // Execute search with first recipient
-        parameters = new PushNotificationRecipientSearchFilter();
+        parameters = new PushNotificationRecipientSearchParameters();
         parameters.setSubscriptionId(firstSubscription.getId());
         result = pushNotificationRecipientService.getPushNotificationRecipientsCountForSearchParameters(parameters);
         assertPushNotificationRecipientsCount(result, new LinkedHashSet<>(Arrays.asList(firstRecipient.getId())));
         // Execute search with second recipient
-        parameters = new PushNotificationRecipientSearchFilter();
+        parameters = new PushNotificationRecipientSearchParameters();
         parameters.setSubscriptionId(secondSubscription.getId());
         result = pushNotificationRecipientService.getPushNotificationRecipientsCountForSearchParameters(parameters);
         assertPushNotificationRecipientsCount(result, new LinkedHashSet<>(Arrays.asList(secondRecipient.getId())));
@@ -308,17 +308,17 @@ public class PushNotificationRecipientServiceIntegrationTest extends AbstractPus
         final PushNotificationRecipient secondRecipient = getServicesTestHelper().createPushNotificationSnsRecipient(subscription, secondSnsRecipientDto);
         flushAndClear();
         // Load recipients and assert
-        PushNotificationRecipientSearchFilter parameters = new PushNotificationRecipientSearchFilter();
+        PushNotificationRecipientSearchParameters parameters = new PushNotificationRecipientSearchParameters();
         // Execute search with all recipients
         List<PushNotificationRecipient> result = pushNotificationRecipientService.getPushNotificationRecipientsForSearchParameters(parameters, 0L, Integer.MAX_VALUE);
         assertPushNotificationRecipients(result, new LinkedHashSet<>(Arrays.asList(firstRecipient.getId(), secondRecipient.getId())));
         // Execute search with first recipient
-        parameters = new PushNotificationRecipientSearchFilter();
+        parameters = new PushNotificationRecipientSearchParameters();
         parameters.setDestinationRouteToken(firstRecipient.getDestinationRouteToken());
         result = pushNotificationRecipientService.getPushNotificationRecipientsForSearchParameters(parameters, 0L, Integer.MAX_VALUE);
         assertPushNotificationRecipients(result, new LinkedHashSet<>(Arrays.asList(firstRecipient.getId())));
         // Execute search with second recipient
-        parameters = new PushNotificationRecipientSearchFilter();
+        parameters = new PushNotificationRecipientSearchParameters();
         parameters.setDestinationRouteToken(secondRecipient.getDestinationRouteToken());
         result = pushNotificationRecipientService.getPushNotificationRecipientsForSearchParameters(parameters, 0L, Integer.MAX_VALUE);
         assertPushNotificationRecipients(result, new LinkedHashSet<>(Arrays.asList(secondRecipient.getId())));
@@ -335,17 +335,17 @@ public class PushNotificationRecipientServiceIntegrationTest extends AbstractPus
         final PushNotificationRecipient secondRecipient = getServicesTestHelper().createPushNotificationSnsRecipient(subscription, secondSnsRecipientDto);
         flushAndClear();
         // Load recipients and assert
-        PushNotificationRecipientSearchFilter parameters = new PushNotificationRecipientSearchFilter();
+        PushNotificationRecipientSearchParameters parameters = new PushNotificationRecipientSearchParameters();
         // Execute search with all recipients
         Long result = pushNotificationRecipientService.getPushNotificationRecipientsCountForSearchParameters(parameters);
         assertPushNotificationRecipientsCount(result, new LinkedHashSet<>(Arrays.asList(firstRecipient.getId(), secondRecipient.getId())));
         // Execute search with first recipient
-        parameters = new PushNotificationRecipientSearchFilter();
+        parameters = new PushNotificationRecipientSearchParameters();
         parameters.setDestinationRouteToken(firstRecipient.getDestinationRouteToken());
         result = pushNotificationRecipientService.getPushNotificationRecipientsCountForSearchParameters(parameters);
         assertPushNotificationRecipientsCount(result, new LinkedHashSet<>(Arrays.asList(firstRecipient.getId())));
         // Execute search with second recipient
-        parameters = new PushNotificationRecipientSearchFilter();
+        parameters = new PushNotificationRecipientSearchParameters();
         parameters.setDestinationRouteToken(secondRecipient.getDestinationRouteToken());
         result = pushNotificationRecipientService.getPushNotificationRecipientsCountForSearchParameters(parameters);
         assertPushNotificationRecipientsCount(result, new LinkedHashSet<>(Arrays.asList(secondRecipient.getId())));

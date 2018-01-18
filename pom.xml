@@ -81,6 +81,9 @@
         <mail.version>1.5.2</mail.version>
         <velocity.version>1.6.2</velocity.version>
 
+        <!--Infrasturcture third party libs-->
+        <mandrillapp.wrapper.lutung.version>0.0.8</mandrillapp.wrapper.lutung.version>
+
         <!--Sonar config-->
         <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
         <sonar.language>java</sonar.language>
@@ -260,6 +263,11 @@
                 <artifactId>tika-core</artifactId>
                 <version>${apache.tika.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.twilio.sdk</groupId>
+                <artifactId>twilio-java-sdk</artifactId>
+                <version>${twillio.sdk.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>org.glassfish.jersey.core</groupId>
@@ -303,6 +311,11 @@
                         <artifactId>slf4j-api</artifactId>
                     </exclusion>
                 </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>com.mandrillapp.wrapper.lutung</groupId>
+                <artifactId>lutung</artifactId>
+                <version>${mandrillapp.wrapper.lutung.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.commons</groupId>

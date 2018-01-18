@@ -1,6 +1,6 @@
 package com.sflpro.notifier.services.notification;
 
-import com.sflpro.notifier.services.notification.model.Notification;
+import com.sflpro.notifier.db.entities.notification.Notification;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**

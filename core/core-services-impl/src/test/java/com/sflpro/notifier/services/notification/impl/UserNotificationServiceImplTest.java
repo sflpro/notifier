@@ -1,15 +1,15 @@
 package com.sflpro.notifier.services.notification.impl;
 
+import com.sflpro.notifier.db.entities.notification.Notification;
+import com.sflpro.notifier.db.entities.notification.UserNotification;
+import com.sflpro.notifier.db.entities.user.User;
 import com.sflpro.notifier.persistence.repositories.notification.UserNotificationRepository;
 import com.sflpro.notifier.services.notification.NotificationService;
 import com.sflpro.notifier.services.notification.dto.UserNotificationDto;
 import com.sflpro.notifier.services.notification.exception.UserNotificationAlreadyExistsException;
 import com.sflpro.notifier.services.notification.exception.UserNotificationNotFoundForIdException;
-import com.sflpro.notifier.services.notification.model.Notification;
-import com.sflpro.notifier.services.notification.model.UserNotification;
 import com.sflpro.notifier.services.test.AbstractServicesUnitTest;
 import com.sflpro.notifier.services.user.UserService;
-import com.sflpro.notifier.services.user.model.User;
 import org.easymock.Mock;
 import org.easymock.TestSubject;
 import org.junit.Assert;

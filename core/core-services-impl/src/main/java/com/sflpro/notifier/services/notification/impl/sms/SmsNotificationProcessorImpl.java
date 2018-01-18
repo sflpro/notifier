@@ -1,14 +1,14 @@
 package com.sflpro.notifier.services.notification.impl.sms;
 
+import com.sflpro.notifier.db.entities.notification.Notification;
+import com.sflpro.notifier.db.entities.notification.NotificationProviderType;
+import com.sflpro.notifier.db.entities.notification.NotificationState;
+import com.sflpro.notifier.db.entities.notification.SmsNotification;
 import com.sflpro.notifier.externalclients.sms.twillio.communicator.TwillioApiCommunicator;
 import com.sflpro.notifier.externalclients.sms.twillio.model.request.SendMessageRequest;
 import com.sflpro.notifier.externalclients.sms.twillio.model.response.SendMessageResponse;
 import com.sflpro.notifier.persistence.utility.PersistenceUtilityService;
 import com.sflpro.notifier.services.common.exception.ServicesRuntimeException;
-import com.sflpro.notifier.services.notification.model.Notification;
-import com.sflpro.notifier.services.notification.model.NotificationProviderType;
-import com.sflpro.notifier.services.notification.model.NotificationState;
-import com.sflpro.notifier.db.entities.notification.sms.SmsNotification;
 import com.sflpro.notifier.services.notification.sms.SmsNotificationProcessor;
 import com.sflpro.notifier.services.notification.sms.SmsNotificationService;
 import org.apache.commons.lang3.StringUtils;

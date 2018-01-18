@@ -3,7 +3,7 @@ package com.sflpro.notifier.services.notification.impl.push;
 import com.sflpro.notifier.services.device.UserDeviceService;
 import com.sflpro.notifier.services.device.model.UserDevice;
 import com.sflpro.notifier.db.entities.device.mobile.DeviceOperatingSystemType;
-import com.sflpro.notifier.services.notification.dto.push.PushNotificationRecipientSearchParameters;
+import com.sflpro.notifier.persistence.repositories.notification.push.PushNotificationRecipientSearchParameters;
 import com.sflpro.notifier.services.notification.dto.push.PushNotificationSubscriptionDto;
 import com.sflpro.notifier.services.notification.dto.push.PushNotificationSubscriptionProcessingParameters;
 import com.sflpro.notifier.services.notification.exception.push.PushNotificationSubscriptionInvalidDeviceUserException;

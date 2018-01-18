@@ -1,6 +1,6 @@
 package com.sflpro.notifier.persistence.repositories.user;
 
-import com.sflpro.notifier.services.user.model.User;
+import com.sflpro.notifier.db.entities.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,7 +1,7 @@
 package com.sflpro.notifier.persistence.repositories.device;
 
-import com.sflpro.notifier.services.device.model.UserDevice;
-import com.sflpro.notifier.services.user.model.User;
+import com.sflpro.notifier.db.entities.device.UserDevice;
+import com.sflpro.notifier.db.entities.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

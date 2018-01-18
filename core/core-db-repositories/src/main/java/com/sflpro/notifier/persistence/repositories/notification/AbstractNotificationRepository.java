@@ -1,6 +1,6 @@
 package com.sflpro.notifier.persistence.repositories.notification;
 
-import com.sflpro.notifier.services.notification.model.Notification;
+import com.sflpro.notifier.db.entities.notification.Notification;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**

@@ -1,6 +1,7 @@
 package com.sflpro.notifier.db.entities.notification.push;
 
-import com.sflpro.notifier.services.common.model.AbstractDomainEntityModel;
+
+import com.sflpro.notifier.db.entities.AbstractDomainEntityModel;
 import com.sflpro.notifier.db.entities.notification.Notification;
 import com.sflpro.notifier.db.entities.notification.NotificationType;
 import org.apache.commons.lang3.builder.EqualsBuilder;

@@ -11,26 +11,31 @@
 
     <artifactId>persistence-db-migration</artifactId>
 
-    <properties>
-        <flyway.version>3.0</flyway.version>
-    </properties>
-
     <dependencies>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+        </dependency>
         <!-- Flyway database migrations -->
         <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
-            <version>${flyway.version}</version>
         </dependency>
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>${mysql.connector.version}</version>
         </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>${postgresql.version}</version>
         </dependency>
     </dependencies>
 
@@ -46,19 +51,12 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>com.sflpro.notifier.persistence.dbmigration.MsNotificationFlywayStandaloneRunner</mainClass>
+                            <mainClass>
+                                com.sflpro.notifier.persistence.dbmigration.MsNotificationFlywayStandaloneRunner
+                            </mainClass>
                         </manifest>
                     </archive>
                 </configuration>
-                <executions>
-                    <execution>
-                        <id>assemble-all</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>

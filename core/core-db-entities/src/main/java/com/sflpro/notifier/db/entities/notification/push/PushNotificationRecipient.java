@@ -1,7 +1,7 @@
 package com.sflpro.notifier.db.entities.notification.push;
 
-import com.sflpro.notifier.services.common.model.AbstractDomainUuIdAwareEntityModel;
-import com.sflpro.notifier.services.device.model.UserDevice;
+import com.sflpro.notifier.db.entities.AbstractDomainUuIdAwareEntityModel;
+import com.sflpro.notifier.db.entities.device.UserDevice;
 import com.sflpro.notifier.db.entities.device.mobile.DeviceOperatingSystemType;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;

@@ -1,6 +1,6 @@
 package com.sflpro.notifier.services.common.exception;
 
-import com.sflpro.notifier.services.common.model.AbstractDomainEntityModel;
+import com.sflpro.notifier.db.entities.AbstractDomainEntityModel;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**

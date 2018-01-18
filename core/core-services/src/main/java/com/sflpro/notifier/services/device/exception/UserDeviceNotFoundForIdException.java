@@ -1,7 +1,7 @@
 package com.sflpro.notifier.services.device.exception;
 
+import com.sflpro.notifier.db.entities.device.UserDevice;
 import com.sflpro.notifier.services.common.exception.EntityNotFoundForIdException;
-import com.sflpro.notifier.services.device.model.UserDevice;
 
 /**
  * User: Ruben Dilanyan

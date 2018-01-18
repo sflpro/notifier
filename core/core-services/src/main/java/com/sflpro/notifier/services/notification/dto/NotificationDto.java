@@ -1,8 +1,8 @@
 package com.sflpro.notifier.services.notification.dto;
 
+import com.sflpro.notifier.db.entities.notification.Notification;
+import com.sflpro.notifier.db.entities.notification.NotificationType;
 import com.sflpro.notifier.services.common.dto.AbstractDomainEntityModelDto;
-import com.sflpro.notifier.services.notification.model.Notification;
-import com.sflpro.notifier.services.notification.model.NotificationType;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;

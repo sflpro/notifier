@@ -1,7 +1,8 @@
 package com.sflpro.notifier.services.notification.dto;
 
+
+import com.sflpro.notifier.db.entities.notification.UserNotification;
 import com.sflpro.notifier.services.common.dto.AbstractDomainEntityModelDto;
-import com.sflpro.notifier.services.notification.model.UserNotification;
 import org.springframework.util.Assert;
 
 /**

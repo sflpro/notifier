@@ -14,8 +14,8 @@
     <description>Queue sub module represents queue layer of SFL NMS project.</description>
 
     <modules>
-        <module>queue-common</module>
-        <module>queue-consumer</module>
-        <module>queue-producer</module>
+        <module>infra-queue-common</module>
+        <module>infra-queue-consumer</module>
+        <module>infra-queue-producer</module>
     </modules>
 </project>	

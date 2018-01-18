@@ -1,7 +1,7 @@
 package com.sflpro.notifier.persistence.repositories.notification.email;
 
 import com.sflpro.notifier.persistence.repositories.notification.AbstractNotificationRepository;
-import com.sflpro.notifier.services.notification.model.email.EmailNotification;
+import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
 import org.springframework.stereotype.Repository;
 
 /**

@@ -5,7 +5,7 @@ import com.sflpro.notifier.persistence.repositories.notification.email.EmailNoti
 import com.sflpro.notifier.services.notification.dto.email.EmailNotificationDto;
 import com.sflpro.notifier.services.notification.email.EmailNotificationService;
 import com.sflpro.notifier.services.notification.impl.AbstractNotificationServiceImpl;
-import com.sflpro.notifier.services.notification.model.email.EmailNotification;
+import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

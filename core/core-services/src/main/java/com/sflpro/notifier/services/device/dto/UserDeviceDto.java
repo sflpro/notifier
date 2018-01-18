@@ -2,7 +2,7 @@ package com.sflpro.notifier.services.device.dto;
 
 import com.sflpro.notifier.services.common.dto.AbstractDomainEntityModelDto;
 import com.sflpro.notifier.services.device.model.UserDevice;
-import com.sflpro.notifier.services.device.model.mobile.DeviceOperatingSystemType;
+import com.sflpro.notifier.db.entities.device.mobile.DeviceOperatingSystemType;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;

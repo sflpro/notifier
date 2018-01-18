@@ -1,7 +1,7 @@
 package com.sflpro.notifier.services.notification.exception.push;
 
 import com.sflpro.notifier.services.common.exception.ServicesRuntimeException;
-import com.sflpro.notifier.services.notification.model.push.PushNotificationProviderType;
+import com.sflpro.notifier.db.entities.notification.push.PushNotificationProviderType;
 
 /**
  * User: Ruben Dilanyan

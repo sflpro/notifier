@@ -5,8 +5,8 @@ import com.sflpro.notifier.services.notification.dto.email.ThirdPartyEmailNotifi
 import com.sflpro.notifier.services.notification.email.ThirdPartyEmailNotificationService;
 import com.sflpro.notifier.services.notification.email.template.model.forgotpassword.ResetPasswordEmailTemplateModel;
 import com.sflpro.notifier.services.notification.event.sms.StartSendingNotificationEvent;
-import com.sflpro.notifier.services.notification.model.email.EmailNotification;
-import com.sflpro.notifier.services.notification.model.email.ThirdPartyEmailNotification;
+import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
+import com.sflpro.notifier.db.entities.notification.email.ThirdPartyEmailNotification;
 import com.sflpro.notifier.services.system.event.ApplicationEventDistributionService;
 import com.sflpro.notifier.services.test.AbstractServicesUnitTest;
 import org.apache.commons.lang.StringUtils;

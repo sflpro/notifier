@@ -1,6 +1,6 @@
 package com.sflpro.notifier.services.notification.impl.push;
 
-import com.sflpro.notifier.services.notification.model.push.PushNotification;
+import com.sflpro.notifier.db.entities.notification.push.PushNotification;
 
 import javax.annotation.Nonnull;
 

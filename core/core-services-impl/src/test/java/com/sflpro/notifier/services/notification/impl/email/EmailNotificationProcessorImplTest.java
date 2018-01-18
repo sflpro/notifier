@@ -8,7 +8,7 @@ import com.sflpro.notifier.services.notification.email.EmailNotificationService;
 import com.sflpro.notifier.services.notification.email.SmtpTransportService;
 import com.sflpro.notifier.services.notification.model.NotificationProviderType;
 import com.sflpro.notifier.services.notification.model.NotificationState;
-import com.sflpro.notifier.services.notification.model.email.EmailNotification;
+import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
 import com.sflpro.notifier.services.test.AbstractServicesUnitTest;
 import org.easymock.Mock;
 import org.easymock.TestSubject;

@@ -1,7 +1,7 @@
 package com.sflpro.notifier.persistence.repositories.notification.push.sns;
 
 import com.sflpro.notifier.persistence.repositories.notification.push.AbstractPushNotificationRecipientRepository;
-import com.sflpro.notifier.services.notification.model.push.sns.PushNotificationSnsRecipient;
+import com.sflpro.notifier.db.entities.notification.push.sns.PushNotificationSnsRecipient;
 import org.springframework.stereotype.Repository;
 
 /**

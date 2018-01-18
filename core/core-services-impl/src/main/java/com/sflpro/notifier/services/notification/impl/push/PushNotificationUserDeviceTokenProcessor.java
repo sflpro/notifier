@@ -1,7 +1,7 @@
 package com.sflpro.notifier.services.notification.impl.push;
 
-import com.sflpro.notifier.services.device.model.mobile.DeviceOperatingSystemType;
-import com.sflpro.notifier.services.notification.model.push.PushNotificationRecipient;
+import com.sflpro.notifier.db.entities.device.mobile.DeviceOperatingSystemType;
+import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipient;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

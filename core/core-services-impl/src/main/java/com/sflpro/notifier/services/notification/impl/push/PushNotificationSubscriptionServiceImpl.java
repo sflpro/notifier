@@ -5,7 +5,7 @@ import com.sflpro.notifier.services.notification.dto.push.PushNotificationSubscr
 import com.sflpro.notifier.services.notification.exception.push.PushNotificationSubscriptionAlreadyExistsForUserException;
 import com.sflpro.notifier.services.notification.exception.push.PushNotificationSubscriptionNotFoundForIdException;
 import com.sflpro.notifier.services.notification.exception.push.PushNotificationSubscriptionNotFoundForUserException;
-import com.sflpro.notifier.services.notification.model.push.PushNotificationSubscription;
+import com.sflpro.notifier.db.entities.notification.push.PushNotificationSubscription;
 import com.sflpro.notifier.services.notification.push.PushNotificationSubscriptionService;
 import com.sflpro.notifier.services.user.UserService;
 import com.sflpro.notifier.services.user.model.User;

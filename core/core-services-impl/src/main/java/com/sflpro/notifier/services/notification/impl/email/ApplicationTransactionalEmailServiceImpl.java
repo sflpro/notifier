@@ -5,7 +5,7 @@ import com.sflpro.notifier.services.notification.email.template.TemplateEmailSer
 import com.sflpro.notifier.services.notification.email.template.model.BaseEmailTemplateModel;
 import com.sflpro.notifier.services.notification.email.template.model.NotificationTemplateType;
 import com.sflpro.notifier.services.notification.email.template.model.forgotpassword.ResetPasswordEmailTemplateModel;
-import com.sflpro.notifier.services.notification.model.email.EmailNotification;
+import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

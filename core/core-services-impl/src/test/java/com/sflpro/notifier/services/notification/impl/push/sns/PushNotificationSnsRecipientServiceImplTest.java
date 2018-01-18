@@ -6,8 +6,8 @@ import com.sflpro.notifier.services.notification.dto.push.sns.PushNotificationSn
 import com.sflpro.notifier.services.notification.exception.push.PushNotificationRecipientAlreadyExistsException;
 import com.sflpro.notifier.services.notification.impl.push.AbstractPushNotificationRecipientServiceImpl;
 import com.sflpro.notifier.services.notification.impl.push.AbstractPushNotificationRecipientServiceImplTest;
-import com.sflpro.notifier.services.notification.model.push.PushNotificationSubscription;
-import com.sflpro.notifier.services.notification.model.push.sns.PushNotificationSnsRecipient;
+import com.sflpro.notifier.db.entities.notification.push.PushNotificationSubscription;
+import com.sflpro.notifier.db.entities.notification.push.sns.PushNotificationSnsRecipient;
 import org.easymock.EasyMock;
 import org.easymock.Mock;
 import org.easymock.TestSubject;

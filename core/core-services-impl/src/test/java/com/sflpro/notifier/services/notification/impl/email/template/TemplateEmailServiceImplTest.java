@@ -6,7 +6,7 @@ import com.sflpro.notifier.services.notification.email.template.model.EmailTempl
 import com.sflpro.notifier.services.notification.email.template.model.NotificationTemplateType;
 import com.sflpro.notifier.services.notification.email.template.model.forgotpassword.ResetPasswordEmailTemplateModel;
 import com.sflpro.notifier.services.notification.event.sms.StartSendingNotificationEvent;
-import com.sflpro.notifier.services.notification.model.email.EmailNotification;
+import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
 import com.sflpro.notifier.services.system.event.ApplicationEventDistributionService;
 import com.sflpro.notifier.services.test.AbstractServicesUnitTest;
 import org.easymock.Mock;

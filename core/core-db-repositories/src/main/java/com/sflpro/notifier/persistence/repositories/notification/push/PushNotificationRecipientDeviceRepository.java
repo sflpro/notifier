@@ -1,8 +1,8 @@
 package com.sflpro.notifier.persistence.repositories.notification.push;
 
 import com.sflpro.notifier.services.device.model.UserDevice;
-import com.sflpro.notifier.services.notification.model.push.PushNotificationRecipient;
-import com.sflpro.notifier.services.notification.model.push.PushNotificationRecipientDevice;
+import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipient;
+import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipientDevice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -7,10 +7,10 @@ import com.sflpro.notifier.externalclients.push.amazon.model.request.RegisterUse
 import com.sflpro.notifier.externalclients.push.amazon.model.request.UpdateDeviceEndpointAttributesRequest;
 import com.sflpro.notifier.externalclients.push.amazon.model.response.GetDeviceEndpointAttributesResponse;
 import com.sflpro.notifier.externalclients.push.amazon.model.response.RegisterUserDeviceTokenResponse;
-import com.sflpro.notifier.services.device.model.mobile.DeviceOperatingSystemType;
+import com.sflpro.notifier.db.entities.device.mobile.DeviceOperatingSystemType;
 import com.sflpro.notifier.services.notification.dto.push.sns.PushNotificationSnsRecipientDto;
-import com.sflpro.notifier.services.notification.model.push.PushNotificationRecipient;
-import com.sflpro.notifier.services.notification.model.push.sns.PushNotificationSnsRecipient;
+import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipient;
+import com.sflpro.notifier.db.entities.notification.push.sns.PushNotificationSnsRecipient;
 import com.sflpro.notifier.services.notification.push.sns.PushNotificationSnsRecipientService;
 import com.sflpro.notifier.services.test.AbstractServicesUnitTest;
 import org.easymock.Mock;

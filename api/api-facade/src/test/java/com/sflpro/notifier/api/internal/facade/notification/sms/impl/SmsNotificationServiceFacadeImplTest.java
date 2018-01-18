@@ -12,7 +12,7 @@ import com.sflpro.notifier.services.notification.dto.sms.SmsNotificationDto;
 import com.sflpro.notifier.services.notification.event.sms.StartSendingNotificationEvent;
 import com.sflpro.notifier.services.notification.model.NotificationProviderType;
 import com.sflpro.notifier.services.notification.model.UserNotification;
-import com.sflpro.notifier.services.notification.model.sms.SmsNotification;
+import com.sflpro.notifier.db.entities.notification.sms.SmsNotification;
 import com.sflpro.notifier.services.notification.sms.SmsNotificationService;
 import com.sflpro.notifier.services.system.event.ApplicationEventDistributionService;
 import com.sflpro.notifier.services.user.UserService;

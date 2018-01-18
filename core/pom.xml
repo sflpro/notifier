@@ -7,21 +7,21 @@
         <artifactId>notifier</artifactId>
         <version>1.0</version>
     </parent>
-    <groupId>com.sflpro.notifier.services</groupId>
-    <artifactId>services</artifactId>
+
+    <artifactId>core</artifactId>
     <packaging>pom</packaging>
-    <name>Services</name>
-    <version>1.0</version>
+
+    <description>
+        Core contains all the general business logic and required components.
+    </description>
 
     <modules>
+        <module>core-db-entities</module>
         <module>core-db-migration</module>
         <module>core-db-repositories</module>
         <module>core-services</module>
         <module>core-services-impl</module>
-        <module>core-services-test-toolkit</module>
+        <module>core-test-toolkit</module>
     </modules>
 
-    <description>
-        Services sub module represents services layer of Future project.
-    </description>
-</project>	
+</project>

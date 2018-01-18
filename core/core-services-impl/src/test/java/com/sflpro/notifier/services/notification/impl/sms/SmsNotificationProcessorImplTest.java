@@ -7,7 +7,7 @@ import com.sflpro.notifier.externalclients.sms.twillio.model.response.SendMessag
 import com.sflpro.notifier.persistence.utility.PersistenceUtilityService;
 import com.sflpro.notifier.services.common.exception.ServicesRuntimeException;
 import com.sflpro.notifier.services.notification.model.NotificationState;
-import com.sflpro.notifier.services.notification.model.sms.SmsNotification;
+import com.sflpro.notifier.db.entities.notification.sms.SmsNotification;
 import com.sflpro.notifier.services.notification.sms.SmsNotificationService;
 import com.sflpro.notifier.services.test.AbstractServicesUnitTest;
 import com.twilio.sdk.TwilioRestException;

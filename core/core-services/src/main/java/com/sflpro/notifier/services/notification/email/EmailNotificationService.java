@@ -2,7 +2,7 @@ package com.sflpro.notifier.services.notification.email;
 
 import com.sflpro.notifier.services.notification.AbstractNotificationService;
 import com.sflpro.notifier.services.notification.dto.email.EmailNotificationDto;
-import com.sflpro.notifier.services.notification.model.email.EmailNotification;
+import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
 
 import javax.annotation.Nonnull;
 

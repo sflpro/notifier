@@ -7,7 +7,7 @@ import com.sflpro.notifier.services.notification.dto.email.ThirdPartyEmailNotifi
 import com.sflpro.notifier.services.notification.impl.AbstractNotificationServiceImpl;
 import com.sflpro.notifier.services.notification.impl.AbstractNotificationServiceImplTest;
 import com.sflpro.notifier.services.notification.impl.ThirdPartyEmailNotificationServiceImpl;
-import com.sflpro.notifier.services.notification.model.email.ThirdPartyEmailNotification;
+import com.sflpro.notifier.db.entities.notification.email.ThirdPartyEmailNotification;
 import org.easymock.Mock;
 import org.easymock.TestSubject;
 import org.junit.Test;

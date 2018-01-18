@@ -8,7 +8,7 @@ import com.sflpro.notifier.services.common.exception.ServicesRuntimeException;
 import com.sflpro.notifier.services.notification.model.Notification;
 import com.sflpro.notifier.services.notification.model.NotificationProviderType;
 import com.sflpro.notifier.services.notification.model.NotificationState;
-import com.sflpro.notifier.services.notification.model.sms.SmsNotification;
+import com.sflpro.notifier.db.entities.notification.sms.SmsNotification;
 import com.sflpro.notifier.services.notification.sms.SmsNotificationProcessor;
 import com.sflpro.notifier.services.notification.sms.SmsNotificationService;
 import org.apache.commons.lang3.StringUtils;

@@ -7,7 +7,7 @@ import com.sflpro.notifier.services.notification.email.template.model.EmailTempl
 import com.sflpro.notifier.services.notification.email.template.model.NotificationTemplateType;
 import com.sflpro.notifier.services.notification.event.sms.StartSendingNotificationEvent;
 import com.sflpro.notifier.services.notification.model.NotificationProviderType;
-import com.sflpro.notifier.services.notification.model.email.EmailNotification;
+import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
 import com.sflpro.notifier.services.system.event.ApplicationEventDistributionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

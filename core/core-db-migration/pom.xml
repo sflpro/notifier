@@ -3,14 +3,13 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>persistence</artifactId>
-        <groupId>com.sflpro.notifier.persistence</groupId>
+        <groupId>com.sflpro.notifier</groupId>
+        <artifactId>core</artifactId>
         <version>1.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>persistence-db-migration</artifactId>
-    <name>Persistence DB Migration</name>
 
     <properties>
         <flyway.version>3.0</flyway.version>
@@ -36,7 +35,6 @@
     </dependencies>
 
     <build>
-        <finalName>ms_notifications_db_migration</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

@@ -1,7 +1,7 @@
 package com.sflpro.notifier.services.notification.email;
 
 import com.sflpro.notifier.services.notification.model.NotificationState;
-import com.sflpro.notifier.services.notification.model.email.EmailNotification;
+import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
 import com.sflpro.notifier.services.test.AbstractServiceIntegrationTest;
 import org.junit.Assert;
 import org.junit.Test;

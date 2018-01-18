@@ -2,18 +2,20 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.sflpro.notifier.persistence</groupId>
-        <artifactId>persistence</artifactId>
+        <groupId>com.sflpro.notifier</groupId>
+        <artifactId>core</artifactId>
         <version>1.0</version>
     </parent>
-    <packaging>jar</packaging>
-    <name>Persistence Core</name>
-    <modelVersion>4.0.0</modelVersion>
-    <artifactId>persistence-core</artifactId>
-    <version>1.0</version>
 
+    <artifactId>core-db-repositories</artifactId>
+    <packaging>jar</packaging>
+
+    <description>
+        Persistence core sub module represents interfaces for persistence layer of Future project.
+    </description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -21,14 +23,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.sflpro.notifier.services</groupId>
-            <artifactId>services-core</artifactId>
+            <groupId>com.sflpro.notifier</groupId>
+            <artifactId>core-db-entities</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>
-
-
-    <description>
-        Persistence core sub module represents interfaces for persistence layer of Future project.
-    </description>
 </project>

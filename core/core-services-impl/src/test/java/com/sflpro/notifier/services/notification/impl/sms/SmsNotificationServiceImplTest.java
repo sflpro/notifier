@@ -5,7 +5,7 @@ import com.sflpro.notifier.persistence.repositories.notification.sms.SmsNotifica
 import com.sflpro.notifier.services.notification.dto.sms.SmsNotificationDto;
 import com.sflpro.notifier.services.notification.impl.AbstractNotificationServiceImpl;
 import com.sflpro.notifier.services.notification.impl.AbstractNotificationServiceImplTest;
-import com.sflpro.notifier.services.notification.model.sms.SmsNotification;
+import com.sflpro.notifier.db.entities.notification.sms.SmsNotification;
 import org.easymock.Mock;
 import org.easymock.TestSubject;
 import org.junit.Test;

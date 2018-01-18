@@ -1,6 +1,6 @@
 package com.sflpro.notifier.persistence.repositories.notification.push;
 
-import com.sflpro.notifier.services.notification.model.push.PushNotificationRecipient;
+import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipient;
 import org.springframework.stereotype.Repository;
 
 /**

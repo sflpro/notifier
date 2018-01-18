@@ -2,7 +2,7 @@ package com.sflpro.notifier.services.notification.email.template;
 
 import com.sflpro.notifier.services.notification.email.template.model.EmailTemplateModel;
 import com.sflpro.notifier.services.notification.email.template.model.NotificationTemplateType;
-import com.sflpro.notifier.services.notification.model.email.EmailNotification;
+import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
 
 import javax.annotation.Nonnull;
 

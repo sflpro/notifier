@@ -9,7 +9,7 @@ import com.sflpro.notifier.services.notification.dto.push.PushNotificationProper
 import com.sflpro.notifier.services.notification.dto.push.PushNotificationRecipientSearchParameters;
 import com.sflpro.notifier.services.notification.impl.AbstractNotificationServiceImpl;
 import com.sflpro.notifier.services.notification.model.UserNotification;
-import com.sflpro.notifier.services.notification.model.push.*;
+import com.sflpro.notifier.db.entities.notification.push.*;
 import com.sflpro.notifier.services.notification.push.PushNotificationRecipientService;
 import com.sflpro.notifier.services.notification.push.PushNotificationService;
 import com.sflpro.notifier.services.notification.push.PushNotificationSubscriptionService;

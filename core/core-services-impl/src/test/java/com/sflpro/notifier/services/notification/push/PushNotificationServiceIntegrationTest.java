@@ -8,10 +8,10 @@ import com.sflpro.notifier.services.notification.dto.push.PushNotificationProper
 import com.sflpro.notifier.services.notification.dto.push.PushNotificationSubscriptionDto;
 import com.sflpro.notifier.services.notification.dto.push.sns.PushNotificationSnsRecipientDto;
 import com.sflpro.notifier.services.notification.model.UserNotification;
-import com.sflpro.notifier.services.notification.model.push.PushNotification;
-import com.sflpro.notifier.services.notification.model.push.PushNotificationProperty;
-import com.sflpro.notifier.services.notification.model.push.PushNotificationRecipient;
-import com.sflpro.notifier.services.notification.model.push.PushNotificationSubscription;
+import com.sflpro.notifier.db.entities.notification.push.PushNotification;
+import com.sflpro.notifier.db.entities.notification.push.PushNotificationProperty;
+import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipient;
+import com.sflpro.notifier.db.entities.notification.push.PushNotificationSubscription;
 import com.sflpro.notifier.services.user.model.User;
 import org.apache.commons.lang3.mutable.MutableBoolean;
 import org.apache.commons.lang3.mutable.MutableInt;

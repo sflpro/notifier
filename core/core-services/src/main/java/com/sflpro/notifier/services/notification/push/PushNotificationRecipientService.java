@@ -1,7 +1,7 @@
 package com.sflpro.notifier.services.notification.push;
 
 import com.sflpro.notifier.services.notification.dto.push.PushNotificationRecipientSearchParameters;
-import com.sflpro.notifier.services.notification.model.push.PushNotificationRecipient;
+import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipient;
 
 import javax.annotation.Nonnull;
 import java.util.List;

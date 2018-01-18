@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.sflpro.notifier.services</groupId>
-        <artifactId>services</artifactId>
+        <groupId>com.sflpro.notifier</groupId>
+        <artifactId>core-services</artifactId>
         <version>1.0</version>
     </parent>
+
     <packaging>jar</packaging>
-    <name>Services Implementation</name>
-    <modelVersion>4.0.0</modelVersion>
     <artifactId>services-impl</artifactId>
-    <version>1.0</version>
+
+    <description>Services implementation sub module represents implementation of services layer for Future project.</description>
+
     <properties>
         <mail.version>1.5.2</mail.version>
         <velocity.version>1.6.2</velocity.version>
@@ -19,26 +21,32 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.sflpro.notifier.persistence</groupId>
-            <artifactId>persistence-impl</artifactId>
+            <groupId>com.sflpro.notifier</groupId>
+            <artifactId>core-services</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>com.sflpro.notifier.externalclients</groupId>
-            <artifactId>externalclients-email</artifactId>
+            <groupId>com.sflpro.notifier</groupId>
+            <artifactId>core-db-repositories</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>com.sflpro.notifier.externalclients</groupId>
-            <artifactId>externalclients-push</artifactId>
+            <groupId>com.sflpro.notifier</groupId>
+            <artifactId>infra-integrations-email</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>com.sflpro.notifier.externalclients</groupId>
-            <artifactId>externalclients-sms</artifactId>
+            <groupId>com.sflpro.notifier</groupId>
+            <artifactId>infra-integrations-push</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.sflpro.notifier</groupId>
+            <artifactId>infra-integrations-sms</artifactId>
             <version>${project.version}</version>
         </dependency>
 
@@ -71,7 +79,4 @@
             <version>${bouncycastle.version}</version>
         </dependency>
     </dependencies>
-
-    <description>Services implementation sub module represents implementation of services layer for Future project.
-    </description>
 </project>

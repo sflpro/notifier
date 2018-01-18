@@ -1,23 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.sflpro.notifier.services</groupId>
-        <artifactId>services</artifactId>
+        <groupId>com.sflpro.notifier</groupId>
+        <artifactId>core</artifactId>
         <version>1.0</version>
     </parent>
+
     <packaging>jar</packaging>
-    <name>Services Core</name>
-    <modelVersion>4.0.0</modelVersion>
     <artifactId>core-services</artifactId>
-    <version>1.0</version>
+
+    <description>Public interfaces of the business layer(core).</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>com.sflpro.notifier</groupId>
+            <artifactId>core-db-entities</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
@@ -80,6 +86,4 @@
         <!-- end of database connectors -->
     </dependencies>
 
-    <description>Services core sub module represents interfaces and domain model of services layer for Future project.
-    </description>
 </project>

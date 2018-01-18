@@ -3,7 +3,7 @@ package com.sflpro.notifier.services.notification.email;
 import com.sflpro.notifier.services.notification.AbstractNotificationService;
 import com.sflpro.notifier.services.notification.dto.email.ThirdPartyEmailNotificationDto;
 import com.sflpro.notifier.services.notification.dto.email.ThirdPartyEmailNotificationPropertyDto;
-import com.sflpro.notifier.services.notification.model.email.ThirdPartyEmailNotification;
+import com.sflpro.notifier.db.entities.notification.email.ThirdPartyEmailNotification;
 
 import javax.annotation.Nonnull;
 import java.util.List;

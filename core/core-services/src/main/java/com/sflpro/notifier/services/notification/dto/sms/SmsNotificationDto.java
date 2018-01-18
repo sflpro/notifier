@@ -3,7 +3,7 @@ package com.sflpro.notifier.services.notification.dto.sms;
 import com.sflpro.notifier.services.notification.dto.NotificationDto;
 import com.sflpro.notifier.services.notification.model.NotificationProviderType;
 import com.sflpro.notifier.services.notification.model.NotificationType;
-import com.sflpro.notifier.services.notification.model.sms.SmsNotification;
+import com.sflpro.notifier.db.entities.notification.sms.SmsNotification;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;

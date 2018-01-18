@@ -2,7 +2,7 @@ package com.sflpro.notifier.services.notification;
 
 import com.sflpro.notifier.services.notification.model.Notification;
 import com.sflpro.notifier.services.notification.model.NotificationState;
-import com.sflpro.notifier.services.notification.model.push.PushNotificationRecipient;
+import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipient;
 import com.sflpro.notifier.services.test.AbstractServiceIntegrationTest;
 import com.sflpro.notifier.services.user.model.User;
 import org.junit.Assert;

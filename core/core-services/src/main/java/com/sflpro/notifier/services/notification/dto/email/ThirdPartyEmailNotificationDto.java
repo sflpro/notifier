@@ -3,7 +3,7 @@ package com.sflpro.notifier.services.notification.dto.email;
 import com.sflpro.notifier.services.notification.dto.NotificationDto;
 import com.sflpro.notifier.services.notification.model.NotificationProviderType;
 import com.sflpro.notifier.services.notification.model.NotificationType;
-import com.sflpro.notifier.services.notification.model.email.ThirdPartyEmailNotification;
+import com.sflpro.notifier.db.entities.notification.email.ThirdPartyEmailNotification;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;

@@ -10,10 +10,10 @@ import com.sflpro.notifier.services.notification.dto.push.PushNotificationRecipi
 import com.sflpro.notifier.services.notification.impl.AbstractNotificationServiceImpl;
 import com.sflpro.notifier.services.notification.impl.AbstractNotificationServiceImplTest;
 import com.sflpro.notifier.services.notification.model.UserNotification;
-import com.sflpro.notifier.services.notification.model.push.PushNotification;
-import com.sflpro.notifier.services.notification.model.push.PushNotificationRecipient;
-import com.sflpro.notifier.services.notification.model.push.PushNotificationRecipientStatus;
-import com.sflpro.notifier.services.notification.model.push.PushNotificationSubscription;
+import com.sflpro.notifier.db.entities.notification.push.PushNotification;
+import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipient;
+import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipientStatus;
+import com.sflpro.notifier.db.entities.notification.push.PushNotificationSubscription;
 import com.sflpro.notifier.services.notification.push.PushNotificationRecipientService;
 import com.sflpro.notifier.services.notification.push.PushNotificationSubscriptionService;
 import com.sflpro.notifier.services.user.UserService;

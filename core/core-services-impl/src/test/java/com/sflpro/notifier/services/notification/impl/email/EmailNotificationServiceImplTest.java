@@ -5,7 +5,7 @@ import com.sflpro.notifier.persistence.repositories.notification.email.EmailNoti
 import com.sflpro.notifier.services.notification.dto.email.EmailNotificationDto;
 import com.sflpro.notifier.services.notification.impl.AbstractNotificationServiceImpl;
 import com.sflpro.notifier.services.notification.impl.AbstractNotificationServiceImplTest;
-import com.sflpro.notifier.services.notification.model.email.EmailNotification;
+import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
 import org.easymock.Mock;
 import org.easymock.TestSubject;
 import org.junit.Test;

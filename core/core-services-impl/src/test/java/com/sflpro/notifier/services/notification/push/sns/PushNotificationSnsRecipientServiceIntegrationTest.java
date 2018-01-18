@@ -2,8 +2,8 @@ package com.sflpro.notifier.services.notification.push.sns;
 
 import com.sflpro.notifier.services.notification.dto.push.sns.PushNotificationSnsRecipientDto;
 import com.sflpro.notifier.services.notification.exception.push.PushNotificationRecipientAlreadyExistsException;
-import com.sflpro.notifier.services.notification.model.push.PushNotificationSubscription;
-import com.sflpro.notifier.services.notification.model.push.sns.PushNotificationSnsRecipient;
+import com.sflpro.notifier.db.entities.notification.push.PushNotificationSubscription;
+import com.sflpro.notifier.db.entities.notification.push.sns.PushNotificationSnsRecipient;
 import com.sflpro.notifier.services.notification.push.AbstractPushNotificationRecipientService;
 import com.sflpro.notifier.services.notification.push.AbstractPushNotificationRecipientServiceIntegrationTest;
 import com.sflpro.notifier.services.user.model.User;

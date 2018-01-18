@@ -10,7 +10,7 @@ import com.sflpro.notifier.services.notification.exception.push.PushNotification
 import com.sflpro.notifier.services.notification.exception.push.PushNotificationRecipientInvalidDeviceUserException;
 import com.sflpro.notifier.services.notification.exception.push.PushNotificationRecipientNotFoundForIdException;
 import com.sflpro.notifier.services.notification.exception.push.PushNotificationRecipientNotFoundForLookupParametersException;
-import com.sflpro.notifier.services.notification.model.push.*;
+import com.sflpro.notifier.db.entities.notification.push.*;
 import com.sflpro.notifier.services.notification.push.AbstractPushNotificationRecipientService;
 import com.sflpro.notifier.services.notification.push.PushNotificationSubscriptionService;
 import org.slf4j.Logger;

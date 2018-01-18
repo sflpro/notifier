@@ -5,8 +5,8 @@ import com.sflpro.notifier.persistence.repositories.notification.email.ThirdPart
 import com.sflpro.notifier.services.notification.dto.email.ThirdPartyEmailNotificationDto;
 import com.sflpro.notifier.services.notification.dto.email.ThirdPartyEmailNotificationPropertyDto;
 import com.sflpro.notifier.services.notification.email.ThirdPartyEmailNotificationService;
-import com.sflpro.notifier.services.notification.model.email.ThirdPartyEmailNotification;
-import com.sflpro.notifier.services.notification.model.email.ThirdPartyEmailNotificationProperty;
+import com.sflpro.notifier.db.entities.notification.email.ThirdPartyEmailNotification;
+import com.sflpro.notifier.db.entities.notification.email.ThirdPartyEmailNotificationProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

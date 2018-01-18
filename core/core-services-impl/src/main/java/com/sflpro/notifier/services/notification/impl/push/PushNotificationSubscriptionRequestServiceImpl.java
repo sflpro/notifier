@@ -8,9 +8,9 @@ import com.sflpro.notifier.services.notification.exception.push.PushNotification
 import com.sflpro.notifier.services.notification.exception.push.PushNotificationSubscriptionRequestInvalidRecipientUserException;
 import com.sflpro.notifier.services.notification.exception.push.PushNotificationSubscriptionRequestNotFoundForIdException;
 import com.sflpro.notifier.services.notification.exception.push.PushNotificationSubscriptionRequestNotFoundForUuIdException;
-import com.sflpro.notifier.services.notification.model.push.PushNotificationRecipient;
-import com.sflpro.notifier.services.notification.model.push.PushNotificationSubscriptionRequest;
-import com.sflpro.notifier.services.notification.model.push.PushNotificationSubscriptionRequestState;
+import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipient;
+import com.sflpro.notifier.db.entities.notification.push.PushNotificationSubscriptionRequest;
+import com.sflpro.notifier.db.entities.notification.push.PushNotificationSubscriptionRequestState;
 import com.sflpro.notifier.services.notification.push.PushNotificationRecipientService;
 import com.sflpro.notifier.services.notification.push.PushNotificationSubscriptionRequestService;
 import com.sflpro.notifier.services.user.UserService;

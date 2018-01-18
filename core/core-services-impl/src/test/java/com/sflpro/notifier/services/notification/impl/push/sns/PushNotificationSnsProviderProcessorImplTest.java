@@ -5,11 +5,11 @@ import com.sflpro.notifier.externalclients.push.amazon.model.AmazonSNSPlatformTy
 import com.sflpro.notifier.externalclients.push.amazon.model.request.SendPushNotificationRequestMessageInformation;
 import com.sflpro.notifier.externalclients.push.amazon.model.response.SendPushNotificationResponse;
 import com.sflpro.notifier.services.common.exception.ServicesRuntimeException;
-import com.sflpro.notifier.services.device.model.mobile.DeviceOperatingSystemType;
-import com.sflpro.notifier.services.notification.model.push.PushNotification;
-import com.sflpro.notifier.services.notification.model.push.PushNotificationProperty;
-import com.sflpro.notifier.services.notification.model.push.PushNotificationProviderType;
-import com.sflpro.notifier.services.notification.model.push.PushNotificationRecipient;
+import com.sflpro.notifier.db.entities.device.mobile.DeviceOperatingSystemType;
+import com.sflpro.notifier.db.entities.notification.push.PushNotification;
+import com.sflpro.notifier.db.entities.notification.push.PushNotificationProperty;
+import com.sflpro.notifier.db.entities.notification.push.PushNotificationProviderType;
+import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipient;
 import com.sflpro.notifier.services.test.AbstractServicesUnitTest;
 import org.easymock.Mock;
 import org.easymock.TestSubject;

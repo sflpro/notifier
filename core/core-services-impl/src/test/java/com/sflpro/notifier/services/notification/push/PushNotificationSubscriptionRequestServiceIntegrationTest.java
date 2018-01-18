@@ -2,10 +2,10 @@ package com.sflpro.notifier.services.notification.push;
 
 import com.sflpro.notifier.services.device.model.UserDevice;
 import com.sflpro.notifier.services.notification.dto.push.PushNotificationSubscriptionRequestDto;
-import com.sflpro.notifier.services.notification.model.push.PushNotificationRecipient;
-import com.sflpro.notifier.services.notification.model.push.PushNotificationSubscription;
-import com.sflpro.notifier.services.notification.model.push.PushNotificationSubscriptionRequest;
-import com.sflpro.notifier.services.notification.model.push.PushNotificationSubscriptionRequestState;
+import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipient;
+import com.sflpro.notifier.db.entities.notification.push.PushNotificationSubscription;
+import com.sflpro.notifier.db.entities.notification.push.PushNotificationSubscriptionRequest;
+import com.sflpro.notifier.db.entities.notification.push.PushNotificationSubscriptionRequestState;
 import com.sflpro.notifier.services.test.AbstractServiceIntegrationTest;
 import com.sflpro.notifier.services.user.model.User;
 import org.junit.Assert;

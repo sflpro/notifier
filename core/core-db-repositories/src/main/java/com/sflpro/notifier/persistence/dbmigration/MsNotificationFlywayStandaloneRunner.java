@@ -54,6 +54,7 @@ public class MsNotificationFlywayStandaloneRunner {
             final String user = properties.getProperty("flyway.user");
             final String password = properties.getProperty("flyway.password");
             final String action = properties.getProperty("flyway.action");
+            final String location = properties.getProperty("flyway.locations");
             final boolean validateOnMigrate = Boolean.parseBoolean(properties.getProperty("flyway.validateOnMigrate"));
             final boolean outOfOrder = Boolean.parseBoolean(properties.getProperty("flyway.outOfOrder"));
 
@@ -63,6 +64,7 @@ public class MsNotificationFlywayStandaloneRunner {
             flyway.setDataSource(ds);
             flyway.setDatabaseAction(action);
             flyway.setOutOfOrder(outOfOrder);
+            flyway.setLocations(location);
             flyway.setValidateOnMigrate(validateOnMigrate);
             flyway.startup();
             LOGGER.info("Migration performed successfully");

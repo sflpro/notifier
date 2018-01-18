@@ -1,6 +1,6 @@
 package com.sflpro.notifier.db.entities.notification;
 
-import com.sflpro.notifier.services.common.model.AbstractDomainUuIdAwareEntityModel;
+import com.sflpro.notifier.db.entities.AbstractDomainUuIdAwareEntityModel;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;

@@ -122,13 +122,13 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.sflpro.notifier.services</groupId>
-            <artifactId>services-impl</artifactId>
+            <groupId>com.sflpro.notifier</groupId>
+            <artifactId>core-services-impl</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.sflpro.notifier.queue.producer</groupId>
-            <artifactId>queue-producer-impl</artifactId>
+            <groupId>com.sflpro.notifier</groupId>
+            <artifactId>infra-queue-producer</artifactId>
             <version>${project.version}</version>
         </dependency>
 
@@ -173,7 +173,6 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>${spring.boot.version}</version>
                 <executions>
                     <execution>
                         <goals>

@@ -1,7 +1,6 @@
 package com.sflpro.notifier.persistence.repositories.push;
 
 import com.sflpro.notifier.persistence.repositories.notification.push.PushNotificationRecipientRepositoryCustom;
-import com.sflpro.notifier.services.notification.dto.push.PushNotificationRecipientSearchParameters;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

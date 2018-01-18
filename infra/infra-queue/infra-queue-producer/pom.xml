@@ -11,7 +11,7 @@
     </parent>
 
     <packaging>jar</packaging>
-    <artifactId>queue-producer-core</artifactId>
+    <artifactId>infra-queue-producer</artifactId>
 
     <description>
         Queue producer core sub module represents interfaces for queue producer layer of SFL NMS project.

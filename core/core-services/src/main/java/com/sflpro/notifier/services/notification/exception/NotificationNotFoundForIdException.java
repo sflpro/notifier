@@ -1,7 +1,7 @@
 package com.sflpro.notifier.services.notification.exception;
 
+import com.sflpro.notifier.db.entities.AbstractDomainEntityModel;
 import com.sflpro.notifier.services.common.exception.EntityNotFoundForIdException;
-import com.sflpro.notifier.services.common.model.AbstractDomainEntityModel;
 
 /**
  * User: Ruben Dilanyan

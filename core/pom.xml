@@ -9,7 +9,10 @@
     </parent>
 
     <artifactId>core</artifactId>
+    <version>1.0</version>
+
     <packaging>pom</packaging>
+
 
     <description>
         Core contains all the general business logic and required components.

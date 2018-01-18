@@ -1,7 +1,7 @@
 package com.sflpro.notifier.services.notification.exception;
 
+import com.sflpro.notifier.db.entities.notification.NotificationState;
 import com.sflpro.notifier.services.common.exception.ServicesRuntimeException;
-import com.sflpro.notifier.services.notification.model.NotificationState;
 
 import java.util.Collections;
 import java.util.HashSet;

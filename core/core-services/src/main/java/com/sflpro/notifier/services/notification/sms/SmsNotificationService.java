@@ -1,8 +1,8 @@
 package com.sflpro.notifier.services.notification.sms;
 
+import com.sflpro.notifier.db.entities.notification.SmsNotification;
 import com.sflpro.notifier.services.notification.AbstractNotificationService;
 import com.sflpro.notifier.services.notification.dto.sms.SmsNotificationDto;
-import com.sflpro.notifier.db.entities.notification.sms.SmsNotification;
 
 import javax.annotation.Nonnull;
 

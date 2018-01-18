@@ -1,7 +1,7 @@
 package com.sflpro.notifier.services.user;
 
+import com.sflpro.notifier.db.entities.user.User;
 import com.sflpro.notifier.services.user.dto.UserDto;
-import com.sflpro.notifier.services.user.model.User;
 
 import javax.annotation.Nonnull;
 

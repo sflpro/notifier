@@ -1,6 +1,13 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>1.5.9.RELEASE</version>
+    </parent>
+
     <groupId>com.sflpro.notifier</groupId>
     <artifactId>notifier</artifactId>
     <version>1.0</version>
@@ -31,7 +38,6 @@
         <spring.data.version>1.8.2.RELEASE</spring.data.version>
         <spring.security.version>3.2.5.RELEASE</spring.security.version>
         <spring.amqp.version>1.4.5.RELEASE</spring.amqp.version>
-        <spring.boot.version>1.5.9.RELEASE</spring.boot.version>
 
         <!-- Database -->
         <postgresql.version>42.1.4</postgresql.version>
@@ -120,21 +126,6 @@
                 <version>${project.version}</version>
             </dependency>
 
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-test</artifactId>
-                <version>${spring.boot.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-jersey</artifactId>
-                <version>${spring.boot.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-data-jpa</artifactId>
-                <version>${spring.data.version}</version>
-            </dependency>
             <!-- Spring Security -->
             <dependency>
                 <groupId>org.springframework.security</groupId>
@@ -263,12 +254,7 @@
                 <artifactId>logstash-logback-encoder</artifactId>
                 <version>${logback.logstash.encoder.version}</version>
             </dependency>
-            <!-- Findbugs -->
-            <dependency>
-                <groupId>com.google.code.findbugs</groupId>
-                <artifactId>jsr305</artifactId>
-                <version>${findbugs.jsr305.version}</version>
-            </dependency>
+
             <dependency>
                 <groupId>org.apache.tika</groupId>
                 <artifactId>tika-core</artifactId>
@@ -391,17 +377,6 @@
                 <groupId>bouncycastle</groupId>
                 <artifactId>bcprov-jdk16</artifactId>
                 <version>${bouncycastle.version}</version>
-            </dependency>
-            <!--Spring dependencies-->
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-web</artifactId>
-                <version>${spring.boot.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-jetty</artifactId>
-                <version>${spring.boot.version}</version>
             </dependency>
             <!--Jackson dependencies-->
             <dependency>

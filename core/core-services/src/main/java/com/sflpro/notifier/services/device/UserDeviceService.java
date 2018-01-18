@@ -1,7 +1,7 @@
 package com.sflpro.notifier.services.device;
 
+import com.sflpro.notifier.db.entities.device.UserDevice;
 import com.sflpro.notifier.services.device.dto.UserDeviceDto;
-import com.sflpro.notifier.services.device.model.UserDevice;
 
 import javax.annotation.Nonnull;
 

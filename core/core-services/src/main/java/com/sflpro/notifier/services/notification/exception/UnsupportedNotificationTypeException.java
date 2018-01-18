@@ -1,7 +1,7 @@
 package com.sflpro.notifier.services.notification.exception;
 
+import com.sflpro.notifier.db.entities.notification.NotificationType;
 import com.sflpro.notifier.services.common.exception.ServicesRuntimeException;
-import com.sflpro.notifier.services.notification.model.NotificationType;
 
 /**
  * User: Ruben Dilanyan

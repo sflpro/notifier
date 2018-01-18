@@ -1,7 +1,8 @@
 package com.sflpro.notifier.services.notification;
 
-import com.sflpro.notifier.services.notification.model.Notification;
-import com.sflpro.notifier.services.notification.model.NotificationState;
+
+import com.sflpro.notifier.db.entities.notification.Notification;
+import com.sflpro.notifier.db.entities.notification.NotificationState;
 
 import javax.annotation.Nonnull;
 

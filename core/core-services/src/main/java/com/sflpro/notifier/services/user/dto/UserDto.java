@@ -1,7 +1,7 @@
 package com.sflpro.notifier.services.user.dto;
 
+import com.sflpro.notifier.db.entities.user.User;
 import com.sflpro.notifier.services.common.dto.AbstractDomainEntityModelDto;
-import com.sflpro.notifier.services.user.model.User;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;

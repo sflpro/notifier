@@ -15,9 +15,9 @@
     <context:component-scan base-package="com.sflpro.notifier.persistence.*"/>
 
     <!--Load datasource context-->
-    <import resource="../../main/resources/applicationContext-persistence-jpa-datasource.xml"/>
+    <import resource="applicationContext-persistence-jpa-datasource.xml"/>
     <!--Load repository context-->
-    <import resource="../../main/resources/applicationContext-persistence-jpa-repository.xml"/>
+    <import resource="applicationContext-persistence-jpa-repository.xml"/>
 
 
     <!--Initializing jpa vendor adapter-->

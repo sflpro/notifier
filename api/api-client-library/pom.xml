@@ -18,6 +18,7 @@
         <dependency>
             <groupId>com.sflpro.notifier.api.internal</groupId>
             <artifactId>api-common</artifactId>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.glassfish.jersey.core</groupId>

@@ -1,10 +1,10 @@
 package com.sflpro.notifier.persistence.repositories.notification.push;
 
-import com.sflpro.notifier.persistence.repositories.AbstractRepositoryTest;
 import com.sflpro.notifier.db.entities.device.mobile.DeviceOperatingSystemType;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationProviderType;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipient;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipientStatus;
+import com.sflpro.notifier.test.AbstractRepositoryTest;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

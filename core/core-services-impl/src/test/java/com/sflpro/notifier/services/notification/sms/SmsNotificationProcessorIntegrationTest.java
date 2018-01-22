@@ -1,7 +1,7 @@
 package com.sflpro.notifier.services.notification.sms;
 
 import com.sflpro.notifier.db.entities.notification.NotificationState;
-import com.sflpro.notifier.db.entities.notification.SmsNotification;
+import com.sflpro.notifier.db.entities.notification.sms.SmsNotification;
 import com.sflpro.notifier.services.test.AbstractServiceIntegrationTest;
 import org.junit.Assert;
 import org.junit.Ignore;

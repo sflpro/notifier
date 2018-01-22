@@ -53,9 +53,7 @@
         <junit.version>4.12</junit.version>
         <hsqldb.version>2.3.3</hsqldb.version>
 
-        <logback.version>1.1.7</logback.version>
         <logstash-encoder.version>4.7</logstash-encoder.version>
-        <slf4j.version>1.7.21</slf4j.version>
         <logback.logstash.encoder.version>4.5.1</logback.logstash.encoder.version>
 
         <commons.collections.version>3.2.1</commons.collections.version>
@@ -65,6 +63,7 @@
         <commons.beanutils.version>1.8.3</commons.beanutils.version>
         <commons.codec.version>1.10</commons.codec.version>
         <http.client.version>4.5</http.client.version>
+        <asm.version>5.0.3</asm.version>
 
         <amazon.sdk.version>1.10.13</amazon.sdk.version>
         <twillio.sdk.version>4.5.0</twillio.sdk.version>
@@ -179,45 +178,6 @@
                 <artifactId>aspectjweaver</artifactId>
                 <version>${aspectj.version}</version>
             </dependency>
-            <!-- Log -->
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-api</artifactId>
-                <version>${slf4j.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>jcl-over-slf4j</artifactId>
-                <version>${slf4j.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>org.slf4j</groupId>
-                        <artifactId>slf4j-api</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <dependency>
-                <groupId>ch.qos.logback</groupId>
-                <artifactId>logback-classic</artifactId>
-                <version>${logback.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>org.slf4j</groupId>
-                        <artifactId>slf4j-api</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <dependency>
-                <groupId>ch.qos.logback</groupId>
-                <artifactId>logback-core</artifactId>
-                <version>${logback.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>org.slf4j</groupId>
-                        <artifactId>slf4j-api</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
             <dependency>
                 <groupId>net.logstash.logback</groupId>
                 <artifactId>logstash-logback-encoder</artifactId>
@@ -251,11 +211,6 @@
             </dependency>
             <!-- Tests -->
             <dependency>
-                <groupId>junit</groupId>
-                <artifactId>junit</artifactId>
-                <version>${junit.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>org.easymock</groupId>
                 <artifactId>easymock</artifactId>
                 <version>${easymock.version}</version>
@@ -282,22 +237,6 @@
                 <groupId>com.mandrillapp.wrapper.lutung</groupId>
                 <artifactId>lutung</artifactId>
                 <version>${mandrillapp.wrapper.lutung.version}</version>
-            </dependency>
-            <!--Jackson dependencies-->
-            <dependency>
-                <groupId>com.fasterxml.jackson.core</groupId>
-                <artifactId>jackson-annotations</artifactId>
-                <version>${jackson.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.fasterxml.jackson.core</groupId>
-                <artifactId>jackson-databind</artifactId>
-                <version>${jackson.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.fasterxml.jackson.datatype</groupId>
-                <artifactId>jackson-datatype-jsr310</artifactId>
-                <version>${jackson.version}</version>
             </dependency>
             <!--Swagger dependencies-->
             <dependency>
@@ -398,6 +337,12 @@
                 <groupId>com.github.usc</groupId>
                 <artifactId>jdbcdslog</artifactId>
                 <version>${com.github.usc.jdbcdslog.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.ow2.asm</groupId>
+                <artifactId>asm</artifactId>
+                <version>${asm.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

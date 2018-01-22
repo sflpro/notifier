@@ -1,5 +1,7 @@
-package com.sflpro.notifier.db.entities.notification;
+package com.sflpro.notifier.db.entities.notification.sms;
 
+import com.sflpro.notifier.db.entities.notification.Notification;
+import com.sflpro.notifier.db.entities.notification.NotificationType;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;

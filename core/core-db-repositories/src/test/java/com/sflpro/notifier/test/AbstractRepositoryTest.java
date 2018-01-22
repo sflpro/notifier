@@ -1,4 +1,4 @@
-package com.sflpro.notifier.persistence.repositories;
+package com.sflpro.notifier.test;
 
 import org.junit.Ignore;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ import javax.persistence.PersistenceContext;
  * Date: 10/01/14
  * Time: 10:18 PM
  */
-@ContextConfiguration("classpath:applicationContext-persistence-integrationtest.xml")
+@ContextConfiguration(classes = ResitoryIntegrationTestContext.class)
 @Ignore
 public abstract class AbstractRepositoryTest extends AbstractTransactionalJUnit4SpringContextTests {
 

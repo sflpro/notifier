@@ -1,6 +1,6 @@
 package com.sflpro.notifier.persistence.repositories.notification.sms;
 
-import com.sflpro.notifier.db.entities.notification.SmsNotification;
+import com.sflpro.notifier.db.entities.notification.sms.SmsNotification;
 import com.sflpro.notifier.persistence.repositories.notification.AbstractNotificationRepository;
 import org.springframework.stereotype.Repository;
 

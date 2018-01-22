@@ -1,55 +1,7 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-
-<configuration debug="false">
-
-    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-        <filter class="ch.qos.logback.classic.filter.LevelFilter">
-            <level>WARN</level>
-            <onMatch>DENY</onMatch>
-            <onMismatch>NEUTRAL</onMismatch>
-        </filter>
-        <filter class="ch.qos.logback.classic.filter.LevelFilter">
-            <level>ERROR</level>
-            <onMatch>DENY</onMatch>
-            <onMismatch>ACCEPT</onMismatch>
-        </filter>
-        <layout class="ch.qos.logback.classic.PatternLayout">
-            <Pattern>%date{ISO8601} %-5level [%thread] %class.%method\(%file:%line\) - %msg %n</Pattern>
-        </layout>
-    </appender>
-
-    <appender name="STDERR" class="ch.qos.logback.core.ConsoleAppender">
-        <target>System.err</target>
-        <filter class="ch.qos.logback.classic.filter.LevelFilter">
-            <level>WARN</level>
-            <onMatch>ACCEPT</onMatch>
-            <onMismatch>NEUTRAL</onMismatch>
-        </filter>
-        <filter class="ch.qos.logback.classic.filter.LevelFilter">
-            <level>ERROR</level>
-            <onMatch>ACCEPT</onMatch>
-            <onMismatch>DENY</onMismatch>
-        </filter>
-        <layout class="ch.qos.logback.classic.PatternLayout">
-            <Pattern>%date{ISO8601} %-5level [%thread] %class.%method\(%file:%line\) - %msg %n</Pattern>
-        </layout>
-    </appender>
-
-    <root>
-        <level value="ERROR"/>
-        <appender-ref ref="STDOUT"/>
-    </root>
-
-    <logger name="com.sflpro.notifier.api.amqp.rpc.impl.RPCQueueMessageHandlerImpl">
-        <level value="ERROR"/>
-    </logger>
-
-    <logger name="org.springframework.*">
-        <level value="ERROR"/>
-    </logger>
-
-    <logger name="org.hibernate.*">
-        <level value="ERROR"/>
-    </logger>
-
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- LOG_FILE is the property that Spring Boot uses for default logging support -->
+    <!-- It should be placed before inclusion of the base.xml, so that the LOG_FILE value overrides existing value -->
+    <property name="LOG_FILE" value="${LOG_FILE:-${LOG_PATH:-${LOG_TEMP:-${java.io.tmpdir:-/tmp}}}/woodpecker.log}"/>
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
 </configuration>

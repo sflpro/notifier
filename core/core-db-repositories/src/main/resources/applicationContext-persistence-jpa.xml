@@ -23,7 +23,7 @@
     <!--Initializing jpa vendor adapter-->
     <bean id="jpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
         <property name="showSql" value="#{appProperties['database.hibernate.show_sql']}"/>
-        <property name="generateDdl" value="#{appProperties['database.hibernate.generateDdl']}"/>
+        <property name="generateDdl" value="false"/>
         <property name="databasePlatform" value="#{appProperties['database.hibernate.dialect']}"/>
     </bean>
 

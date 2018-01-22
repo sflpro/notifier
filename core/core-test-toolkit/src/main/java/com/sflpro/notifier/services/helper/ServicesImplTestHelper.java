@@ -7,6 +7,7 @@ import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
 import com.sflpro.notifier.db.entities.notification.email.ThirdPartyEmailNotification;
 import com.sflpro.notifier.db.entities.notification.push.*;
 import com.sflpro.notifier.db.entities.notification.push.sns.PushNotificationSnsRecipient;
+import com.sflpro.notifier.db.entities.notification.sms.SmsNotification;
 import com.sflpro.notifier.db.entities.user.User;
 import com.sflpro.notifier.services.device.dto.UserDeviceDto;
 import com.sflpro.notifier.services.notification.dto.NotificationDto;

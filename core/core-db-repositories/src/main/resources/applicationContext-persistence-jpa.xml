@@ -12,7 +12,11 @@
        default-lazy-init="true" default-autowire="byName">
 
     <context:annotation-config/>
-    <context:component-scan base-package="com.sflpro.notifier.persistence.*"/>
+    <context:component-scan base-package="com.sflpro.notifier.db.*"/>
+
+    <context:property-placeholder location="classpath:repositories.properties"
+                                  local-override="false"
+                                  ignore-unresolvable="false"/>
 
     <!--Load datasource context-->
     <import resource="applicationContext-persistence-jpa-datasource.xml"/>
@@ -22,9 +26,9 @@
 
     <!--Initializing jpa vendor adapter-->
     <bean id="jpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
-        <property name="showSql" value="#{appProperties['database.hibernate.show_sql']}"/>
+        <property name="showSql" value="${database.hibernate.show_sql}"/>
         <property name="generateDdl" value="false"/>
-        <property name="databasePlatform" value="#{appProperties['database.hibernate.dialect']}"/>
+        <property name="databasePlatform" value="${database.hibernate.dialect}"/>
     </bean>
 
 
@@ -36,9 +40,10 @@
         <property name="jpaProperties">
             <props>
                 <prop key="hibernate.ejb.naming_strategy">org.hibernate.cfg.ImprovedNamingStrategy</prop>
-                <prop key="hibernate.hbm2ddl.auto">#{appProperties['database.hibernate.hbm2ddl.auto']}</prop>
-                <prop key="hibernate.format_sql">#{appProperties['database.hibernate.format_sql']}</prop>
-                <prop key="javax.persistence.lock.timeout">#{appProperties['database.hibernate.lock.timeout']}</prop>
+                <prop key="hibernate.hbm2ddl.auto">${database.hibernate.hbm2ddl.auto}</prop>
+                <prop key="hibernate.format_sql">${database.hibernate.format_sql}</prop>
+                <prop key="javax.persistence.lock.timeout">${database.hibernate.lock.timeout}</prop>
+                <prop key="hibernate.cache.use_second_level_cache">${database.hibernate.use_cache}</prop>
                 <prop key="hibernate.id.new_generator_mappings">false</prop>
             </props>
         </property>
@@ -50,7 +55,7 @@
         <property name="entityManagerFactory" ref="entityManagerFactory"/>
     </bean>
 
-    <bean id="persistenceUtilityService" class="com.sflpro.notifier.persistence.utility.impl.PersistenceUtilityServiceImpl"/>
+    <bean id="persistenceUtilityService" class="com.sflpro.notifier.db.repositories.utility.impl.PersistenceUtilityServiceImpl"/>
 
 
     <tx:annotation-driven transaction-manager="transactionManager"/>

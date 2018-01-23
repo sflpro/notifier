@@ -1,13 +1,13 @@
 package com.sflpro.notifier.services.notification.impl.push;
 
-import com.sflpro.notifier.persistence.utility.PersistenceUtilityService;
-import com.sflpro.notifier.services.common.exception.ServicesRuntimeException;
-import com.sflpro.notifier.services.notification.dto.push.PushNotificationSubscriptionProcessingParameters;
-import com.sflpro.notifier.services.notification.exception.push.PushNotificationSubscriptionRequestInvalidStateException;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationProviderType;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipient;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationSubscriptionRequest;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationSubscriptionRequestState;
+import com.sflpro.notifier.db.repositories.utility.PersistenceUtilityService;
+import com.sflpro.notifier.services.common.exception.ServicesRuntimeException;
+import com.sflpro.notifier.services.notification.dto.push.PushNotificationSubscriptionProcessingParameters;
+import com.sflpro.notifier.services.notification.exception.push.PushNotificationSubscriptionRequestInvalidStateException;
 import com.sflpro.notifier.services.notification.push.PushNotificationSubscriptionProcessingService;
 import com.sflpro.notifier.services.notification.push.PushNotificationSubscriptionRequestProcessingService;
 import com.sflpro.notifier.services.notification.push.PushNotificationSubscriptionRequestService;

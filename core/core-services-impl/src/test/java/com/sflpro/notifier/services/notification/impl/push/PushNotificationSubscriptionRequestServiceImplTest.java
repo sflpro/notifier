@@ -1,18 +1,18 @@
 package com.sflpro.notifier.services.notification.impl.push;
 
 import com.sflpro.notifier.db.entities.device.UserDevice;
+import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipient;
+import com.sflpro.notifier.db.entities.notification.push.PushNotificationSubscription;
+import com.sflpro.notifier.db.entities.notification.push.PushNotificationSubscriptionRequest;
+import com.sflpro.notifier.db.entities.notification.push.PushNotificationSubscriptionRequestState;
 import com.sflpro.notifier.db.entities.user.User;
-import com.sflpro.notifier.persistence.repositories.notification.push.PushNotificationSubscriptionRequestRepository;
+import com.sflpro.notifier.db.repositories.repositories.notification.push.PushNotificationSubscriptionRequestRepository;
 import com.sflpro.notifier.services.device.UserDeviceService;
 import com.sflpro.notifier.services.notification.dto.push.PushNotificationSubscriptionRequestDto;
 import com.sflpro.notifier.services.notification.exception.push.PushNotificationSubscriptionInvalidDeviceUserException;
 import com.sflpro.notifier.services.notification.exception.push.PushNotificationSubscriptionRequestInvalidRecipientUserException;
 import com.sflpro.notifier.services.notification.exception.push.PushNotificationSubscriptionRequestNotFoundForIdException;
 import com.sflpro.notifier.services.notification.exception.push.PushNotificationSubscriptionRequestNotFoundForUuIdException;
-import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipient;
-import com.sflpro.notifier.db.entities.notification.push.PushNotificationSubscription;
-import com.sflpro.notifier.db.entities.notification.push.PushNotificationSubscriptionRequest;
-import com.sflpro.notifier.db.entities.notification.push.PushNotificationSubscriptionRequestState;
 import com.sflpro.notifier.services.notification.push.PushNotificationRecipientService;
 import com.sflpro.notifier.services.test.AbstractServicesUnitTest;
 import com.sflpro.notifier.services.user.UserService;

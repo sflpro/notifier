@@ -1,6 +1,6 @@
 package com.sflpro.notifier.services.system.concurrency.impl;
 
-import com.sflpro.notifier.persistence.utility.PersistenceUtilityService;
+import com.sflpro.notifier.db.repositories.utility.PersistenceUtilityService;
 import com.sflpro.notifier.services.test.AbstractServicesUnitTest;
 import com.sflpro.notifier.services.util.mutable.MutableHolder;
 import org.easymock.Mock;

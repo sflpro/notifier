@@ -9,6 +9,6 @@
        default-lazy-init="true" default-autowire="byName">
 
     <!--Getting jpa repositories-->
-    <jpa:repositories base-package="com.sflpro.notifier.persistence.repositories"/>
+    <jpa:repositories base-package="com.sflpro.notifier.db.repositories"/>
 
 </beans>

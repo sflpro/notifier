@@ -1,13 +1,12 @@
 package com.sflpro.notifier.services.notification.push;
 
 import com.sflpro.notifier.db.entities.device.mobile.DeviceOperatingSystemType;
-import com.sflpro.notifier.db.entities.user.User;
-import com.sflpro.notifier.persistence.repositories.notification.push.PushNotificationRecipientSearchFilter;
-import com.sflpro.notifier.services.notification.dto.push.sns.PushNotificationSnsRecipientDto;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationProviderType;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipient;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipientStatus;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationSubscription;
+import com.sflpro.notifier.db.entities.user.User;
+import com.sflpro.notifier.services.notification.dto.push.sns.PushNotificationSnsRecipientDto;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

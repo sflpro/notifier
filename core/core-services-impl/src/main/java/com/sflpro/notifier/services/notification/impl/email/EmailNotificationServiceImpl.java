@@ -1,11 +1,11 @@
 package com.sflpro.notifier.services.notification.impl.email;
 
-import com.sflpro.notifier.persistence.repositories.notification.AbstractNotificationRepository;
-import com.sflpro.notifier.persistence.repositories.notification.email.EmailNotificationRepository;
+import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
+import com.sflpro.notifier.db.repositories.repositories.notification.AbstractNotificationRepository;
+import com.sflpro.notifier.db.repositories.repositories.notification.email.EmailNotificationRepository;
 import com.sflpro.notifier.services.notification.dto.email.EmailNotificationDto;
 import com.sflpro.notifier.services.notification.email.EmailNotificationService;
 import com.sflpro.notifier.services.notification.impl.AbstractNotificationServiceImpl;
-import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

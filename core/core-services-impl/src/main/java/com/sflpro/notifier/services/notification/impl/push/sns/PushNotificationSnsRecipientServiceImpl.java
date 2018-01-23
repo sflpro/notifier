@@ -1,12 +1,12 @@
 package com.sflpro.notifier.services.notification.impl.push.sns;
 
-import com.sflpro.notifier.persistence.repositories.notification.push.AbstractPushNotificationRecipientRepository;
-import com.sflpro.notifier.persistence.repositories.notification.push.sns.PushNotificationSnsRecipientRepository;
-import com.sflpro.notifier.services.notification.dto.push.sns.PushNotificationSnsRecipientDto;
-import com.sflpro.notifier.services.notification.impl.push.AbstractPushNotificationRecipientServiceImpl;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipientStatus;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationSubscription;
 import com.sflpro.notifier.db.entities.notification.push.sns.PushNotificationSnsRecipient;
+import com.sflpro.notifier.db.repositories.repositories.notification.push.AbstractPushNotificationRecipientRepository;
+import com.sflpro.notifier.db.repositories.repositories.notification.push.sns.PushNotificationSnsRecipientRepository;
+import com.sflpro.notifier.services.notification.dto.push.sns.PushNotificationSnsRecipientDto;
+import com.sflpro.notifier.services.notification.impl.push.AbstractPushNotificationRecipientServiceImpl;
 import com.sflpro.notifier.services.notification.push.sns.PushNotificationSnsRecipientService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,13 +1,13 @@
 package com.sflpro.notifier.services.notification.impl.push.sns;
 
-import com.sflpro.notifier.persistence.repositories.notification.push.AbstractPushNotificationRecipientRepository;
-import com.sflpro.notifier.persistence.repositories.notification.push.sns.PushNotificationSnsRecipientRepository;
+import com.sflpro.notifier.db.entities.notification.push.PushNotificationSubscription;
+import com.sflpro.notifier.db.entities.notification.push.sns.PushNotificationSnsRecipient;
+import com.sflpro.notifier.db.repositories.repositories.notification.push.AbstractPushNotificationRecipientRepository;
+import com.sflpro.notifier.db.repositories.repositories.notification.push.sns.PushNotificationSnsRecipientRepository;
 import com.sflpro.notifier.services.notification.dto.push.sns.PushNotificationSnsRecipientDto;
 import com.sflpro.notifier.services.notification.exception.push.PushNotificationRecipientAlreadyExistsException;
 import com.sflpro.notifier.services.notification.impl.push.AbstractPushNotificationRecipientServiceImpl;
 import com.sflpro.notifier.services.notification.impl.push.AbstractPushNotificationRecipientServiceImplTest;
-import com.sflpro.notifier.db.entities.notification.push.PushNotificationSubscription;
-import com.sflpro.notifier.db.entities.notification.push.sns.PushNotificationSnsRecipient;
 import org.easymock.EasyMock;
 import org.easymock.Mock;
 import org.easymock.TestSubject;

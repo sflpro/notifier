@@ -1,6 +1,6 @@
 package com.sflpro.notifier.services.system.concurrency.impl;
 
-import com.sflpro.notifier.persistence.utility.PersistenceUtilityService;
+import com.sflpro.notifier.db.repositories.utility.PersistenceUtilityService;
 import com.sflpro.notifier.services.system.concurrency.ScheduledTaskExecutorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

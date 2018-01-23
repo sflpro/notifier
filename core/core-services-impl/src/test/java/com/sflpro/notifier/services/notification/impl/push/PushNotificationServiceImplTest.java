@@ -6,8 +6,8 @@ import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipie
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipientStatus;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationSubscription;
 import com.sflpro.notifier.db.entities.user.User;
-import com.sflpro.notifier.persistence.repositories.notification.AbstractNotificationRepository;
-import com.sflpro.notifier.persistence.repositories.notification.push.PushNotificationRepository;
+import com.sflpro.notifier.db.repositories.repositories.notification.AbstractNotificationRepository;
+import com.sflpro.notifier.db.repositories.repositories.notification.push.PushNotificationRepository;
 import com.sflpro.notifier.services.notification.UserNotificationService;
 import com.sflpro.notifier.services.notification.dto.UserNotificationDto;
 import com.sflpro.notifier.services.notification.dto.push.PushNotificationDto;

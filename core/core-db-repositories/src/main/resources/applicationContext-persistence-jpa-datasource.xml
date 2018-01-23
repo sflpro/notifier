@@ -5,21 +5,23 @@
            http://www.springframework.org/schema/beans/spring-beans.xsd"
        default-lazy-init="true" default-autowire="byName">
 
-    <!--Initializing datasource-->
-    <bean id="dataSourceMain" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close" lazy-init="true">
-        <property name="driverClassName" value="#{appProperties['database.driver']}"/>
-        <property name="jdbcUrl" value="#{appProperties['database.url']}"/>
-        <property name="username" value="#{appProperties['database.username']}"/>
-        <property name="password" value="#{appProperties['database.password']}"/>
-        <property name="maximumPoolSize" value="#{appProperties[ database.pool.maxActive ]}"/>
-        <property name="connectionTestQuery" value="#{appProperties['database.validationQuery']}"/>
-        <property name="validationTimeout" value="#{appProperties['database.idleConnectionTestPeriod']}"/>
-    </bean>
+    <beans profile="!test" >
+        <!--Initializing datasource-->
+        <bean id="dataSourceMain" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close" lazy-init="true">
+            <property name="driverClassName" value="${database.driver}"/>
+            <property name="jdbcUrl" value="${database.url}"/>
+            <property name="username" value="${database.username}"/>
+            <property name="password" value="${database.password}"/>
+            <property name="maximumPoolSize" value="${database.pool.maxActive}"/>
+            <property name="connectionTestQuery" value="${database.pool.validationQuery}"/>
+            <property name="validationTimeout" value="${database.pool.idleConnectionTestPeriod}"/>
+        </bean>
 
 
-    <!--Initializing datasource logger-->
-    <bean id="dataSource" class="org.jdbcdslog.ConnectionPoolDataSourceProxy" primary="true">
-        <property name="targetDSDirect" ref="dataSourceMain"/>
-    </bean>
+        <!--Initializing datasource logger-->
+        <bean id="dataSource" class="org.jdbcdslog.ConnectionPoolDataSourceProxy" primary="true">
+            <property name="targetDSDirect" ref="dataSourceMain"/>
+        </bean>
+    </beans>
 
 </beans>

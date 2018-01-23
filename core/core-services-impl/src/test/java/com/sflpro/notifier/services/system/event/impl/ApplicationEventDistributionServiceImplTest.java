@@ -1,6 +1,6 @@
 package com.sflpro.notifier.services.system.event.impl;
 
-import com.sflpro.notifier.persistence.utility.PersistenceUtilityService;
+import com.sflpro.notifier.db.repositories.utility.PersistenceUtilityService;
 import com.sflpro.notifier.services.system.event.model.ApplicationEvent;
 import com.sflpro.notifier.services.system.event.model.ApplicationEventListener;
 import com.sflpro.notifier.services.test.AbstractServicesUnitTest;

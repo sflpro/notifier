@@ -3,7 +3,7 @@ package com.sflpro.notifier.services.notification.impl;
 import com.sflpro.notifier.db.entities.notification.Notification;
 import com.sflpro.notifier.db.entities.notification.UserNotification;
 import com.sflpro.notifier.db.entities.user.User;
-import com.sflpro.notifier.persistence.repositories.notification.UserNotificationRepository;
+import com.sflpro.notifier.db.repositories.repositories.notification.UserNotificationRepository;
 import com.sflpro.notifier.services.notification.NotificationService;
 import com.sflpro.notifier.services.notification.UserNotificationService;
 import com.sflpro.notifier.services.notification.dto.UserNotificationDto;

@@ -1,8 +1,8 @@
 package com.sflpro.notifier.services.notification.impl.sms;
 
 import com.sflpro.notifier.db.entities.notification.sms.SmsNotification;
-import com.sflpro.notifier.persistence.repositories.notification.AbstractNotificationRepository;
-import com.sflpro.notifier.persistence.repositories.notification.sms.SmsNotificationRepository;
+import com.sflpro.notifier.db.repositories.repositories.notification.AbstractNotificationRepository;
+import com.sflpro.notifier.db.repositories.repositories.notification.sms.SmsNotificationRepository;
 import com.sflpro.notifier.services.notification.dto.sms.SmsNotificationDto;
 import com.sflpro.notifier.services.notification.impl.AbstractNotificationServiceImpl;
 import com.sflpro.notifier.services.notification.sms.SmsNotificationService;

@@ -2,7 +2,7 @@ package com.sflpro.notifier.services.device.impl;
 
 import com.sflpro.notifier.db.entities.device.UserDevice;
 import com.sflpro.notifier.db.entities.user.User;
-import com.sflpro.notifier.persistence.repositories.device.UserDeviceRepository;
+import com.sflpro.notifier.db.repositories.repositories.device.UserDeviceRepository;
 import com.sflpro.notifier.services.device.dto.UserDeviceDto;
 import com.sflpro.notifier.services.device.exception.UserDeviceAlreadyExistsException;
 import com.sflpro.notifier.services.device.exception.UserDeviceNotFoundForIdException;

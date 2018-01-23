@@ -1,16 +1,15 @@
 package com.sflpro.notifier.services.notification.impl.push;
 
 import com.sflpro.notifier.db.entities.notification.UserNotification;
+import com.sflpro.notifier.db.entities.notification.push.*;
 import com.sflpro.notifier.db.entities.user.User;
-import com.sflpro.notifier.persistence.repositories.notification.AbstractNotificationRepository;
-import com.sflpro.notifier.persistence.repositories.notification.push.PushNotificationRepository;
+import com.sflpro.notifier.db.repositories.repositories.notification.AbstractNotificationRepository;
+import com.sflpro.notifier.db.repositories.repositories.notification.push.PushNotificationRepository;
 import com.sflpro.notifier.services.notification.UserNotificationService;
 import com.sflpro.notifier.services.notification.dto.UserNotificationDto;
 import com.sflpro.notifier.services.notification.dto.push.PushNotificationDto;
 import com.sflpro.notifier.services.notification.dto.push.PushNotificationPropertyDto;
-import com.sflpro.notifier.persistence.repositories.notification.push.PushNotificationRecipientSearchFilter;
 import com.sflpro.notifier.services.notification.impl.AbstractNotificationServiceImpl;
-import com.sflpro.notifier.db.entities.notification.push.*;
 import com.sflpro.notifier.services.notification.push.PushNotificationRecipientSearchParameters;
 import com.sflpro.notifier.services.notification.push.PushNotificationRecipientService;
 import com.sflpro.notifier.services.notification.push.PushNotificationService;

@@ -1,6 +1,6 @@
 package com.sflpro.notifier.queue.consumer.notification.push.rpc;
 
-import com.sflpro.notifier.persistence.utility.PersistenceUtilityService;
+import com.sflpro.notifier.db.repositories.utility.PersistenceUtilityService;
 import com.sflpro.notifier.queue.amqp.model.notification.push.PushNotificationSubscriptionRequestRPCTransferModel;
 import com.sflpro.notifier.queue.amqp.rpc.RPCCallType;
 import com.sflpro.notifier.queue.amqp.rpc.impl.AbstractRPCServiceAdapterImpl;

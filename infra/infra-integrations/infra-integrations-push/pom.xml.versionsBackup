@@ -6,13 +6,15 @@
     <parent>
         <groupId>com.sflpro.notifier</groupId>
         <artifactId>infra-integrations</artifactId>
-        <version>1.1-SNAPSHOT</version>
+        <version>1.0</version>
     </parent>
 
+    <artifactId>infra-integrations-push</artifactId>
     <packaging>jar</packaging>
-    <artifactId>infra-integrations-common</artifactId>
 
-    <description>Externalclients Common represents core implementation for http rest, http soap , etc.. web clients</description>
+    <description>Externalclients Push module acts as a project for various Push notifications API clients
+        implementations
+    </description>
 
     <build>
         <plugins>
@@ -31,13 +33,15 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-sns</artifactId>
+            <version>${amazon.sdk.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
@@ -46,9 +50,24 @@
         </dependency>
 
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.code.findbugs</groupId>
+            <artifactId>jsr305</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
-
 </project>

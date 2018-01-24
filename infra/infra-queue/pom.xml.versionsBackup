@@ -4,17 +4,20 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.sflpro.notifier</groupId>
-        <artifactId>notifier</artifactId>
-        <version>1.1-SNAPSHOT</version>
+        <artifactId>infra</artifactId>
+        <version>1.0</version>
     </parent>
 
-    <artifactId>core</artifactId>
-    <version>1.1-SNAPSHOT</version>
-
+    <artifactId>infra-queue</artifactId>
     <packaging>pom</packaging>
 
+    <description>Queue sub module represents queue layer of SFL NMS project.</description>
 
-    <description>Core contains all the general business logic and required components.</description>
+    <modules>
+        <module>infra-queue-common</module>
+        <module>infra-queue-consumer</module>
+        <module>infra-queue-producer</module>
+    </modules>
 
     <build>
         <plugins>
@@ -24,13 +27,4 @@
             </plugin>
         </plugins>
     </build>
-
-    <modules>
-        <module>core-db-entities</module>
-        <module>core-db-repositories</module>
-        <module>core-services</module>
-        <module>core-services-impl</module>
-        <module>core-test-toolkit</module>
-    </modules>
-
-</project>
+</project>	

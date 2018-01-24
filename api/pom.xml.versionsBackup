@@ -7,12 +7,12 @@
     <parent>
         <groupId>com.sflpro.notifier</groupId>
         <artifactId>notifier</artifactId>
-        <version>1.1-SNAPSHOT</version>
+        <version>1.0</version>
     </parent>
 
     <packaging>pom</packaging>
     <artifactId>api</artifactId>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.0</version>
 
     <description>Project acts as a root API grouping project</description>
 

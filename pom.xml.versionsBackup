@@ -17,7 +17,7 @@
 
     <groupId>com.sflpro.notifier</groupId>
     <artifactId>notifier</artifactId>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.0</version>
     <packaging>pom</packaging>
 
     <!-- Information required by maven central -->
@@ -266,7 +266,6 @@
                     <configuration>
                         <skipStaging>true</skipStaging>
                         <skipNexusStagingDeployMojo>true</skipNexusStagingDeployMojo>
-                        <autoReleaseAfterClose>true</autoReleaseAfterClose>
                     </configuration>
                 </plugin>
                 <!-- End of plugins required for deployment to maven central -->

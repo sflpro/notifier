@@ -5,16 +5,18 @@
     <parent>
         <groupId>com.sflpro.notifier</groupId>
         <artifactId>notifier</artifactId>
-        <version>1.1-SNAPSHOT</version>
+        <version>1.0</version>
     </parent>
 
-    <artifactId>core</artifactId>
-    <version>1.1-SNAPSHOT</version>
-
+    <artifactId>infra</artifactId>
     <packaging>pom</packaging>
 
+    <description>Infrastructural components</description>
 
-    <description>Core contains all the general business logic and required components.</description>
+    <modules>
+        <module>infra-queue</module>
+        <module>infra-integrations</module>
+    </modules>
 
     <build>
         <plugins>
@@ -24,13 +26,4 @@
             </plugin>
         </plugins>
     </build>
-
-    <modules>
-        <module>core-db-entities</module>
-        <module>core-db-repositories</module>
-        <module>core-services</module>
-        <module>core-services-impl</module>
-        <module>core-test-toolkit</module>
-    </modules>
-
 </project>

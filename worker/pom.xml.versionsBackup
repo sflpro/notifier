@@ -1,18 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
         <groupId>com.sflpro.notifier</groupId>
-        <artifactId>api</artifactId>
-        <version>1.1-SNAPSHOT</version>
+        <artifactId>notifier</artifactId>
+        <version>1.0</version>
     </parent>
 
     <packaging>jar</packaging>
-    <artifactId>api-web</artifactId>
-    <version>1.1-SNAPSHOT</version>
+    <artifactId>worker</artifactId>
+
+    <description>
+        Scheduler Web sub module represents runner for scheduler layer of SFL NMS project.
+    </description>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
     <profiles>
         <profile>
@@ -34,18 +41,18 @@
                         </executions>
                         <configuration>
                             <tag>snapshot</tag>
-                            <repository>sflpro/notifier</repository>
+                            <repository>sflpro/ms-notifications-consumer</repository>
                             <buildArgs>
                                 <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
                             </buildArgs>
-                            <googleContainerRegistryEnabled>false</googleContainerRegistryEnabled>
+                            <useMavenSettingsForAuth>true</useMavenSettingsForAuth>
                         </configuration>
                     </plugin>
                 </plugins>
             </build>
         </profile>
         <profile>
-            <id>release</id>
+            <id>docker-release</id>
             <build>
                 <plugins>
                     <plugin>
@@ -102,11 +109,11 @@
                             </execution>
                         </executions>
                         <configuration>
-                            <repository>sflpro/notifier</repository>
-                            <googleContainerRegistryEnabled>false</googleContainerRegistryEnabled>
+                            <repository>sflpro/notifier-consumer</repository>
                             <buildArgs>
                                 <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
                             </buildArgs>
+                            <useMavenSettingsForAuth>true</useMavenSettingsForAuth>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -114,66 +121,19 @@
         </profile>
     </profiles>
 
-    <dependencies>
-        <dependency>
-            <groupId>com.sflpro.notifier</groupId>
-            <artifactId>api-facade</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.sflpro.notifier</groupId>
-            <artifactId>core-services-impl</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.sflpro.notifier</groupId>
-            <artifactId>infra-queue-producer</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-jetty</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-annotations</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.fasterxml.jackson.datatype</groupId>
-            <artifactId>jackson-datatype-jsr310</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>io.swagger</groupId>
-            <artifactId>swagger-jersey2-jaxrs</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>io.swagger</groupId>
-            <artifactId>swagger-models</artifactId>
-        </dependency>
-    </dependencies>
-
     <build>
-        <finalName>api-web</finalName>
+        <finalName>ms-notifications-consumer</finalName>
         <plugins>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <artifactId>maven-failsafe-plugin</artifactId>
+            </plugin>
             <plugin>
                 <groupId>org.sonatype.plugins</groupId>
                 <artifactId>nexus-staging-maven-plugin</artifactId>
             </plugin>
-
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -188,5 +148,42 @@
         </plugins>
     </build>
 
-    <description>Project is representing Internal Rest API service for SFL Notifier</description>
+    <dependencies>
+        <dependency>
+            <groupId>com.sflpro.notifier</groupId>
+            <artifactId>infra-queue-common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sflpro.notifier</groupId>
+            <artifactId>core-services-impl</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jetty</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.containers</groupId>
+            <artifactId>jersey-container-servlet-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.sflpro.notifier</groupId>
+            <artifactId>infra-queue-consumer</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <!-- test dependencies -->
+        <dependency>
+            <groupId>com.sflpro.notifier</groupId>
+            <artifactId>core-test-toolkit</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
 </project>

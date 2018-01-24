@@ -18,4 +18,12 @@
         <module>infra-queue-consumer</module>
         <module>infra-queue-producer</module>
     </modules>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-deploy-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 </project>	

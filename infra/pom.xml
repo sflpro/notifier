@@ -11,12 +11,18 @@
     <artifactId>infra</artifactId>
     <packaging>pom</packaging>
 
-    <version>1.0</version>
+    <description>Infrastructural components</description>
 
     <modules>
         <module>infra-queue</module>
         <module>infra-integrations</module>
     </modules>
 
-    <description>Infrastructural components</description>
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-deploy-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 </project>

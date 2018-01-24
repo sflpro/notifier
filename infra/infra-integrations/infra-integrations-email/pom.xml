@@ -16,6 +16,20 @@
     <name>Externalclients Email</name>
     <description>Externalclients Email module acts as a project for various Email notifications API clients implementations</description>
 
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <artifactId>maven-failsafe-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <artifactId>maven-deploy-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
     <dependencies>
         <dependency>
             <groupId>com.sflpro.notifier</groupId>

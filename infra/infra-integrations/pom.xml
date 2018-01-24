@@ -13,8 +13,7 @@
     <artifactId>infra-integrations</artifactId>
 
     <description>Infra-integrations sub module represents external web clients layer of SFL NMS project for interaction with
-        third party services.
-    </description>
+        third party services.</description>
 
     <modules>
         <module>infra-integrations-common</module>
@@ -22,4 +21,12 @@
         <module>infra-integrations-push</module>
         <module>infra-integrations-sms</module>
     </modules>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-deploy-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 </project>

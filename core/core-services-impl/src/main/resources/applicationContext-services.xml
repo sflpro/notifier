@@ -8,7 +8,7 @@
            http://www.springframework.org/schema/context/spring-context.xsd"
        default-lazy-init="true" default-autowire="byName">
 
-    <import resource="../../../../core-persistence/core-persistence-repositories/src/main/resources/applicationContext-persistence-jpa.xml"/>
+    <import resource="applicationContext-persistence-jpa.xml"/>
     <import resource="applicationContext-externalclients-email.xml"/>
     <import resource="applicationContext-externalclients-sms.xml"/>
     <import resource="applicationContext-externalclients-push.xml"/>

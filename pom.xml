@@ -20,10 +20,56 @@
     <version>1.0</version>
     <packaging>pom</packaging>
 
+    <!-- Information required by maven central -->
+    <name>Notifier</name>
+    <description>Notifier is an email, push, SMS, etc. notification sending application</description>
+    <url>https://github.com/sflpro/identity</url>
 
-    <description>
-        Java backend implementation of Notifier project.
-    </description>
+    <licenses>
+        <license>
+            <name>The Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Ruben Dilanyan</name>
+            <email>ruben.dilanyan@sflpro.com</email>
+            <organization>SFL LLC</organization>
+            <organizationUrl>https://sflpro.com</organizationUrl>
+        </developer>
+        <developer>
+            <name>Davit Harutyunyan</name>
+            <email>davit.harutyunyan@sflpro.com</email>
+            <organization>SFL LLC</organization>
+            <organizationUrl>https://sflpro.com</organizationUrl>
+        </developer>
+        <developer>
+            <name>Yervand Aghababyan</name>
+            <email>yervand.aghababyan@sflpro.com</email>
+            <organization>SFL LLC</organization>
+            <organizationUrl>https://sflpro.com</organizationUrl>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git://github.com/sflpro/notifier.git</connection>
+        <developerConnection>scm:git:ssh://github.com:sflpro/notifier.git</developerConnection>
+        <url>http://github.com/sflpro/notifier/tree/master</url>
+    </scm>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
+    <!-- End of nformation required by maven central -->
 
     <properties>
         <projectbasedir>${user.dir}</projectbasedir>
@@ -108,6 +154,7 @@
         <maven.deploy.plugin.version>2.4</maven.deploy.plugin.version>
         <maven.assembly.plugin.version>2.6</maven.assembly.plugin.version>
         <dockerfile.maven.plugin.version>1.3.6</dockerfile.maven.plugin.version>
+        <maven.gpg.plugin.version>1.6</maven.gpg.plugin.version>
     </properties>
 
     <profiles>
@@ -139,6 +186,21 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
             </plugin>
+
+            <!-- maven central stuff -->
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+            </plugin>
+            <!-- end of maven central stuff -->
         </plugins>
 
         <pluginManagement>
@@ -200,6 +262,61 @@
                         </execution>
                     </executions>
                 </plugin>
+
+                <!-- Plugins required for deployment to maven central -->
+                <plugin>
+                    <groupId>org.sonatype.plugins</groupId>
+                    <artifactId>nexus-staging-maven-plugin</artifactId>
+                    <version>1.6.7</version>
+                    <extensions>true</extensions>
+                    <configuration>
+                        <serverId>ossrh</serverId>
+                        <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                        <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <id>attach-sources</id>
+                            <goals>
+                                <goal>jar-no-fork</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <id>attach-javadocs</id>
+                            <goals>
+                                <goal>jar</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-gpg-plugin</artifactId>
+                    <version>${maven.gpg.plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <id>sign-artifacts</id>
+                            <phase>verify</phase>
+                            <goals>
+                                <goal>sign</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <!-- End of plugins required for deployment to maven central -->
             </plugins>
         </pluginManagement>
     </build>

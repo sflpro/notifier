@@ -104,13 +104,12 @@ public class PushNotificationRecipientRepositoryImpl implements PushNotification
         }
         queryBuilder.append(" from PushNotificationRecipient pnr ");
         queryBuilder.append(" where ");
-        queryBuilder.append("( :" + PARAMETER_NAME_DESTINATION_ROUTE_TOKEN + " is not null and pnr.destinationRouteToken=:" + PARAMETER_NAME_DESTINATION_ROUTE_TOKEN + ") ");
-        queryBuilder.append(" and ( :" + PARAMETER_NAME_STATUS + " is not null and pnr.status=:" + PARAMETER_NAME_STATUS + ") ");
-        queryBuilder.append(" and ( :" + PARAMETER_NAME_DEVICE_OPERATING_SYSTEM + " is not null and pnr.deviceOperatingSystemType=:" + PARAMETER_NAME_DEVICE_OPERATING_SYSTEM + ") ");
-        queryBuilder.append(" and ( :" + PARAMETER_NAME_PROVIDER_TYPE + " is not null and pnr.type=:" + PARAMETER_NAME_PROVIDER_TYPE + ") ");
-        queryBuilder.append(" and ( :" + PARAMETER_NAME_APPLICATION_TYPE + " is not null and pnr.applicationType=:" + PARAMETER_NAME_APPLICATION_TYPE + ") ");
-        queryBuilder.append(" and ( :" + PARAMETER_NAME_STATUS + " is not null and pnr.status=:" + PARAMETER_NAME_STATUS + ") ");
-        queryBuilder.append(" and ( :" + PARAMETER_NAME_SUBSCRIPTION_ID + " is not null and pnr.subscription.id=:" + PARAMETER_NAME_SUBSCRIPTION_ID + ") ");
+        queryBuilder.append("( :" + PARAMETER_NAME_DESTINATION_ROUTE_TOKEN + " is null or pnr.destinationRouteToken=:" + PARAMETER_NAME_DESTINATION_ROUTE_TOKEN + ") ");
+        queryBuilder.append(" and ( :" + PARAMETER_NAME_STATUS + " is null or pnr.status=:" + PARAMETER_NAME_STATUS + ") ");
+        queryBuilder.append(" and ( :" + PARAMETER_NAME_DEVICE_OPERATING_SYSTEM + " is null or pnr.deviceOperatingSystemType=:" + PARAMETER_NAME_DEVICE_OPERATING_SYSTEM + ") ");
+        queryBuilder.append(" and ( :" + PARAMETER_NAME_PROVIDER_TYPE + " is null or pnr.type=:" + PARAMETER_NAME_PROVIDER_TYPE + ") ");
+        queryBuilder.append(" and ( :" + PARAMETER_NAME_APPLICATION_TYPE + " is null or pnr.applicationType=:" + PARAMETER_NAME_APPLICATION_TYPE + ") ");
+        queryBuilder.append(" and ( :" + PARAMETER_NAME_SUBSCRIPTION_ID + " is null or pnr.subscription.id=:" + PARAMETER_NAME_SUBSCRIPTION_ID + ") ");
         // Append order by query
         if (!countQuery) {
             queryBuilder.append(" order by pnr.id asc ");

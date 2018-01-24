@@ -16,7 +16,7 @@
         <property name="jpaProperties">
             <map>
                 <entry key="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
-                <entry key="hibernate.show_sql" value="${hibernate.show_sql}"/>
+                <entry key="hibernate.show_sql" value="${database.hibernate.show_sql}"/>
                 <entry key="hibernate.hbm2ddl.auto" value="update"/>
                 <entry key="hibernate.globally_quoted_identifiers" value="true"/>
                 <entry key="hibernate.cache.use_second_level_cache" value="false"/>
@@ -36,7 +36,7 @@
         <property name="ignoreResourceNotFound" value="true"/>
     </bean>
 
-    <bean id="persistenceUtilityService" class="com.sflpro.notifier.persistence.utility.impl.SingleTransactionAwarePersistenceUtilityServiceImpl"/>
+    <bean id="persistenceUtilityService" class="com.sflpro.notifier.db.repositories.utility.impl.SingleTransactionAwarePersistenceUtilityServiceImpl"/>
 
     <bean id="smtpTransportService"
           class="com.sflpro.notifier.services.notification.impl.email.SmtpTransportInMemoryServiceImpl"/>

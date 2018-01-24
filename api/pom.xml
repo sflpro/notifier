@@ -23,5 +23,23 @@
         <module>api-web</module>
     </modules>
 
+    <build>
+        <plugins>
+            <!-- maven central stuff -->
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+            </plugin>
+            <!-- end of maven central stuff -->
+        </plugins>
+    </build>
 
 </project>

@@ -14,8 +14,21 @@
     <artifactId>core-services-impl</artifactId>
     <version>1.0</version>
 
-    <description>Services implementation sub module represents implementation of services layer for Future project.
-    </description>
+    <description>Services implementation sub module represents implementation of services layer for Future project.</description>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <artifactId>maven-failsafe-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <artifactId>maven-deploy-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 
     <dependencies>
         <dependency>
@@ -52,6 +65,11 @@
             <groupId>com.sflpro.notifier</groupId>
             <artifactId>services-test</artifactId>
             <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
         </dependency>
 
         <dependency>

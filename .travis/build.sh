@@ -2,14 +2,15 @@
 
 docker login -u "$DOCKER_USER" -p "$DOCKER_PASS"
 
-init_central_auth() {
-    tar -jxf secret.tar.bz2
-    mv secret/travis-gpg-key.asc ./travis-gpg-key.asc
-    mv secret/settings.xml ./settings.xml
-    echo "Import gpg key"
-    gpg --import travis-gpg-key.asc
-    sleep 1
-}
+echo "Extract secrets"
+tar -jxvf secret.tar.bz2
+mv secret/travis-gpg-key.asc ./travis-gpg-key.asc
+mv secret/settings.xml ./settings.xml
+echo "Import gpg key"
+gpg --import travis-gpg-key.asc
+sleep 1
+
+echo "Proceeding to compilation/check"
 
 if [ "$TRAVIS_BRANCH" == "develop" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]
 then

@@ -5,13 +5,13 @@
     <parent>
         <groupId>com.sflpro.notifier</groupId>
         <artifactId>core</artifactId>
-        <version>1.2-SNAPSHOT</version>
+        <version>1.1</version>
     </parent>
 
     <packaging>jar</packaging>
 
     <artifactId>core-services-impl</artifactId>
-    <version>1.2-SNAPSHOT</version>
+    <version>1.1</version>
 
     <description>Services implementation sub module represents implementation of services layer for Future project.</description>
 

@@ -1,3 +1,5 @@
+create sequence hibernate_sequence start 1 increment 50;
+
 create table if not exists device_user (
   id bigint not null constraint pk_device_user primary key,
   uuid varchar(36) not null,

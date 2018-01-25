@@ -7,9 +7,6 @@ init_gpg() {
     gpg --import travis-gpg-key.asc
 }
 
-ls -al
-ls -al .travis/
-
 if [ "$TRAVIS_BRANCH" == "develop" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]
 then
     init_gpg
@@ -17,7 +14,8 @@ then
     mvn -P snapshot -P central clean org.jacoco:jacoco-maven-plugin:prepare-agent deploy sonar:sonar -B \
     -Dsonar.host.url=https://sonarcloud.io \
     -Dsonar.organization=sfl \
-    -Dsonar.login=$SONARCLOUD_KEY
+    -Dsonar.login=$SONARCLOUD_KEY \
+    -Dgpg.passphrase=$TRAVIS_GPG_KEY_PASS
 elif [ $TRAVIS_BRANCH == 'master' ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]
 then
     init_gpg
@@ -25,10 +23,10 @@ then
     mvn -P release -P central clean org.jacoco:jacoco-maven-plugin:prepare-agent deploy sonar:sonar -B \
     -Dsonar.host.url=https://sonarcloud.io \
     -Dsonar.organization=sfl \
-    -Dsonar.login=$SONARCLOUD_KEY
+    -Dsonar.login=$SONARCLOUD_KEY \
+    -Dgpg.passphrase=$TRAVIS_GPG_KEY_PASS
 elif [ "$TRAVIS_PULL_REQUEST" != "false" ]
 then
-    init_gpg
     echo "Running Github PR build and analysis. Sonar will run in preview mode."
     mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent verify sonar:sonar -B \
     -Dsonar.host.url=https://sonarcloud.io \

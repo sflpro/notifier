@@ -9,6 +9,9 @@ init_gpg() {
     gpg --import ./travis/travis-gpg-key.asc
 }
 
+ls -al
+ls -al .travis/
+
 if [ "$TRAVIS_BRANCH" == "develop" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]
 then
     init_gpg

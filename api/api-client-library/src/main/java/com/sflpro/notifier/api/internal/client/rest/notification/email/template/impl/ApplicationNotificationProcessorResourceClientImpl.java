@@ -27,7 +27,7 @@ public class ApplicationNotificationProcessorResourceClientImpl extends Abstract
     /* Constants */
     private static final String PATH_EMAIL_TEMPLATE = "notification/event/";
 
-    private static final String PATH_FORGOT_PASSWORD = "forgotpassword";
+    private static final String PATH_FORGOT_PASS = "forgotpassword";
 
     /* Constructors */
     public ApplicationNotificationProcessorResourceClientImpl() {
@@ -44,7 +44,7 @@ public class ApplicationNotificationProcessorResourceClientImpl extends Abstract
         assertRequest(request);
         LOGGER.debug("Executing forgot password call, request - {}", request);
         final ResultResponseModel<CreateEmailNotificationResponse> response = getClient().target(getApiPath())
-                .path(PATH_EMAIL_TEMPLATE + PATH_FORGOT_PASSWORD)
+                .path(PATH_EMAIL_TEMPLATE + PATH_FORGOT_PASS)
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .post(Entity.entity(request, MediaType.APPLICATION_JSON_TYPE), new GenericType<ResultResponseModel<CreateEmailNotificationResponse>>() {
                 });

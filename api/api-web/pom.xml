@@ -14,6 +14,8 @@
     <artifactId>api-web</artifactId>
     <version>1.1-SNAPSHOT</version>
 
+    <description>Project is representing Internal Rest API service for SFL Notifier</description>
+
     <profiles>
         <profile>
             <id>snapshot</id>
@@ -114,6 +116,28 @@
         </profile>
     </profiles>
 
+    <build>
+        <finalName>api-web</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
     <dependencies>
         <dependency>
             <groupId>com.sflpro.notifier</groupId>
@@ -165,28 +189,4 @@
             <artifactId>swagger-models</artifactId>
         </dependency>
     </dependencies>
-
-    <build>
-        <finalName>api-web</finalName>
-        <plugins>
-            <plugin>
-                <groupId>org.sonatype.plugins</groupId>
-                <artifactId>nexus-staging-maven-plugin</artifactId>
-            </plugin>
-
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
-
-    <description>Project is representing Internal Rest API service for SFL Notifier</description>
 </project>

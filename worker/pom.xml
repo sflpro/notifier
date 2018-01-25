@@ -122,7 +122,7 @@
     </profiles>
 
     <build>
-        <finalName>ms-notifications-consumer</finalName>
+        <finalName>worker</finalName>
         <plugins>
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>

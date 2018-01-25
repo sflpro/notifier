@@ -8,10 +8,10 @@
 
     <import resource="applicationContext-services.xml"/>
 
-    <jdbc:embedded-database id="dataSource" type="H2"/>
+    <jdbc:embedded-database id="datasource" type="H2"/>
 
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-        <property name="dataSource" ref="dataSource"/>
+        <property name="dataSource" ref="datasource"/>
         <property name="jpaVendorAdapter" ref="jpaVendorAdapter"/>
         <property name="jpaProperties">
             <map>

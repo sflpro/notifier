@@ -15,7 +15,7 @@
     <context:property-placeholder location="classpath:repositories_integration_test.properties"
                                   ignore-unresolvable="true"/>
 
-    <jdbc:embedded-database id="dataSource" type="H2"/>
+    <jdbc:embedded-database id="datasource" type="H2"/>
 
 
 

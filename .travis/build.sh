@@ -2,25 +2,30 @@
 
 docker login -u "$DOCKER_USER" -p "$DOCKER_PASS"
 
-init_gpg() {
-    echo "Import gpg key"
-    gpg --import travis-gpg-key.asc
-}
+echo "Extract secrets"
+tar -jxvf secret.tar.bz2
+mv secret/travis-gpg-key.asc ./travis-gpg-key.asc
+mv secret/settings.xml ./settings.xml
+echo "Import gpg key"
+gpg --import travis-gpg-key.asc
+sleep 1
+
+echo "Proceeding to compilation/check"
 
 if [ "$TRAVIS_BRANCH" == "develop" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]
 then
-    init_gpg
+    init_central_auth
     echo "Running develop branch build and analysis. Snapshots will be published. All issues/stats will be saved to Sonar database."
-    mvn -P snapshot -P central clean org.jacoco:jacoco-maven-plugin:prepare-agent deploy sonar:sonar -B \
+    mvn -P snapshot -P central -s settings.xml clean org.jacoco:jacoco-maven-plugin:prepare-agent deploy sonar:sonar -B \
     -Dsonar.host.url=https://sonarcloud.io \
     -Dsonar.organization=sfl \
     -Dsonar.login=$SONARCLOUD_KEY \
     -Dgpg.passphrase=$TRAVIS_GPG_KEY_PASS
 elif [ $TRAVIS_BRANCH == 'master' ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]
 then
-    init_gpg
+    init_central_auth
     echo "Running develop branch build and analysis. Snapshots will be published.. Sonar run will be skipped."
-    mvn -P release -P central clean org.jacoco:jacoco-maven-plugin:prepare-agent deploy sonar:sonar -B \
+    mvn -P release -P central -s settings.xml clean org.jacoco:jacoco-maven-plugin:prepare-agent deploy sonar:sonar -B \
     -Dsonar.host.url=https://sonarcloud.io \
     -Dsonar.organization=sfl \
     -Dsonar.login=$SONARCLOUD_KEY \

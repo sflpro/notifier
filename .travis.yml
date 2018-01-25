@@ -19,5 +19,6 @@ env:
   - secure: Qp8MiNKKv1fpMwqRM0cUMSqllYhxY+8Uxh5W9rwU2GYt7Q2Pa8IpU3kl7HmIc7HY96wmQBZGqCVVZqOgM0/8M/OtdolyDSSbJ7RioPpNlRZmdgrkmLauVhoZvPkBCoMRLDzrQLcqQyivRbvBg6WfV3nrfjrvaUXlPjS2McYWl4hixlJg2fvCd7xRH7MBWBVJR5eRvu87UBW4HAP3wAcQbIb1qzK21PA93IVyqJ+CrPj6R5EKJSCqtGsJHx5J9Dd7gVUFm/ycml18AS0flcivK7sg6XaJjctChG9Km2fk1NQo8thLjUv/GcQ6M0fus/Nb9KlmKOR+7XXv5uOs4VXzUHREnyq0ir+DTYCQYF6Gb5fdwfZ3E2rKZGxMMgXwtGMwd7gQJYUmsNhury4OqMwsdTeaxsnDoVqoqM3/Iv7RCxhw75DYZ7pBK4yC9OkVkkouxvMQI7v9cRp3dqQRxsQgxHyzZCDsp1yI41M2KEyT3bH0VNiXvKioBl7eq9CvyrQH/QrTLgCryG56AfQmZ5CLUpHliIj+FnqPCilXqnW8DPFILj0iZdg0ynOnWyORrMW1pb1BNT7bt6zeVkWp99QmYj79QgOc7F8DDkNI3rB0S7U6aOAw32/jp3jTnlnsACO4icOhz1KfXMtcOnlO8TLkW6qqbtGw9inFyup9PIGeYdY=
 before_script:
 - openssl aes-256-cbc -K $encrypted_49fa1606db88_key -iv $encrypted_49fa1606db88_iv
-  -in travis-gpg-key.asc.enc -out travis-gpg-key.asc -d
+  -in secret.tar.bz2.enc -out secret.tar.bz2 -d
 - docker login --username yervand --password $DOCKERHUB_PASS
+

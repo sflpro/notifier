@@ -169,6 +169,29 @@
                 <docker.tag>latest</docker.tag>
             </properties>
         </profile>
+        <profile>
+            <id>central</id>
+            <build>
+                <plugins>
+                    <!-- maven central stuff -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>${maven.gpg.plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <!-- end of maven central stuff -->
+                </plugins>
+            </build>
+        </profile>
     </profiles>
 
     <build>
@@ -185,24 +208,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
             </plugin>
-
-            <!-- maven central stuff -->
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-gpg-plugin</artifactId>
-                <version>${maven.gpg.plugin.version}</version>
-                <executions>
-                    <execution>
-                        <id>sign-artifacts</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>sign</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <!-- end of maven central stuff -->
         </plugins>
 
         <pluginManagement>

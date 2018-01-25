@@ -20,8 +20,8 @@ public abstract class RPCMethodHandler<T> {
 
     /* Constructors */
     public RPCMethodHandler(final String methodIdentifier, final Class<T> methodParameterClass) {
-        Assert.notNull(methodIdentifier);
-        Assert.notNull(methodParameterClass);
+        Assert.notNull(methodIdentifier, "methodIdentifier cannot be null");
+        Assert.notNull(methodParameterClass, "methodParameterClass cannot be null");
         this.methodIdentifier = methodIdentifier;
         this.methodParameterClass = methodParameterClass;
     }

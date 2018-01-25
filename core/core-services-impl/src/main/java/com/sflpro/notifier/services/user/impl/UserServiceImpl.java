@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
 
     /* Constructors */
     public UserServiceImpl() {
-
+        super();
     }
 
     /* Public methods */

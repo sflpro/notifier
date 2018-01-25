@@ -49,6 +49,7 @@ public class TwillioApiCommunicatorImpl implements TwillioApiCommunicator, Initi
 
     /* Constructors */
     public TwillioApiCommunicatorImpl() {
+        super();
     }
 
     @Override

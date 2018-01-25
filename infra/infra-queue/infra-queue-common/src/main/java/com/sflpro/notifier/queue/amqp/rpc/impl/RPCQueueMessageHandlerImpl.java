@@ -29,7 +29,7 @@ public class RPCQueueMessageHandlerImpl implements RPCQueueMessageHandler {
 
     /* Constructors */
     public RPCQueueMessageHandlerImpl() {
-
+        super();
     }
 
     @Override
@@ -46,7 +46,7 @@ public class RPCQueueMessageHandlerImpl implements RPCQueueMessageHandler {
             final String result = processRpcMessage(rpcMessage);
             // Stop stop watch
             stopWatch.stop();
-            LOGGER.debug("Processing of the RPC queue call - {} took - {}", new Object[]{rpcMessage.getCallIdentifier(), stopWatch.getTime()});
+            LOGGER.debug("Processing of the RPC queue call - {} took - {}", rpcMessage.getCallIdentifier(), stopWatch.getTime());
             return result;
         } catch (Exception ex) {
             LOGGER.error("Error occurred while processing request - ", ex);
@@ -67,7 +67,7 @@ public class RPCQueueMessageHandlerImpl implements RPCQueueMessageHandler {
         final Object executionResult = rpcMethodHandler.executeMethod(rpcParameterValue);
         // Create RPC call result
         final String result = objectMapper.writeValueAsString(executionResult);
-        LOGGER.debug("{} result was retrieved for RPC message - {}", new Object[]{result, rpcMessage});
+        LOGGER.debug("{} result was retrieved for RPC message - {}", result, rpcMessage);
         return result;
     }
 

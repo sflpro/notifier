@@ -35,8 +35,8 @@ public class UserDevice extends AbstractDomainEntityModel {
 
     /* Constructors */
     public UserDevice() {
+        super();
     }
-
 
     /* Properties getters and setters */
     public User getUser() {

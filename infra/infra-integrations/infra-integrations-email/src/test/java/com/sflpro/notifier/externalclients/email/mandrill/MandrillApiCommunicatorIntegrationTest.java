@@ -59,7 +59,7 @@ public class MandrillApiCommunicatorIntegrationTest extends AbstractEmailNotific
         } catch (final MandrillEmailClientRuntimeException e) {
             // Should throw Unknown template error
             if (e.getCause() instanceof MandrillApiError) {
-                assertEquals(((MandrillApiError) e.getCause()).getMandrillErrorName(), "Unknown_Template");
+                assertEquals("Unknown_Template", ((MandrillApiError) e.getCause()).getMandrillErrorName());
             } else {
                 throw new MandrillApiError();
             }

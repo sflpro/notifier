@@ -80,15 +80,11 @@ public class PushNotificationProcessorImpl implements PushNotificationProcessor 
 
     /* Utility methods */
     private void updatePushNotificationState(final Long notificationId, final NotificationState notificationState) {
-        persistenceUtilityService.runInNewTransaction(() -> {
-            pushNotificationService.updateNotificationState(notificationId, notificationState);
-        });
+        persistenceUtilityService.runInNewTransaction(() -> pushNotificationService.updateNotificationState(notificationId, notificationState));
     }
 
     private void updatePushNotificationExternalUuId(final Long notificationId, final String providerUuId) {
-        persistenceUtilityService.runInNewTransaction(() -> {
-            pushNotificationService.updateProviderExternalUuid(notificationId, providerUuId);
-        });
+        persistenceUtilityService.runInNewTransaction(() -> pushNotificationService.updateProviderExternalUuid(notificationId, providerUuId));
     }
 
     private void assertPushNotificationState(final PushNotification pushNotification) {
@@ -100,39 +96,20 @@ public class PushNotificationProcessorImpl implements PushNotificationProcessor 
     }
 
     private PushNotificationProviderProcessor getPushNotificationProcessor(final PushNotificationProviderType providerType) {
-        switch (providerType) {
-            case SNS:
-                return pushNotificationSnsProcessor;
-            default: {
-                final String message = "Unsupported push notification provider type - " + providerType;
-                LOGGER.error(message);
-                throw new ServicesRuntimeException(message);
-            }
+        if (providerType == PushNotificationProviderType.SNS) {
+            return pushNotificationSnsProcessor;
         }
+        final String message = "Unsupported push notification provider type - " + providerType;
+        LOGGER.error(message);
+        throw new ServicesRuntimeException(message);
     }
 
     /* Properties getters and setters */
-    public PushNotificationService getPushNotificationService() {
-        return pushNotificationService;
-    }
-
-    public void setPushNotificationService(final PushNotificationService pushNotificationService) {
-        this.pushNotificationService = pushNotificationService;
-    }
-
     public PersistenceUtilityService getPersistenceUtilityService() {
         return persistenceUtilityService;
     }
 
     public void setPersistenceUtilityService(final PersistenceUtilityService persistenceUtilityService) {
         this.persistenceUtilityService = persistenceUtilityService;
-    }
-
-    public PushNotificationSnsProviderProcessor getPushNotificationSnsProcessor() {
-        return pushNotificationSnsProcessor;
-    }
-
-    public void setPushNotificationSnsProcessor(final PushNotificationSnsProviderProcessor pushNotificationSnsProcessor) {
-        this.pushNotificationSnsProcessor = pushNotificationSnsProcessor;
     }
 }

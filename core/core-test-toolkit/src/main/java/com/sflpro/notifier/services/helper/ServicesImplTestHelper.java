@@ -266,7 +266,7 @@ public class ServicesImplTestHelper {
         return notification;
     }
 
-    public void assertUserNotification(final UserNotification notification, final UserNotificationDto notificationDto) {
+    public void assertUserNotification(final UserNotification notification) {
         assertNotNull(notification);
     }
 
@@ -286,7 +286,7 @@ public class ServicesImplTestHelper {
         return createPushNotificationSubscription(createPushNotificationSubscriptionDto());
     }
 
-    public void assertPushNotificationSubscription(final PushNotificationSubscription subscription, final PushNotificationSubscriptionDto subscriptionDto) {
+    public void assertPushNotificationSubscription(final PushNotificationSubscription subscription) {
         assertNotNull(subscription);
     }
 
@@ -316,7 +316,7 @@ public class ServicesImplTestHelper {
         Assert.assertEquals(recipient.getDestinationRouteToken(), recipientDto.getDestinationRouteToken());
         Assert.assertEquals(recipient.getDeviceOperatingSystemType(), recipientDto.getDeviceOperatingSystemType());
         Assert.assertEquals(recipient.getApplicationType(), recipientDto.getApplicationType());
-        Assert.assertEquals(recipient.getStatus(), PushNotificationRecipientStatus.ENABLED);
+        Assert.assertEquals(PushNotificationRecipientStatus.ENABLED, recipient.getStatus());
         Assert.assertEquals(recipient.getPlatformApplicationArn(), recipientDto.getPlatformApplicationArn());
     }
 

@@ -41,7 +41,7 @@ public class SmsNotificationProcessorIntegrationTest extends AbstractServiceInte
         /* Flush, clear, reload notification and check state */
         smsNotification = smsNotificationService.getNotificationById(smsNotification.getId());
         assertNotNull(smsNotification);
-        Assert.assertEquals(smsNotification.getState(), NotificationState.SENT);
+        Assert.assertEquals(NotificationState.SENT, smsNotification.getState());
         assertNotNull(smsNotification.getProviderExternalUuId());
     }
 }

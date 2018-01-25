@@ -138,9 +138,7 @@ public class PersistenceUtilityServiceImpl implements PersistenceUtilityService 
         @Override
         public void afterCommit() {
             if (executeAsynchronously) {
-                executorService.submit(() -> {
-                    runInPersistenceSession(runnable);
-                });
+                executorService.submit(() -> runInPersistenceSession(runnable));
             } else {
                 runnable.run();
             }

@@ -104,6 +104,7 @@ public class ServicesTestHelper {
 
     /* Constructors */
     public ServicesTestHelper() {
+        super();
     }
 
     /* User */
@@ -163,7 +164,7 @@ public class ServicesTestHelper {
         return createPushNotificationSubscription(createUser(), createPushNotificationSubscriptionDto());
     }
 
-    public void assertPushNotificationSubscription(final PushNotificationSubscription subscription, final PushNotificationSubscriptionDto subscriptionDto) {
+    public void assertPushNotificationSubscription(final PushNotificationSubscription subscription) {
         assertNotNull(subscription);
         assertNotNull(subscription.getId());
     }
@@ -192,7 +193,7 @@ public class ServicesTestHelper {
         Assert.assertEquals(recipient.getDestinationRouteToken(), recipientDto.getDestinationRouteToken());
         Assert.assertEquals(recipient.getDeviceOperatingSystemType(), recipientDto.getDeviceOperatingSystemType());
         Assert.assertEquals(recipient.getApplicationType(), recipientDto.getApplicationType());
-        Assert.assertEquals(recipient.getStatus(), PushNotificationRecipientStatus.ENABLED);
+        Assert.assertEquals(PushNotificationRecipientStatus.ENABLED, recipient.getStatus());
         assertEquals(recipient.getPlatformApplicationArn(), recipientDto.getPlatformApplicationArn());
     }
 
@@ -375,7 +376,7 @@ public class ServicesTestHelper {
         return userNotificationService.createUserNotification(user.getId(), notification.getId(), notificationDto);
     }
 
-    public void assertUserNotification(final UserNotification notification, final UserNotificationDto notificationDto) {
+    public void assertUserNotification(final UserNotification notification) {
         assertNotNull(notification);
     }
 
@@ -387,14 +388,5 @@ public class ServicesTestHelper {
     /* Utility methods */
     private void flush() {
         entityManager.flush();
-    }
-
-    private void clear() {
-        entityManager.clear();
-    }
-
-    private void flushAndClear() {
-        flush();
-        clear();
     }
 }

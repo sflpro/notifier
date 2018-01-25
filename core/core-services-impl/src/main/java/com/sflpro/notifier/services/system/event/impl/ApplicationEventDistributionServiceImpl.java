@@ -125,9 +125,7 @@ public class ApplicationEventDistributionServiceImpl implements ApplicationEvent
         protected void processApplicationEvent(final ApplicationEvent applicationEvent, final ApplicationEventListener eventListener) {
 
             try {
-                persistenceUtilityService.runInNewTransaction(() -> {
-                    eventListener.process(applicationEvent);
-                });
+                persistenceUtilityService.runInNewTransaction(() -> eventListener.process(applicationEvent));
             } catch (final Exception ex) {
                 // Swallow and just log
                 LOGGER.error("Error occurred while executing event listener", ex);
@@ -173,9 +171,7 @@ public class ApplicationEventDistributionServiceImpl implements ApplicationEvent
         @Override
         public void run() {
             try {
-                persistenceUtilityService.runInPersistenceSession(() -> {
-                    eventListener.process(applicationEvent);
-                });
+                persistenceUtilityService.runInPersistenceSession(() -> eventListener.process(applicationEvent));
             } catch (final Exception ex) {
                 // Swallow and just log
                 LOGGER.error("Error occurred while executing event listener", ex);

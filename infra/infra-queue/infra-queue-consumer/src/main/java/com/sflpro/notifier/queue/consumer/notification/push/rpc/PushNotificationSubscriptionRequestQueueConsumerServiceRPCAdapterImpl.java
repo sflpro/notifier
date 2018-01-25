@@ -42,9 +42,9 @@ public class PushNotificationSubscriptionRequestQueueConsumerServiceRPCAdapterIm
             public Object executeMethod(final Object parameter) {
                 final PushNotificationSubscriptionRequestRPCTransferModel rpcTransferModel = (PushNotificationSubscriptionRequestRPCTransferModel) parameter;
                 /* Process consumer service call */
-                persistenceUtilityService.runInPersistenceSession(() -> {
-                    pushNotificationSubscriptionRequestQueueConsumerService.processPushNotificationSubscriptionRequest(rpcTransferModel.getSubscriptionRequestId());
-                });
+                persistenceUtilityService.runInPersistenceSession(() ->
+                        pushNotificationSubscriptionRequestQueueConsumerService.processPushNotificationSubscriptionRequest(rpcTransferModel.getSubscriptionRequestId())
+                );
                 return rpcTransferModel;
             }
         });

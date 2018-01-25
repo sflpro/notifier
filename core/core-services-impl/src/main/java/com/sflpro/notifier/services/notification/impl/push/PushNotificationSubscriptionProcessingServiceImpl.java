@@ -105,15 +105,13 @@ public class PushNotificationSubscriptionProcessingServiceImpl implements PushNo
 
     /* Utility methods */
     private PushNotificationRecipient updatePushNotificationRecipientStatus(final PushNotificationRecipient recipient, final boolean subscribe) {
-        PushNotificationRecipient result = recipient;
         if (subscribe) {
             // Enable push notification if required
-            result = enablePushNotificationRecipientIfRequired(recipient);
+            return enablePushNotificationRecipientIfRequired(recipient);
         } else {
             // Enable push notification if required
-            result = disablePushNotificationRecipientIfRequired(recipient);
+            return disablePushNotificationRecipientIfRequired(recipient);
         }
-        return result;
     }
 
     private PushNotificationRecipient enablePushNotificationRecipientIfRequired(final PushNotificationRecipient recipient) {
@@ -153,7 +151,7 @@ public class PushNotificationSubscriptionProcessingServiceImpl implements PushNo
         parameters.setApplicationType(applicationType);
         // Execute search, there might be only one recipient with type,token,subscription combination
         final List<PushNotificationRecipient> recipients = pushNotificationRecipientService.getPushNotificationRecipientsForSearchParameters(parameters, Long.valueOf(0), Integer.valueOf(1));
-        if (recipients.size() != 0) {
+        if (!recipients.isEmpty()) {
             // Retrieve recipient and update state if required
             recipient = recipients.get(0);
             LOGGER.debug("Successfully retrieved push notification recipient with id - {} for subscription with id - {}, push notification provider token - {}, mobile device operating system type - {}. Recipient - {}", recipient.getId(), currentSubscription.getId(), pushNotificationProviderToken, operatingSystemType, recipient);
@@ -185,15 +183,12 @@ public class PushNotificationSubscriptionProcessingServiceImpl implements PushNo
     }
 
     private PushNotificationUserDeviceTokenProcessor getPushNotificationUserDeviceTokenProcessorForProviderType(final PushNotificationProviderType providerType) {
-        switch (providerType) {
-            case SNS:
-                return pushNotificationUserDeviceTokenSnsProcessor;
-            default: {
-                final String message = "Unsupported push notification provider type - " + providerType;
-                LOGGER.error(message);
-                throw new ServicesRuntimeException(message);
-            }
+        if (providerType == PushNotificationProviderType.SNS) {
+            return pushNotificationUserDeviceTokenSnsProcessor;
         }
+        final String message = "Unsupported push notification provider type - " + providerType;
+        LOGGER.error(message);
+        throw new ServicesRuntimeException(message);
     }
 
     private Pair<PushNotificationProviderType, String> determineCurrentNotificationData(final PushNotificationProviderType currentProviderType, final String currentProviderToken, final PushNotificationProviderType activeProvider) {

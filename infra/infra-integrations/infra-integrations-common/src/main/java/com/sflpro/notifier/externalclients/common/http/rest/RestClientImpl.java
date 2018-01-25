@@ -8,7 +8,6 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RequestCallback;
 import org.springframework.web.client.ResponseExtractor;
-import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
@@ -33,6 +32,7 @@ public class RestClientImpl implements RestClient {
 
     /* Constructors */
     public RestClientImpl() {
+        super();
     }
 
     @PostConstruct
@@ -153,17 +153,17 @@ public class RestClientImpl implements RestClient {
     }
 
     @Override
-    public <T> T patchForObject(String s, Object o, Class<T> aClass, Object... objects) throws RestClientException {
+    public <T> T patchForObject(String s, Object o, Class<T> aClass, Object... objects) {
         return restTemplate.patchForObject(s, o, aClass, objects);
     }
 
     @Override
-    public <T> T patchForObject(String s, Object o, Class<T> aClass, Map<String, ?> map) throws RestClientException {
+    public <T> T patchForObject(String s, Object o, Class<T> aClass, Map<String, ?> map) {
         return restTemplate.patchForObject(s, o, aClass, map);
     }
 
     @Override
-    public <T> T patchForObject(URI uri, Object o, Class<T> aClass) throws RestClientException {
+    public <T> T patchForObject(URI uri, Object o, Class<T> aClass) {
         return restTemplate.patchForObject(uri, o, aClass);
     }
 

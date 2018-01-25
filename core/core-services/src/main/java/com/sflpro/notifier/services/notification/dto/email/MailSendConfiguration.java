@@ -25,6 +25,7 @@ public class MailSendConfiguration implements Serializable {
 
     /* Constructors */
     public MailSendConfiguration() {
+        super();
     }
 
     /* Properties getters and setters */

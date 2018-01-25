@@ -67,6 +67,7 @@ public class NotificationQueueConsumerServiceImpl implements NotificationQueueCo
 
         /* Constructors */
         public StartSendingNotificationEventListener() {
+            super();
         }
 
         @Override

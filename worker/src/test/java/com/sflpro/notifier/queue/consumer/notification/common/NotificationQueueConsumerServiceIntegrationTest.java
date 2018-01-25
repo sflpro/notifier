@@ -42,6 +42,6 @@ public class NotificationQueueConsumerServiceIntegrationTest extends AbstractQue
         /* Flush, clear, reload notification and check state */
         smsNotification = smsNotificationService.getNotificationById(smsNotification.getId());
         assertNotNull(smsNotification);
-        assertEquals(smsNotification.getState(), NotificationState.SENT);
+        assertEquals(NotificationState.SENT, smsNotification.getState());
     }
 }

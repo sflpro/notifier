@@ -147,13 +147,6 @@ public class ServiceFacadeImplTestHelper {
         return notification;
     }
 
-    public void assertEmailNotification(final EmailNotification notification, final EmailNotificationDto notificationDto) {
-        assertNotification(notification, notificationDto);
-        assertEquals(notificationDto.getRecipientEmail(), notification.getRecipientEmail());
-        assertEquals(notificationDto.getSenderEmail(), notification.getSenderEmail());
-        assertEquals(notificationDto.getProviderType(), notification.getProviderType());
-    }
-
     /* SMS notification */
     public SmsNotificationDto createSmsNotificationDto() {
         final SmsNotificationDto notificationDto = new SmsNotificationDto();
@@ -175,12 +168,6 @@ public class ServiceFacadeImplTestHelper {
         return notification;
     }
 
-    public void assertSmsNotification(final SmsNotification notification, final SmsNotificationDto notificationDto) {
-        assertNotification(notification, notificationDto);
-        assertEquals(notificationDto.getRecipientMobileNumber(), notification.getRecipientMobileNumber());
-        assertEquals(notificationDto.getProviderType(), notification.getProviderType());
-    }
-
     /* Push notification */
     public PushNotificationDto createPushNotificationDto() {
         final PushNotificationDto notificationDto = new PushNotificationDto();
@@ -198,10 +185,6 @@ public class ServiceFacadeImplTestHelper {
         final PushNotification notification = new PushNotification(true);
         notificationDto.updateDomainEntityProperties(notification);
         return notification;
-    }
-
-    public void assertPushNotification(final PushNotification notification, final PushNotificationDto notificationDto) {
-        assertNotification(notification, notificationDto);
     }
 
     public void assertNotification(final Notification notification, final NotificationDto<? extends Notification> notificationDto) {
@@ -226,10 +209,6 @@ public class ServiceFacadeImplTestHelper {
         final UserNotification notification = new UserNotification();
         notificationDto.updateDomainEntityProperties(notification);
         return notification;
-    }
-
-    public void assertUserNotification(final UserNotification notification, final UserNotificationDto notificationDto) {
-        assertNotNull(notification);
     }
 
     /* Assert SMS notification model */
@@ -300,16 +279,6 @@ public class ServiceFacadeImplTestHelper {
         return createPushNotificationSnsRecipient(createPushNotificationSnsRecipientDto());
     }
 
-    public void assertPushNotificationSnsRecipient(final PushNotificationSnsRecipient recipient, final PushNotificationSnsRecipientDto recipientDto) {
-        assertNotNull(recipient);
-        assertEquals(recipient.getType(), recipientDto.getType());
-        assertEquals(recipient.getDestinationRouteToken(), recipientDto.getDestinationRouteToken());
-        assertEquals(recipient.getDeviceOperatingSystemType(), recipientDto.getDeviceOperatingSystemType());
-        assertEquals(recipient.getApplicationType(), recipientDto.getApplicationType());
-        assertEquals(recipient.getStatus(), PushNotificationRecipientStatus.ENABLED);
-        assertEquals(recipient.getPlatformApplicationArn(), recipientDto.getPlatformApplicationArn());
-    }
-
     /* Push notification property */
     public PushNotificationPropertyDto createPushNotificationPropertyDto() {
         final PushNotificationPropertyDto pushNotificationPropertyDto = new PushNotificationPropertyDto();
@@ -326,11 +295,6 @@ public class ServiceFacadeImplTestHelper {
 
     public PushNotificationProperty createPushNotificationProperty() {
         return createPushNotificationProperty(createPushNotificationPropertyDto());
-    }
-
-    public void assertPushNotificationProperty(final PushNotificationProperty pushNotificationProperty, final PushNotificationPropertyDto pushNotificationPropertyDto) {
-        assertEquals(pushNotificationPropertyDto.getPropertyKey(), pushNotificationProperty.getPropertyKey());
-        assertEquals(pushNotificationPropertyDto.getPropertyValue(), pushNotificationProperty.getPropertyValue());
     }
 
     /* Push notification subscription request */

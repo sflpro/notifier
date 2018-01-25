@@ -42,6 +42,7 @@ public class SmsNotificationServiceFacadeImpl extends AbstractNotificationServic
 
     /* Constructors */
     public SmsNotificationServiceFacadeImpl() {
+        super();
     }
 
     @Nonnull
@@ -51,7 +52,7 @@ public class SmsNotificationServiceFacadeImpl extends AbstractNotificationServic
         LOGGER.debug("Creating SMS notification, request - {}", request);
         // Validate request
         final List<ErrorResponseModel> errors = request.validateRequiredFields();
-        if (errors.size() != 0) {
+        if (!errors.isEmpty()) {
             return new ResultResponseModel<>(errors);
         }
         // Create notification DTO

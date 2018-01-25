@@ -22,11 +22,12 @@ public class SynchronExecutorService implements ExecutorService {
 
     /* Constructors */
     public SynchronExecutorService() {
-
+        super();
     }
 
     @Override
     public void execute(Runnable command) {
+        // execute
     }
 
 
@@ -54,14 +55,14 @@ public class SynchronExecutorService implements ExecutorService {
     }
 
     @Override
-    public boolean awaitTermination(long timeout, TimeUnit unit) throws InterruptedException {
+    public boolean awaitTermination(long timeout, TimeUnit unit) {
         return true;
     }
 
     @Override
     public <T> Future<T> submit(Callable<T> task) {
         final T result = invokeCallable(task);
-        return new SynchronFuture<T>(result);
+        return new SynchronFuture<>(result);
     }
 
     private <T> T invokeCallable(Callable<T> task) {
@@ -79,14 +80,14 @@ public class SynchronExecutorService implements ExecutorService {
     public <T> Future<T> submit(Runnable task, T result) {
         LOGGER.debug("Executing submitted task");
         task.run();
-        return new SynchronFuture<T>(result);
+        return new SynchronFuture<>(result);
     }
 
     @Override
     public Future<?> submit(Runnable task) {
         LOGGER.debug("Executing submitted task");
         task.run();
-        return new SynchronFuture<Object>(null);
+        return new SynchronFuture<>(null);
     }
 
     @Override

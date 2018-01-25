@@ -29,6 +29,7 @@ public class PushNotificationRecipientSearchFilter {
 
     /* Constructors */
     public PushNotificationRecipientSearchFilter() {
+        super();
     }
 
     /* Properties getters and setters */

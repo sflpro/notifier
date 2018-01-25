@@ -82,7 +82,7 @@ public class PushNotificationRecipientRepositoryImpl implements PushNotification
     }
 
     private <T> TypedQuery<T> buildFindRecipientsForSearchParametersTypedQuery(final PushNotificationRecipientSearchFilter parameters, final boolean countQuery, final Class<T> queryResultType) {
-        final String queryString = buildFindRecipientsForSearchParametersQueryString(parameters, countQuery);
+        final String queryString = buildFindRecipientsForSearchParametersQueryString(countQuery);
         // Create typed query
         final TypedQuery<T> typedQuery = entityManager.createQuery(queryString, queryResultType);
         typedQuery.setParameter(PARAMETER_NAME_SUBSCRIPTION_ID, parameters.getSubscriptionId());
@@ -94,7 +94,7 @@ public class PushNotificationRecipientRepositoryImpl implements PushNotification
         return typedQuery;
     }
 
-    private String buildFindRecipientsForSearchParametersQueryString(final PushNotificationRecipientSearchFilter parameters, final boolean countQuery) {
+    private String buildFindRecipientsForSearchParametersQueryString(final boolean countQuery) {
         // Build query string
         final StringBuilder queryBuilder = new StringBuilder();
         if (countQuery) {

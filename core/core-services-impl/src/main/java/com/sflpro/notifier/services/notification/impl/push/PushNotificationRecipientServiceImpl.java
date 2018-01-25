@@ -73,7 +73,6 @@ public class PushNotificationRecipientServiceImpl extends AbstractPushNotificati
         Assert.notNull(searchParameters, "Search parameters should not be null");
     }
 
-    /*TODO chk with Mr. Smith*/
     private PushNotificationRecipientSearchFilter convertParametersToFilter(PushNotificationRecipientSearchParameters parameters) {
         PushNotificationRecipientSearchFilter filter = new PushNotificationRecipientSearchFilter();
         filter.setApplicationType(parameters.getApplicationType());
@@ -86,10 +85,12 @@ public class PushNotificationRecipientServiceImpl extends AbstractPushNotificati
     }
 
     /* Properties getters and setters */
+    @Override
     public PushNotificationRecipientRepository getPushNotificationRecipientRepository() {
         return pushNotificationRecipientRepository;
     }
 
+    @Override
     public void setPushNotificationRecipientRepository(final PushNotificationRecipientRepository pushNotificationRecipientRepository) {
         this.pushNotificationRecipientRepository = pushNotificationRecipientRepository;
     }

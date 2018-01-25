@@ -2,7 +2,12 @@
 
 docker login -u "$DOCKER_USER" -p "$DOCKER_PASS"
 
-
+init_gpg() {
+    echo "Decrypt encrypted gpg key"
+    openssl aes-256-cbc -K $encrypted_0a6446eb3ae3_key -iv $encrypted_0a6446eb3ae3_iv -in ./travis/travis-gpg-key.asc.enc -out ./travis/travis-gpg-key.asc -d
+    echo "Import gpg key"
+    gpg --import ./travis/travis-gpg-key.asc
+}
 
 if [ "$TRAVIS_BRANCH" == "develop" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]
 then
@@ -36,10 +41,3 @@ else
     echo "Running regular maven execution. No artifacts will be released to either release or snapshot repositories"
     mvn clean verify -B
 fi
-
-init_gpg() {
-    echo "Decrypt encrypted gpg key"
-    openssl aes-256-cbc -K $encrypted_0a6446eb3ae3_key -iv $encrypted_0a6446eb3ae3_iv -in ./travis/travis-gpg-key.asc.enc -out ./travis/travis-gpg-key.asc -d
-    echo "Import gpg key"
-    gpg --import ./travis/travis-gpg-key.asc
-}

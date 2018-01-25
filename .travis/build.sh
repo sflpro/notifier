@@ -3,12 +3,8 @@
 docker login -u "$DOCKER_USER" -p "$DOCKER_PASS"
 
 init_gpg() {
-    ls -al
-    ls -al .travis/
-    echo "Decrypt encrypted gpg key"
-    openssl aes-256-cbc -K $encrypted_d9a908df501a_key -iv $encrypted_d9a908df501a_iv -in ./travis/travis-gpg-key.asc.enc -out ./travis/travis-gpg-key.asc -d
     echo "Import gpg key"
-    gpg --import ./travis/travis-gpg-key.asc
+    gpg --import travis-gpg-key.asc
 }
 
 ls -al

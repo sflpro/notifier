@@ -1,0 +1,36 @@
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.sflpro.notifier</groupId>
+        <artifactId>notifier</artifactId>
+        <version>1.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>core</artifactId>
+    <version>1.1-SNAPSHOT</version>
+
+    <packaging>pom</packaging>
+
+
+    <description>Core contains all the general business logic and required components.</description>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+    <modules>
+        <module>core-db-entities</module>
+        <module>core-db-repositories</module>
+        <module>core-services</module>
+        <module>core-services-impl</module>
+        <module>core-test-toolkit</module>
+    </modules>
+
+</project>

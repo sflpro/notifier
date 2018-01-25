@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.sflpro.notifier</groupId>
+        <artifactId>infra</artifactId>
+        <version>1.1-SNAPSHOT</version>
+    </parent>
+
+    <packaging>pom</packaging>
+    <artifactId>infra-integrations</artifactId>
+
+    <description>Infra-integrations sub module represents external web clients layer of SFL NMS project for interaction with
+        third party services.</description>
+
+    <modules>
+        <module>infra-integrations-common</module>
+        <module>infra-integrations-email</module>
+        <module>infra-integrations-push</module>
+        <module>infra-integrations-sms</module>
+    </modules>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+</project>

@@ -9,7 +9,7 @@ import org.junit.Ignore;
  * Time: 3:54 PM
  */
 @Ignore
-public class AbstractFacadeActionRequestUnitTest extends AbstractFacadeUnitTest {
+public abstract class AbstractFacadeActionRequestUnitTest extends AbstractFacadeUnitTest {
 
     /* Constructors */
     public AbstractFacadeActionRequestUnitTest() {

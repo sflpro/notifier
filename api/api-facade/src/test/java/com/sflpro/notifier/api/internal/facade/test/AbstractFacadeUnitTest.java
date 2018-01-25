@@ -21,7 +21,7 @@ import static org.junit.Assert.assertTrue;
  */
 @RunWith(EasyMockRunner.class)
 @Ignore
-public class AbstractFacadeUnitTest extends EasyMockSupport {
+public abstract class AbstractFacadeUnitTest extends EasyMockSupport {
 
     /* Properties */
     private final ServiceFacadeImplTestHelper serviceFacadeImplTestHelper;

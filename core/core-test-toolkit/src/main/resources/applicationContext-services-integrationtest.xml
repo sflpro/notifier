@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd"
+       default-lazy-init="true" default-autowire="byName">
+
+    <import resource="applicationContext-services.xml"/>
+
+    <jdbc:embedded-database id="datasource" type="H2"/>
+
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="dataSource" ref="datasource"/>
+        <property name="jpaVendorAdapter" ref="jpaVendorAdapter"/>
+        <property name="jpaProperties">
+            <map>
+                <entry key="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
+                <entry key="hibernate.show_sql" value="${database.hibernate.show_sql}"/>
+                <entry key="hibernate.hbm2ddl.auto" value="update"/>
+                <entry key="hibernate.globally_quoted_identifiers" value="true"/>
+                <entry key="hibernate.cache.use_second_level_cache" value="false"/>
+            </map>
+        </property>
+    </bean>
+
+    <!-- Override database connectivity  -->
+    <bean id="appProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+        <property name="locations">
+            <list>
+                <value>classpath:/ms_notifications.properties</value>
+                <value>classpath:/ms_notifications_integrationtest.properties</value>
+                <value>file:${user.home}/ms_notifications_integrationtest.properties</value>
+            </list>
+        </property>
+        <property name="ignoreResourceNotFound" value="true"/>
+    </bean>
+
+    <bean id="persistenceUtilityService" class="com.sflpro.notifier.db.repositories.utility.impl.SingleTransactionAwarePersistenceUtilityServiceImpl"/>
+
+    <bean id="smtpTransportService"
+          class="com.sflpro.notifier.services.notification.impl.email.SmtpTransportInMemoryServiceImpl"/>
+
+</beans>

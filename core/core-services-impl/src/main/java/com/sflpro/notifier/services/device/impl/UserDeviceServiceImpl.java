@@ -38,6 +38,7 @@ public class UserDeviceServiceImpl implements UserDeviceService {
 
     /* Constructors */
     public UserDeviceServiceImpl() {
+        super();
     }
 
     @Nonnull

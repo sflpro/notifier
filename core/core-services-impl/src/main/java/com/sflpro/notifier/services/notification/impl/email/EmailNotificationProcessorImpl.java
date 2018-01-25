@@ -54,6 +54,7 @@ public class EmailNotificationProcessorImpl implements EmailNotificationProcesso
 
     /* Constructors */
     public EmailNotificationProcessorImpl() {
+        super();
     }
 
 
@@ -111,9 +112,7 @@ public class EmailNotificationProcessorImpl implements EmailNotificationProcesso
     }
 
     private void updateEmailNotificationState(final Long notificationId, final NotificationState notificationState) {
-        persistenceUtilityService.runInNewTransaction(() -> {
-            emailNotificationService.updateNotificationState(notificationId, notificationState);
-        });
+        persistenceUtilityService.runInNewTransaction(() -> emailNotificationService.updateNotificationState(notificationId, notificationState));
     }
 
     private static SendEmailRequest createEmailRequest(final ThirdPartyEmailNotification thirdPartyEmailNotification) {

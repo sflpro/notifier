@@ -115,7 +115,7 @@ public class PushNotificationSubscriptionServiceIntegrationTest extends Abstract
 
     /* Utility methods */
     private void assertPushNotificationSubscription(final PushNotificationSubscription subscription, final PushNotificationSubscriptionDto subscriptionDto, final User user) {
-        getServicesTestHelper().assertPushNotificationSubscription(subscription, subscriptionDto);
+        getServicesTestHelper().assertPushNotificationSubscription(subscription);
         assertNotNull(subscription.getUser().getId());
         Assert.assertEquals(user.getId(), subscription.getUser().getId());
     }

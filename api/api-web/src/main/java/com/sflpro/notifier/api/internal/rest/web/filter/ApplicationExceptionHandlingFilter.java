@@ -19,7 +19,7 @@ public class ApplicationExceptionHandlingFilter implements Filter {
 
     /* Constructors */
     public ApplicationExceptionHandlingFilter() {
-
+        super();
     }
 
     /* Public method overrides */
@@ -52,7 +52,7 @@ public class ApplicationExceptionHandlingFilter implements Filter {
 
     private String handleExceptionAndReturnUuId(final Exception ex) {
         final String errorUuid = createErrorUuId();
-        LOGGER.error("Exception with UUID - " + errorUuid + " caught while processing the request. Original exception:", ex);
+        LOGGER.error("Exception with UUID - {} caught while processing the request. Original exception: {}", errorUuid, ex);
         return errorUuid;
     }
 }

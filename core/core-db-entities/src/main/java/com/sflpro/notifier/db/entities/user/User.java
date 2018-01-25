@@ -28,6 +28,7 @@ public class User extends AbstractDomainEntityModel {
 
     /* Constructors */
     public User() {
+        super();
     }
 
     /* Properties getters and setters */

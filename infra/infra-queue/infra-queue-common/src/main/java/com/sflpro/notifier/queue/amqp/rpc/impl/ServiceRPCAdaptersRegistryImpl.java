@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 
+import javax.annotation.Nonnull;
 import javax.annotation.PostConstruct;
 import java.util.*;
 
@@ -33,8 +34,8 @@ public class ServiceRPCAdaptersRegistryImpl implements ServiceRPCAdaptersRegistr
     }
 
     @Override
-    public RPCMethodHandler<?> getRpcMethodHandlerForIdentifier(final String identifier) {
-        Assert.notNull(identifier);
+    public RPCMethodHandler<?> getRpcMethodHandlerForIdentifier(@Nonnull final String identifier) {
+        Assert.notNull(identifier, "identifier cannot be null");
         final RPCMethodHandler methodHandler = this.handlersMap.get(identifier);
         if (methodHandler != null) {
             LOGGER.debug("Successfully retrieved method handler for identifier - {}", identifier);

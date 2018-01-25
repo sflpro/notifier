@@ -26,6 +26,7 @@ public class SnsArnConfigurationServiceImpl implements SnsArnConfigurationServic
 
     /* Constructors */
     public SnsArnConfigurationServiceImpl() {
+        super();
     }
 
     @Override

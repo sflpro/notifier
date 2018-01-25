@@ -34,6 +34,7 @@ public class PushNotificationRecipientSearchParameters implements Serializable {
 
     /* Constructors */
     public PushNotificationRecipientSearchParameters() {
+        super();
     }
 
     /* Properties getters and setters */

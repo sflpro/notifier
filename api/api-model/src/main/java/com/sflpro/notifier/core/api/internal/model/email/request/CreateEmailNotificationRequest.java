@@ -34,6 +34,7 @@ public class CreateEmailNotificationRequest extends AbstractCreateNotificationRe
 
     /* Constructors */
     public CreateEmailNotificationRequest() {
+        super();
     }
 
     /* Properties getters and setters */

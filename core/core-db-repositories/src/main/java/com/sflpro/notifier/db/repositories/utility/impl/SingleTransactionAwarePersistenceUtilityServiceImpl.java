@@ -12,6 +12,7 @@ public class SingleTransactionAwarePersistenceUtilityServiceImpl extends Persist
 
     /* Constructors */
     public SingleTransactionAwarePersistenceUtilityServiceImpl() {
+        super();
     }
 
     @Override

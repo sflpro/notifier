@@ -16,6 +16,7 @@ public class SmtpTransportInMemoryServiceImpl implements SmtpTransportService {
 
     /* Constructors */
     public SmtpTransportInMemoryServiceImpl() {
+        super();
     }
 
     @Override

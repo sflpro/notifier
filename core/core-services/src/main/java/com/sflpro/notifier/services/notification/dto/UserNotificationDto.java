@@ -18,6 +18,7 @@ public class UserNotificationDto extends AbstractDomainEntityModelDto<UserNotifi
 
     /* Constructors */
     public UserNotificationDto() {
+        super();
     }
 
     /* Properties getters and setters */

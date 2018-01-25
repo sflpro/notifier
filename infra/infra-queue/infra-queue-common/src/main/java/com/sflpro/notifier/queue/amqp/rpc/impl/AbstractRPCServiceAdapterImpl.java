@@ -29,7 +29,7 @@ public abstract class AbstractRPCServiceAdapterImpl implements RPCServiceAdapter
     }
 
     protected void addMethodHandler(final RPCMethodHandler<?> rpcHandler) {
-        Assert.notNull(rpcHandler);
+        Assert.notNull(rpcHandler, "rpcHandler cannot be null");
         this.handlers.add(rpcHandler);
     }
 

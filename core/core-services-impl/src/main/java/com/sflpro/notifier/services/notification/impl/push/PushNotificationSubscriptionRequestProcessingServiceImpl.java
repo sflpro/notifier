@@ -95,9 +95,7 @@ public class PushNotificationSubscriptionRequestProcessingServiceImpl implements
     }
 
     private void updatePushNotificationSubscriptionRequestState(final Long requestId, final PushNotificationSubscriptionRequestState state) {
-        persistenceUtilityService.runInNewTransaction(() -> {
-            pushNotificationSubscriptionRequestService.updatePushNotificationSubscriptionRequestState(requestId, state);
-        });
+        persistenceUtilityService.runInNewTransaction(() -> pushNotificationSubscriptionRequestService.updatePushNotificationSubscriptionRequestState(requestId, state));
     }
 
     private PushNotificationSubscriptionProcessingParameters buildSubscriptionProcessingParameters(final PushNotificationSubscriptionRequest request) {

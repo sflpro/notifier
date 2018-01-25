@@ -19,6 +19,7 @@ public class PushNotificationSubscriptionDto extends AbstractDomainEntityModelDt
 
     /* Constructors */
     public PushNotificationSubscriptionDto() {
+        super();
     }
 
     /* Public interface methods */

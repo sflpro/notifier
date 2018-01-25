@@ -71,10 +71,6 @@ public class ResetPasswordEmailTemplateModel extends NextEventAwareBaseEmailTemp
         this.verificationToken = verificationToken;
     }
 
-    public boolean isRegisteredCustomer() {
-        return isRegisteredCustomer;
-    }
-
     public boolean isCorporateCustomer() {
         return isCorporateCustomer;
     }

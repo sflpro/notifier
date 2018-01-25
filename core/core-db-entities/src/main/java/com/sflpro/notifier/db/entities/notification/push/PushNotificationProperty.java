@@ -32,6 +32,7 @@ public class PushNotificationProperty extends AbstractDomainEntityModel {
 
     /* Constructors */
     public PushNotificationProperty() {
+        super();
     }
 
     /* Properties getters and setters */

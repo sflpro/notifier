@@ -90,7 +90,6 @@ public abstract class AbstractNotificationServiceImpl<T extends Notification> im
 
     protected void assertNotificationDto(final NotificationDto<T> notificationDto) {
         Assert.notNull(notificationDto, "Notification DTO should not be null");
-        // Assert.notNull(notificationDto.getContent(), "Content in notification DTO should not be null");
     }
 
     protected void assertNotificationIdNotNull(final Long notificationId) {

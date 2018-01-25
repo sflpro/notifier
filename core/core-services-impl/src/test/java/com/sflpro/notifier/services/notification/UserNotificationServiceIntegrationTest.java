@@ -50,11 +50,11 @@ public class UserNotificationServiceIntegrationTest extends AbstractServiceInteg
         flushAndClear();
         // Create user notification
         UserNotification userNotification = userNotificationService.createUserNotification(user.getId(), notification.getId(), userNotificationDto);
-        assertUserNotification(userNotification, userNotificationDto, user, notification);
+        assertUserNotification(userNotification, user, notification);
         // Flush, clear, reload and assert again
         flushAndClear();
         userNotification = userNotificationService.getUserNotificationById(userNotification.getId());
-        assertUserNotification(userNotification, userNotificationDto, user, notification);
+        assertUserNotification(userNotification, user, notification);
     }
 
     @Test
@@ -84,8 +84,8 @@ public class UserNotificationServiceIntegrationTest extends AbstractServiceInteg
     }
 
     /* Utility methods */
-    private void assertUserNotification(final UserNotification userNotification, final UserNotificationDto userNotificationDto, final User user, final Notification notification) {
-        getServicesTestHelper().assertUserNotification(userNotification, userNotificationDto);
+    private void assertUserNotification(final UserNotification userNotification, final User user, final Notification notification) {
+        getServicesTestHelper().assertUserNotification(userNotification);
         assertNotNull(userNotification.getUser());
         assertEquals(user.getId(), userNotification.getUser().getId());
         assertNotNull(userNotification.getNotification());

@@ -33,6 +33,7 @@ public class PushNotificationRecipientDevice extends AbstractDomainEntityModel {
 
     /* Constructors */
     public PushNotificationRecipientDevice() {
+        super();
     }
 
     /* Properties getters and setters */

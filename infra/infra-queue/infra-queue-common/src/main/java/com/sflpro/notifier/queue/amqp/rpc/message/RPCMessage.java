@@ -23,7 +23,7 @@ public class RPCMessage implements Serializable {
 
     /* Constructors */
     public RPCMessage() {
-
+        super();
     }
 
     /* Properties getters and setters */

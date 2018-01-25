@@ -34,6 +34,7 @@ public class SmsNotificationResource {
 
     /* Constructors */
     public SmsNotificationResource() {
+        super();
     }
 
     @POST

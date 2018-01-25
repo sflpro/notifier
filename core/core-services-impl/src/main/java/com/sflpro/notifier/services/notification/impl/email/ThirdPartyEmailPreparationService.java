@@ -67,10 +67,6 @@ public class ThirdPartyEmailPreparationService implements EmailPreparationServic
     }
 
     /*Utility methods*/
-    private static void assertChannelId(@Nonnull final Long channelId) {
-        Assert.notNull(channelId, "Channel id should not be null");
-    }
-
     private ThirdPartyEmailNotification saveNotification(@Nonnull final String toEmail, final String templateName,
                                                          @Nonnull final List<ThirdPartyEmailNotificationPropertyDto> propertyDtos) {
         final ThirdPartyEmailNotificationDto dto = new ThirdPartyEmailNotificationDto(toEmail, null, NotificationProviderType.MANDRILL, templateName, null, null, null);

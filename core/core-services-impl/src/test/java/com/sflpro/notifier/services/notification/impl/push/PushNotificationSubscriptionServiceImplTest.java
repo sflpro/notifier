@@ -295,7 +295,7 @@ public class PushNotificationSubscriptionServiceImplTest extends AbstractService
         replayAll();
         // Run test scenario
         final PushNotificationSubscription result = pushNotificationSubscriptionService.createPushNotificationSubscription(userId, subscriptionDto);
-        getServicesImplTestHelper().assertPushNotificationSubscription(result, subscriptionDto);
+        getServicesImplTestHelper().assertPushNotificationSubscription(result);
         Assert.assertEquals(user, result.getUser());
         // Verify
         verifyAll();

@@ -34,7 +34,7 @@ public class MandrillApiCommunicatorImpl implements MandrillApiCommunicator, Ini
     /* Logger instance */
     private static final Logger LOGGER = LoggerFactory.getLogger(MandrillApiCommunicatorImpl.class);
 
-    private final static String MERGE_LANGUAGE_MAILCHIMP = "mailchimp";
+    private static final String MERGE_LANGUAGE_MAILCHIMP = "mailchimp";
 
     /* Properties */
     @Value("#{appProperties['mandrill.service.token']}")

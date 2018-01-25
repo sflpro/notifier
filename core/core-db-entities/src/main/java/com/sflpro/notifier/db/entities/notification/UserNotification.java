@@ -31,6 +31,7 @@ public class UserNotification extends AbstractDomainEntityModel {
 
     /* Constructors */
     public UserNotification() {
+        super();
     }
 
     /* Properties getters and setters */

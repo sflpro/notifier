@@ -187,7 +187,7 @@ public class UserNotificationServiceImplTest extends AbstractServicesUnitTest {
         replayAll();
         // Run test scenario
         final UserNotification userNotification = userNotificationService.createUserNotification(userId, notificationId, userNotificationDto);
-        getServicesImplTestHelper().assertUserNotification(userNotification, userNotificationDto);
+        getServicesImplTestHelper().assertUserNotification(userNotification);
         Assert.assertEquals(user, userNotification.getUser());
         assertEquals(notification, userNotification.getNotification());
         // Verify

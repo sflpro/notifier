@@ -62,6 +62,7 @@ public class NotificationQueueProducerServiceImpl implements NotificationQueuePr
 
         /* Constructors */
         public StartSendingNotificationEventListener() {
+            super();
         }
 
         @Override

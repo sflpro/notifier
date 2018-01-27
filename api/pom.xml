@@ -6,12 +6,12 @@
     <parent>
         <groupId>com.sflpro.notifier</groupId>
         <artifactId>notifier</artifactId>
-        <version>1.1</version>
+        <version>1.2</version>
     </parent>
 
     <packaging>pom</packaging>
     <artifactId>api</artifactId>
-    <version>1.1</version>
+    <version>1.2</version>
 
     <description>Project acts as a root API grouping project</description>
 
@@ -37,11 +37,22 @@
                             <serverId>ossrh</serverId>
                             <nexusUrl>https://oss.sonatype.org/</nexusUrl>
                             <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                            <skipNexusStagingDeployMojo>false</skipNexusStagingDeployMojo>
                         </configuration>
                     </plugin>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
+                        <version>${maven.gpg.plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
                     </plugin>
                     <!-- end of maven central stuff -->
                 </plugins>

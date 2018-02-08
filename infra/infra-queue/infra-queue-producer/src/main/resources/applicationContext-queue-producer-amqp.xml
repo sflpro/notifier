@@ -53,6 +53,4 @@
         <constructor-arg name="exclusive" value="false"/>
         <constructor-arg name="autoDelete" value="true"/>
     </bean>
-
-    <bean id="amqpProducerJsonObjectMapper" class="com.fasterxml.jackson.databind.ObjectMapper"/>
 </beans>

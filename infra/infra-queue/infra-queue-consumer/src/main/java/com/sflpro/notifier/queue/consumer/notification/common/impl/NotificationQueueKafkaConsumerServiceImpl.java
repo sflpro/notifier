@@ -9,23 +9,25 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.annotation.Nonnull;
 
 /**
- * User: Mher Sargsyan
  * Company: SFL LLC
- * Date: 4/10/15
- * Time: 7:04 PM
+ * Created on 08/02/2018
+ *
+ * @author Davit Harutyunyan
  */
-@Service("rabbit")
+@Service("kafka")
 @Lazy(false)
-public class NotificationQueueConsumerServiceImpl implements NotificationQueueConsumerService, InitializingBean {
+public class NotificationQueueKafkaConsumerServiceImpl implements NotificationQueueConsumerService, InitializingBean {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(NotificationQueueConsumerServiceImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(NotificationQueueKafkaConsumerServiceImpl.class);
 
     /* Dependencies */
     @Autowired
@@ -35,7 +37,7 @@ public class NotificationQueueConsumerServiceImpl implements NotificationQueueCo
     private ApplicationEventDistributionService applicationEventDistributionService;
 
     /* Constructors */
-    public NotificationQueueConsumerServiceImpl() {
+    public NotificationQueueKafkaConsumerServiceImpl() {
         LOGGER.debug("Initializing sms notification queue consumer service");
     }
 
@@ -45,6 +47,7 @@ public class NotificationQueueConsumerServiceImpl implements NotificationQueueCo
     }
 
     /* Public methods */
+    @KafkaListener(topics = "#{appProperties['kafka.topic.names']}")
     @Override
     public void processNotification(@Nonnull final Long notificationId) {
         Assert.notNull(notificationId, "Notification id should not be null");
@@ -72,7 +75,7 @@ public class NotificationQueueConsumerServiceImpl implements NotificationQueueCo
 
         @Override
         protected void processStartSendingNotificationEvent(final StartSendingNotificationEvent event) {
-            NotificationQueueConsumerServiceImpl.this.processNotification(event.getNotificationId());
+            NotificationQueueKafkaConsumerServiceImpl.this.processNotification(event.getNotificationId());
         }
     }
 }

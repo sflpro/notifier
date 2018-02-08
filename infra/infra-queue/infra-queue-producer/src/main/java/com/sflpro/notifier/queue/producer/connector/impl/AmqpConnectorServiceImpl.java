@@ -26,7 +26,7 @@ import java.util.concurrent.Executors;
  * Date: 12/13/14
  * Time: 11:44 PM
  */
-@Service
+@Service(value = "rabbit")
 public class AmqpConnectorServiceImpl implements AmqpConnectorService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AmqpConnectorServiceImpl.class);

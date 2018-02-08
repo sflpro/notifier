@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -36,6 +37,7 @@ public class PushNotificationSubscriptionRequestQueueProducerServiceImpl impleme
     private ApplicationEventDistributionService applicationEventDistributionService;
 
     @Autowired
+    @Qualifier("QueueConnectorService")
     private AmqpConnectorService amqpConnectorService;
 
     /* Constructors */

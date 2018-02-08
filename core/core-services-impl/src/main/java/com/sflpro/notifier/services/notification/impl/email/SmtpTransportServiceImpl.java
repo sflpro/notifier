@@ -44,19 +44,19 @@ public class SmtpTransportServiceImpl implements SmtpTransportService {
     private static final String PROPERTY_KEY_AUTH = "mail.smtp.auth";
 
     /* Configuration */
-    @Value("#{appProperties['smtp.host']}")
+    @Value("${smtp.host}")
     private String smtpHost;
 
-    @Value("#{appProperties['smtp.port']}")
+    @Value("${smtp.port}")
     private Integer smtpPort;
 
-    @Value("#{appProperties['smtp.timeout']}")
+    @Value("${smtp.timeout}")
     private Integer smtpTimeout;
 
-    @Value("#{appProperties['smtp.username']}")
+    @Value("${smtp.username}")
     private String smtpUsername;
 
-    @Value("#{appProperties['smtp.password']}")
+    @Value("${smtp.password}")
     private String smtpPassword;
 
     /* Properties */

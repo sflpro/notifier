@@ -35,7 +35,7 @@ public class PushNotificationSnsProviderProcessorImpl implements PushNotificatio
     @Autowired
     private AmazonSnsApiCommunicator amazonSnsApiCommunicator;
 
-    @Value("#{appProperties['amazon.account.sns.development']}")
+    @Value("${amazon.account.sns.development}")
     private boolean developmentMode;
 
     /* Constructors */

@@ -51,13 +51,13 @@ public class AmazonSnsApiCommunicatorImpl implements AmazonSnsApiCommunicator, I
     private static final String MESSAGE_STRUCTURE_JSON = "json";
 
     /* Properties */
-    @Value("#{appProperties['amazon.account.sns.accesskey']}")
+    @Value("${amazon.account.sns.accesskey}")
     private String accessKey;
 
-    @Value("#{appProperties['amazon.account.sns.secretkey']}")
+    @Value("${amazon.account.sns.secretkey}")
     private String secretKey;
 
-    @Value("#{appProperties['amazon.account.sns.region']}")
+    @Value("${amazon.account.sns.region}")
     private String awsRegion;
 
     private AmazonSNSClient amazonSNSClient;

@@ -37,7 +37,7 @@ public class MandrillApiCommunicatorImpl implements MandrillApiCommunicator, Ini
     private static final String MERGE_LANGUAGE_MAILCHIMP = "mailchimp";
 
     /* Properties */
-    @Value("#{appProperties['mandrill.service.token']}")
+    @Value("${mandrill.service.token}")
     private String token;
 
     private MandrillMessagesApi mandrillMessagesApi;

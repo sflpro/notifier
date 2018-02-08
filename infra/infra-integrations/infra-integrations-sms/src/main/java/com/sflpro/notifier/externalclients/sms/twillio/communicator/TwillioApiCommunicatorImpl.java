@@ -39,10 +39,10 @@ public class TwillioApiCommunicatorImpl implements TwillioApiCommunicator, Initi
     private static final String REQUEST_PARAM_KEY_MESSAGE_BODY = "Body";
 
     /* Properties */
-    @Value("#{appProperties['twillio.account.authToken']}")
+    @Value("${twillio.account.authToken}")
     private String accountAuthToken;
 
-    @Value("#{appProperties['twillio.account.sid']}")
+    @Value("${twillio.account.sid}")
     private String accountSid;
 
     private TwilioRestClient twillioRestClient;

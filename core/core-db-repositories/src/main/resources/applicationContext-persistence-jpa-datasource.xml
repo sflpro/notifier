@@ -15,5 +15,4 @@
             <property name="maximumPoolSize" value="${database.pool.maxActive}"/>
         </bean>
     </beans>
-
 </beans>

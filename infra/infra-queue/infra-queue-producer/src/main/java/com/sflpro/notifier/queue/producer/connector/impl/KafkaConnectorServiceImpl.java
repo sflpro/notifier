@@ -28,7 +28,7 @@ public class KafkaConnectorServiceImpl implements AmqpConnectorService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AmqpConnectorServiceImpl.class);
 
-    @Value("#{appProperties['kafka.topic.names']}")
+    @Value("${kafka.topic.names}")
     private String kafkaTopics;
 
     @Autowired

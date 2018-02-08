@@ -7,7 +7,8 @@
 
        default-lazy-init="false" default-autowire="byName">
 
-    <context:property-placeholder location="com/sflpro/notifier/queue.properties"/>
+    <context:property-placeholder location="com/sflpro/notifier/queue.properties"
+                                  ignore-unresolvable="true"/>
     <alias name="${queue.connector.service}" alias="QueueConnectorService"/>
 
     <import resource="applicationContext-queue-consumer-amqp.xml"/>

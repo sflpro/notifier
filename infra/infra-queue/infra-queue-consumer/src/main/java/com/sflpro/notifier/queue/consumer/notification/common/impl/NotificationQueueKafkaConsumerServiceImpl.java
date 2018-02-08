@@ -47,7 +47,7 @@ public class NotificationQueueKafkaConsumerServiceImpl implements NotificationQu
     }
 
     /* Public methods */
-    @KafkaListener(topics = "#{appProperties['kafka.topic.names']}")
+    @KafkaListener(topics = "${kafka.topic.names}")
     @Override
     public void processNotification(@Nonnull final Long notificationId) {
         Assert.notNull(notificationId, "Notification id should not be null");

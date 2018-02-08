@@ -10,9 +10,9 @@
 
 	<bean id="amqpConnectionFactory"
 		class="org.springframework.amqp.rabbit.connection.CachingConnectionFactory">
-		<constructor-arg value="#{appProperties['amqp.host']}" />
-		<property name="username" value="#{appProperties['amqp.username']}" />
-		<property name="password" value="#{appProperties['amqp.password']}" />
+		<constructor-arg value="${amqp.host}" />
+		<property name="username" value="${amqp.username}" />
+		<property name="password" value="${amqp.password}" />
 	</bean>
 
 	<bean id="amqpAdmin" class="org.springframework.amqp.rabbit.core.RabbitAdmin">
@@ -21,8 +21,8 @@
 	
 	<bean id="amqpExecutorService"
 		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
-		<property name="corePoolSize" value="#{appProperties['amqp.executor.coresize']}" />
-		<property name="maxPoolSize" value="#{appProperties['amqp.executor.maxsize']}" />
+		<property name="corePoolSize" value="${amqp.executor.coresize}" />
+		<property name="maxPoolSize" value="${amqp.executor.maxsize}" />
 	</bean>
 
     <bean id="requestMessageListenerContainer"
@@ -37,13 +37,13 @@
         <property name="rabbitAdmin" ref="amqpAdmin" />
         <property name="taskExecutor" ref="amqpExecutorService" />
         <property name="transactionManager"><null/></property>
-        <property name="concurrentConsumers" value="#{appProperties['amqp.concurrentConsumers']}" />
-        <property name="maxConcurrentConsumers" value="#{appProperties['amqp.maxConcurrentConsumers']}" />
-        <property name="prefetchCount" value="#{appProperties['amqp.prefetchCount']}" />
+        <property name="concurrentConsumers" value="${amqp.concurrentConsumers}" />
+        <property name="maxConcurrentConsumers" value="${amqp.maxConcurrentConsumers}" />
+        <property name="prefetchCount" value="${amqp.prefetchCount}" />
     </bean>
 
     <bean id="amqpRpcRequestQueue" class="org.springframework.amqp.core.Queue">
-        <constructor-arg value="#{appProperties['amqp.rpcRequestQueue.name']}" />
+        <constructor-arg value="${amqp.rpcRequestQueue.name}" />
     </bean>
 
 	<bean id="amqpRpcQueueMessageHandler" class="com.sflpro.notifier.queue.amqp.rpc.impl.RPCQueueMessageHandlerImpl">

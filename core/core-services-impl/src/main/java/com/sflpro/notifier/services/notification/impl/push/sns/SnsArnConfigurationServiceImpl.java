@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.PropertiesFactoryBean;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 /**
@@ -22,7 +23,7 @@ public class SnsArnConfigurationServiceImpl implements SnsArnConfigurationServic
 
     /* Dependencies */
     @Autowired
-    private PropertiesFactoryBean propertiesFactoryBean;
+    private Environment env;
 
     /* Constructors */
     public SnsArnConfigurationServiceImpl() {
@@ -36,7 +37,7 @@ public class SnsArnConfigurationServiceImpl implements SnsArnConfigurationServic
         // Grab application ARN
         String applicationArn = null;
         try {
-            applicationArn = propertiesFactoryBean.getObject().getProperty(arnPropertyKey);
+            applicationArn = env.getProperty(arnPropertyKey);
         } catch (final Exception ex) {
             LOGGER.error("Error occurred while getting application ARN for key - {}", arnPropertyKey);
             throw new ServicesRuntimeException(ex);

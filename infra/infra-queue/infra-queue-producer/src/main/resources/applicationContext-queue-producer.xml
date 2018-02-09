@@ -10,9 +10,9 @@
 
     <context:property-placeholder location="com/sflpro/notifier/queue.properties"
                                   ignore-unresolvable="true"/>
-    <alias name="${queue.connector.service}" alias="QueueConnectorService"/>
+    <alias name="${queue.engine}" alias="QueueConnectorService"/>
 
-    <bean class="com.sflpro.notifier.queue.QueueConditionalConfiguration"/>
+    <bean class="com.sflpro.notifier.queue.producer.config.QueueProducerConditionalConfiguration"/>
     <bean id="amqpProducerJsonObjectMapper" class="com.fasterxml.jackson.databind.ObjectMapper"/>
     <import resource="applicationContext-queue-producer-services.xml"/>
 </beans>

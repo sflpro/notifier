@@ -9,7 +9,6 @@ import com.sflpro.notifier.queue.consumer.notification.common.NotificationQueueC
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 /**
@@ -24,7 +23,6 @@ public class NotificationQueueConsumerServiceRPCAdapterImpl extends AbstractRPCS
 
     /* Dependencies */
     @Autowired
-    @Qualifier("QueueConnectorService")
     private NotificationQueueConsumerService notificationQueueConsumerService;
 
     @Autowired

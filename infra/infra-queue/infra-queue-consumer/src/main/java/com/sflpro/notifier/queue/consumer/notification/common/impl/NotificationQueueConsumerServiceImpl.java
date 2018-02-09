@@ -21,7 +21,7 @@ import javax.annotation.Nonnull;
  * Date: 4/10/15
  * Time: 7:04 PM
  */
-@Service("rabbit")
+@Service
 @Lazy(false)
 public class NotificationQueueConsumerServiceImpl implements NotificationQueueConsumerService, InitializingBean {
 

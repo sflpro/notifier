@@ -28,7 +28,7 @@ import java.util.concurrent.Executors;
  * Time: 11:44 PM
  */
 @Service(value = "rabbit")
-@ConditionalOnProperty(prefix = "queue.connector.service", value = "rabbit")
+@ConditionalOnProperty(name = "queue.engine", havingValue = "rabbit")
 public class AmqpConnectorServiceImpl implements AmqpConnectorService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AmqpConnectorServiceImpl.class);
@@ -38,6 +38,7 @@ public class AmqpConnectorServiceImpl implements AmqpConnectorService {
 
     /* Dependencies */
     @Autowired
+    @Qualifier("amqpClientRequestTemplate")
     private RabbitTemplate rabbitTemplate;
 
     @Autowired

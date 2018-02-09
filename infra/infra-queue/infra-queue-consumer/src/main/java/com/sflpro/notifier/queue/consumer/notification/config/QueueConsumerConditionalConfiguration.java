@@ -1,4 +1,4 @@
-package com.sflpro.notifier.queue;
+package com.sflpro.notifier.queue.consumer.notification.config;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
@@ -11,7 +11,7 @@ import org.springframework.context.annotation.ImportResource;
  * @author Davit Harutyunyan
  */
 @Configuration
-@ConditionalOnProperty(prefix = "queue.connector.service", value = "rabbit")
-@ImportResource("applicationContext-queue-producer-amqp.xml")
-public class QueueConditionalConfiguration {
+@ConditionalOnProperty(name = "queue.engine", havingValue = "rabbit")
+@ImportResource("classpath:applicationContext-queue-consumer-amqp.xml")
+public class QueueConsumerConditionalConfiguration {
 }

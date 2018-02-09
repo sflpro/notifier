@@ -36,7 +36,7 @@ public class KafkaConnectorServiceImpl implements AmqpConnectorService {
     private ObjectMapper objectMapper;
 
     @Autowired
-    private KafkaTemplate<String, String> kafkaTemplate;
+    private KafkaTemplate<String, byte[]> kafkaTemplate;
 
     @Override
     public <T extends AbstractRPCTransferModel> void publishMessage(@Nonnull RPCCallType callType, @Nonnull AbstractRPCTransferModel requestModel, @Nonnull Class<T> responseModelClass, @Nonnull AmqpResponseHandler<T> responseHandler) {
@@ -51,7 +51,7 @@ public class KafkaConnectorServiceImpl implements AmqpConnectorService {
             rpcMessage.setPayload(objectMapper.writeValueAsString(requestModel));
             // Serialize into JSON
             final String jsonMessage = objectMapper.writeValueAsString(rpcMessage);
-            kafkaTemplate.send(kafkaTopics, jsonMessage);
+            kafkaTemplate.send(kafkaTopics, jsonMessage.getBytes("UTF8"));
         } catch (final Exception ex) {
             // Only log
             LOGGER.error("Error occurred while executing RPC call, call type - {}, request model - {}", callType, requestModel, ex);

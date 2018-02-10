@@ -1,12 +1,11 @@
 package com.sflpro.notifier.services.notification.impl.push.sns;
 
-import com.sflpro.notifier.services.common.exception.ServicesRuntimeException;
 import com.sflpro.notifier.db.entities.device.mobile.DeviceOperatingSystemType;
+import com.sflpro.notifier.services.common.exception.ServicesRuntimeException;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.PropertiesFactoryBean;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 

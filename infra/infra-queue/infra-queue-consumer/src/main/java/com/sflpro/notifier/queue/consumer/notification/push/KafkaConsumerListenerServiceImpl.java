@@ -25,6 +25,7 @@ public class KafkaConsumerListenerServiceImpl {
 
     @KafkaListener(topics = "${kafka.topic.names}")
     public void listen(byte[] model) {
+        LOGGER.debug("Listening kafka topic");
         amqpRpcQueueMessageHandler.handleMessage(model);
     }
 }

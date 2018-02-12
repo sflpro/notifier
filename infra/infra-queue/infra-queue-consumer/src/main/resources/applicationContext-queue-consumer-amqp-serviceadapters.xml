@@ -10,7 +10,7 @@
        default-lazy-init="false" default-autowire="byName">
     <context:annotation-config/>
 
-    <context:component-scan base-package="com.sflpro.notifier.queue.amqp.*"></context:component-scan>
+    <context:component-scan base-package="com.sflpro.notifier.queue.amqp.*"/>
 
     <bean id="serviceRPCAdaptersRegistry"
           class="com.sflpro.notifier.queue.amqp.rpc.impl.ServiceRPCAdaptersRegistryImpl">

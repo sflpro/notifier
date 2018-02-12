@@ -1,12 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-           http://www.springframework.org/schema/beans/spring-beans.xsd"
+           http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd"
 
        default-lazy-init="false" default-autowire="byName">
 
-    <import resource="applicationContext-queue-consumer-amqp.xml"/>
-    <import resource="applicationContext-queue-consumer-services.xml"/>
+    <context:property-placeholder location="com/sflpro/notifier/queue.properties"
+                                  ignore-unresolvable="true"/>
 
+    <bean class="com.sflpro.notifier.queue.consumer.notification.config.QueueConsumerConditionalConfiguration"/>
+    <bean id="amqpConsumerJsonObjectMapper" class="com.fasterxml.jackson.databind.ObjectMapper"/>
+    <bean id="amqpRpcQueueMessageHandler" class="com.sflpro.notifier.queue.amqp.rpc.impl.RPCQueueMessageHandlerImpl">
+        <property name="objectMapper" ref="amqpConsumerJsonObjectMapper"/>
+        <property name="serviceRPCAdaptersRegistry" ref="serviceRPCAdaptersRegistry"/>
+    </bean>
+
+    <import resource="applicationContext-queue-consumer-amqp-serviceadapters.xml"/>
+    <import resource="applicationContext-queue-consumer-services.xml"/>
 </beans>

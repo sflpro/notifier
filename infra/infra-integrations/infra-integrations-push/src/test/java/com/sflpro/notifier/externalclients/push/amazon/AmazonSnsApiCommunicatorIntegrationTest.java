@@ -43,10 +43,10 @@ public class AmazonSnsApiCommunicatorIntegrationTest extends AbstractPushNotific
     @Autowired
     private AmazonSnsApiCommunicator amazonSnsApiCommunicator;
 
-    @Value("#{appProperties['amazon.account.sns.application.arn.ios']}")
+    @Value("${amazon.account.sns.application.arn.ios}")
     private String iosPlatformApplicationArn;
 
-    @Value("#{appProperties['amazon.account.sns.application.arn.android']}")
+    @Value("${amazon.account.sns.application.arn.android}")
     private String androidPlatformApplicationArn;
 
     /* Properties */

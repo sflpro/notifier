@@ -22,7 +22,7 @@
     <!-- Information required by maven central -->
     <name>Notifier</name>
     <description>Notifier is an email, push, SMS, etc. notification sending application</description>
-    <url>https://github.com/sflpro/identity</url>
+    <url>https://github.com/sflpro/notifier</url>
 
     <licenses>
         <license>

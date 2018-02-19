@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-docker login -u "$DOCKER_USER" -p "$DOCKER_PASS"
-
 echo "Extract secrets"
 tar -jxvf secret.tar.bz2
 mv secret/travis-gpg-key.asc ./travis-gpg-key.asc

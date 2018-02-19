@@ -14,7 +14,6 @@ echo "Proceeding to compilation/check"
 
 if [ "$TRAVIS_BRANCH" == "develop" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]
 then
-    init_central_auth
     echo "Running develop branch build and analysis. Snapshots will be published. All issues/stats will be saved to Sonar database."
     mvn -P snapshot -P central -s settings.xml clean org.jacoco:jacoco-maven-plugin:prepare-agent deploy sonar:sonar -B \
     -Dsonar.host.url=https://sonarcloud.io \
@@ -23,7 +22,6 @@ then
     -Dgpg.passphrase=$TRAVIS_GPG_KEY_PASS
 elif [ $TRAVIS_BRANCH == 'master' ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]
 then
-    init_central_auth
     echo "Running master branch build and analysis. Release artifacts will be published.. Sonar run will be skipped."
     mvn -P release -P central -s settings.xml clean org.jacoco:jacoco-maven-plugin:prepare-agent deploy sonar:sonar -B \
     -Dsonar.host.url=https://sonarcloud.io \

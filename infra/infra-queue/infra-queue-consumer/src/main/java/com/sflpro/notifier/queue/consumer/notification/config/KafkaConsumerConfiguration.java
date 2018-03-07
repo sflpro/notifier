@@ -54,7 +54,7 @@ public class KafkaConsumerConfiguration {
         props.put(ConsumerConfig.HEARTBEAT_INTERVAL_MS_CONFIG, heartbeatInterval);
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, ByteArrayDeserializer.class);
-        props.put(ConsumerConfig.GROUP_ID_CONFIG, "notifier-worker");
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, "notifier");
 
         return props;
     }

@@ -15,8 +15,6 @@ import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 
 import javax.annotation.PostConstruct;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,8 +28,6 @@ import java.util.Map;
 @Configuration
 @EnableKafka
 public class KafkaConsumerConfiguration {
-
-    private static final String CONSUMER_GROUP_FALLBACK = "notifier";
 
     private static final Logger logger = LoggerFactory.getLogger(KafkaConsumerConfiguration.class);
 
@@ -58,16 +54,7 @@ public class KafkaConsumerConfiguration {
         props.put(ConsumerConfig.HEARTBEAT_INTERVAL_MS_CONFIG, heartbeatInterval);
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, ByteArrayDeserializer.class);
-
-        String consumerGroupId;
-        try {
-            consumerGroupId = InetAddress.getLocalHost().getHostName();
-        } catch (UnknownHostException e) {
-            logger.warn("Unable to determine the hostname of the machine, using {} as Kafka consumer group", CONSUMER_GROUP_FALLBACK, e);
-            consumerGroupId = CONSUMER_GROUP_FALLBACK;
-        }
-
-        props.put(ConsumerConfig.GROUP_ID_CONFIG, consumerGroupId);
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, "notifier-worker");
 
         return props;
     }

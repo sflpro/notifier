@@ -63,7 +63,7 @@ public class KafkaConsumerConfiguration {
         try {
             consumerGroupId = InetAddress.getLocalHost().getHostName();
         } catch (UnknownHostException e) {
-            logger.warn("Unable to determine the hostnam eof the machine, using {} as Kafka consumer group", CONSUMER_GROUP_FALLBACK, e);
+            logger.warn("Unable to determine the hostname of the machine, using {} as Kafka consumer group", CONSUMER_GROUP_FALLBACK, e);
             consumerGroupId = CONSUMER_GROUP_FALLBACK;
         }
 

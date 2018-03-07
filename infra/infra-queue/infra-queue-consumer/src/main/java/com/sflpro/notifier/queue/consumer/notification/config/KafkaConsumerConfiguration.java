@@ -31,7 +31,7 @@ import java.util.Map;
 @EnableKafka
 public class KafkaConsumerConfiguration {
 
-    private static final String CONSUMER_GROUP_FALLBACK = "insights-worker";
+    private static final String CONSUMER_GROUP_FALLBACK = "notifier";
 
     private static final Logger logger = LoggerFactory.getLogger(KafkaConsumerConfiguration.class);
 

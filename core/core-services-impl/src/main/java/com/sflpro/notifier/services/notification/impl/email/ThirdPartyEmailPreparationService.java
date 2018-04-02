@@ -2,6 +2,8 @@ package com.sflpro.notifier.services.notification.impl.email;
 
 import com.sflpro.notifier.db.entities.notification.Notification;
 import com.sflpro.notifier.db.entities.notification.NotificationProviderType;
+import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
+import com.sflpro.notifier.db.entities.notification.email.ThirdPartyEmailNotification;
 import com.sflpro.notifier.services.notification.dto.email.ThirdPartyEmailNotificationDto;
 import com.sflpro.notifier.services.notification.dto.email.ThirdPartyEmailNotificationPropertyDto;
 import com.sflpro.notifier.services.notification.email.EmailPreparationService;
@@ -9,8 +11,6 @@ import com.sflpro.notifier.services.notification.email.ThirdPartyEmailNotificati
 import com.sflpro.notifier.services.notification.email.template.model.NotificationTemplateType;
 import com.sflpro.notifier.services.notification.email.template.model.forgotpassword.ResetPasswordEmailTemplateModel;
 import com.sflpro.notifier.services.notification.event.sms.StartSendingNotificationEvent;
-import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
-import com.sflpro.notifier.db.entities.notification.email.ThirdPartyEmailNotification;
 import com.sflpro.notifier.services.system.event.ApplicationEventDistributionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,6 +56,7 @@ public class ThirdPartyEmailPreparationService implements EmailPreparationServic
         //addThirdPartyEmailNotificationPropertyDtoToList new third party email notification dto's and add linked list
         addThirdPartyEmailNotificationPropertyDtoToList(propertyDtos, "firstname", resetPasswordEmailTemplateModel.getName());
         addThirdPartyEmailNotificationPropertyDtoToList(propertyDtos, "reset_email", resetPasswordEmailTemplateModel.getEmail());
+        addThirdPartyEmailNotificationPropertyDtoToList(propertyDtos, "redirect_uri", resetPasswordEmailTemplateModel.getRedirectUri());
         addThirdPartyEmailNotificationPropertyDtoToList(propertyDtos, "reset_token", resetPasswordEmailTemplateModel.getVerificationToken());
         addThirdPartyEmailNotificationPropertyDtoToList(propertyDtos, "corporate_customer", resetPasswordEmailTemplateModel.isCorporateCustomer() ? "y" : "n");
         LOGGER.debug("Reset password email template model successfully converted to list of third party email notification property dto's -{} ", propertyDtos);

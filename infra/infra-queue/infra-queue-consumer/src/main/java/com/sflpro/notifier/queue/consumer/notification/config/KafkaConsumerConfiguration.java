@@ -50,7 +50,7 @@ public class KafkaConsumerConfiguration {
 
     @PostConstruct
     public void validateConfig() {
-        if (kafkaConcurrencyFactor < 1) {
+        if(kafkaConcurrencyFactor <1 ) {
             throw new IllegalStateException("Kafka concurrency factor should be a positive integer");
         }
     }
@@ -65,7 +65,6 @@ public class KafkaConsumerConfiguration {
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, ByteArrayDeserializer.class);
         props.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, 1);
         props.put(ConsumerConfig.GROUP_ID_CONFIG, "notifier-worker");
-
         return props;
     }
 
@@ -86,13 +85,6 @@ public class KafkaConsumerConfiguration {
         factory.setConcurrency(kafkaConcurrencyFactor);
         factory.getContainerProperties().setAckMode(AbstractMessageListenerContainer.AckMode.MANUAL);
         factory.getContainerProperties().setAckOnError(false);
-        /*
-        try {
-            factory.getContainerProperties().setClientId(InetAddress.getLocalHost().getHostName());
-        } catch (UnknownHostException e) {
-            logger.warn("Unable to determine the hostname of the machine", e);
-        }
-        */
 
         logger.info("Kafka concurrent listener container factory initialized");
         return factory;

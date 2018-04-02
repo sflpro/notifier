@@ -14,15 +14,6 @@
 
     <description>Core contains all the general business logic and required components.</description>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.sonatype.plugins</groupId>
-                <artifactId>nexus-staging-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
-
     <modules>
         <module>core-db-entities</module>
         <module>core-db-repositories</module>

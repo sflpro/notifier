@@ -19,13 +19,4 @@
         <module>infra-integrations-push</module>
         <module>infra-integrations-sms</module>
     </modules>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.sonatype.plugins</groupId>
-                <artifactId>nexus-staging-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
 </project>

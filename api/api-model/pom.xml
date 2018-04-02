@@ -26,8 +26,9 @@
                         <configuration>
                             <serverId>ossrh</serverId>
                             <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                            <autoReleaseAfterClose>false</autoReleaseAfterClose>
                             <skipNexusStagingDeployMojo>false</skipNexusStagingDeployMojo>
+                            <skipStaging>false</skipStaging>
                         </configuration>
                     </plugin>
                     <plugin>

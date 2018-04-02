@@ -288,8 +288,8 @@
                     <extensions>true</extensions>
                     <configuration>
                         <skipStaging>true</skipStaging>
-                        <skipNexusStagingDeployMojo>true</skipNexusStagingDeployMojo>
-                        <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                        <skipNexusStagingDeployMojo>false</skipNexusStagingDeployMojo>
+                        <autoReleaseAfterClose>false</autoReleaseAfterClose>
                     </configuration>
                 </plugin>
                 <!-- End of plugins required for deployment to maven central -->

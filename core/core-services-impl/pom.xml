@@ -5,13 +5,13 @@
     <parent>
         <groupId>com.sflpro.notifier</groupId>
         <artifactId>core</artifactId>
-        <version>1.3.5</version>
+        <version>1.3.6</version>
     </parent>
 
     <packaging>jar</packaging>
 
     <artifactId>core-services-impl</artifactId>
-    <version>1.3.5</version>
+    <version>1.3.6</version>
 
     <description>Services implementation sub module represents implementation of services layer for Future project.</description>
 
@@ -22,10 +22,6 @@
             </plugin>
             <plugin>
                 <artifactId>maven-failsafe-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.sonatype.plugins</groupId>
-                <artifactId>nexus-staging-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </build>

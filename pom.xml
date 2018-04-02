@@ -227,6 +227,13 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
             </plugin>
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <configuration>
+                    <skipNexusStagingDeployMojo>true</skipNexusStagingDeployMojo>
+                </configuration>
+            </plugin>
         </plugins>
 
         <pluginManagement>
@@ -289,7 +296,7 @@
                     <extensions>true</extensions>
                     <configuration>
                         <skipStaging>true</skipStaging>
-                        <skipNexusStagingDeployMojo>true</skipNexusStagingDeployMojo>
+                        <skipNexusStagingDeployMojo>false</skipNexusStagingDeployMojo>
                         <autoReleaseAfterClose>false</autoReleaseAfterClose>
                     </configuration>
                 </plugin>

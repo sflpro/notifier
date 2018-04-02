@@ -16,4 +16,13 @@
         <module>infra-queue-consumer</module>
         <module>infra-queue-producer</module>
     </modules>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 </project>	

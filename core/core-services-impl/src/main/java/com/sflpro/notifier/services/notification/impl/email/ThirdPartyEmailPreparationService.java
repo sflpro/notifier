@@ -15,6 +15,7 @@ import com.sflpro.notifier.services.system.event.ApplicationEventDistributionSer
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -30,6 +31,9 @@ import java.util.List;
 public class ThirdPartyEmailPreparationService implements EmailPreparationService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ThirdPartyEmailPreparationService.class);
+
+    @Value("${redirect.uri}")
+    private String redirectUri;
 
     /* Dependencies */
     @Autowired
@@ -56,6 +60,7 @@ public class ThirdPartyEmailPreparationService implements EmailPreparationServic
         //addThirdPartyEmailNotificationPropertyDtoToList new third party email notification dto's and add linked list
         addThirdPartyEmailNotificationPropertyDtoToList(propertyDtos, "firstname", resetPasswordEmailTemplateModel.getName());
         addThirdPartyEmailNotificationPropertyDtoToList(propertyDtos, "reset_email", resetPasswordEmailTemplateModel.getEmail());
+        addThirdPartyEmailNotificationPropertyDtoToList(propertyDtos, "redirect_uri", redirectUri);
         addThirdPartyEmailNotificationPropertyDtoToList(propertyDtos, "reset_token", resetPasswordEmailTemplateModel.getVerificationToken());
         addThirdPartyEmailNotificationPropertyDtoToList(propertyDtos, "corporate_customer", resetPasswordEmailTemplateModel.isCorporateCustomer() ? "y" : "n");
         LOGGER.debug("Reset password email template model successfully converted to list of third party email notification property dto's -{} ", propertyDtos);

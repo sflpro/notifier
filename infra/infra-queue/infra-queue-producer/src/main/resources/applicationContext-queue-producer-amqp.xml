@@ -6,10 +6,11 @@
 
        default-lazy-init="false" default-autowire="byName">
 
-    <bean id="amqpClientConnectionFactory" class="org.springframework.amqp.rabbit.connection.CachingConnectionFactory">
-        <constructor-arg value="#{appProperties['amqp.host']}"/>
-        <property name="username" value="#{appProperties['amqp.username']}"/>
-        <property name="password" value="#{appProperties['amqp.password']}"/>
+    <bean id="amqpClientConnectionFactory" class="org.springframework.amqp.rabbit.connection.CachingConnectionFactory"
+          primary="true">
+        <constructor-arg value="${amqp.host}"/>
+        <property name="username" value="${amqp.username}"/>
+        <property name="password" value="${amqp.password}"/>
     </bean>
 
     <bean id="amqpClientAdmin" class="org.springframework.amqp.rabbit.core.RabbitAdmin" lazy-init="false">
@@ -18,14 +19,14 @@
 
     <bean id="amqpClientRequestTemplate" class="org.springframework.amqp.rabbit.core.RabbitTemplate">
         <constructor-arg ref="amqpClientConnectionFactory"/>
-        <property name="routingKey" value="#{appProperties['amqp.rpcRequestQueue.name']}"/>
+        <property name="routingKey" value="${amqp.rpcRequestQueue.name}"/>
         <property name="replyQueue" ref="amqpClientRpcResponseQueue"/>
-        <property name="replyTimeout" value="#{appProperties['amqp.replyTimeout']}"/>
+        <property name="replyTimeout" value="${amqp.replyTimeout}"/>
     </bean>
 
     <bean id="amqpClientExecutorService" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
-        <property name="corePoolSize" value="#{appProperties['amqp.executor.coresize']}"/>
-        <property name="maxPoolSize" value="#{appProperties['amqp.executor.maxsize']}"/>
+        <property name="corePoolSize" value="${amqp.executor.coresize}"/>
+        <property name="maxPoolSize" value="${amqp.executor.maxsize}"/>
     </bean>
 
     <bean id="clientRequestMessageListenerContainer"
@@ -37,8 +38,8 @@
         <property name="queues" ref="amqpClientRpcResponseQueue" />
         <property name="taskExecutor" ref="amqpClientExecutorService" />
         <property name="transactionManager"><null/></property>
-        <property name="concurrentConsumers" value="#{appProperties['amqp.concurrentConsumers']}" />
-        <property name="maxConcurrentConsumers" value="#{appProperties['amqp.maxConcurrentConsumers']}" />
+        <property name="concurrentConsumers" value="${amqp.concurrentConsumers}" />
+        <property name="maxConcurrentConsumers" value="${amqp.maxConcurrentConsumers}" />
     </bean>
 
     <bean id="amqpClientRpcResponseQueue" class="com.sflpro.notifier.queue.amqp.queues.UniquelyNamedConfigurableQueue">
@@ -46,6 +47,4 @@
         <constructor-arg name="exclusive" value="false"/>
         <constructor-arg name="autoDelete" value="true"/>
     </bean>
-
-    <bean id="amqpProducerJsonObjectMapper" class="com.fasterxml.jackson.databind.ObjectMapper"/>
 </beans>

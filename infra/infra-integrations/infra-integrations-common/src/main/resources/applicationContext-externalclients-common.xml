@@ -13,7 +13,7 @@
         default-lazy-init="true" default-autowire="byName">
 
     <bean id="httpClientBuilder" class="org.apache.http.impl.client.HttpClientBuilder" init-method="create">
-        <property name="maxConnTotal" value="#{appProperties['http.client.connections.max']}"/>
+        <property name="maxConnTotal" value="${http.client.connections.max}"/>
     </bean>
 
     <bean id="httpClient" factory-bean="httpClientBuilder" factory-method="build" destroy-method="close">

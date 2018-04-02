@@ -13,6 +13,7 @@ import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -26,7 +27,8 @@ import java.util.concurrent.Executors;
  * Date: 12/13/14
  * Time: 11:44 PM
  */
-@Service
+@Service(value = "rabbit")
+@ConditionalOnProperty(name = "queue.engine", havingValue = "rabbit")
 public class AmqpConnectorServiceImpl implements AmqpConnectorService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AmqpConnectorServiceImpl.class);
@@ -36,6 +38,7 @@ public class AmqpConnectorServiceImpl implements AmqpConnectorService {
 
     /* Dependencies */
     @Autowired
+    @Qualifier("amqpClientRequestTemplate")
     private RabbitTemplate rabbitTemplate;
 
     @Autowired

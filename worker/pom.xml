@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.sflpro.notifier</groupId>
         <artifactId>notifier</artifactId>
-        <version>1.2</version>
+        <version>1.3.0</version>
     </parent>
 
     <packaging>jar</packaging>
@@ -135,6 +135,14 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <requiresUnpack>
+                        <dependency>
+                            <groupId>com.sflpro.notifier</groupId>
+                            <artifactId>infra-queue-consumer</artifactId>
+                        </dependency>
+                    </requiresUnpack>
+                </configuration>
                 <executions>
                     <execution>
                         <goals>

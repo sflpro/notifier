@@ -43,7 +43,7 @@ public class SmsNotificationProcessorImpl implements SmsNotificationProcessor {
     private TwillioApiCommunicator twillioApiCommunicator;
 
     /* Properties */
-    @Value("#{appProperties['twillio.account.sender.phone']}")
+    @Value("${twillio.account.sender.phone}")
     private String accountSenderNumber;
 
     /* Constructors */

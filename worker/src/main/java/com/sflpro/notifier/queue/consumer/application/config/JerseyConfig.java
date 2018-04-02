@@ -1,5 +1,6 @@
 package com.sflpro.notifier.queue.consumer.application.config;
 
+
 import org.glassfish.jersey.filter.LoggingFilter;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.springframework.web.filter.RequestContextFilter;
@@ -14,7 +15,7 @@ public class JerseyConfig extends ResourceConfig {
 
     public JerseyConfig() {
         register(RequestContextFilter.class);
-        packages("com.sflpro.notifier.queue.consumer.application");
+        packages("com.sflpro.notifier.queue.consumer.notification");
         register(LoggingFilter.class);
     }
 }

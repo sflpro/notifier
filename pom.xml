@@ -16,13 +16,13 @@
 
     <groupId>com.sflpro.notifier</groupId>
     <artifactId>notifier</artifactId>
-    <version>1.2</version>
+    <version>1.3.0</version>
     <packaging>pom</packaging>
 
     <!-- Information required by maven central -->
     <name>Notifier</name>
     <description>Notifier is an email, push, SMS, etc. notification sending application</description>
-    <url>https://github.com/sflpro/identity</url>
+    <url>https://github.com/sflpro/notifier</url>
 
     <licenses>
         <license>
@@ -88,6 +88,7 @@
         <spring.data.version>1.8.2.RELEASE</spring.data.version>
         <spring.security.version>3.2.5.RELEASE</spring.security.version>
         <spring.amqp.version>1.4.5.RELEASE</spring.amqp.version>
+        <spring.kafka.version>1.3.3.RELEASE</spring.kafka.version>
 
         <!-- Database -->
         <postgresql.version>42.1.4</postgresql.version>
@@ -153,6 +154,7 @@
         <maven.assembly.plugin.version>2.6</maven.assembly.plugin.version>
         <dockerfile.maven.plugin.version>1.3.6</dockerfile.maven.plugin.version>
         <maven.gpg.plugin.version>1.6</maven.gpg.plugin.version>
+        <gitflow.plugin.version>1.9.0</gitflow.plugin.version>
     </properties>
 
     <profiles>
@@ -196,21 +198,19 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>external.atlassian.jgitflow</groupId>
-                <artifactId>jgitflow-maven-plugin</artifactId>
-                <version>1.0-m5.1</version>
+                <groupId>com.amashchenko.maven.plugin</groupId>
+                <artifactId>gitflow-maven-plugin</artifactId>
+                <version>${gitflow.plugin.version}</version>
                 <configuration>
-                    <autoVersionSubmodules>true</autoVersionSubmodules>
-                    <noFeatureBuild>true</noFeatureBuild>
-                    <noHotfixBuild>true</noHotfixBuild>
-                    <noReleaseBuild>true</noReleaseBuild>
-                    <flowInitContext>
-                        <masterBranchName>master</masterBranchName>
-                        <developBranchName>develop</developBranchName>
+                    <versionDigitToIncrement>1</versionDigitToIncrement>
+                    <gitFlowConfig>
+                        <productionBranch>master</productionBranch>
+                        <developmentBranch>develop</developmentBranch>
                         <featureBranchPrefix>feature/</featureBranchPrefix>
                         <releaseBranchPrefix>release/</releaseBranchPrefix>
                         <hotfixBranchPrefix>hotfix/</hotfixBranchPrefix>
-                    </flowInitContext>
+                        <origin>origin</origin>
+                    </gitFlowConfig>
                 </configuration>
             </plugin>
             
@@ -304,6 +304,12 @@
                 <groupId>net.logstash.logback</groupId>
                 <artifactId>logstash-logback-encoder</artifactId>
                 <version>${logback.logstash.encoder.version}</version>
+            </dependency>
+            <!-- Spring dependencies -->
+            <dependency>
+                <groupId>org.springframework.kafka</groupId>
+                <artifactId>spring-kafka</artifactId>
+                <version>${spring.kafka.version}</version>
             </dependency>
             <!-- Apache commons -->
             <dependency>

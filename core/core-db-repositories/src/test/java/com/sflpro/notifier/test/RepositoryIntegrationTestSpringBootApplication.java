@@ -12,6 +12,6 @@ import org.springframework.context.annotation.PropertySource;
  */
 @SpringBootApplication
 @EnableAutoConfiguration
-@PropertySource({"classpath:repositories_integration_test.properties", "classpath:repositories.properties"})
+@PropertySource({"classpath:repositories_integration_test.properties", "classpath:com/sflpro/notifier/repositories.properties"})
 public class RepositoryIntegrationTestSpringBootApplication {
 }

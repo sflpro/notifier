@@ -288,7 +288,7 @@
                     <extensions>true</extensions>
                     <configuration>
                         <skipStaging>true</skipStaging>
-                        <skipNexusStagingDeployMojo>true</skipNexusStagingDeployMojo>
+                        <skipNexusStagingDeployMojo>false</skipNexusStagingDeployMojo>
                         <autoReleaseAfterClose>false</autoReleaseAfterClose>
                     </configuration>
                 </plugin>

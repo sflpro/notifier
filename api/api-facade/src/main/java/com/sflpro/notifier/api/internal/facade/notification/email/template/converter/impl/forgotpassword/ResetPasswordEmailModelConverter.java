@@ -57,6 +57,7 @@ public class ResetPasswordEmailModelConverter implements EmailTemplateModelConve
         templateModel.setCorporateCustomer(clientModel.isCorporateCustomer());
         templateModel.setRegisteredCustomer(clientModel.isRegisteredCustomer());
         templateModel.setToken(clientModel.getToken());
+        templateModel.setRedirectUrl(clientModel.getResetUri());
         templateModel.setEmail(clientModel.getEmail());
         templateModel.setVerificationToken(clientModel.getVerificationToken());
         LOGGER.debug("Successfully converted client model - {}, to template model - {}", clientModel, templateModel);

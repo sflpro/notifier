@@ -22,6 +22,9 @@ public class ResetPasswordEmailClientModel extends NextEventAwareBaseEmailClient
     @JsonProperty("token")
     private String token;
 
+    @JsonProperty("resetUri")
+    private String resetUri;
+
     @JsonProperty("registeredCustomer")
     private boolean registeredCustomer = true;
 
@@ -54,6 +57,14 @@ public class ResetPasswordEmailClientModel extends NextEventAwareBaseEmailClient
 
     public void setToken(final String token) {
         this.token = token;
+    }
+
+    public String getResetUri() {
+        return resetUri;
+    }
+
+    public void setResetUri(String resetUri) {
+        this.resetUri = resetUri;
     }
 
     public boolean isRegisteredCustomer() {

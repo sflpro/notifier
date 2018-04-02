@@ -3,16 +3,25 @@
     <parent>
         <groupId>com.sflpro.notifier</groupId>
         <artifactId>notifier</artifactId>
-        <version>1.3.6</version>
+        <version>1.3.7</version>
     </parent>
 
     <artifactId>core</artifactId>
-    <version>1.3.6</version>
+    <version>1.3.7</version>
 
     <packaging>pom</packaging>
 
 
     <description>Core contains all the general business logic and required components.</description>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 
     <modules>
         <module>core-db-entities</module>

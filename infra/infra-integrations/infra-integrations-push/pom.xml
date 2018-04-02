@@ -4,7 +4,7 @@
     <parent>
         <groupId>com.sflpro.notifier</groupId>
         <artifactId>infra-integrations</artifactId>
-        <version>1.3.6</version>
+        <version>1.3.7</version>
     </parent>
 
     <artifactId>infra-integrations-push</artifactId>
@@ -21,6 +21,10 @@
             </plugin>
             <plugin>
                 <artifactId>maven-failsafe-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </build>

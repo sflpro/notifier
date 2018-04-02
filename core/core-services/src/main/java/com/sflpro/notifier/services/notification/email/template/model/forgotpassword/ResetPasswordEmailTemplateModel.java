@@ -24,7 +24,7 @@ public class ResetPasswordEmailTemplateModel extends NextEventAwareBaseEmailTemp
 
     private String verificationToken;
 
-    private String redirectUrl;
+    private String redirectUri;
 
     private boolean isRegisteredCustomer = true;
 
@@ -73,12 +73,12 @@ public class ResetPasswordEmailTemplateModel extends NextEventAwareBaseEmailTemp
         this.verificationToken = verificationToken;
     }
 
-    public String getRedirectUrl() {
-        return redirectUrl;
+    public String getRedirectUri() {
+        return redirectUri;
     }
 
-    public void setRedirectUrl(String redirectUrl) {
-        this.redirectUrl = redirectUrl;
+    public void setRedirectUri(String redirectUri) {
+        this.redirectUri = redirectUri;
     }
 
     public boolean isCorporateCustomer() {

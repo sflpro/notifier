@@ -56,7 +56,7 @@ public class ThirdPartyEmailPreparationService implements EmailPreparationServic
         //addThirdPartyEmailNotificationPropertyDtoToList new third party email notification dto's and add linked list
         addThirdPartyEmailNotificationPropertyDtoToList(propertyDtos, "firstname", resetPasswordEmailTemplateModel.getName());
         addThirdPartyEmailNotificationPropertyDtoToList(propertyDtos, "reset_email", resetPasswordEmailTemplateModel.getEmail());
-        addThirdPartyEmailNotificationPropertyDtoToList(propertyDtos, "redirect_uri", resetPasswordEmailTemplateModel.getRedirectUrl());
+        addThirdPartyEmailNotificationPropertyDtoToList(propertyDtos, "redirect_uri", resetPasswordEmailTemplateModel.getRedirectUri());
         addThirdPartyEmailNotificationPropertyDtoToList(propertyDtos, "reset_token", resetPasswordEmailTemplateModel.getVerificationToken());
         addThirdPartyEmailNotificationPropertyDtoToList(propertyDtos, "corporate_customer", resetPasswordEmailTemplateModel.isCorporateCustomer() ? "y" : "n");
         LOGGER.debug("Reset password email template model successfully converted to list of third party email notification property dto's -{} ", propertyDtos);

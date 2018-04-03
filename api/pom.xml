@@ -18,8 +18,8 @@
     <modules>
         <module>api-facade</module>
         <module>api-web</module>
-        <module>api-model</module>
         <module>api-client-library</module>
+        <module>api-model</module>
     </modules>
 
     <profiles>

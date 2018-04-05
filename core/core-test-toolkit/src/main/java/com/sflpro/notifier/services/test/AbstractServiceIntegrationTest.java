@@ -10,7 +10,6 @@ import javax.persistence.PersistenceContext;
 
 /**
  * @author Ruben Dilanyan
- *         <p/>
  *         Aug 25, 2013
  */
 @ContextConfiguration("classpath:applicationContext-services-integrationtest.xml")

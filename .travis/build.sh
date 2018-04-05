@@ -21,7 +21,7 @@ then
 elif [ $TRAVIS_BRANCH == 'master' ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]
 then
     echo "Running master branch build and analysis. Release artifacts will be published.. Sonar run will be skipped."
-    mvn -P release -P central -s settings.xml clean org.jacoco:jacoco-maven-plugin:prepare-agent deploy sonar:sonar -B \
+    mvn -P release -P central -P sonatype -s settings.xml clean org.jacoco:jacoco-maven-plugin:prepare-agent deploy sonar:sonar -B \
     -Dsonar.host.url=https://sonarcloud.io \
     -Dsonar.organization=sfl \
     -Dsonar.login=$SONARCLOUD_KEY \

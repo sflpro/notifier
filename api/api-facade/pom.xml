@@ -5,11 +5,11 @@
     <parent>
         <artifactId>api</artifactId>
         <groupId>com.sflpro.notifier</groupId>
-        <version>1.3.21</version>
+        <version>1.3.21-SNAPSHOT</version>
     </parent>
 
     <artifactId>api-facade</artifactId>
-    <version>1.3.21</version>
+    <version>1.3.21-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <description>Project is representing facade layer for outgoing gateway of SFL NMS Internal API</description>

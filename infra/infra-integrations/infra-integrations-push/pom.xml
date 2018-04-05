@@ -4,7 +4,7 @@
     <parent>
         <groupId>com.sflpro.notifier</groupId>
         <artifactId>infra-integrations</artifactId>
-        <version>1.3.23-SNAPSHOT</version>
+        <version>1.3.24</version>
     </parent>
 
     <artifactId>infra-integrations-push</artifactId>

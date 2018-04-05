@@ -312,7 +312,7 @@
                     <version>${nexus.staging.maven.plugin.version}</version>
                     <extensions>true</extensions>
                     <configuration>
-                        <stagingProfileId>com.sflpro.notifier</stagingProfileId>
+                        <stagingProfileId>212802eb2635d2</stagingProfileId>
                         <skipStaging>true</skipStaging>
                         <skipNexusStagingDeployMojo>true</skipNexusStagingDeployMojo>
                         <autoReleaseAfterClose>false</autoReleaseAfterClose>

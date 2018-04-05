@@ -290,6 +290,7 @@
                     <configuration>
                         <stagingProfileId>212802eb2635d2</stagingProfileId>
                         <skipStaging>true</skipStaging>
+                        <nexusUrl>https://oss.sonatype.org/</nexusUrl>
                         <skipNexusStagingDeployMojo>true</skipNexusStagingDeployMojo>
                         <autoReleaseAfterClose>false</autoReleaseAfterClose>
                     </configuration>

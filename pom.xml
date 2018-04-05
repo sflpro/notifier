@@ -16,7 +16,7 @@
 
     <groupId>com.sflpro.notifier</groupId>
     <artifactId>notifier</artifactId>
-    <version>1.3.22</version>
+    <version>1.3.23</version>
     <packaging>pom</packaging>
 
     <!-- Information required by maven central -->
@@ -312,7 +312,7 @@
                     <version>${nexus.staging.maven.plugin.version}</version>
                     <extensions>true</extensions>
                     <configuration>
-                        <stagingProfileId>com.sflpro.notifier</stagingProfileId>
+                        <stagingProfileId>212802eb2635d2</stagingProfileId>
                         <skipStaging>true</skipStaging>
                         <skipNexusStagingDeployMojo>true</skipNexusStagingDeployMojo>
                         <autoReleaseAfterClose>false</autoReleaseAfterClose>

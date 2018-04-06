@@ -76,6 +76,8 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
 
+        <sonatype.profile.id>212802eb2635d2</sonatype.profile.id>
+
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
@@ -196,8 +198,9 @@
                         <version>${nexus.staging.maven.plugin.version}</version>
                         <extensions>true</extensions>
                         <configuration>
-                            <stagingProfileId>212802eb2635d2</stagingProfileId>
+                            <stagingProfileId>${sonatype.profile.id}</stagingProfileId>
                             <skipStaging>false</skipStaging>
+                            <skipNexusStagingDeployMojo>false</skipNexusStagingDeployMojo>
                             <nexusUrl>https://oss.sonatype.org/</nexusUrl>
                             <autoReleaseAfterClose>false</autoReleaseAfterClose>
                         </configuration>
@@ -300,7 +303,7 @@
                     <version>${nexus.staging.maven.plugin.version}</version>
                     <extensions>true</extensions>
                     <configuration>
-                        <stagingProfileId>212802eb2635d2</stagingProfileId>
+                        <stagingProfileId>${sonatype.profile.id}</stagingProfileId>
                         <skipStaging>true</skipStaging>
                         <nexusUrl>https://oss.sonatype.org/</nexusUrl>
                         <skipNexusStagingDeployMojo>true</skipNexusStagingDeployMojo>

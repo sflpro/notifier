@@ -34,8 +34,9 @@
                         <version>${nexus.staging.maven.plugin.version}</version>
                         <extensions>true</extensions>
                         <configuration>
-                            <stagingProfileId>212802eb2635d2</stagingProfileId>
+                            <stagingProfileId>${sonatype.profile.id}</stagingProfileId>
                             <skipStaging>false</skipStaging>
+                            <skipNexusStagingDeployMojo>false</skipNexusStagingDeployMojo>
                             <nexusUrl>https://oss.sonatype.org/</nexusUrl>
                             <autoReleaseAfterClose>false</autoReleaseAfterClose>
                         </configuration>

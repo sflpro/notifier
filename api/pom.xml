@@ -18,8 +18,8 @@
     <modules>
         <module>api-facade</module>
         <module>api-web</module>
-        <module>api-client-library</module>
         <module>api-model</module>
+        <module>api-client-library</module>
     </modules>
 
     <profiles>
@@ -28,6 +28,18 @@
             <build>
                 <plugins>
                     <!-- maven central stuff -->
+                    <plugin>
+                        <groupId>org.sonatype.plugins</groupId>
+                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                        <version>${nexus.staging.maven.plugin.version}</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <stagingProfileId>212802eb2635d2</stagingProfileId>
+                            <skipStaging>false</skipStaging>
+                            <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                            <autoReleaseAfterClose>false</autoReleaseAfterClose>
+                        </configuration>
+                    </plugin>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>

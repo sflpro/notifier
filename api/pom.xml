@@ -34,6 +34,7 @@
                         <version>${nexus.staging.maven.plugin.version}</version>
                         <extensions>true</extensions>
                         <configuration>
+                            <skipStaging>true</skipStaging>
                             <stagingProfileId>${sonatype.profile.id}</stagingProfileId>
                             <skipStaging>false</skipStaging>
                             <skipNexusStagingDeployMojo>false</skipNexusStagingDeployMojo>

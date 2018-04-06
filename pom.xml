@@ -192,20 +192,6 @@
                             </execution>
                         </executions>
                     </plugin>
-                    <plugin>
-                        <groupId>org.sonatype.plugins</groupId>
-                        <artifactId>nexus-staging-maven-plugin</artifactId>
-                        <version>${nexus.staging.maven.plugin.version}</version>
-                        <extensions>true</extensions>
-                        <configuration>
-                            <serverId>ossrh</serverId>
-                            <stagingProfileId>${sonatype.profile.id}</stagingProfileId>
-                            <skipStaging>false</skipStaging>
-                            <skipNexusStagingDeployMojo>false</skipNexusStagingDeployMojo>
-                            <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-                            <autoReleaseAfterClose>false</autoReleaseAfterClose>
-                        </configuration>
-                    </plugin>
                     <!-- end of maven central stuff -->
                 </plugins>
             </build>

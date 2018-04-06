@@ -198,6 +198,7 @@
                         <version>${nexus.staging.maven.plugin.version}</version>
                         <extensions>true</extensions>
                         <configuration>
+                            <serverId>ossrh</serverId>
                             <stagingProfileId>${sonatype.profile.id}</stagingProfileId>
                             <skipStaging>false</skipStaging>
                             <skipNexusStagingDeployMojo>false</skipNexusStagingDeployMojo>
@@ -303,9 +304,10 @@
                     <version>${nexus.staging.maven.plugin.version}</version>
                     <extensions>true</extensions>
                     <configuration>
+                        <serverId>ossrh</serverId>
                         <stagingProfileId>${sonatype.profile.id}</stagingProfileId>
-                        <skipStaging>true</skipStaging>
                         <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                        <skipStaging>true</skipStaging>
                         <skipNexusStagingDeployMojo>true</skipNexusStagingDeployMojo>
                         <autoReleaseAfterClose>false</autoReleaseAfterClose>
                     </configuration>

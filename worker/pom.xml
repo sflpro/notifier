@@ -50,7 +50,7 @@
             </build>
         </profile>
         <profile>
-            <id>docker-release</id>
+            <id>release</id>
             <build>
                 <plugins>
                     <plugin>

@@ -107,7 +107,7 @@
                             </execution>
                         </executions>
                         <configuration>
-                            <repository>sflpro/notifier-consumer</repository>
+                            <repository>sflpro/notifier-worker</repository>
                             <buildArgs>
                                 <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
                             </buildArgs>

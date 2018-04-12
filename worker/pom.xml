@@ -39,7 +39,7 @@
                         </executions>
                         <configuration>
                             <tag>snapshot</tag>
-                            <repository>sflpro/ms-notifications-consumer</repository>
+                            <repository>sflpro/notifier-worker</repository>
                             <buildArgs>
                                 <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
                             </buildArgs>

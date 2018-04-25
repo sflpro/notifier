@@ -133,6 +133,8 @@
         <mail.version>1.5.2</mail.version>
         <velocity.version>1.6.2</velocity.version>
 
+        <google.java.cloud.version>0.37.0-alpha</google.java.cloud.version>
+
         <!--Infrasturcture third party libs-->
         <mandrillapp.wrapper.lutung.version>0.0.8</mandrillapp.wrapper.lutung.version>
 
@@ -466,6 +468,15 @@
                 <groupId>org.ow2.asm</groupId>
                 <artifactId>asm</artifactId>
                 <version>${asm.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.cloud</groupId>
+                <artifactId>google-cloud-logging-logback</artifactId>
+                <version>${google.java.cloud.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.cloud</groupId>
+                <artifactId>google-cloud-bom</artifactId>
             </dependency>
         </dependencies>
     </dependencyManagement>

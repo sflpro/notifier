@@ -5,12 +5,12 @@
     <parent>
         <groupId>com.sflpro.notifier</groupId>
         <artifactId>api</artifactId>
-        <version>1.4.3</version>
+        <version>1.4.4</version>
     </parent>
 
     <packaging>jar</packaging>
     <artifactId>api-web</artifactId>
-    <version>1.4.3</version>
+    <version>1.4.4</version>
 
     <description>Project is representing Internal Rest API service for SFL Notifier</description>
 
@@ -188,6 +188,11 @@
         <dependency>
             <groupId>io.swagger</groupId>
             <artifactId>swagger-models</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.cloud</groupId>
+            <artifactId>google-cloud-logging-logback</artifactId>
         </dependency>
     </dependencies>
 </project>

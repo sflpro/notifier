@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.sflpro.notifier</groupId>
         <artifactId>notifier</artifactId>
-        <version>1.4.3</version>
+        <version>1.4.4</version>
     </parent>
 
     <packaging>jar</packaging>
@@ -184,6 +184,11 @@
             <groupId>com.sflpro.notifier</groupId>
             <artifactId>infra-queue-consumer</artifactId>
             <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.cloud</groupId>
+            <artifactId>google-cloud-logging-logback</artifactId>
         </dependency>
 
         <!-- test dependencies -->

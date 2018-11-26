@@ -147,7 +147,7 @@
         <sonar.jacoco.version>0.7.2.201409121644</sonar.jacoco.version>
         <sonar.jacoco.jar>${projectbasedir}/lib/jacocoagent.jar</sonar.jacoco.jar>
         <google.guave.version>18.0</google.guave.version>
-        <apache.tika.version>1.16</apache.tika.version>
+        <apache.tika.version>1.19.1</apache.tika.version>
 
         <!--Maven plugins-->
         <maven.failsafe.plugin.version>2.20.1</maven.failsafe.plugin.version>

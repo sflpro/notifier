@@ -2,7 +2,6 @@ package com.sflpro.notifier.api.internal.rest;
 
 import com.sflpro.notifier.api.internal.rest.config.GenericJerseyConfig;
 import com.sflpro.notifier.api.internal.rest.resources.maintanance.HeartBeatResource;
-import com.sflpro.notifier.api.internal.rest.resources.notification.email.template.ApplicationNotificationProcessorResource;
 import org.glassfish.jersey.filter.LoggingFilter;
 
 /**
@@ -18,7 +17,6 @@ public class NotificationJerseyConfig extends GenericJerseyConfig {
 
         // Endpoints
         register(HeartBeatResource.class);
-        register(ApplicationNotificationProcessorResource.class);
 
         // Filters
         register(LoggingFilter.class);

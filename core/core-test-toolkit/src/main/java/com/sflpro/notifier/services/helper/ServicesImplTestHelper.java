@@ -21,7 +21,6 @@ import com.sflpro.notifier.services.notification.dto.push.PushNotificationSubscr
 import com.sflpro.notifier.services.notification.dto.push.PushNotificationSubscriptionRequestDto;
 import com.sflpro.notifier.services.notification.dto.push.sns.PushNotificationSnsRecipientDto;
 import com.sflpro.notifier.services.notification.dto.sms.SmsNotificationDto;
-import com.sflpro.notifier.services.notification.email.template.model.NotificationTemplateType;
 import com.sflpro.notifier.services.user.dto.UserDto;
 import org.junit.Assert;
 
@@ -127,7 +126,7 @@ public class ServicesImplTestHelper {
         notificationDto.setContent("YoYoYo");
         notificationDto.setSubject("YoYo");
         notificationDto.setProviderType(NotificationProviderType.SMTP_SERVER);
-        notificationDto.setTemplateName(NotificationTemplateType.FORGOT_PASSWORD.getTemplateName());
+        notificationDto.setTemplateName("YoYoYo");
         return notificationDto;
     }
 

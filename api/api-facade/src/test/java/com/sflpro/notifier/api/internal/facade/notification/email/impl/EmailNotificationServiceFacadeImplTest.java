@@ -12,6 +12,7 @@ import com.sflpro.notifier.db.entities.user.User;
 import com.sflpro.notifier.services.notification.UserNotificationService;
 import com.sflpro.notifier.services.notification.dto.UserNotificationDto;
 import com.sflpro.notifier.services.notification.dto.email.EmailNotificationDto;
+import com.sflpro.notifier.services.notification.dto.email.EmailNotificationPropertyDto;
 import com.sflpro.notifier.services.notification.email.EmailNotificationService;
 import com.sflpro.notifier.services.notification.event.sms.StartSendingNotificationEvent;
 import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
@@ -20,6 +21,9 @@ import com.sflpro.notifier.services.user.UserService;
 import org.easymock.Mock;
 import org.easymock.TestSubject;
 import org.junit.Test;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.*;
@@ -96,14 +100,18 @@ public class EmailNotificationServiceFacadeImplTest extends AbstractFacadeUnitTe
         // Test data
         final CreateEmailNotificationRequest request = getServiceFacadeImplTestHelper().createCreateEmailNotificationRequest();
         request.setUserUuId(null);
-        final EmailNotificationDto emailNotificationDto = new EmailNotificationDto(request.getRecipientEmail(), request.getSenderEmail(), NotificationProviderType.SMTP_SERVER, request.getBody(), request.getSubject(), request.getClientIpAddress());
+        final List<EmailNotificationPropertyDto> properties = request.getProperties().entrySet()
+                .stream()
+                .map(entry -> new EmailNotificationPropertyDto(entry.getKey(), entry.getValue()))
+                .collect(Collectors.toList());
+        final EmailNotificationDto emailNotificationDto = new EmailNotificationDto(request.getRecipientEmail(), request.getSenderEmail(), NotificationProviderType.SMTP_SERVER, request.getBody(), request.getSubject(), request.getClientIpAddress(), request.getTemplateName());
         final Long notificationId = 1L;
         final EmailNotification emailNotification = getServiceFacadeImplTestHelper().createEmailNotification();
         emailNotification.setId(notificationId);
         // Reset
         resetAll();
         // Expectations
-        expect(emailNotificationService.createEmailNotification(eq(emailNotificationDto))).andReturn(emailNotification).once();
+        expect(emailNotificationService.createEmailNotification(eq(emailNotificationDto), eq(properties))).andReturn(emailNotification).once();
         applicationEventDistributionService.publishAsynchronousEvent(eq(new StartSendingNotificationEvent(notificationId)));
         expectLastCall().once();
         // Replay
@@ -115,7 +123,7 @@ public class EmailNotificationServiceFacadeImplTest extends AbstractFacadeUnitTe
         assertNotNull(result.getErrors());
         assertEquals(0, result.getErrors().size());
         // Assert notification model
-        getServiceFacadeImplTestHelper().assertEmailNotificationModel(emailNotification, (EmailNotificationModel) result.getResponse().getNotification());
+        getServiceFacadeImplTestHelper().assertEmailNotificationModel(emailNotification, result.getResponse().getNotification());
         // Verify
         verifyAll();
     }
@@ -124,7 +132,11 @@ public class EmailNotificationServiceFacadeImplTest extends AbstractFacadeUnitTe
     public void testCreateEmailNotificationWithUser() {
         // Test data
         final CreateEmailNotificationRequest request = getServiceFacadeImplTestHelper().createCreateEmailNotificationRequest();
-        final EmailNotificationDto emailNotificationDto = new EmailNotificationDto(request.getRecipientEmail(), request.getSenderEmail(), NotificationProviderType.SMTP_SERVER, request.getBody(), request.getSubject(), request.getClientIpAddress());
+        final List<EmailNotificationPropertyDto> properties = request.getProperties().entrySet()
+                .stream()
+                .map(entry -> new EmailNotificationPropertyDto(entry.getKey(), entry.getValue()))
+                .collect(Collectors.toList());
+        final EmailNotificationDto emailNotificationDto = new EmailNotificationDto(request.getRecipientEmail(), request.getSenderEmail(), NotificationProviderType.SMTP_SERVER, request.getBody(), request.getSubject(), request.getClientIpAddress(), request.getTemplateName());
         final Long notificationId = 1L;
         final EmailNotification emailNotification = getServiceFacadeImplTestHelper().createEmailNotification();
         emailNotification.setId(notificationId);
@@ -137,7 +149,7 @@ public class EmailNotificationServiceFacadeImplTest extends AbstractFacadeUnitTe
         // Reset
         resetAll();
         // Expectations
-        expect(emailNotificationService.createEmailNotification(eq(emailNotificationDto))).andReturn(emailNotification).once();
+        expect(emailNotificationService.createEmailNotification(eq(emailNotificationDto), eq(properties))).andReturn(emailNotification).once();
         expect(userService.getOrCreateUserForUuId(eq(request.getUserUuId()))).andReturn(user).once();
         expect(userNotificationService.createUserNotification(eq(userId), eq(notificationId), eq(new UserNotificationDto()))).andReturn(userNotification).once();
         applicationEventDistributionService.publishAsynchronousEvent(eq(new StartSendingNotificationEvent(notificationId)));
@@ -151,7 +163,7 @@ public class EmailNotificationServiceFacadeImplTest extends AbstractFacadeUnitTe
         assertNotNull(result.getErrors());
         assertEquals(0, result.getErrors().size());
         // Assert notification model
-        getServiceFacadeImplTestHelper().assertEmailNotificationModel(emailNotification, (EmailNotificationModel) result.getResponse().getNotification());
+        getServiceFacadeImplTestHelper().assertEmailNotificationModel(emailNotification, result.getResponse().getNotification());
         // Verify
         verifyAll();
     }

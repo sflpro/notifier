@@ -9,6 +9,7 @@ import com.sflpro.notifier.core.api.internal.model.email.request.CreateEmailNoti
 import com.sflpro.notifier.core.api.internal.model.email.response.CreateEmailNotificationResponse;
 import com.sflpro.notifier.db.entities.notification.NotificationProviderType;
 import com.sflpro.notifier.services.notification.dto.email.EmailNotificationDto;
+import com.sflpro.notifier.services.notification.dto.email.EmailNotificationPropertyDto;
 import com.sflpro.notifier.services.notification.email.EmailNotificationService;
 import com.sflpro.notifier.services.notification.event.sms.StartSendingNotificationEvent;
 import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
@@ -21,6 +22,7 @@ import org.springframework.util.Assert;
 
 import javax.annotation.Nonnull;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * User: Ruben Dilanyan
@@ -58,9 +60,13 @@ public class EmailNotificationServiceFacadeImpl extends AbstractNotificationServ
         // Create notification DTO
         final EmailNotificationDto emailNotificationDto = new EmailNotificationDto(request.getRecipientEmail(),
                 request.getSenderEmail(), NotificationProviderType.SMTP_SERVER, request.getBody(),
-                request.getSubject(), request.getClientIpAddress());
+                request.getSubject(), request.getClientIpAddress(), request.getTemplateName());
         final EmailNotification emailNotification;
-        emailNotification = emailNotificationService.createEmailNotification(emailNotificationDto);
+        final List<EmailNotificationPropertyDto> emailNotificationPropertyDtos = request.getProperties().entrySet()
+                .stream()
+                .map(entry -> new EmailNotificationPropertyDto(entry.getKey(), entry.getValue()))
+                .collect(Collectors.toList());
+        emailNotification = emailNotificationService.createEmailNotification(emailNotificationDto, emailNotificationPropertyDtos);
         associateUserWithNotificationIfRequired(request.getUserUuId(), emailNotification);
         // Publish event
         applicationEventDistributionService.publishAsynchronousEvent(new StartSendingNotificationEvent(emailNotification.getId()));

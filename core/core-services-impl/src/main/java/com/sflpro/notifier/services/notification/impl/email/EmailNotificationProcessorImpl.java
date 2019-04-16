@@ -4,8 +4,7 @@ import com.sflpro.notifier.db.entities.notification.Notification;
 import com.sflpro.notifier.db.entities.notification.NotificationProviderType;
 import com.sflpro.notifier.db.entities.notification.NotificationState;
 import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
-import com.sflpro.notifier.db.entities.notification.email.ThirdPartyEmailNotification;
-import com.sflpro.notifier.db.entities.notification.email.ThirdPartyEmailNotificationProperty;
+import com.sflpro.notifier.db.entities.notification.email.EmailNotificationProperty;
 import com.sflpro.notifier.db.repositories.utility.PersistenceUtilityService;
 import com.sflpro.notifier.externalclients.email.mandrill.communicator.MandrillApiCommunicator;
 import com.sflpro.notifier.externalclients.email.mandrill.model.request.SendEmailRequest;
@@ -73,20 +72,17 @@ public class EmailNotificationProcessorImpl implements EmailNotificationProcesso
             if (NotificationProviderType.SMTP_SERVER.equals(emailNotification.getProviderType())) {
                 final MailSendConfiguration mailSendConfiguration = createMailSendConfiguration(emailNotification);
                 smtpTransportService.sendMessageOverSmtp(mailSendConfiguration);
-                LOGGER.debug("Successfully sent email message configuration - {}, notification - ", mailSendConfiguration, emailNotification);
+                LOGGER.debug("Successfully sent email message configuration - {}, notification - {}", mailSendConfiguration, emailNotification);
                 /* Update state of notification to NotificationState.SENT */
                 updateEmailNotificationState(emailNotification.getId(), NotificationState.SENT);
             }
             // Send email via mandrill
             else if (NotificationProviderType.MANDRILL.equals(emailNotification.getProviderType())) {
-                final ThirdPartyEmailNotification thirdPartyEmailNotification = (ThirdPartyEmailNotification) emailNotification;
-                thirdPartyEmailNotification.setSubject(thirdPartyEmailNotification.getSubject());
-                // Create email data
-                final SendEmailRequest emailRequest = createEmailRequest(thirdPartyEmailNotification);
+                final SendEmailRequest emailRequest = createEmailRequest(emailNotification);
                 mandrillApiCommunicator.sendEmailTemplate(emailRequest);
-                LOGGER.debug("Successfully sent email message for third party email notification - {}", thirdPartyEmailNotification);
+                LOGGER.debug("Successfully sent email message for third party email notification - {}", emailNotification);
                 /* Update state of notification to NotificationState.SENT */
-                updateEmailNotificationState(thirdPartyEmailNotification.getId(), NotificationState.SENT);
+                updateEmailNotificationState(emailNotification.getId(), NotificationState.SENT);
             }
         } catch (final Exception ex) {
             final String message = "Error occurred while sending email notification with id - " + emailNotification.getId();
@@ -115,13 +111,13 @@ public class EmailNotificationProcessorImpl implements EmailNotificationProcesso
         persistenceUtilityService.runInNewTransaction(() -> emailNotificationService.updateNotificationState(notificationId, notificationState));
     }
 
-    private static SendEmailRequest createEmailRequest(final ThirdPartyEmailNotification thirdPartyEmailNotification) {
-        final Set<ThirdPartyEmailNotificationProperty> properties = thirdPartyEmailNotification.getProperties();
+    private static SendEmailRequest createEmailRequest(final EmailNotification emailNotification) {
+        final Set<EmailNotificationProperty> properties = emailNotification.getProperties();
         final Map<String, String> data = new HashMap<>();
         if (!CollectionUtils.isEmpty(properties)) {
             properties.forEach(property -> data.put(property.getPropertyKey(), property.getPropertyValue()));
         }
-        return new SendEmailRequest(thirdPartyEmailNotification.getRecipientEmail(), thirdPartyEmailNotification.getTemplateName(), data);
+        return new SendEmailRequest(emailNotification.getRecipientEmail(), emailNotification.getTemplateName(), data);
     }
 
     public MandrillApiCommunicator getMandrillApiCommunicator() {

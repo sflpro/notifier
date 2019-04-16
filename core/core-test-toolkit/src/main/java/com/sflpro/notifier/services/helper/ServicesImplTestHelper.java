@@ -2,9 +2,11 @@ package com.sflpro.notifier.services.helper;
 
 import com.sflpro.notifier.db.entities.device.UserDevice;
 import com.sflpro.notifier.db.entities.device.mobile.DeviceOperatingSystemType;
-import com.sflpro.notifier.db.entities.notification.*;
+import com.sflpro.notifier.db.entities.notification.Notification;
+import com.sflpro.notifier.db.entities.notification.NotificationProviderType;
+import com.sflpro.notifier.db.entities.notification.NotificationState;
+import com.sflpro.notifier.db.entities.notification.UserNotification;
 import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
-import com.sflpro.notifier.db.entities.notification.email.ThirdPartyEmailNotification;
 import com.sflpro.notifier.db.entities.notification.push.*;
 import com.sflpro.notifier.db.entities.notification.push.sns.PushNotificationSnsRecipient;
 import com.sflpro.notifier.db.entities.notification.sms.SmsNotification;
@@ -13,8 +15,7 @@ import com.sflpro.notifier.services.device.dto.UserDeviceDto;
 import com.sflpro.notifier.services.notification.dto.NotificationDto;
 import com.sflpro.notifier.services.notification.dto.UserNotificationDto;
 import com.sflpro.notifier.services.notification.dto.email.EmailNotificationDto;
-import com.sflpro.notifier.services.notification.dto.email.ThirdPartyEmailNotificationDto;
-import com.sflpro.notifier.services.notification.dto.email.ThirdPartyEmailNotificationPropertyDto;
+import com.sflpro.notifier.services.notification.dto.email.EmailNotificationPropertyDto;
 import com.sflpro.notifier.services.notification.dto.push.PushNotificationDto;
 import com.sflpro.notifier.services.notification.dto.push.PushNotificationPropertyDto;
 import com.sflpro.notifier.services.notification.dto.push.PushNotificationSubscriptionDto;
@@ -97,6 +98,7 @@ public class ServicesImplTestHelper {
         notificationDto.setContent("YoYoYo");
         notificationDto.setSubject("YoYo");
         notificationDto.setProviderType(NotificationProviderType.SMTP_SERVER);
+        notificationDto.setTemplateName("YoTemplate");
         return notificationDto;
     }
 
@@ -117,53 +119,10 @@ public class ServicesImplTestHelper {
         Assert.assertEquals(notificationDto.getProviderType(), notification.getProviderType());
     }
 
-    /* Third party email notification */
-    public ThirdPartyEmailNotificationDto createThirdPartyEmailNotificationDto() {
-        final ThirdPartyEmailNotificationDto notificationDto = new ThirdPartyEmailNotificationDto();
-        notificationDto.setRecipientEmail("dilanyanruben@gmail.com");
-        notificationDto.setSenderEmail("ruben.dilanyan@sflpro.com");
-        notificationDto.setClientIpAddress("127.0.0.1");
-        notificationDto.setContent("YoYoYo");
-        notificationDto.setSubject("YoYo");
-        notificationDto.setProviderType(NotificationProviderType.SMTP_SERVER);
-        notificationDto.setTemplateName("YoYoYo");
-        return notificationDto;
-    }
-
-    public ThirdPartyEmailNotification createThirdPartyEmailNotification() {
-        return createThirdPartyEmailNotification(createThirdPartyEmailNotificationDto());
-    }
-
-    public ThirdPartyEmailNotification createThirdPartyEmailNotification(final ThirdPartyEmailNotificationDto notificationDto) {
-        final ThirdPartyEmailNotification notification = new ThirdPartyEmailNotification(true);
-        notificationDto.updateDomainEntityProperties(notification);
-        return notification;
-    }
-
-    public void assertThirdPartyEmailNotification(final ThirdPartyEmailNotification notification, final ThirdPartyEmailNotificationDto notificationDto) {
-        assertNotification(notification, notificationDto);
-        Assert.assertEquals(notificationDto.getRecipientEmail(), notification.getRecipientEmail());
-        Assert.assertEquals(notificationDto.getSenderEmail(), notification.getSenderEmail());
-        Assert.assertEquals(notificationDto.getProviderType(), notification.getProviderType());
-    }
-
-    public void assertThirdPartyEmailNotificationProperties(final ThirdPartyEmailNotification notification, final List<ThirdPartyEmailNotificationPropertyDto> propertyDtos) {
-        assertNotNull(notification.getProperties());
-        Assert.assertEquals(propertyDtos.size(), notification.getProperties().size());
-        notification.getProperties().forEach(thirdPartyEmailNotificationProperty -> {
-            assertNotNull(thirdPartyEmailNotificationProperty.getThirdPartyEmailNotification());
-            Assert.assertEquals(notification.getId(), thirdPartyEmailNotificationProperty.getThirdPartyEmailNotification().getId());
-            final ThirdPartyEmailNotificationPropertyDto thirdPartyEmailNotificationPropertyDto =
-                    propertyDtos.stream().filter(dto -> dto.getPropertyKey().equals(thirdPartyEmailNotificationProperty.getPropertyKey())
-                            && dto.getPropertyValue().equals(thirdPartyEmailNotificationProperty.getPropertyValue())).findFirst().get();
-            assertNotNull(thirdPartyEmailNotificationPropertyDto);
-        });
-    }
-
-    public List<ThirdPartyEmailNotificationPropertyDto> createThirdPartyEmailNotificationPropertyDtos(final int count) {
-        final List<ThirdPartyEmailNotificationPropertyDto> propertyDtos = new ArrayList<>();
+    public List<EmailNotificationPropertyDto> createEmailNotificationPropertyDtos(final int count) {
+        final List<EmailNotificationPropertyDto> propertyDtos = new ArrayList<>();
         for (int i = 0; i < count; i++) {
-            propertyDtos.add(new ThirdPartyEmailNotificationPropertyDto("key" + i, "value" + i));
+            propertyDtos.add(new EmailNotificationPropertyDto("key" + i, "value" + i));
         }
         return propertyDtos;
     }

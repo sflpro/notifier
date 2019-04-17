@@ -2,8 +2,10 @@ package com.sflpro.notifier.services.notification.impl.email.smtp;
 
 import com.sflpro.notifier.db.entities.notification.NotificationProviderType;
 import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
+import com.sflpro.notifier.db.entities.notification.email.EmailNotificationProperty;
 import com.sflpro.notifier.services.notification.dto.email.MailSendConfiguration;
 import com.sflpro.notifier.services.notification.email.SmtpTransportService;
+import com.sflpro.notifier.services.template.TemplatingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 import javax.annotation.Nonnull;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * User: Ruben Vardanyan
@@ -26,6 +30,9 @@ public class EmailNotificationSmtpProviderProcessorImpl implements EmailNotifica
     @Autowired
     @Qualifier("smtpTransportService")
     private SmtpTransportService smtpTransportService;
+
+    @Autowired
+    private TemplatingService templatingService;
 
     public EmailNotificationSmtpProviderProcessorImpl() {
         LOGGER.debug("Initializing email notification smtp provider processor impl");
@@ -44,10 +51,19 @@ public class EmailNotificationSmtpProviderProcessorImpl implements EmailNotifica
 
     private MailSendConfiguration createMailSendConfiguration(final EmailNotification emailNotification) {
         final MailSendConfiguration mailSendConfiguration = new MailSendConfiguration();
-        mailSendConfiguration.setContent(emailNotification.getContent());
         mailSendConfiguration.setTo(emailNotification.getRecipientEmail());
         mailSendConfiguration.setFrom(emailNotification.getSenderEmail());
         mailSendConfiguration.setSubject(emailNotification.getSubject());
+        if(emailNotification.getTemplateName() == null) {
+            Assert.notNull(emailNotification.getContent(), "Email content should not be null when template not provided");
+            mailSendConfiguration.setContent(emailNotification.getContent());
+        } else {
+            final Map<String, String> parameters = emailNotification.getProperties()
+                    .stream()
+                    .collect(Collectors.toMap(EmailNotificationProperty::getPropertyKey, EmailNotificationProperty::getPropertyValue));
+            final String content = templatingService.getContentForTemplate(emailNotification.getTemplateName(), parameters);
+            mailSendConfiguration.setContent(content);
+        }
         return mailSendConfiguration;
     }
 }

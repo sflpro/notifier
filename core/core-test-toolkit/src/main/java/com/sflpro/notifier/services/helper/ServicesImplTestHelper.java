@@ -7,6 +7,7 @@ import com.sflpro.notifier.db.entities.notification.NotificationProviderType;
 import com.sflpro.notifier.db.entities.notification.NotificationState;
 import com.sflpro.notifier.db.entities.notification.UserNotification;
 import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
+import com.sflpro.notifier.db.entities.notification.email.EmailNotificationProperty;
 import com.sflpro.notifier.db.entities.notification.push.*;
 import com.sflpro.notifier.db.entities.notification.push.sns.PushNotificationSnsRecipient;
 import com.sflpro.notifier.db.entities.notification.sms.SmsNotification;
@@ -25,9 +26,8 @@ import com.sflpro.notifier.services.notification.dto.sms.SmsNotificationDto;
 import com.sflpro.notifier.services.user.dto.UserDto;
 import org.junit.Assert;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -108,7 +108,14 @@ public class ServicesImplTestHelper {
 
     public EmailNotification createEmailNotification(final EmailNotificationDto notificationDto) {
         final EmailNotification notification = new EmailNotification(true);
+        final List<EmailNotificationPropertyDto> propertyDtos = createEmailNotificationPropertyDtos(3);
+        final Set<EmailNotificationProperty> properties = propertyDtos.stream().map(dto -> {
+            final EmailNotificationProperty emailNotificationProperty = new EmailNotificationProperty();
+            dto.updateDomainEntityProperties(emailNotificationProperty);
+            return emailNotificationProperty;
+        }).collect(Collectors.toSet());
         notificationDto.updateDomainEntityProperties(notification);
+        notification.setProperties(properties);
         return notification;
     }
 

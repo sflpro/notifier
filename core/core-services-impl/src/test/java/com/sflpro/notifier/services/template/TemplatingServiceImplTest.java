@@ -9,6 +9,7 @@ import freemarker.template.TemplateException;
 import org.easymock.Mock;
 import org.easymock.TestSubject;
 import org.junit.Test;
+import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -30,6 +31,9 @@ public class TemplatingServiceImplTest extends AbstractServicesUnitTest {
 
     @TestSubject
     private TemplatingServiceImpl templatingService = new TemplatingServiceImpl();
+
+    @Mock
+    private FreeMarkerConfigurer freeMarkerConfigurer;
 
     @Mock
     private Configuration freemarkerConfiguration;
@@ -68,6 +72,7 @@ public class TemplatingServiceImplTest extends AbstractServicesUnitTest {
         // Reset
         resetAll();
         // Expectations
+        expect(freeMarkerConfigurer.getConfiguration()).andReturn(freemarkerConfiguration).once();
         expect(freemarkerConfiguration.getTemplate(templateName)).andThrow(cause).once();
         // Replay
         replayAll();
@@ -91,6 +96,7 @@ public class TemplatingServiceImplTest extends AbstractServicesUnitTest {
         // Reset
         resetAll();
         // Expectations
+        expect(freeMarkerConfigurer.getConfiguration()).andReturn(freemarkerConfiguration).once();
         expect(freemarkerConfiguration.getTemplate(templateName)).andReturn(template).once();
         template.process(eq(parameters), isA(StringWriter.class));
         expectLastCall().andThrow(cause).once();
@@ -116,6 +122,7 @@ public class TemplatingServiceImplTest extends AbstractServicesUnitTest {
         // Reset
         resetAll();
         // Expectations
+        expect(freeMarkerConfigurer.getConfiguration()).andReturn(freemarkerConfiguration).once();
         expect(freemarkerConfiguration.getTemplate(templateName)).andReturn(template).once();
         template.process(eq(parameters), isA(StringWriter.class));
         expectLastCall().andAnswer(() -> {

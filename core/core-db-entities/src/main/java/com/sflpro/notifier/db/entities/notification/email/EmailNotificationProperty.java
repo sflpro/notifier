@@ -31,11 +31,6 @@ public class EmailNotificationProperty extends AbstractDomainEntityModel {
     @JoinColumn(name = "notification_id", nullable = false, unique = false)
     private EmailNotification emailNotification;
 
-    /* Constructors */
-    public EmailNotificationProperty() {
-        // Default constructor
-    }
-
     /* Properties getters and setters */
     public String getPropertyKey() {
         return propertyKey;

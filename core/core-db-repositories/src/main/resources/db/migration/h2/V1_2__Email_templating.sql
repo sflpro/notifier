@@ -6,3 +6,7 @@ ALTER TABLE notification_email_property
             REFERENCES notification_email (id)
             ON DELETE CASCADE;
 DROP TABLE notification_email_third_party;
+
+UPDATE notification_email
+SET type = 'EMAIL'
+WHERE type = 'EMAIL_THIRD_PARTY';

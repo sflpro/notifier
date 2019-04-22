@@ -11,7 +11,6 @@ import org.easymock.Mock;
 import org.easymock.TestSubject;
 import org.junit.Test;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 

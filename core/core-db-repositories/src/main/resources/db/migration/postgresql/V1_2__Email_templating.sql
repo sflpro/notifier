@@ -10,6 +10,6 @@ ALTER TABLE notification_email_property
 
 DROP TABLE notification_email_third_party;
 
-UPDATE notification_email
+UPDATE notification
 SET type = 'EMAIL'
 WHERE type = 'EMAIL_THIRD_PARTY';

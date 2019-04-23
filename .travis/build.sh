@@ -33,8 +33,8 @@ then
     -Dsonar.host.url=https://sonarcloud.io \
     -Dsonar.organization=sfl \
     -Dsonar.login=$SONARCLOUD_KEY \
-    -Dsonar.pullRequest.key=$TRAVIS_PULL_REQUEST \
-    -Dsonar.pullRequest.branch=$TRAVIS_PULL_REQUEST_BRANCH \
+    -Dsonar.pullrequest.key=$TRAVIS_PULL_REQUEST \
+    -Dsonar.pullrequest.branch=$TRAVIS_PULL_REQUEST_BRANCH \
     -Dsonar.pullrequest.provider=GitHub \
     -Dsonar.pullrequest.github.repository=sflpro/notifier \
     -Dsonar.github.oauth=$SONAR_GITHUB_OAUTH_TOKEN

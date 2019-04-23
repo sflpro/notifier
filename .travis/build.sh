@@ -36,7 +36,8 @@ then
     -Dsonar.pullRequest.key=$TRAVIS_PULL_REQUEST \
     -Dsonar.pullRequest.branch=$TRAVIS_PULL_REQUEST_BRANCH \
     -Dsonar.pullrequest.provider=GitHub \
-    -Dsonar.pullrequest.github.repository=sflpro/notifier
+    -Dsonar.pullrequest.github.repository=sflpro/notifier \
+    -Dsonar.github.oauth=$SONAR_GITHUB_OAUTH_TOKEN
 else
     echo "Running regular maven execution. No artifacts will be released to either release or snapshot repositories"
     mvn clean verify -B

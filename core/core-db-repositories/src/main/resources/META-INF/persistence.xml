@@ -14,8 +14,7 @@
         <class>com.sflpro.notifier.db.entities.notification.Notification</class>
         <class>com.sflpro.notifier.db.entities.notification.UserNotification</class>
         <class>com.sflpro.notifier.db.entities.notification.email.EmailNotification</class>
-        <class>com.sflpro.notifier.db.entities.notification.email.ThirdPartyEmailNotification</class>
-        <class>com.sflpro.notifier.db.entities.notification.email.ThirdPartyEmailNotificationProperty</class>
+        <class>com.sflpro.notifier.db.entities.notification.email.EmailNotificationProperty</class>
         <class>com.sflpro.notifier.db.entities.notification.sms.SmsNotification</class>
         <class>com.sflpro.notifier.db.entities.notification.push.PushNotification</class>
         <class>com.sflpro.notifier.db.entities.notification.push.PushNotificationProperty</class>

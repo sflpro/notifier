@@ -4,11 +4,15 @@ import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
 import com.sflpro.notifier.db.repositories.repositories.notification.AbstractNotificationRepository;
 import com.sflpro.notifier.db.repositories.repositories.notification.email.EmailNotificationRepository;
 import com.sflpro.notifier.services.notification.dto.email.EmailNotificationDto;
+import com.sflpro.notifier.services.notification.dto.email.EmailNotificationPropertyDto;
 import com.sflpro.notifier.services.notification.impl.AbstractNotificationServiceImpl;
 import com.sflpro.notifier.services.notification.impl.AbstractNotificationServiceImplTest;
 import org.easymock.Mock;
 import org.easymock.TestSubject;
 import org.junit.Test;
+
+import java.util.Collections;
+import java.util.List;
 
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.fail;
@@ -37,31 +41,33 @@ public class EmailNotificationServiceImplTest extends AbstractNotificationServic
     public void testCreateEmailNotificationWithInvalidArguments() {
         // Test data
         final EmailNotificationDto emailNotificationDto = getServicesImplTestHelper().createEmailNotificationDto();
+        final List<EmailNotificationPropertyDto> properties = getServicesImplTestHelper().createEmailNotificationPropertyDtos(2);
         // Reset
         resetAll();
         // Replay
         replayAll();
         // Run test scenario
         try {
-            emailNotificationService.createEmailNotification(null);
+            emailNotificationService.createEmailNotification(null, properties);
             fail("Exception should be thrown");
         } catch (final IllegalArgumentException ex) {
             // Expected
         }
         try {
-            emailNotificationService.createEmailNotification(new EmailNotificationDto(null, emailNotificationDto.getSenderEmail(), emailNotificationDto.getProviderType(), emailNotificationDto.getContent(), emailNotificationDto.getSubject(), emailNotificationDto.getClientIpAddress()));
+            emailNotificationService.createEmailNotification(new EmailNotificationDto(null, emailNotificationDto.getSenderEmail(), emailNotificationDto.getProviderType(), emailNotificationDto.getContent(), emailNotificationDto.getSubject(), emailNotificationDto.getClientIpAddress(), emailNotificationDto.getTemplateName()), properties);
             fail("Exception should be thrown");
         } catch (final IllegalArgumentException ex) {
             // Expected
         }
         try {
-            emailNotificationService.createEmailNotification(new EmailNotificationDto(emailNotificationDto.getRecipientEmail(), null, emailNotificationDto.getProviderType(), emailNotificationDto.getContent(), emailNotificationDto.getSubject(), emailNotificationDto.getClientIpAddress()));
+            emailNotificationService.createEmailNotification(new EmailNotificationDto(emailNotificationDto.getRecipientEmail(), emailNotificationDto.getSenderEmail(), null, emailNotificationDto.getContent(), emailNotificationDto.getSubject(), emailNotificationDto.getClientIpAddress(), emailNotificationDto.getTemplateName()), properties);
             fail("Exception should be thrown");
         } catch (final IllegalArgumentException ex) {
             // Expected
         }
+
         try {
-            emailNotificationService.createEmailNotification(new EmailNotificationDto(emailNotificationDto.getRecipientEmail(), emailNotificationDto.getSenderEmail(), null, emailNotificationDto.getContent(), emailNotificationDto.getSubject(), emailNotificationDto.getClientIpAddress()));
+            emailNotificationService.createEmailNotification(emailNotificationDto, null);
             fail("Exception should be thrown");
         } catch (final IllegalArgumentException ex) {
             // Expected
@@ -79,7 +85,7 @@ public class EmailNotificationServiceImplTest extends AbstractNotificationServic
         // Replay
         replayAll();
         // Run test scenario
-        final EmailNotification emailNotification = emailNotificationService.createEmailNotification(emailNotificationDto);
+        final EmailNotification emailNotification = emailNotificationService.createEmailNotification(emailNotificationDto, Collections.emptyList());
         getServicesImplTestHelper().assertEmailNotification(emailNotification, emailNotificationDto);
     }
 

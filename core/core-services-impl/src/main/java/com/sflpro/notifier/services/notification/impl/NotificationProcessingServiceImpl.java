@@ -66,8 +66,6 @@ public class NotificationProcessingServiceImpl implements NotificationProcessing
                 return smsNotificationProcessor;
             case EMAIL:
                 return emailNotificationProcessor;
-            case EMAIL_THIRD_PARTY:
-                return emailNotificationProcessor;
             default: {
                 LOGGER.error("Unsupported notification type - {}", type);
                 throw new UnsupportedNotificationTypeException(type);

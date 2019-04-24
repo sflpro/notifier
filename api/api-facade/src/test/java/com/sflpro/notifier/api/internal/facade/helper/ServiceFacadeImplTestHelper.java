@@ -33,9 +33,7 @@ import com.sflpro.notifier.db.entities.notification.push.sns.PushNotificationSns
 import com.sflpro.notifier.services.user.dto.UserDto;
 import org.apache.commons.lang3.mutable.MutableInt;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -77,6 +75,12 @@ public class ServiceFacadeImplTestHelper {
         request.setBody("Email body");
         request.setClientIpAddress("127.0.0.1");
         request.setUserUuId("UGITYDTGUIGFITYDTDTFYKTYCL");
+        request.setTemplateName("confirmation_template");
+        final Map<String, String> properties = new HashMap<>();
+        properties.put("prop1", "value1");
+        properties.put("prop2", "value2");
+        properties.put("prop3", "value3");
+        request.setProperties(properties);
         return request;
     }
 

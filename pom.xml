@@ -50,6 +50,12 @@
             <organization>SFL LLC</organization>
             <organizationUrl>https://sflpro.com</organizationUrl>
         </developer>
+        <developer>
+            <name>Ruben Vardanyan</name>
+            <email>ruben.vardanyan@sflpro.com</email>
+            <organization>SFL LLC</organization>
+            <organizationUrl>https://sflpro.com</organizationUrl>
+        </developer>
     </developers>
 
     <scm>

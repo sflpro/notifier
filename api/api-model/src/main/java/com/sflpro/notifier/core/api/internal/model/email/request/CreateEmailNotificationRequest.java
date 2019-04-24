@@ -10,7 +10,9 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.annotation.Nonnull;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * User: Ruben Dilanyan
@@ -32,9 +34,16 @@ public class CreateEmailNotificationRequest extends AbstractCreateNotificationRe
     @JsonProperty("subject")
     private String subject;
 
+    @JsonProperty("templateName")
+    private String templateName;
+
+    @JsonProperty("properties")
+    private Map<String, String> properties;
+
     /* Constructors */
     public CreateEmailNotificationRequest() {
         super();
+        properties = new HashMap<>();
     }
 
     /* Properties getters and setters */
@@ -60,6 +69,22 @@ public class CreateEmailNotificationRequest extends AbstractCreateNotificationRe
 
     public void setSubject(final String subject) {
         this.subject = subject;
+    }
+
+    public String getTemplateName() {
+        return templateName;
+    }
+
+    public void setTemplateName(final String templateName) {
+        this.templateName = templateName;
+    }
+
+    public Map<String, String> getProperties() {
+        return properties;
+    }
+
+    public void setProperties(final Map<String, String> properties) {
+        this.properties = properties;
     }
 
     /* Validation methods */
@@ -91,6 +116,8 @@ public class CreateEmailNotificationRequest extends AbstractCreateNotificationRe
         builder.append(this.getSenderEmail(), that.getSenderEmail());
         builder.append(this.getRecipientEmail(), that.getRecipientEmail());
         builder.append(this.getSubject(), that.getSubject());
+        builder.append(this.getTemplateName(), that.getTemplateName());
+        builder.append(this.getProperties(), that.getProperties());
         return builder.isEquals();
     }
 
@@ -101,6 +128,8 @@ public class CreateEmailNotificationRequest extends AbstractCreateNotificationRe
         builder.append(this.getSenderEmail());
         builder.append(this.getRecipientEmail());
         builder.append(this.getSubject());
+        builder.append(this.getTemplateName());
+        builder.append(this.getProperties());
         return builder.build();
     }
 
@@ -111,6 +140,8 @@ public class CreateEmailNotificationRequest extends AbstractCreateNotificationRe
         builder.append("senderEmail", this.getSenderEmail());
         builder.append("recipientEmail", this.getRecipientEmail());
         builder.append("subject", this.getSubject());
+        builder.append("templateName", this.getTemplateName());
+        builder.append("properties", this.getProperties());
         return builder.build();
     }
 }

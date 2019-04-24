@@ -9,6 +9,8 @@ import com.sflpro.notifier.services.common.exception.ServicesRuntimeException;
 import com.sflpro.notifier.services.notification.dto.email.MailSendConfiguration;
 import com.sflpro.notifier.services.notification.email.EmailNotificationService;
 import com.sflpro.notifier.services.notification.email.SmtpTransportService;
+import com.sflpro.notifier.services.notification.impl.email.mandrill.EmailNotificationMandrillProviderProcessor;
+import com.sflpro.notifier.services.notification.impl.email.smtp.EmailNotificationSmtpProviderProcessor;
 import com.sflpro.notifier.services.test.AbstractServicesUnitTest;
 import org.easymock.Mock;
 import org.easymock.TestSubject;
@@ -32,16 +34,16 @@ public class EmailNotificationProcessorImplTest extends AbstractServicesUnitTest
     private EmailNotificationProcessorImpl emailNotificationProcessor = new EmailNotificationProcessorImpl();
 
     @Mock
-    private SmtpTransportService smtpTransportService;
-
-    @Mock
     private EmailNotificationService emailNotificationService;
 
     @Mock
     private PersistenceUtilityService persistenceUtilityService;
 
     @Mock
-    private MandrillMessagesApi mandrillMessagesApi;
+    private EmailNotificationSmtpProviderProcessor emailNotificationSmtpProviderProcessor;
+
+    @Mock
+    private EmailNotificationMandrillProviderProcessor emailNotificationMandrillProviderProcessor;
 
 
     /* Constructors */
@@ -92,24 +94,51 @@ public class EmailNotificationProcessorImplTest extends AbstractServicesUnitTest
     }
 
     @Test
-    public void testProcessNotification() {
+    public void testProcessNotificationForWhenProviderTypeIsSmtpAndSuccess() {
         // Test data
         final Long notificationId = 1L;
         final EmailNotification notification = getServicesImplTestHelper().createEmailNotification();
         notification.setId(notificationId);
         notification.setState(NotificationState.CREATED);
+        notification.setProviderType(NotificationProviderType.SMTP_SERVER);
         // Reset
         resetAll();
         // Expectations
-        expect(emailNotificationService.getNotificationById(eq(notificationId))).andReturn(notification).once();
-        expect(emailNotificationService.updateNotificationState(eq(notificationId), eq(NotificationState.PROCESSING))).andReturn(notification).once();
-        expect(emailNotificationService.updateNotificationState(eq(notificationId), eq(NotificationState.SENT))).andReturn(notification).once();
-        smtpTransportService.sendMessageOverSmtp(isA(MailSendConfiguration.class));
+        expect(emailNotificationService.getNotificationById(notificationId)).andReturn(notification).once();
+        expect(emailNotificationService.updateNotificationState(notificationId, NotificationState.PROCESSING)).andReturn(notification).once();
+        expect(emailNotificationSmtpProviderProcessor.processEmailNotification(notification)).andReturn(true).once();
+        expect(emailNotificationService.updateNotificationState(notificationId, NotificationState.SENT)).andReturn(notification).once();
+        persistenceUtilityService.runInNewTransaction(isA(Runnable.class));
         expectLastCall().andAnswer(() -> {
-            final MailSendConfiguration configuration = (MailSendConfiguration) getCurrentArguments()[0];
-            assertMailConfiguration(configuration, notification);
+            final Runnable runnable = (Runnable) getCurrentArguments()[0];
+            runnable.run();
             return null;
-        }).once();
+        }).anyTimes();
+        // Replay
+        replayAll();
+        // Run test scenario
+        emailNotificationProcessor.processNotification(notificationId);
+        // Verify
+        verifyAll();
+    }
+
+
+
+    @Test
+    public void testProcessNotificationForWhenProviderTypeIsMandrillAndFail() {
+        // Test data
+        final Long notificationId = 1L;
+        final EmailNotification notification = getServicesImplTestHelper().createEmailNotification();
+        notification.setId(notificationId);
+        notification.setState(NotificationState.CREATED);
+        notification.setProviderType(NotificationProviderType.MANDRILL);
+        // Reset
+        resetAll();
+        // Expectations
+        expect(emailNotificationService.getNotificationById(notificationId)).andReturn(notification).once();
+        expect(emailNotificationService.updateNotificationState(notificationId, NotificationState.PROCESSING)).andReturn(notification).once();
+        expect(emailNotificationMandrillProviderProcessor.processEmailNotification(notification)).andReturn(false).once();
+        expect(emailNotificationService.updateNotificationState(notificationId, NotificationState.FAILED)).andReturn(notification).once();
         persistenceUtilityService.runInNewTransaction(isA(Runnable.class));
         expectLastCall().andAnswer(() -> {
             final Runnable runnable = (Runnable) getCurrentArguments()[0];
@@ -134,11 +163,10 @@ public class EmailNotificationProcessorImplTest extends AbstractServicesUnitTest
         // Reset
         resetAll();
         // Expectations
-        expect(emailNotificationService.getNotificationById(eq(notificationId))).andReturn(notification).once();
-        expect(emailNotificationService.updateNotificationState(eq(notificationId), eq(NotificationState.PROCESSING))).andReturn(notification).once();
-        expect(emailNotificationService.updateNotificationState(eq(notificationId), eq(NotificationState.FAILED))).andReturn(notification).once();
-        smtpTransportService.sendMessageOverSmtp(isA(MailSendConfiguration.class));
-        expectLastCall().andThrow(new ServicesRuntimeException("Dummy runtime exception")).once();
+        expect(emailNotificationService.getNotificationById(notificationId)).andReturn(notification).once();
+        expect(emailNotificationService.updateNotificationState(notificationId, NotificationState.PROCESSING)).andReturn(notification).once();
+        expect(emailNotificationSmtpProviderProcessor.processEmailNotification(notification)).andThrow(new ServicesRuntimeException("Runtime exception")).once();
+        expect(emailNotificationService.updateNotificationState(notificationId, NotificationState.FAILED)).andReturn(notification).once();
         persistenceUtilityService.runInNewTransaction(isA(Runnable.class));
         expectLastCall().andAnswer(() -> {
             final Runnable runnable = (Runnable) getCurrentArguments()[0];
@@ -157,13 +185,4 @@ public class EmailNotificationProcessorImplTest extends AbstractServicesUnitTest
         // Verify
         verifyAll();
     }
-
-    /* Utility methods */
-    private void assertMailConfiguration(final MailSendConfiguration configuration, final EmailNotification notification) {
-        assertEquals(notification.getSenderEmail(), configuration.getFrom());
-        assertEquals(notification.getRecipientEmail(), configuration.getTo());
-        Assert.assertEquals(notification.getContent(), configuration.getContent());
-        Assert.assertEquals(notification.getSubject(), configuration.getSubject());
-    }
-
 }

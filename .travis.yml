@@ -1,5 +1,7 @@
 language: java
 sudo: required
+git:
+  depth: false
 services:
 - docker
 jdk:

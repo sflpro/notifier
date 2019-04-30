@@ -18,7 +18,6 @@ import static org.junit.Assert.assertNotNull;
  * Date: 8/24/15
  * Time: 1:40 PM
  */
-@Ignore
 public class NotificationProcessingServiceIntegrationTest extends AbstractServiceIntegrationTest {
 
     /* Dependencies */
@@ -33,6 +32,7 @@ public class NotificationProcessingServiceIntegrationTest extends AbstractServic
     }
 
     /* Test methods */
+    @Ignore
     @Test
     public void testProcessNotificationWithPushNotification() {
         // Prepare data
@@ -53,6 +53,7 @@ public class NotificationProcessingServiceIntegrationTest extends AbstractServic
 
     }
 
+    @Ignore
     @Test
     public void testProcessNotificationWithSmsNotification() {
         // Create recipient

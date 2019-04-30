@@ -137,37 +137,4 @@ public class PushNotificationServiceFacadeImpl extends AbstractNotificationServi
         recipientModel.setDeviceOperatingSystemType(recipient.getDeviceOperatingSystemType().name());
         return recipientModel;
     }
-
-    /* Properties getters and setters */
-    public PushNotificationService getPushNotificationService() {
-        return pushNotificationService;
-    }
-
-    public void setPushNotificationService(final PushNotificationService pushNotificationService) {
-        this.pushNotificationService = pushNotificationService;
-    }
-
-    public ApplicationEventDistributionService getApplicationEventDistributionService() {
-        return applicationEventDistributionService;
-    }
-
-    public void setApplicationEventDistributionService(final ApplicationEventDistributionService applicationEventDistributionService) {
-        this.applicationEventDistributionService = applicationEventDistributionService;
-    }
-
-    public UserDeviceService getUserDeviceService() {
-        return userDeviceService;
-    }
-
-    public void setUserDeviceService(final UserDeviceService userDeviceService) {
-        this.userDeviceService = userDeviceService;
-    }
-
-    public PushNotificationSubscriptionRequestService getPushNotificationSubscriptionRequestService() {
-        return pushNotificationSubscriptionRequestService;
-    }
-
-    public void setPushNotificationSubscriptionRequestService(final PushNotificationSubscriptionRequestService pushNotificationSubscriptionRequestService) {
-        this.pushNotificationSubscriptionRequestService = pushNotificationSubscriptionRequestService;
-    }
 }

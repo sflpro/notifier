@@ -310,6 +310,18 @@
                             <goals>
                                 <goal>prepare-agent</goal>
                             </goals>
+                            <configuration>
+                                <propertyName>jacoco.surefire.argLine</propertyName>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>prepare-agent-integration</id>
+                            <goals>
+                                <goal>prepare-agent-integration</goal>
+                            </goals>
+                            <configuration>
+                                <propertyName>jacoco.failsafe.argLine</propertyName>
+                            </configuration>
                         </execution>
                     </executions>
                 </plugin>
@@ -321,7 +333,7 @@
                         <excludes>
                             <exclude>**IntegrationTest</exclude>
                         </excludes>
-                        <argLine>${argLine}</argLine>
+                        <argLine>@{jacoco.surefire.argLine}</argLine>
                     </configuration>
                 </plugin>
                 <plugin>
@@ -340,7 +352,7 @@
                                 <goal>integration-test</goal>
                             </goals>
                             <configuration>
-                                <argLine>${argLine}</argLine>
+                                <argLine>@{jacoco.failsafe.argLine}</argLine>
                             </configuration>
                         </execution>
                         <execution>

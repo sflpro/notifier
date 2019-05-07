@@ -37,8 +37,10 @@ then
     -Dsonar.pullrequest.branch=$TRAVIS_PULL_REQUEST_BRANCH \
     -Dsonar.pullrequest.provider=GitHub \
     -Dsonar.pullrequest.github.repository=sflpro/notifier \
-    -Dsonar.github.oauth=$SONAR_GITHUB_OAUTH_TOKEN
+    -Dsonar.github.oauth=$SONAR_GITHUB_OAUTH_TOKEN \
+    -Dtwillio.account.sender.phone=$TWILLIO_API_KEY
 else
     echo "Running regular maven execution. No artifacts will be released to either release or snapshot repositories"
-    mvn clean verify -B
+    mvn clean verify -B \
+    -Dtwillio.account.sender.phone=$TWILLIO_API_KEY
 fi

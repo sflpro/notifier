@@ -148,8 +148,6 @@
         <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
         <sonar.language>java</sonar.language>
         <sonar.jacoco.includes>com.sflpro.*</sonar.jacoco.includes>
-        <sonar.jacoco.itReportPath>${project.basedir}/../target/jacoco-it.exec</sonar.jacoco.itReportPath>
-        <sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
         <sonar.jacoco.version>0.8.3</sonar.jacoco.version>
         <jacoco.plugin.version>0.8.3</jacoco.plugin.version>
         <google.guave.version>18.0</google.guave.version>

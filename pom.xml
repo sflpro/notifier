@@ -150,8 +150,8 @@
         <sonar.jacoco.includes>com.sflpro.*</sonar.jacoco.includes>
         <sonar.jacoco.itReportPath>${project.basedir}/../target/jacoco-it.exec</sonar.jacoco.itReportPath>
         <sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
-        <sonar.jacoco.version>0.7.2.201409121644</sonar.jacoco.version>
-        <sonar.jacoco.jar>${projectbasedir}/lib/jacocoagent.jar</sonar.jacoco.jar>
+        <sonar.jacoco.version>0.8.3</sonar.jacoco.version>
+        <jacoco.plugin.version>0.8.3</jacoco.plugin.version>
         <google.guave.version>18.0</google.guave.version>
         <apache.tika.version>1.20</apache.tika.version>
 
@@ -247,6 +247,19 @@
                 <artifactId>maven-compiler-plugin</artifactId>
             </plugin>
             <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco.plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>prepare-agent</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
             </plugin>
@@ -290,6 +303,19 @@
                 </plugin>
                 <!-- Test -->
                 <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>${jacoco.plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <id>prepare-agent</id>
+                            <goals>
+                                <goal>prepare-agent</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>${maven.surefire.plugin.version}</version>
@@ -297,7 +323,7 @@
                         <excludes>
                             <exclude>**IntegrationTest</exclude>
                         </excludes>
-                        <argLine>${jacoco.surefire.argLine}</argLine>
+                        <argLine>${argLine}</argLine>
                     </configuration>
                 </plugin>
                 <plugin>
@@ -316,7 +342,7 @@
                                 <goal>integration-test</goal>
                             </goals>
                             <configuration>
-                                <argLine>${jacoco.failsafe.argLine}</argLine>
+                                <argLine>${argLine}</argLine>
                             </configuration>
                         </execution>
                         <execution>

@@ -23,4 +23,6 @@ before_script:
 - openssl aes-256-cbc -K $encrypted_49fa1606db88_key -iv $encrypted_49fa1606db88_iv
   -in secret.tar.bz2.enc -out secret.tar.bz2 -d
 - docker login --username $DOCKER_USER --password $DOCKERHUB_PASS
-
+before_install:
+- openssl aes-256-cbc -K $encrypted_49fa1606db88_key -iv $encrypted_49fa1606db88_iv
+  -in secret.tar.bz2.enc -out secret.tar.bz2 -d

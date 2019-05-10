@@ -2,3 +2,5 @@
 .idea/
 target/
 data/
+/secret
+secret.tar.bz2

@@ -13,19 +13,34 @@
 
     <import resource="classpath:applicationContext-services.xml"/>
 
-    <jdbc:embedded-database id="datasource" type="H2"/>
+    <bean id="datasource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close" lazy-init="true" primary="false">
+        <property name="driverClassName" value="${database.driver}"/>
+        <property name="jdbcUrl" value="${database.url}"/>
+        <property name="username" value="${database.username}"/>
+        <property name="password" value="${database.password}"/>
+        <property name="maximumPoolSize" value="${database.pool.maxActive}"/>
+    </bean>
 
+    <bean id="jpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+        <property name="showSql" value="${database.hibernate.show_sql}"/>
+        <property name="generateDdl" value="false"/>
+        <property name="databasePlatform" value="${database.hibernate.dialect}"/>
+    </bean>
+
+    <!--Initializing Entity Manager Factory-->
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="dataSource" ref="datasource"/>
+        <property name="persistenceUnitName" value="com_sfl_nms_persistence_unit"/>
         <property name="jpaVendorAdapter" ref="jpaVendorAdapter"/>
         <property name="jpaProperties">
-            <map>
-                <entry key="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
-                <entry key="hibernate.show_sql" value="${database.hibernate.show_sql}"/>
-                <entry key="hibernate.hbm2ddl.auto" value="update"/>
-                <entry key="hibernate.globally_quoted_identifiers" value="true"/>
-                <entry key="hibernate.cache.use_second_level_cache" value="false"/>
-            </map>
+            <props>
+                <prop key="hibernate.ejb.naming_strategy">org.hibernate.cfg.ImprovedNamingStrategy</prop>
+                <prop key="hibernate.hbm2ddl.auto">${database.hibernate.hbm2ddl.auto}</prop>
+                <prop key="hibernate.format_sql">${database.hibernate.format_sql}</prop>
+                <prop key="javax.persistence.lock.timeout">${database.hibernate.lock.timeout}</prop>
+                <prop key="hibernate.cache.use_second_level_cache">${database.hibernate.use_cache}</prop>
+                <prop key="hibernate.id.new_generator_mappings">false</prop>
+            </props>
         </property>
     </bean>
 

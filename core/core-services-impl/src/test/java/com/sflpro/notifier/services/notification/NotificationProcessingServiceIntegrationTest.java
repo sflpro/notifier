@@ -53,7 +53,6 @@ public class NotificationProcessingServiceIntegrationTest extends AbstractServic
 
     }
 
-    @Ignore
     @Test
     public void testProcessNotificationWithSmsNotification() {
         // Create recipient

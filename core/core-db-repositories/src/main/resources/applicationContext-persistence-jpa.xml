@@ -23,37 +23,39 @@
     <!--Load repository context-->
     <import resource="applicationContext-persistence-jpa-repository.xml"/>
 
-    <!--Initializing jpa vendor adapter-->
-    <bean id="jpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
-        <property name="showSql" value="${database.hibernate.show_sql}"/>
-        <property name="generateDdl" value="false"/>
-        <property name="databasePlatform" value="${database.hibernate.dialect}"/>
-    </bean>
+    <beans profile="!test">
+        <!--Initializing jpa vendor adapter-->
+        <bean id="jpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+            <property name="showSql" value="${database.hibernate.show_sql}"/>
+            <property name="generateDdl" value="false"/>
+            <property name="databasePlatform" value="${database.hibernate.dialect}"/>
+        </bean>
 
-    <!--Initializing Entity Manager Factory-->
-    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-        <property name="dataSource" ref="datasource"/>
-        <property name="persistenceUnitName" value="com_sfl_nms_persistence_unit"/>
-        <property name="jpaVendorAdapter" ref="jpaVendorAdapter"/>
-        <property name="jpaProperties">
-            <props>
-                <prop key="hibernate.ejb.naming_strategy">org.hibernate.cfg.ImprovedNamingStrategy</prop>
-                <prop key="hibernate.hbm2ddl.auto">${database.hibernate.hbm2ddl.auto}</prop>
-                <prop key="hibernate.format_sql">${database.hibernate.format_sql}</prop>
-                <prop key="javax.persistence.lock.timeout">${database.hibernate.lock.timeout}</prop>
-                <prop key="hibernate.cache.use_second_level_cache">${database.hibernate.use_cache}</prop>
-                <prop key="hibernate.id.new_generator_mappings">false</prop>
-            </props>
-        </property>
-    </bean>
+        <!--Initializing Entity Manager Factory-->
+        <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+            <property name="dataSource" ref="datasource"/>
+            <property name="persistenceUnitName" value="com_sfl_nms_persistence_unit"/>
+            <property name="jpaVendorAdapter" ref="jpaVendorAdapter"/>
+            <property name="jpaProperties">
+                <props>
+                    <prop key="hibernate.ejb.naming_strategy">org.hibernate.cfg.ImprovedNamingStrategy</prop>
+                    <prop key="hibernate.hbm2ddl.auto">${database.hibernate.hbm2ddl.auto}</prop>
+                    <prop key="hibernate.format_sql">${database.hibernate.format_sql}</prop>
+                    <prop key="javax.persistence.lock.timeout">${database.hibernate.lock.timeout}</prop>
+                    <prop key="hibernate.cache.use_second_level_cache">${database.hibernate.use_cache}</prop>
+                    <prop key="hibernate.id.new_generator_mappings">false</prop>
+                </props>
+            </property>
+        </bean>
 
-    <!--Initializing transaction manager-->
-    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
-        <property name="entityManagerFactory" ref="entityManagerFactory"/>
-    </bean>
+        <!--Initializing transaction manager-->
+        <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+            <property name="entityManagerFactory" ref="entityManagerFactory"/>
+        </bean>
 
-    <bean id="persistenceUtilityService" class="com.sflpro.notifier.db.repositories.utility.impl.PersistenceUtilityServiceImpl"/>
+        <bean id="persistenceUtilityService"
+              class="com.sflpro.notifier.db.repositories.utility.impl.PersistenceUtilityServiceImpl"/>
 
-    <tx:annotation-driven transaction-manager="transactionManager"/>
-
+        <tx:annotation-driven transaction-manager="transactionManager"/>
+    </beans>
 </beans>

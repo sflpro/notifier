@@ -76,21 +76,4 @@ public class SmsNotificationServiceFacadeImpl extends AbstractNotificationServic
         notificationModel.setRecipientNumber(smsNotification.getRecipientMobileNumber());
         return notificationModel;
     }
-
-    /* Properties getters and setters */
-    public SmsNotificationService getSmsNotificationService() {
-        return smsNotificationService;
-    }
-
-    public void setSmsNotificationService(final SmsNotificationService smsNotificationService) {
-        this.smsNotificationService = smsNotificationService;
-    }
-
-    public ApplicationEventDistributionService getApplicationEventDistributionService() {
-        return applicationEventDistributionService;
-    }
-
-    public void setApplicationEventDistributionService(final ApplicationEventDistributionService applicationEventDistributionService) {
-        this.applicationEventDistributionService = applicationEventDistributionService;
-    }
 }

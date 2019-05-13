@@ -17,7 +17,7 @@ public enum NotificationProviderType {
     /* Properties */
     private final List<NotificationType> supportedNotificationTypes;
 
-    private NotificationProviderType(final NotificationType... notificationTypes) {
+    NotificationProviderType(final NotificationType... notificationTypes) {
         this.supportedNotificationTypes = Collections.unmodifiableList(Arrays.asList(notificationTypes));
     }
 

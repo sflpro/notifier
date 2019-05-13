@@ -44,7 +44,7 @@ then
 else
     echo "Running regular maven execution. No artifacts will be released to either release or snapshot repositories"
     mvn clean verify -B \
-    -Dtwillio.account.sender.phone=$TWILLIO_TEST_PHONE_NR
+    -Dtwillio.account.sender.phone=$TWILLIO_TEST_PHONE_NR \
     -Dtwillio.account.authToken=$TWILLIO_AUTH_TOKEN \
     -Dtwillio.account.sid=$TWILLIO_ACCOUNT_SID
 fi

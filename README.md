@@ -8,7 +8,7 @@ It provides a common abstraction layer on top of the various notification types 
 
 ## Supported notification types
 Notifier supports the most common notification types and platforms. The project aims to enable the user to only 
-rely on notifier for client messaging/communication. Bellow are the supported notification types and implementations.
+rely on notifier for client messaging/communication. Below are the supported notification types and implementations.
 
 #### Email Notifications
 

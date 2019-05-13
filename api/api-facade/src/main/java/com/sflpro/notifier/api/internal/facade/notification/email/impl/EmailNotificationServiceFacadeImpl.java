@@ -85,21 +85,4 @@ public class EmailNotificationServiceFacadeImpl extends AbstractNotificationServ
         notificationModel.setRecipientEmail(emailNotification.getRecipientEmail());
         return notificationModel;
     }
-
-    /* Properties getters and setters */
-    public EmailNotificationService getEmailNotificationService() {
-        return emailNotificationService;
-    }
-
-    public void setEmailNotificationService(final EmailNotificationService emailNotificationService) {
-        this.emailNotificationService = emailNotificationService;
-    }
-
-    public ApplicationEventDistributionService getApplicationEventDistributionService() {
-        return applicationEventDistributionService;
-    }
-
-    public void setApplicationEventDistributionService(final ApplicationEventDistributionService applicationEventDistributionService) {
-        this.applicationEventDistributionService = applicationEventDistributionService;
-    }
 }

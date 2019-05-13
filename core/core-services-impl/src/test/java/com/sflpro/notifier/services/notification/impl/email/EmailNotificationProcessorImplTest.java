@@ -1,24 +1,19 @@
 package com.sflpro.notifier.services.notification.impl.email;
 
-import com.microtripit.mandrillapp.lutung.controller.MandrillMessagesApi;
 import com.sflpro.notifier.db.entities.notification.NotificationProviderType;
 import com.sflpro.notifier.db.entities.notification.NotificationState;
 import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
 import com.sflpro.notifier.db.repositories.utility.PersistenceUtilityService;
 import com.sflpro.notifier.services.common.exception.ServicesRuntimeException;
-import com.sflpro.notifier.services.notification.dto.email.MailSendConfiguration;
 import com.sflpro.notifier.services.notification.email.EmailNotificationService;
-import com.sflpro.notifier.services.notification.email.SmtpTransportService;
 import com.sflpro.notifier.services.notification.impl.email.mandrill.EmailNotificationMandrillProviderProcessor;
 import com.sflpro.notifier.services.notification.impl.email.smtp.EmailNotificationSmtpProviderProcessor;
 import com.sflpro.notifier.services.test.AbstractServicesUnitTest;
 import org.easymock.Mock;
 import org.easymock.TestSubject;
-import org.junit.Assert;
 import org.junit.Test;
 
 import static org.easymock.EasyMock.*;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 /**
@@ -121,8 +116,6 @@ public class EmailNotificationProcessorImplTest extends AbstractServicesUnitTest
         // Verify
         verifyAll();
     }
-
-
 
     @Test
     public void testProcessNotificationForWhenProviderTypeIsMandrillAndFail() {

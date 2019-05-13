@@ -6,7 +6,6 @@ import com.sflpro.notifier.externalclients.sms.twillio.exception.TwillioClientRu
 import com.sflpro.notifier.externalclients.sms.twillio.model.request.SendMessageRequest;
 import com.sflpro.notifier.externalclients.sms.twillio.model.response.SendMessageResponse;
 import org.apache.commons.lang3.StringUtils;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -18,7 +17,6 @@ import static org.junit.Assert.*;
  * Date: 3/15/15
  * Time: 11:03 AM
  */
-@Ignore
 public class TwillioApiCommunicatorIntegrationTest extends AbstractSmsIntegrationTest {
 
     /* Constants */
@@ -88,7 +86,7 @@ public class TwillioApiCommunicatorIntegrationTest extends AbstractSmsIntegratio
         assertNotNull(response);
         assertTrue(StringUtils.isNotEmpty(response.getSid()));
         assertEquals(request.getRecipientNumber(), response.getRecipientNumber());
-        assertEquals(request.getMessageBody(), response.getMessageBody());
+        assertEquals("Sent from your Twilio trial account - " + request.getMessageBody(), response.getMessageBody());
     }
 
     private SendMessageRequest createValidSendMessageRequest() {

@@ -1,8 +1,8 @@
 package com.sflpro.notifier.test;
 
+import com.sflpro.notifier.springboot.NotifierRepositoryTestApplication;
 import org.junit.runner.RunWith;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.persistence.EntityManager;
@@ -14,9 +14,8 @@ import javax.persistence.PersistenceContext;
  * Date: 10/01/14
  * Time: 10:18 PM
  */
-@ActiveProfiles("test")
-@ContextConfiguration("classpath:applicationContext-persistence-integrationtest.xml")
 @RunWith(SpringRunner.class)
+@SpringBootTest(classes = NotifierRepositoryTestApplication.class)
 public abstract class AbstractRepositoryTest {
 
     /* Dependencies */

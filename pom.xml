@@ -105,11 +105,10 @@
         <hibernate.version>5.0.0.Final</hibernate.version>
         <hibernate.javax.persistence.version>1.0.0.Final</hibernate.javax.persistence.version>
         <com.github.usc.jdbcdslog.version>1.0.6</com.github.usc.jdbcdslog.version>
-        <flyway.version>3.0</flyway.version>
+        <flyway.version>5.2.4</flyway.version>
 
         <easymock.version>3.3.1</easymock.version>
         <junit.version>4.12</junit.version>
-        <testcontainers.version>1.11.2</testcontainers.version>
 
         <logstash-encoder.version>4.7</logstash-encoder.version>
         <logback.logstash.encoder.version>4.5.1</logback.logstash.encoder.version>
@@ -153,6 +152,7 @@
         <apache.tika.version>1.20</apache.tika.version>
 
         <!--Maven plugins-->
+        <maven.build.helper.plugin.version>3.0.0</maven.build.helper.plugin.version>
         <maven.source.plugin.version>3.0.1</maven.source.plugin.version>
         <maven.failsafe.plugin.version>3.0.0-M3</maven.failsafe.plugin.version>
         <maven.surefire.plugin.version>3.0.0-M3</maven.surefire.plugin.version>
@@ -166,6 +166,7 @@
         <maven.gpg.plugin.version>1.6</maven.gpg.plugin.version>
         <gitflow.plugin.version>1.12.0</gitflow.plugin.version>
         <nexus.staging.maven.plugin.version>1.6.8</nexus.staging.maven.plugin.version>
+        <fabric8.docker.maven.plugin.version>0.30.0</fabric8.docker.maven.plugin.version>
     </properties>
 
     <profiles>
@@ -265,6 +266,10 @@
                 <artifactId>maven-site-plugin</artifactId>
             </plugin>
             <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-enforcer-plugin</artifactId>
                 <version>${maven.enforcer.plugin.version}</version>
@@ -347,17 +352,120 @@
                     <executions>
                         <execution>
                             <id>default</id>
+                            <phase>none</phase>
+                        </execution>
+                        <execution>
+                            <id>it-postgres</id>
                             <goals>
                                 <goal>integration-test</goal>
                             </goals>
                             <configuration>
                                 <argLine>@{jacoco.failsafe.argLine}</argLine>
+                                <environmentVariables>
+                                    <DATABASE_DRIVER>org.postgresql.Driver</DATABASE_DRIVER>
+                                    <DATABASE_URL>jdbc:postgresql://127.0.0.1:${postgresqlPort}/notifier</DATABASE_URL>
+                                    <DATABASE_USERNAME>notifier</DATABASE_USERNAME>
+                                    <DATABASE_PASSWORD>notifier</DATABASE_PASSWORD>
+                                </environmentVariables>
+                            </configuration>
+                        </execution>
+<!--                        <execution>-->
+<!--                            <id>it-mysql</id>-->
+<!--                            <goals>-->
+<!--                                <goal>integration-test</goal>-->
+<!--                            </goals>-->
+<!--                            <configuration>-->
+<!--                                <argLine>@{jacoco.failsafe.argLine}</argLine>-->
+<!--                            </configuration>-->
+<!--                        </execution>-->
+<!--                        <execution>-->
+<!--                            <id>verify</id>-->
+<!--                            <goals>-->
+<!--                                <goal>verify</goal>-->
+<!--                            </goals>-->
+<!--                        </execution>-->
+                        <execution>
+                            <id>verify</id>
+                            <phase>verify</phase>
+                            <goals>
+                                <goal>verify</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>build-helper-maven-plugin</artifactId>
+                    <version>3.0.0</version>
+                    <executions>
+                        <execution>
+                            <id>reserve-database-ports</id>
+                            <phase>generate-test-resources</phase>
+                            <goals>
+                                <goal>reserve-network-port</goal>
+                            </goals>
+                            <configuration>
+                                <randomPort>true</randomPort>
+                                <portNames>
+                                    <portName>postgresqlPort</portName>
+                                    <portName>mysqlPort</portName>
+                                </portNames>
+                                <minPortNumber>10000</minPortNumber>
+                                <maxPortNumber>20000</maxPortNumber>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>io.fabric8</groupId>
+                    <artifactId>docker-maven-plugin</artifactId>
+                    <version>${fabric8.docker.maven.plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <id>prepare-it-postgre-database</id>
+                            <phase>pre-integration-test</phase>
+                            <goals>
+                                <goal>start</goal>
+                            </goals>
+                            <configuration>
+                                <images>
+                                    <image>
+                                        <name>postgres:11-alpine</name>
+                                        <alias>postgresql</alias>
+                                        <run>
+                                            <ports>
+                                                <port>${postgresqlPort}:5432</port>
+                                            </ports>
+                                            <env>
+                                                <POSTGRES_USER>notifier</POSTGRES_USER>
+                                                <POSTGRES_PASSWORD>notifier</POSTGRES_PASSWORD>
+                                                <POSTGRES_DB>notifier</POSTGRES_DB>
+                                            </env>
+                                            <wait>
+                                                <tcp>
+                                                    <mode>direct</mode>
+                                                    <host>127.0.0.1</host>
+                                                    <ports>
+                                                        <port>${postgresqlPort}</port>
+                                                    </ports>
+                                                </tcp>
+                                                <log>(?s)database system is ready to accept connections.*database system is ready to accept connections</log>
+                                                <time>60000</time>
+                                            </wait>
+                                            <network>
+                                                <mode>bridge</mode>
+                                            </network>
+                                        </run>
+                                    </image>
+                                </images>
                             </configuration>
                         </execution>
                         <execution>
-                            <id>verify</id>
+                            <id>remove-it-database</id>
+                            <phase>post-integration-test</phase>
                             <goals>
-                                <goal>verify</goal>
+                                <goal>logs</goal>
+                                <goal>stop</goal>
                             </goals>
                         </execution>
                     </executions>
@@ -543,21 +651,6 @@
             <dependency>
                 <groupId>com.google.cloud</groupId>
                 <artifactId>google-cloud-bom</artifactId>
-            </dependency>
-            <dependency>
-                <groupId>org.testcontainers</groupId>
-                <artifactId>testcontainers</artifactId>
-                <version>${testcontainers.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.testcontainers</groupId>
-                <artifactId>postgresql</artifactId>
-                <version>${testcontainers.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.testcontainers</groupId>
-                <artifactId>mysql</artifactId>
-                <version>${testcontainers.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

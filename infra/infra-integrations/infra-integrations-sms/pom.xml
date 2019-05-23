@@ -18,6 +18,16 @@
                 <artifactId>maven-surefire-plugin</artifactId>
             </plugin>
             <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <configuration/>
+            </plugin>
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <configuration/>
+            </plugin>
+            <plugin>
                 <artifactId>maven-failsafe-plugin</artifactId>
             </plugin>
             <plugin>

@@ -8,20 +8,19 @@
            http://www.springframework.org/schema/context/spring-context.xsd"
        default-lazy-init="true" default-autowire="byName">
 
+    <context:annotation-config/>
+    <context:component-scan base-package="com.sflpro.notifier.services.*"/>
+
     <context:property-placeholder location="classpath:ms_notifications.properties"
                                   local-override="false"
                                   ignore-unresolvable="true"/>
 
-    <import resource="applicationContext-persistence-jpa.xml"/>
+    <import resource="applicationContext-persistence.xml"/>
     <import resource="applicationContext-externalclients-email.xml"/>
     <import resource="applicationContext-externalclients-sms.xml"/>
     <import resource="applicationContext-externalclients-push.xml"/>
 
     <bean id="passwordEncoder" class="org.springframework.security.crypto.password.StandardPasswordEncoder"/>
 
-    <bean id="executorService" class="java.util.concurrent.ExecutorService" factory-bean="executorBuilder" factory-method="createExecutorService"></bean>
-
-    <context:annotation-config/>
-    <context:component-scan base-package="com.sflpro.notifier.services.*"/>
-
+    <bean id="executorService" class="java.util.concurrent.ExecutorService" factory-bean="executorBuilder" factory-method="createExecutorService" />
 </beans>

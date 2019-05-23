@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns="http://www.springframework.org/schema/beans"
-       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
        xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-           http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd"
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context.xsd"
        default-lazy-init="true" default-autowire="byName">
 
     <context:property-placeholder location="classpath:ms_notifications_integrationtest.properties"
@@ -12,39 +13,6 @@
                                   ignore-unresolvable="true"/>
 
     <import resource="classpath:applicationContext-services.xml"/>
-
-    <bean id="datasource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close" lazy-init="true" primary="false">
-        <property name="driverClassName" value="${database.driver}"/>
-        <property name="jdbcUrl" value="${database.url}"/>
-        <property name="username" value="${database.username}"/>
-        <property name="password" value="${database.password}"/>
-        <property name="maximumPoolSize" value="${database.pool.maxActive}"/>
-    </bean>
-
-    <bean id="jpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
-        <property name="showSql" value="${database.hibernate.show_sql}"/>
-        <property name="generateDdl" value="false"/>
-        <property name="databasePlatform" value="${database.hibernate.dialect}"/>
-    </bean>
-
-    <!--Initializing Entity Manager Factory-->
-    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-        <property name="dataSource" ref="datasource"/>
-        <property name="persistenceUnitName" value="com_sfl_nms_persistence_unit"/>
-        <property name="jpaVendorAdapter" ref="jpaVendorAdapter"/>
-        <property name="jpaProperties">
-            <props>
-                <prop key="hibernate.ejb.naming_strategy">org.hibernate.cfg.ImprovedNamingStrategy</prop>
-                <prop key="hibernate.hbm2ddl.auto">${database.hibernate.hbm2ddl.auto}</prop>
-                <prop key="hibernate.format_sql">${database.hibernate.format_sql}</prop>
-                <prop key="javax.persistence.lock.timeout">${database.hibernate.lock.timeout}</prop>
-                <prop key="hibernate.cache.use_second_level_cache">${database.hibernate.use_cache}</prop>
-                <prop key="hibernate.id.new_generator_mappings">false</prop>
-            </props>
-        </property>
-    </bean>
-
-    <bean id="persistenceUtilityService" class="com.sflpro.notifier.db.repositories.utility.impl.SingleTransactionAwarePersistenceUtilityServiceImpl"/>
 
     <bean id="smtpTransportService"
           class="com.sflpro.notifier.services.notification.impl.email.SmtpTransportInMemoryServiceImpl"/>

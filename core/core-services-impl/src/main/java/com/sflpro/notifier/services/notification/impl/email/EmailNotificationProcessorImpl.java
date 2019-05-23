@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 import javax.annotation.Nonnull;
+import java.util.Map;
 
 /**
  * User: Ruben Dilanyan
@@ -48,8 +49,9 @@ public class EmailNotificationProcessorImpl implements EmailNotificationProcesso
 
 
     @Override
-    public void processNotification(@Nonnull final Long notificationId) {
+    public void processNotification(@Nonnull final Long notificationId, @Nonnull final Map<String, String> secureProperties) {
         Assert.notNull(notificationId, "Email notification id should not be null");
+        Assert.notNull(secureProperties, "Secure properties map should not be null");
         LOGGER.debug("Sending email notification for id - {}", notificationId);
         /* Retrieve email notification */
         final EmailNotification emailNotification = emailNotificationService.getNotificationById(notificationId);
@@ -59,7 +61,7 @@ public class EmailNotificationProcessorImpl implements EmailNotificationProcesso
         updateEmailNotificationState(emailNotification.getId(), NotificationState.PROCESSING);
         try {
             final EmailNotificationProviderProcessor emailNotificationProviderProcessor = getEmailNotificationProviderProcessor(emailNotification);
-            final boolean success = emailNotificationProviderProcessor.processEmailNotification(emailNotification);
+            final boolean success = emailNotificationProviderProcessor.processEmailNotification(emailNotification, secureProperties);
             /* Update state of notification to NotificationState.SENT */
             updateEmailNotificationState(emailNotification.getId(), success ? NotificationState.SENT : NotificationState.FAILED);
         } catch (final Exception ex) {

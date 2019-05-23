@@ -69,7 +69,7 @@ public class EmailNotificationServiceFacadeImpl extends AbstractNotificationServ
         emailNotification = emailNotificationService.createEmailNotification(emailNotificationDto, emailNotificationPropertyDtos);
         associateUserWithNotificationIfRequired(request.getUserUuId(), emailNotification);
         // Publish event
-        applicationEventDistributionService.publishAsynchronousEvent(new StartSendingNotificationEvent(emailNotification.getId()));
+        applicationEventDistributionService.publishAsynchronousEvent(new StartSendingNotificationEvent(emailNotification.getId(), request.getSecureProperties()));
         // Create response model
         final EmailNotificationModel emailNotificationModel = createEmailNotificationModel(emailNotification);
         final CreateEmailNotificationResponse response = new CreateEmailNotificationResponse(emailNotificationModel);

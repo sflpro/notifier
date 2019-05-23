@@ -35,22 +35,26 @@ public class EmailNotificationMandrillProviderProcessorImpl implements EmailNoti
     }
 
     @Override
-    public boolean processEmailNotification(@Nonnull final EmailNotification emailNotification) {
+    public boolean processEmailNotification(@Nonnull final EmailNotification emailNotification, @Nonnull final Map<String, String> secureProperties) {
         Assert.notNull(emailNotification, "Email notification should not be null");
+        Assert.notNull(secureProperties, "Secure properties map should not be null");
         Assert.isTrue(NotificationProviderType.MANDRILL.equals(emailNotification.getProviderType()), "Email notification provider type should be MANDRILL");
         Assert.notNull(emailNotification.getTemplateName(), "Template name for Mandrill email provider should not be null");
-        final SendEmailRequest emailRequest = createEmailRequest(emailNotification);
+        final SendEmailRequest emailRequest = createEmailRequest(emailNotification, secureProperties);
         final boolean result = mandrillApiCommunicator.sendEmailTemplate(emailRequest);
         LOGGER.debug("Successfully sent email message for third party email notification - {}", emailNotification);
         return result;
     }
 
-    private static SendEmailRequest createEmailRequest(final EmailNotification emailNotification) {
+    private static SendEmailRequest createEmailRequest(final EmailNotification emailNotification, final Map<String, String> secureProperties) {
         final Set<EmailNotificationProperty> properties = emailNotification.getProperties();
-        final Map<String, String> data = new HashMap<>();
+        final Map<String, String> templateContent = new HashMap<>();
         if (!CollectionUtils.isEmpty(properties)) {
-            properties.forEach(property -> data.put(property.getPropertyKey(), property.getPropertyValue()));
+            properties.forEach(property -> templateContent.put(property.getPropertyKey(), property.getPropertyValue()));
         }
-        return new SendEmailRequest(emailNotification.getRecipientEmail(), emailNotification.getTemplateName(), data);
+        if(!secureProperties.isEmpty()) {
+            templateContent.putAll(secureProperties);
+        }
+        return new SendEmailRequest(emailNotification.getRecipientEmail(), emailNotification.getTemplateName(), templateContent);
     }
 }

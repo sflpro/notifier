@@ -10,6 +10,7 @@ import org.easymock.Mock;
 import org.easymock.TestSubject;
 import org.junit.Test;
 
+import java.util.Collections;
 import java.util.Map;
 import java.util.UUID;
 
@@ -41,34 +42,39 @@ public class EmailNotificationSmtpProviderProcessorImplTest extends AbstractServ
         replayAll();
         // Run test scenario
         try {
-            emailNotificationSmtpProviderProcessor.processEmailNotification(null);
+            emailNotificationSmtpProviderProcessor.processEmailNotification(null, Collections.emptyMap());
+            fail("Exception should be thrown");
+        } catch (final IllegalArgumentException ex) {
+            // Expected
+        }
+        final EmailNotification emailNotification = getServicesImplTestHelper().createEmailNotification();
+        try {
+            emailNotificationSmtpProviderProcessor.processEmailNotification(emailNotification, null);
             fail("Exception should be thrown");
         } catch (final IllegalArgumentException ex) {
             // Expected
         }
         try {
-            final EmailNotification emailNotification = getServicesImplTestHelper().createEmailNotification();
             emailNotification.setProviderType(NotificationProviderType.MANDRILL);
-            emailNotificationSmtpProviderProcessor.processEmailNotification(emailNotification);
+            emailNotificationSmtpProviderProcessor.processEmailNotification(emailNotification, Collections.emptyMap());
             fail("Exception should be thrown");
         } catch (final IllegalArgumentException ex) {
             // Expected
         }
         try {
-            final EmailNotification emailNotification = getServicesImplTestHelper().createEmailNotification();
             emailNotification.setProviderType(NotificationProviderType.SMTP_SERVER);
             emailNotification.setSenderEmail(null);
-            emailNotificationSmtpProviderProcessor.processEmailNotification(emailNotification);
+            emailNotificationSmtpProviderProcessor.processEmailNotification(emailNotification, Collections.emptyMap());
             fail("Exception should be thrown");
         } catch (final IllegalArgumentException ex) {
             // Expected
         }
         try {
-            final EmailNotification emailNotification = getServicesImplTestHelper().createEmailNotification();
+//            final EmailNotification emailNotification = getServicesImplTestHelper().createEmailNotification();
             emailNotification.setProviderType(NotificationProviderType.SMTP_SERVER);
             emailNotification.setTemplateName(null);
             emailNotification.setContent(null);
-            emailNotificationSmtpProviderProcessor.processEmailNotification(emailNotification);
+            emailNotificationSmtpProviderProcessor.processEmailNotification(emailNotification, Collections.emptyMap());
             fail("Exception should be thrown");
         } catch (final IllegalArgumentException ex) {
             // Expected
@@ -96,7 +102,7 @@ public class EmailNotificationSmtpProviderProcessorImplTest extends AbstractServ
         // Replay
         replayAll();
         // Run test scenario
-        final boolean result = emailNotificationSmtpProviderProcessor.processEmailNotification(emailNotification);
+        final boolean result = emailNotificationSmtpProviderProcessor.processEmailNotification(emailNotification, Collections.emptyMap());
         assertTrue(result);
         // Verify
         verifyAll();
@@ -130,7 +136,7 @@ public class EmailNotificationSmtpProviderProcessorImplTest extends AbstractServ
         // Replay
         replayAll();
         // Run test scenario
-        final boolean result = emailNotificationSmtpProviderProcessor.processEmailNotification(emailNotification);
+        final boolean result = emailNotificationSmtpProviderProcessor.processEmailNotification(emailNotification, Collections.emptyMap());
         assertTrue(result);
         // Verify
         verifyAll();

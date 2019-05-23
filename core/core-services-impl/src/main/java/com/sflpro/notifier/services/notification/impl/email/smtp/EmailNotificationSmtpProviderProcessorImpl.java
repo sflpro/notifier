@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 import javax.annotation.Nonnull;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -39,17 +40,18 @@ public class EmailNotificationSmtpProviderProcessorImpl implements EmailNotifica
     }
 
     @Override
-    public boolean processEmailNotification(@Nonnull final EmailNotification emailNotification) {
+    public boolean processEmailNotification(@Nonnull final EmailNotification emailNotification, @Nonnull final Map<String, String> secureProperties) {
         Assert.notNull(emailNotification, "Email notification not null");
+        Assert.notNull(secureProperties, "Secure properties map should not be null");
         Assert.isTrue(NotificationProviderType.SMTP_SERVER.equals(emailNotification.getProviderType()), "Email notification provider type should be SMTP_SERVER");
         Assert.notNull(emailNotification.getSenderEmail(), "Email notification sender for SMTP_SERVER provider should not be null");
-        final MailSendConfiguration mailSendConfiguration = createMailSendConfiguration(emailNotification);
+        final MailSendConfiguration mailSendConfiguration = createMailSendConfiguration(emailNotification, secureProperties);
         smtpTransportService.sendMessageOverSmtp(mailSendConfiguration);
         LOGGER.debug("Successfully sent email message configuration - {}, notification - {}", mailSendConfiguration, emailNotification);
         return true;
     }
 
-    private MailSendConfiguration createMailSendConfiguration(final EmailNotification emailNotification) {
+    private MailSendConfiguration createMailSendConfiguration(final EmailNotification emailNotification, final Map<String, String> secureProperties) {
         final MailSendConfiguration mailSendConfiguration = new MailSendConfiguration();
         mailSendConfiguration.setTo(emailNotification.getRecipientEmail());
         mailSendConfiguration.setFrom(emailNotification.getSenderEmail());
@@ -61,6 +63,7 @@ public class EmailNotificationSmtpProviderProcessorImpl implements EmailNotifica
             final Map<String, String> parameters = emailNotification.getProperties()
                     .stream()
                     .collect(Collectors.toMap(EmailNotificationProperty::getPropertyKey, EmailNotificationProperty::getPropertyValue));
+            parameters.putAll(secureProperties);
             final String content = templatingService.getContentForTemplate(emailNotification.getTemplateName(), parameters);
             mailSendConfiguration.setContent(content);
         }

@@ -13,6 +13,8 @@ import org.easymock.Mock;
 import org.easymock.TestSubject;
 import org.junit.Test;
 
+import java.util.Collections;
+
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.fail;
 
@@ -54,7 +56,7 @@ public class EmailNotificationProcessorImplTest extends AbstractServicesUnitTest
         replayAll();
         // Run test scenario
         try {
-            emailNotificationProcessor.processNotification(null);
+            emailNotificationProcessor.processNotification(null, Collections.emptyMap());
             fail("Exception should be thrown");
         } catch (final IllegalArgumentException ex) {
             // Expected
@@ -79,7 +81,7 @@ public class EmailNotificationProcessorImplTest extends AbstractServicesUnitTest
         replayAll();
         // Run test scenario
         try {
-            emailNotificationProcessor.processNotification(notificationId);
+            emailNotificationProcessor.processNotification(notificationId, Collections.emptyMap());
             fail("Exception should be thrown");
         } catch (final IllegalArgumentException ex) {
             // Expected
@@ -101,7 +103,7 @@ public class EmailNotificationProcessorImplTest extends AbstractServicesUnitTest
         // Expectations
         expect(emailNotificationService.getNotificationById(notificationId)).andReturn(notification).once();
         expect(emailNotificationService.updateNotificationState(notificationId, NotificationState.PROCESSING)).andReturn(notification).once();
-        expect(emailNotificationSmtpProviderProcessor.processEmailNotification(notification)).andReturn(true).once();
+        expect(emailNotificationSmtpProviderProcessor.processEmailNotification(notification, Collections.emptyMap())).andReturn(true).once();
         expect(emailNotificationService.updateNotificationState(notificationId, NotificationState.SENT)).andReturn(notification).once();
         persistenceUtilityService.runInNewTransaction(isA(Runnable.class));
         expectLastCall().andAnswer(() -> {
@@ -112,7 +114,7 @@ public class EmailNotificationProcessorImplTest extends AbstractServicesUnitTest
         // Replay
         replayAll();
         // Run test scenario
-        emailNotificationProcessor.processNotification(notificationId);
+        emailNotificationProcessor.processNotification(notificationId, Collections.emptyMap());
         // Verify
         verifyAll();
     }
@@ -130,7 +132,7 @@ public class EmailNotificationProcessorImplTest extends AbstractServicesUnitTest
         // Expectations
         expect(emailNotificationService.getNotificationById(notificationId)).andReturn(notification).once();
         expect(emailNotificationService.updateNotificationState(notificationId, NotificationState.PROCESSING)).andReturn(notification).once();
-        expect(emailNotificationMandrillProviderProcessor.processEmailNotification(notification)).andReturn(false).once();
+        expect(emailNotificationMandrillProviderProcessor.processEmailNotification(notification, Collections.emptyMap())).andReturn(false).once();
         expect(emailNotificationService.updateNotificationState(notificationId, NotificationState.FAILED)).andReturn(notification).once();
         persistenceUtilityService.runInNewTransaction(isA(Runnable.class));
         expectLastCall().andAnswer(() -> {
@@ -141,7 +143,7 @@ public class EmailNotificationProcessorImplTest extends AbstractServicesUnitTest
         // Replay
         replayAll();
         // Run test scenario
-        emailNotificationProcessor.processNotification(notificationId);
+        emailNotificationProcessor.processNotification(notificationId, Collections.emptyMap());
         // Verify
         verifyAll();
     }
@@ -158,7 +160,7 @@ public class EmailNotificationProcessorImplTest extends AbstractServicesUnitTest
         // Expectations
         expect(emailNotificationService.getNotificationById(notificationId)).andReturn(notification).once();
         expect(emailNotificationService.updateNotificationState(notificationId, NotificationState.PROCESSING)).andReturn(notification).once();
-        expect(emailNotificationSmtpProviderProcessor.processEmailNotification(notification)).andThrow(new ServicesRuntimeException("Runtime exception")).once();
+        expect(emailNotificationSmtpProviderProcessor.processEmailNotification(notification, Collections.emptyMap())).andThrow(new ServicesRuntimeException("Runtime exception")).once();
         expect(emailNotificationService.updateNotificationState(notificationId, NotificationState.FAILED)).andReturn(notification).once();
         persistenceUtilityService.runInNewTransaction(isA(Runnable.class));
         expectLastCall().andAnswer(() -> {
@@ -170,7 +172,7 @@ public class EmailNotificationProcessorImplTest extends AbstractServicesUnitTest
         replayAll();
         try {
             // Run test scenario
-            emailNotificationProcessor.processNotification(notificationId);
+            emailNotificationProcessor.processNotification(notificationId, Collections.emptyMap());
             fail("Exception should be thrown");
         } catch (final ServicesRuntimeException ex) {
             // Expected

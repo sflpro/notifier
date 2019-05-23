@@ -1,6 +1,7 @@
 package com.sflpro.notifier.queue.consumer.notification.common;
 
 import javax.annotation.Nonnull;
+import java.util.Map;
 
 /**
  * User: Mher Sargsyan
@@ -15,5 +16,5 @@ public interface NotificationQueueConsumerService {
      *
      * @param notificationId
      */
-    void processNotification(@Nonnull final Long notificationId);
+    void processNotification(@Nonnull final Long notificationId, @Nonnull final Map<String, String> secureProperties);
 }

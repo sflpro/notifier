@@ -9,6 +9,8 @@ import org.easymock.Mock;
 import org.easymock.TestSubject;
 import org.junit.Test;
 
+import java.util.Collections;
+
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.*;
 
@@ -34,7 +36,13 @@ public class EmailNotificationMandrillProviderProcessorImplTest extends Abstract
         replayAll();
         // Run test scenario
         try {
-            emailNotificationMandrillProviderProcessor.processEmailNotification(null);
+            emailNotificationMandrillProviderProcessor.processEmailNotification(null, Collections.emptyMap());
+            fail("Exception should be thrown");
+        } catch (final IllegalArgumentException ex) {
+            // Expected
+        }
+        try {
+            emailNotificationMandrillProviderProcessor.processEmailNotification(getServicesImplTestHelper().createEmailNotification(), null);
             fail("Exception should be thrown");
         } catch (final IllegalArgumentException ex) {
             // Expected
@@ -42,7 +50,7 @@ public class EmailNotificationMandrillProviderProcessorImplTest extends Abstract
         try {
             final EmailNotification emailNotification = getServicesImplTestHelper().createEmailNotification();
             emailNotification.setProviderType(NotificationProviderType.SMTP_SERVER);
-            emailNotificationMandrillProviderProcessor.processEmailNotification(emailNotification);
+            emailNotificationMandrillProviderProcessor.processEmailNotification(emailNotification, Collections.emptyMap());
             fail("Exception should be thrown");
         } catch (final IllegalArgumentException ex) {
             // Expected
@@ -51,7 +59,7 @@ public class EmailNotificationMandrillProviderProcessorImplTest extends Abstract
             final EmailNotification emailNotification = getServicesImplTestHelper().createEmailNotification();
             emailNotification.setProviderType(NotificationProviderType.MANDRILL);
             emailNotification.setTemplateName(null);
-            emailNotificationMandrillProviderProcessor.processEmailNotification(emailNotification);
+            emailNotificationMandrillProviderProcessor.processEmailNotification(emailNotification, Collections.emptyMap());
             fail("Exception should be thrown");
         } catch (final IllegalArgumentException ex) {
             // Expected
@@ -76,7 +84,7 @@ public class EmailNotificationMandrillProviderProcessorImplTest extends Abstract
         // Replay
         replayAll();
         // Run test scenario
-        final boolean result = emailNotificationMandrillProviderProcessor.processEmailNotification(emailNotification);
+        final boolean result = emailNotificationMandrillProviderProcessor.processEmailNotification(emailNotification, Collections.emptyMap());
         assertTrue(result);
         // Verify
         verifyAll();

@@ -8,6 +8,8 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Collections;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -38,7 +40,7 @@ public class NotificationQueueConsumerServiceIntegrationTest extends AbstractQue
         SmsNotification smsNotification = getServicesTestHelper().createSmsNotification();
         /* Flush, clear  and process sending sms message */
         flushAndClear();
-        notificationQueueConsumerService.processNotification(smsNotification.getId());
+        notificationQueueConsumerService.processNotification(smsNotification.getId(), Collections.emptyMap());
         /* Flush, clear, reload notification and check state */
         smsNotification = smsNotificationService.getNotificationById(smsNotification.getId());
         assertNotNull(smsNotification);

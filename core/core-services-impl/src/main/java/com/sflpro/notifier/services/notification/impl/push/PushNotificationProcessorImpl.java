@@ -20,6 +20,7 @@ import org.springframework.util.Assert;
 import javax.annotation.Nonnull;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Map;
 
 /**
  * User: Ruben Dilanyan
@@ -49,8 +50,9 @@ public class PushNotificationProcessorImpl implements PushNotificationProcessor 
     }
 
     @Override
-    public void processNotification(@Nonnull final Long notificationId) {
+    public void processNotification(@Nonnull final Long notificationId, @Nonnull final Map<String, String> secureProperties) {
         Assert.notNull(notificationId, "Push notification id should not be null");
+        Assert.notNull(secureProperties, "Secure properties map should not be null");
         LOGGER.debug("Processing push notification for id - {}", notificationId);
         final PushNotification pushNotification = pushNotificationService.getNotificationById(notificationId);
         assertPushNotificationState(pushNotification);

@@ -2,6 +2,7 @@ package com.sflpro.notifier.services.notification.impl.email.mandrill;
 
 import com.sflpro.notifier.db.entities.notification.NotificationProviderType;
 import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
+import com.sflpro.notifier.db.entities.notification.email.EmailNotificationProperty;
 import com.sflpro.notifier.externalclients.email.mandrill.communicator.MandrillApiCommunicator;
 import com.sflpro.notifier.externalclients.email.mandrill.model.request.SendEmailRequest;
 import com.sflpro.notifier.services.test.AbstractServicesUnitTest;
@@ -10,6 +11,10 @@ import org.easymock.TestSubject;
 import org.junit.Test;
 
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.*;
@@ -85,6 +90,32 @@ public class EmailNotificationMandrillProviderProcessorImplTest extends Abstract
         replayAll();
         // Run test scenario
         final boolean result = emailNotificationMandrillProviderProcessor.processEmailNotification(emailNotification, Collections.emptyMap());
+        assertTrue(result);
+        // Verify
+        verifyAll();
+    }
+
+    @Test
+    public void testProcessEmailNotification_WhenSecurePropertiesNotEmpty_ThenAddToTemplateContent() {
+        // Test data
+        final EmailNotification emailNotification = getServicesImplTestHelper().createEmailNotification();
+        emailNotification.setProviderType(NotificationProviderType.MANDRILL);
+        final Map<String, String> secureProperties = new HashMap<>();
+        secureProperties.putIfAbsent("token", UUID.randomUUID().toString());
+        final Map<String, String> templateContent = emailNotification.getProperties().stream().collect(Collectors.toMap(EmailNotificationProperty::getPropertyKey, EmailNotificationProperty::getPropertyValue));
+        templateContent.putAll(secureProperties);
+        // Reset
+        resetAll();
+        // Expectations
+        expect(mandrillApiCommunicator.sendEmailTemplate(isA(SendEmailRequest.class))).andAnswer(() -> {
+            final SendEmailRequest sendEmailRequest = (SendEmailRequest) getCurrentArguments()[0];
+            assertSendEmailRequest(sendEmailRequest, emailNotification);
+            return true;
+        }).once();
+        // Replay
+        replayAll();
+        // Run test scenario
+        final boolean result = emailNotificationMandrillProviderProcessor.processEmailNotification(emailNotification, secureProperties);
         assertTrue(result);
         // Verify
         verifyAll();

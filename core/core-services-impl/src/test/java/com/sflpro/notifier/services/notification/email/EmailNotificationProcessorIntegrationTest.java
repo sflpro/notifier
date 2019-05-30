@@ -30,6 +30,7 @@ public class EmailNotificationProcessorIntegrationTest extends AbstractServiceIn
     public void testProcessPushNotification() {
         // Prepare data
         EmailNotification emailNotification = getServicesTestHelper().createEmailNotification();
+        flushAndClear();
         Assert.assertEquals(NotificationState.CREATED, emailNotification.getState());
         // Process push notification
         emailNotificationProcessor.processNotification(emailNotification.getId());

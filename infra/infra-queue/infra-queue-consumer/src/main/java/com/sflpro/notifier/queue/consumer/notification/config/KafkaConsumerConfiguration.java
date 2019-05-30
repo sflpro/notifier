@@ -14,7 +14,7 @@ import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
-import org.springframework.kafka.listener.AbstractMessageListenerContainer;
+import org.springframework.kafka.listener.ContainerProperties;
 import org.springframework.retry.RetryContext;
 import org.springframework.retry.RetryPolicy;
 import org.springframework.retry.backoff.BackOffPolicy;
@@ -83,7 +83,7 @@ public class KafkaConsumerConfiguration {
         factory.setConsumerFactory(setupConsumerFactory());
         factory.setRetryTemplate(retryTemplate());
         factory.setConcurrency(kafkaConcurrencyFactor);
-        factory.getContainerProperties().setAckMode(AbstractMessageListenerContainer.AckMode.MANUAL);
+        factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL);
         factory.getContainerProperties().setAckOnError(false);
 
         logger.info("Kafka concurrent listener container factory initialized");

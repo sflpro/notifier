@@ -203,11 +203,6 @@
             <version>${project.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>com.google.cloud</groupId>
-            <artifactId>google-cloud-logging-logback</artifactId>
-        </dependency>
-
         <!-- test dependencies -->
         <dependency>
             <groupId>com.sflpro.notifier</groupId>

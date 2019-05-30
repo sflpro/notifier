@@ -22,6 +22,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Date;
+import java.util.Optional;
 
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.*;
@@ -89,7 +90,7 @@ public class PushNotificationSubscriptionRequestServiceImplTest extends Abstract
         // Reset
         resetAll();
         // Expectations
-        expect(pushNotificationSubscriptionRequestRepository.findOne(eq(requestId))).andReturn(null).once();
+        expect(pushNotificationSubscriptionRequestRepository.findById(eq(requestId))).andReturn(Optional.empty()).once();
         // Replay
         replayAll();
         // Run test scenario
@@ -128,7 +129,7 @@ public class PushNotificationSubscriptionRequestServiceImplTest extends Abstract
         // Reset
         resetAll();
         // Expectations
-        expect(pushNotificationSubscriptionRequestRepository.findOne(eq(requestId))).andReturn(request).once();
+        expect(pushNotificationSubscriptionRequestRepository.findById(eq(requestId))).andReturn(Optional.of(request)).once();
         expect(pushNotificationRecipientService.getPushNotificationRecipientById(eq(recipientId))).andReturn(recipient).once();
         // Replay
         replayAll();
@@ -166,7 +167,7 @@ public class PushNotificationSubscriptionRequestServiceImplTest extends Abstract
         // Reset
         resetAll();
         // Expectations
-        expect(pushNotificationSubscriptionRequestRepository.findOne(eq(requestId))).andReturn(request).once();
+        expect(pushNotificationSubscriptionRequestRepository.findById(eq(requestId))).andReturn(Optional.of(request)).once();
         expect(pushNotificationRecipientService.getPushNotificationRecipientById(eq(recipientId))).andReturn(recipient).once();
         expect(pushNotificationSubscriptionRequestRepository.save(isA(PushNotificationSubscriptionRequest.class))).andAnswer(() -> (PushNotificationSubscriptionRequest) getCurrentArguments()[0]).once();
         // Replay
@@ -327,7 +328,7 @@ public class PushNotificationSubscriptionRequestServiceImplTest extends Abstract
         // Reset
         resetAll();
         // Expectations
-        expect(pushNotificationSubscriptionRequestRepository.findOne(eq(requestId))).andReturn(null).once();
+        expect(pushNotificationSubscriptionRequestRepository.findById(eq(requestId))).andReturn(Optional.empty()).once();
         // Replay
         replayAll();
         // Run test scenario
@@ -353,7 +354,7 @@ public class PushNotificationSubscriptionRequestServiceImplTest extends Abstract
         // Reset
         resetAll();
         // Expectations
-        expect(pushNotificationSubscriptionRequestRepository.findOne(eq(requestId))).andReturn(request).once();
+        expect(pushNotificationSubscriptionRequestRepository.findById(eq(requestId))).andReturn(Optional.of(request)).once();
         expect(pushNotificationSubscriptionRequestRepository.save(isA(PushNotificationSubscriptionRequest.class))).andAnswer(() -> (PushNotificationSubscriptionRequest) getCurrentArguments()[0]).once();
         // Replay
         replayAll();
@@ -390,7 +391,7 @@ public class PushNotificationSubscriptionRequestServiceImplTest extends Abstract
         // Reset
         resetAll();
         // Expectations
-        expect(pushNotificationSubscriptionRequestRepository.findOne(eq(requestId))).andReturn(null).once();
+        expect(pushNotificationSubscriptionRequestRepository.findById(eq(requestId))).andReturn(Optional.empty()).once();
         // Replay
         replayAll();
         // Run test scenario
@@ -414,7 +415,7 @@ public class PushNotificationSubscriptionRequestServiceImplTest extends Abstract
         // Reset
         resetAll();
         // Expectations
-        expect(pushNotificationSubscriptionRequestRepository.findOne(eq(requestId))).andReturn(request).once();
+        expect(pushNotificationSubscriptionRequestRepository.findById(eq(requestId))).andReturn(Optional.of(request)).once();
         // Replay
         replayAll();
         // Run test scenario

@@ -1,8 +1,8 @@
 package com.sflpro.notifier.api.internal.facade.test;
 
 import com.sflpro.notifier.api.internal.facade.helper.ServiceFacadeImplTestHelper;
-import com.sflpro.notifier.core.api.internal.model.common.result.ErrorResponseModel;
-import com.sflpro.notifier.core.api.internal.model.common.result.ErrorType;
+import com.sflpro.notifier.api.model.common.result.ErrorResponseModel;
+import com.sflpro.notifier.api.model.common.result.ErrorType;
 import org.apache.commons.lang3.mutable.MutableBoolean;
 import org.easymock.EasyMockRunner;
 import org.easymock.EasyMockSupport;

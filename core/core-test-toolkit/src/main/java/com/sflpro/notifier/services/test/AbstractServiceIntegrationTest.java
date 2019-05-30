@@ -5,19 +5,22 @@ import com.sflpro.notifier.services.springboot.NotifierTestApplication;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 
 /**
  * @author Ruben Dilanyan
  *         Aug 25, 2013
  */
+@ActiveProfiles("test")
+@Transactional
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = NotifierTestApplication.class)
-public abstract class AbstractServiceIntegrationTest extends AbstractTransactionalJUnit4SpringContextTests {
+public abstract class AbstractServiceIntegrationTest {
 
     @Autowired
     private ServicesTestHelper servicesTestHelper;

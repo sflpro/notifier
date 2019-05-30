@@ -1,7 +1,9 @@
 package com.sflpro.notifier.springboot;
 
+import com.sflpro.notifier.db.NotifierPersistenceConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ImportResource;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.ActiveProfiles;
 
 /**
  * Company: SFL LLC
@@ -9,7 +11,8 @@ import org.springframework.context.annotation.ImportResource;
  *
  * @author Yervand Aghababyan
  */
+@ActiveProfiles("test")
 @SpringBootApplication
-@ImportResource("classpath:applicationContext-persistence-integrationtest.xml")
+@Import(NotifierPersistenceConfiguration.class)
 public class NotifierRepositoryTestApplication {
 }

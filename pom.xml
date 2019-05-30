@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.5.9.RELEASE</version>
+        <version>2.1.5.RELEASE</version>
     </parent>
 
     <modules>
@@ -91,24 +91,13 @@
         <jackson.version>2.9.2</jackson.version>
         <jersey.version>2.21</jersey.version>
 
-        <!-- Spring -->
-        <spring.version>4.3.13.RELEASE</spring.version>
-        <spring.data.version>1.8.2.RELEASE</spring.data.version>
-        <spring.security.version>3.2.5.RELEASE</spring.security.version>
-        <spring.amqp.version>1.4.5.RELEASE</spring.amqp.version>
-        <spring.kafka.version>1.3.3.RELEASE</spring.kafka.version>
-
         <!-- Database -->
-        <postgresql.version>42.1.4</postgresql.version>
+        <postgresql.version>42.2.5</postgresql.version>
         <mysql.connector.version>5.1.36</mysql.connector.version>
-        <c3po.version>0.9.5.1</c3po.version>
-        <hibernate.version>5.0.0.Final</hibernate.version>
-        <hibernate.javax.persistence.version>1.0.0.Final</hibernate.javax.persistence.version>
         <com.github.usc.jdbcdslog.version>1.0.6</com.github.usc.jdbcdslog.version>
         <flyway.version>5.2.4</flyway.version>
 
         <easymock.version>3.3.1</easymock.version>
-        <junit.version>4.12</junit.version>
 
         <logstash-encoder.version>4.7</logstash-encoder.version>
         <logback.logstash.encoder.version>4.5.1</logback.logstash.encoder.version>
@@ -126,8 +115,6 @@
         <twillio.sdk.version>4.5.0</twillio.sdk.version>
 
         <bouncycastle.version>140</bouncycastle.version>
-
-        <aspectj.version>1.8.9</aspectj.version>
 
         <joda.time.version>2.8.2</joda.time.version>
         <swagger.version>1.5.13</swagger.version>
@@ -362,10 +349,9 @@
                             <configuration>
                                 <argLine>@{jacoco.failsafe.argLine}</argLine>
                                 <environmentVariables>
-                                    <DATABASE_DRIVER>org.postgresql.Driver</DATABASE_DRIVER>
-                                    <DATABASE_URL>jdbc:postgresql://127.0.0.1:${postgresqlPort}/notifier</DATABASE_URL>
-                                    <DATABASE_USERNAME>notifier</DATABASE_USERNAME>
-                                    <DATABASE_PASSWORD>notifier</DATABASE_PASSWORD>
+                                    <SPRING_DATASOURCE_URL>jdbc:postgresql://127.0.0.1:${postgresqlPort}/notifier</SPRING_DATASOURCE_URL>
+                                    <SPRING_DATASOURCE_USERNAME>notifier</SPRING_DATASOURCE_USERNAME>
+                                    <SPRING_DATASOURCE_PASSWORD>notifier</SPRING_DATASOURCE_PASSWORD>
                                 </environmentVariables>
                             </configuration>
                         </execution>
@@ -525,12 +511,6 @@
                 <artifactId>logstash-logback-encoder</artifactId>
                 <version>${logback.logstash.encoder.version}</version>
             </dependency>
-            <!-- Spring dependencies -->
-            <dependency>
-                <groupId>org.springframework.kafka</groupId>
-                <artifactId>spring-kafka</artifactId>
-                <version>${spring.kafka.version}</version>
-            </dependency>
             <!-- Apache commons -->
             <dependency>
                 <groupId>org.apache.commons</groupId>
@@ -637,20 +617,6 @@
                 <groupId>com.github.usc</groupId>
                 <artifactId>jdbcdslog</artifactId>
                 <version>${com.github.usc.jdbcdslog.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.ow2.asm</groupId>
-                <artifactId>asm</artifactId>
-                <version>${asm.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.google.cloud</groupId>
-                <artifactId>google-cloud-logging-logback</artifactId>
-                <version>${google.java.cloud.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.google.cloud</groupId>
-                <artifactId>google-cloud-bom</artifactId>
             </dependency>
         </dependencies>
     </dependencyManagement>

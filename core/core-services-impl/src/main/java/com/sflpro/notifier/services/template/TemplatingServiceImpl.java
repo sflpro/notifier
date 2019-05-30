@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
-import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
 import javax.annotation.Nonnull;
 import java.io.IOException;
@@ -26,11 +25,12 @@ import java.util.Map;
 public class TemplatingServiceImpl implements TemplatingService {
     private static final Logger LOGGER = LoggerFactory.getLogger(TemplatingServiceImpl.class);
 
-    @Autowired
-    private FreeMarkerConfigurer freeMarkerConfigurer;
+    private final Configuration configuration;
 
-    public TemplatingServiceImpl() {
+    @Autowired
+    public TemplatingServiceImpl(TemplatingConfiguration configurationHolder) {
         LOGGER.debug("Initializing templating service");
+        this.configuration = configurationHolder.getFreemarkerConfiguration();
     }
 
     @Override
@@ -38,8 +38,7 @@ public class TemplatingServiceImpl implements TemplatingService {
         Assert.notNull(templateName, "Template name should not be null");
         Assert.notNull(parameters, "Parameters should not be null");
         try {
-            final Configuration freemarkerConfiguration = freeMarkerConfigurer.getConfiguration();
-            final Template template = freemarkerConfiguration.getTemplate(templateName);
+            final Template template = configuration.getTemplate(templateName);
             final StringWriter resultWriter = new StringWriter();
             template.process(parameters, resultWriter);
             final String result = resultWriter.toString();

@@ -105,12 +105,6 @@ public class SmsNotificationProcessorImplTest extends AbstractServicesUnitTest {
         resetAll();
         /* Register expectations */
         expect(smsNotificationService.getNotificationById(eq(notificationId))).andReturn(smsNotification).once();
-        persistenceUtilityService.runInNewTransaction(isA(Runnable.class));
-        expectLastCall().andAnswer(() -> {
-            final Runnable runnable = (Runnable) getCurrentArguments()[0];
-            runnable.run();
-            return null;
-        }).times(2);
         expect(smsNotificationService.updateNotificationState(eq(notificationId), eq(NotificationState.PROCESSING))).andReturn(smsNotification).once();
         expect(twillioApiCommunicator.sendMessage(isA(SendMessageRequest.class))).andAnswer(new IAnswer<SendMessageResponse>() {
             @Override
@@ -144,12 +138,6 @@ public class SmsNotificationProcessorImplTest extends AbstractServicesUnitTest {
         resetAll();
         /* Register expectations */
         expect(smsNotificationService.getNotificationById(eq(notificationId))).andReturn(smsNotification).once();
-        persistenceUtilityService.runInNewTransaction(isA(Runnable.class));
-        expectLastCall().andAnswer(() -> {
-            final Runnable runnable = (Runnable) getCurrentArguments()[0];
-            runnable.run();
-            return null;
-        }).times(3);
         expect(smsNotificationService.updateNotificationState(eq(notificationId), eq(NotificationState.PROCESSING))).andReturn(smsNotification).once();
         expect(twillioApiCommunicator.sendMessage(isA(SendMessageRequest.class))).andAnswer(new IAnswer<SendMessageResponse>() {
             @Override

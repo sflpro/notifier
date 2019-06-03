@@ -8,11 +8,8 @@ import com.sflpro.notifier.queue.producer.connector.AmqpConnectorService;
 import com.sflpro.notifier.queue.producer.connector.AmqpResponseHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.annotation.Nonnull;
@@ -23,20 +20,24 @@ import javax.annotation.Nonnull;
  *
  * @author Davit Harutyunyan
  */
-@Service(value = "kafka")
 public class KafkaConnectorServiceImpl implements AmqpConnectorService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AmqpConnectorServiceImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RabbitConnectorServiceImpl.class);
 
-    @Value("${kafka.topic.names}")
-    private String kafkaTopics;
+    private final String kafkaTopics;
 
-    @Autowired
-    @Qualifier(value = "amqpProducerJsonObjectMapper")
-    private ObjectMapper objectMapper;
+    @Qualifier(value = "amqpObjectMapper")
+    private final ObjectMapper objectMapper;
 
-    @Autowired
-    private KafkaTemplate<String, byte[]> kafkaTemplate;
+    private final KafkaTemplate<String, byte[]> kafkaTemplate;
+
+    public KafkaConnectorServiceImpl(final String kafkaTopics,
+                                     final ObjectMapper objectMapper,
+                                     final KafkaTemplate<String, byte[]> kafkaTemplate) {
+        this.kafkaTopics = kafkaTopics;
+        this.objectMapper = objectMapper;
+        this.kafkaTemplate = kafkaTemplate;
+    }
 
     @Override
     public <T extends AbstractRPCTransferModel> void publishMessage(@Nonnull RPCCallType callType, @Nonnull AbstractRPCTransferModel requestModel, @Nonnull Class<T> responseModelClass, @Nonnull AmqpResponseHandler<T> responseHandler) {

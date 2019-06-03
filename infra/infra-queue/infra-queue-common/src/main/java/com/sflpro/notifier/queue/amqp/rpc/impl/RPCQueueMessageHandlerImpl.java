@@ -10,6 +10,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.StopWatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 
@@ -19,17 +21,19 @@ import java.io.IOException;
  * Date: 12/12/14
  * Time: 1:34 PM
  */
+@Service
 public class RPCQueueMessageHandlerImpl implements RPCQueueMessageHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(RPCQueueMessageHandlerImpl.class);
 
     /* Dependencies */
-    private ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper;
 
-    private ServiceRPCAdaptersRegistry serviceRPCAdaptersRegistry;
+    private final ServiceRPCAdaptersRegistry serviceRPCAdaptersRegistry;
 
-    /* Constructors */
-    public RPCQueueMessageHandlerImpl() {
-        super();
+    @Autowired
+    public RPCQueueMessageHandlerImpl(final ObjectMapper objectMapper, final ServiceRPCAdaptersRegistry serviceRPCAdaptersRegistry) {
+        this.objectMapper = objectMapper;
+        this.serviceRPCAdaptersRegistry = serviceRPCAdaptersRegistry;
     }
 
     @Override
@@ -86,14 +90,6 @@ public class RPCQueueMessageHandlerImpl implements RPCQueueMessageHandler {
 
 
     /* Getters and setters */
-    public void setObjectMapper(ObjectMapper objectMapper) {
-        this.objectMapper = objectMapper;
-    }
-
-    public void setServiceRPCAdaptersRegistry(ServiceRPCAdaptersRegistry serviceRPCAdaptersRegistry) {
-        this.serviceRPCAdaptersRegistry = serviceRPCAdaptersRegistry;
-    }
-
     public ObjectMapper getObjectMapper() {
         return objectMapper;
     }

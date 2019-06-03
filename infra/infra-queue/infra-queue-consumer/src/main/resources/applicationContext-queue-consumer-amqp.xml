@@ -14,7 +14,7 @@
 	<bean id="amqpAdmin" class="org.springframework.amqp.rabbit.core.RabbitAdmin">
 		<constructor-arg ref="amqpConnectionFactory" />
 	</bean>
-	
+
 	<bean id="amqpExecutorService"
 		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
 		<property name="corePoolSize" value="${amqp.executor.coresize}" />

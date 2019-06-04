@@ -30,6 +30,8 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 @ConditionalOnProperty(name = "notifier.queue.engine", havingValue = "rabbit")
 public class RabbitProducerConfiguration {
 
+    private final static String AMQP_RESPONSE_QUEUE_NAME = "notifier-responses-";
+
     @Value("${notifier.queue.topic}")
     private String queueName;
 
@@ -44,7 +46,7 @@ public class RabbitProducerConfiguration {
 
     @Bean
     public Queue responseQueue() {
-        return new UniquelyNamedConfigurableQueue(false, false, true);
+        return new UniquelyNamedConfigurableQueue(AMQP_RESPONSE_QUEUE_NAME, false, false, true);
     }
 
     @Bean

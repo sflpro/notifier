@@ -27,9 +27,6 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 @Import({RabbitConfiguration.class, QueueConfigurationDefaults.class})
 public class RabbitConsumerConfiguration {
 
-    @Value("${notifier.queue.topic}")
-    private String topic;
-
     @Value("${notifier.rabbitmq.concurrentConsumers}")
     private int concurrentConsumers;
 
@@ -39,21 +36,17 @@ public class RabbitConsumerConfiguration {
     @Value("${amqp.prefetchCount}")
     private int prefetchCount;
 
-    @Bean
-    public Queue queue() {
-        return new Queue(topic, true);
-    }
-
     @Lazy(false)
     @Bean(destroyMethod = "stop", initMethod = "start")
     public SimpleMessageListenerContainer messageListenerContainer(final ConnectionFactory connectionFactory,
                                                                    final AmqpAdmin amqpAdmin,
                                                                    @Qualifier("amqpTaskExecutor") final ThreadPoolTaskExecutor taskExecutor,
-                                                                   final RPCQueueMessageHandler messageHandler) {
+                                                                   final RPCQueueMessageHandler messageHandler,
+                                                                   @Qualifier("notificationQueue") final Queue notificationQueue) {
         SimpleMessageListenerContainer messageListenerContainer = new SimpleMessageListenerContainer(connectionFactory);
         messageListenerContainer.setAmqpAdmin(amqpAdmin);
         messageListenerContainer.setMessageListener(messageHandler::handleMessage);
-        messageListenerContainer.setQueues(queue());
+        messageListenerContainer.setQueues(notificationQueue);
         messageListenerContainer.setTaskExecutor(taskExecutor);
         messageListenerContainer.setConcurrentConsumers(concurrentConsumers);
         messageListenerContainer.setMaxConcurrentConsumers(maxConcurrentConsumers);

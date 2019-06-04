@@ -1,6 +1,7 @@
 package com.sflpro.notifier.queue.amqp;
 
 import com.sflpro.notifier.queue.QueueConfigurationDefaults;
+import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -35,6 +36,14 @@ public class RabbitConfiguration {
 
     @Value("${amqp.executor.maxSize}")
     private int executorServiceMaxSize;
+
+    @Value("${notifier.queue.topic}")
+    private String topic;
+
+    @Bean
+    public Queue notificationQueue() {
+        return new Queue(topic, true);
+    }
 
     @Bean
     public ThreadPoolTaskExecutor amqpTaskExecutor() {

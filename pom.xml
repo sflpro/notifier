@@ -135,6 +135,7 @@
         <sonar.language>java</sonar.language>
         <sonar.jacoco.includes>com.sflpro.*</sonar.jacoco.includes>
         <sonar.jacoco.version>0.8.4</sonar.jacoco.version>
+        <sonar.coverage.jacoco.xmlReportPaths>target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
         <jacoco.plugin.version>0.8.4</jacoco.plugin.version>
         <google.guave.version>18.0</google.guave.version>
         <apache.tika.version>1.20</apache.tika.version>

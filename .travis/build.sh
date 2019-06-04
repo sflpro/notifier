@@ -17,7 +17,10 @@ then
     -Dsonar.host.url=https://sonarcloud.io \
     -Dsonar.organization=sfl \
     -Dsonar.login=$SONARCLOUD_KEY \
-    -Dgpg.passphrase=$TRAVIS_GPG_KEY_PASS
+    -Dgpg.passphrase=$TRAVIS_GPG_KEY_PASS \
+    -Dtwillio.account.sender.phone=$TWILLIO_TEST_PHONE_NR \
+    -Dtwillio.account.authToken=$TWILLIO_AUTH_TOKEN \
+    -Dtwillio.account.sid=$TWILLIO_ACCOUNT_SID
 elif [ $TRAVIS_BRANCH == 'master' ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]
 then
     echo "Running master branch build and analysis. Release artifacts will be published.. Sonar run will be skipped."
@@ -25,7 +28,10 @@ then
     -Dsonar.host.url=https://sonarcloud.io \
     -Dsonar.organization=sfl \
     -Dsonar.login=$SONARCLOUD_KEY \
-    -Dgpg.passphrase=$TRAVIS_GPG_KEY_PASS
+    -Dgpg.passphrase=$TRAVIS_GPG_KEY_PASS \
+    -Dtwillio.account.sender.phone=$TWILLIO_TEST_PHONE_NR \
+    -Dtwillio.account.authToken=$TWILLIO_AUTH_TOKEN \
+    -Dtwillio.account.sid=$TWILLIO_ACCOUNT_SID
 elif [ "$TRAVIS_PULL_REQUEST" != "false" ]
 then
     echo "Running Github PR build and analysis. Sonar will run in preview mode."
@@ -37,8 +43,14 @@ then
     -Dsonar.pullrequest.branch=$TRAVIS_PULL_REQUEST_BRANCH \
     -Dsonar.pullrequest.provider=GitHub \
     -Dsonar.pullrequest.github.repository=sflpro/notifier \
-    -Dsonar.github.oauth=$SONAR_GITHUB_OAUTH_TOKEN
+    -Dsonar.github.oauth=$SONAR_GITHUB_OAUTH_TOKEN \
+    -Dtwillio.account.sender.phone=$TWILLIO_TEST_PHONE_NR \
+    -Dtwillio.account.authToken=$TWILLIO_AUTH_TOKEN \
+    -Dtwillio.account.sid=$TWILLIO_ACCOUNT_SID
 else
     echo "Running regular maven execution. No artifacts will be released to either release or snapshot repositories"
-    mvn clean verify -B
+    mvn clean verify -B \
+    -Dtwillio.account.sender.phone=$TWILLIO_TEST_PHONE_NR \
+    -Dtwillio.account.authToken=$TWILLIO_AUTH_TOKEN \
+    -Dtwillio.account.sid=$TWILLIO_ACCOUNT_SID
 fi

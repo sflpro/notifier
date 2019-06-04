@@ -125,7 +125,10 @@
         <mail.version>1.5.2</mail.version>
         <velocity.version>1.6.2</velocity.version>
 
+        <google.guave.version>18.0</google.guave.version>
         <google.java.cloud.version>0.37.0-alpha</google.java.cloud.version>
+
+        <apache.tika.version>1.20</apache.tika.version>
 
         <!--Infrasturcture third party libs-->
         <mandrillapp.wrapper.lutung.version>0.0.8</mandrillapp.wrapper.lutung.version>
@@ -133,12 +136,11 @@
         <!--Sonar config-->
         <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
         <sonar.language>java</sonar.language>
+        <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
         <sonar.jacoco.includes>com.sflpro.*</sonar.jacoco.includes>
         <sonar.jacoco.version>0.8.4</sonar.jacoco.version>
-        <sonar.coverage.jacoco.xmlReportPaths>target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+        <sonar.coverage.jacoco.xmlReportPaths>@{session.executionRootDirectory}/report/target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
         <jacoco.plugin.version>0.8.4</jacoco.plugin.version>
-        <google.guave.version>18.0</google.guave.version>
-        <apache.tika.version>1.20</apache.tika.version>
 
         <!--Maven plugins-->
         <maven.build.helper.plugin.version>3.0.0</maven.build.helper.plugin.version>

@@ -12,6 +12,7 @@
         <module>infra</module>
         <module>worker</module>
         <module>api</module>
+        <module>report</module>
     </modules>
 
     <groupId>com.sflpro.notifier</groupId>
@@ -133,8 +134,8 @@
         <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
         <sonar.language>java</sonar.language>
         <sonar.jacoco.includes>com.sflpro.*</sonar.jacoco.includes>
-        <sonar.jacoco.version>0.8.3</sonar.jacoco.version>
-        <jacoco.plugin.version>0.8.3</jacoco.plugin.version>
+        <sonar.jacoco.version>0.8.4</sonar.jacoco.version>
+        <jacoco.plugin.version>0.8.4</jacoco.plugin.version>
         <google.guave.version>18.0</google.guave.version>
         <apache.tika.version>1.20</apache.tika.version>
 

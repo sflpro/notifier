@@ -139,7 +139,7 @@
         <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
         <sonar.jacoco.includes>com.sflpro.*</sonar.jacoco.includes>
         <sonar.jacoco.version>0.8.4</sonar.jacoco.version>
-        <sonar.coverage.jacoco.xmlReportPaths>@{session.executionRootDirectory}/report/target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+        <sonar.coverage.jacoco.xmlReportPaths>${user.dir}/report/target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
         <jacoco.plugin.version>0.8.4</jacoco.plugin.version>
 
         <!--Maven plugins-->

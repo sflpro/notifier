@@ -10,7 +10,6 @@ import com.sflpro.notifier.externalclients.sms.twillio.model.response.SendMessag
 import com.sflpro.notifier.services.common.exception.ServicesRuntimeException;
 import com.sflpro.notifier.services.notification.sms.SmsNotificationService;
 import com.sflpro.notifier.services.test.AbstractServicesUnitTest;
-import com.twilio.sdk.TwilioRestException;
 import org.easymock.IAnswer;
 import org.easymock.Mock;
 import org.easymock.TestSubject;
@@ -111,7 +110,7 @@ public class SmsNotificationProcessorImplTest extends AbstractServicesUnitTest {
             public SendMessageResponse answer() {
                 final SendMessageRequest sendMessageRequest = (SendMessageRequest) getCurrentArguments()[0];
                 assertSendMessageRequest(sendMessageRequest, smsNotification);
-                throw new TwillioClientRuntimeException(sendMessageRequest.getSenderNumber(), sendMessageRequest.getRecipientNumber(), sendMessageRequest.getMessageBody(), new TwilioRestException("message", 1));
+                throw new TwillioClientRuntimeException(sendMessageRequest.getSenderNumber(), sendMessageRequest.getRecipientNumber(), sendMessageRequest.getMessageBody(), new Exception("message"));
             }
         }).once();
         expect(smsNotificationService.updateNotificationState(eq(notificationId), eq(NotificationState.FAILED))).andReturn(smsNotification).once();

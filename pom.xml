@@ -113,7 +113,7 @@
         <asm.version>5.0.3</asm.version>
 
         <amazon.sdk.version>1.10.13</amazon.sdk.version>
-        <twillio.sdk.version>4.5.0</twillio.sdk.version>
+        <twillio.sdk.version>7.38.1</twillio.sdk.version>
 
         <bouncycastle.version>140</bouncycastle.version>
 
@@ -546,7 +546,7 @@
             <!-- Infrastructure third party libs -->
             <dependency>
                 <groupId>com.twilio.sdk</groupId>
-                <artifactId>twilio-java-sdk</artifactId>
+                <artifactId>twilio</artifactId>
                 <version>${twillio.sdk.version}</version>
             </dependency>
             <dependency>

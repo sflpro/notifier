@@ -33,8 +33,7 @@ public abstract class AbstractNotificationServiceImpl<T extends Notification> im
     public T getNotificationById(@Nonnull final Long notificationId) {
         assertNotificationIdNotNull(notificationId);
         LOGGER.debug("Getting notification for id - {}, class - {}", notificationId, getInstanceClass());
-        final T notification = getRepository().findOne(notificationId);
-        assertNotificationNotNullForId(notification, notificationId);
+        final T notification = getRepository().findById(notificationId).orElseThrow(() -> new NotificationNotFoundForIdException(notificationId, getInstanceClass()));
         LOGGER.debug("Successfully retrieved notification for id - {}, notification class - {}", notificationId, getInstanceClass());
         return notification;
     }
@@ -46,8 +45,7 @@ public abstract class AbstractNotificationServiceImpl<T extends Notification> im
         assertNotificationIdNotNull(notificationId);
         Assert.notNull(notificationState, "Notification state should not be null");
         LOGGER.debug("Updating notification state for notification with id - {}, state - {}", notificationId, notificationState);
-        T notification = getRepository().findOne(notificationId);
-        assertNotificationNotNullForId(notification, notificationId);
+        T notification = getRepository().findById(notificationId).orElseThrow(() -> new NotificationNotFoundForIdException(notificationId, getInstanceClass()));;
         // Update notification state
         notification.setState(notificationState);
         notification.setUpdated(new Date());
@@ -64,8 +62,7 @@ public abstract class AbstractNotificationServiceImpl<T extends Notification> im
         assertNotificationIdNotNull(notificationId);
         Assert.notNull(providerExternalUuid, "Provider external uuid should not be null");
         LOGGER.debug("Updating notification provider external uuid, notification id - {}, uuid - {}", notificationId, providerExternalUuid);
-        T notification = getRepository().findOne(notificationId);
-        assertNotificationNotNullForId(notification, notificationId);
+        T notification = getRepository().findById(notificationId).orElseThrow(() -> new NotificationNotFoundForIdException(notificationId, getInstanceClass()));;
         // Update notification external uuid
         notification.setProviderExternalUuId(providerExternalUuid);
         notification.setUpdated(new Date());
@@ -81,13 +78,6 @@ public abstract class AbstractNotificationServiceImpl<T extends Notification> im
     protected abstract Class<T> getInstanceClass();
 
     /* Utility methods */
-    protected void assertNotificationNotNullForId(final T notification, final Long id) {
-        if (notification == null) {
-            LOGGER.error("Was not able to find notification for id - {}, notification class - {}", id, getInstanceClass());
-            throw new NotificationNotFoundForIdException(id, getInstanceClass());
-        }
-    }
-
     protected void assertNotificationDto(final NotificationDto<T> notificationDto) {
         Assert.notNull(notificationDto, "Notification DTO should not be null");
     }

@@ -86,7 +86,7 @@ public class TwillioApiCommunicatorIntegrationTest extends AbstractSmsIntegratio
         assertNotNull(response);
         assertTrue(StringUtils.isNotEmpty(response.getSid()));
         assertEquals(request.getRecipientNumber(), response.getRecipientNumber());
-        assertEquals("Sent from your Twilio trial account - " + request.getMessageBody(), response.getMessageBody());
+        assertEquals(request.getMessageBody(), response.getMessageBody());
     }
 
     private SendMessageRequest createValidSendMessageRequest() {

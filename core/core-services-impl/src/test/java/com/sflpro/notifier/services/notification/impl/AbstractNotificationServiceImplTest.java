@@ -9,6 +9,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Date;
+import java.util.Optional;
 
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.*;
@@ -60,7 +61,7 @@ public abstract class AbstractNotificationServiceImplTest<T extends Notification
         // Reset
         resetAll();
         // Expectations
-        expect(getRepository().findOne(eq(notificationId))).andReturn(null).once();
+        expect(getRepository().findById(eq(notificationId))).andReturn(Optional.empty()).once();
         // Replay
         replayAll();
         // Run test scenario
@@ -85,7 +86,7 @@ public abstract class AbstractNotificationServiceImplTest<T extends Notification
         // Reset
         resetAll();
         // Expectations
-        expect(getRepository().findOne(eq(notificationId))).andReturn(notification).once();
+        expect(getRepository().findById(eq(notificationId))).andReturn(Optional.of(notification)).once();
         expect(getRepository().save(isA(getInstanceClass()))).andAnswer(() -> (T) getCurrentArguments()[0]).once();
         // Replay
         replayAll();
@@ -131,7 +132,7 @@ public abstract class AbstractNotificationServiceImplTest<T extends Notification
         // Reset
         resetAll();
         // Expectations
-        expect(getRepository().findOne(eq(notificationId))).andReturn(null).once();
+        expect(getRepository().findById(eq(notificationId))).andReturn(Optional.empty()).once();
         // Replay
         replayAll();
         // Run test scenario
@@ -157,7 +158,7 @@ public abstract class AbstractNotificationServiceImplTest<T extends Notification
         // Reset
         resetAll();
         // Expectations
-        expect(getRepository().findOne(eq(notificationId))).andReturn(notification).once();
+        expect(getRepository().findById(eq(notificationId))).andReturn(Optional.of(notification)).once();
         expect(getRepository().save(isA(getInstanceClass()))).andAnswer(() -> (T) getCurrentArguments()[0]).once();
         // Replay
         replayAll();
@@ -193,7 +194,7 @@ public abstract class AbstractNotificationServiceImplTest<T extends Notification
         // Reset
         resetAll();
         // Expectations
-        expect(getRepository().findOne(eq(notificationId))).andReturn(null).once();
+        expect(getRepository().findById(eq(notificationId))).andReturn(Optional.empty()).once();
         // Replay
         replayAll();
         // Run test scenario
@@ -216,7 +217,7 @@ public abstract class AbstractNotificationServiceImplTest<T extends Notification
         // Reset
         resetAll();
         // Expectations
-        expect(getRepository().findOne(eq(notificationId))).andReturn(notification).once();
+        expect(getRepository().findById(eq(notificationId))).andReturn(Optional.of(notification)).once();
         // Replay
         replayAll();
         // Run test scenario

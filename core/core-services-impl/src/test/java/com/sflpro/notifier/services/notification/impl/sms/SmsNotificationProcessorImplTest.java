@@ -10,7 +10,6 @@ import com.sflpro.notifier.externalclients.sms.twillio.model.response.SendMessag
 import com.sflpro.notifier.services.common.exception.ServicesRuntimeException;
 import com.sflpro.notifier.services.notification.sms.SmsNotificationService;
 import com.sflpro.notifier.services.test.AbstractServicesUnitTest;
-import com.twilio.sdk.TwilioRestException;
 import org.easymock.IAnswer;
 import org.easymock.Mock;
 import org.easymock.TestSubject;
@@ -105,19 +104,13 @@ public class SmsNotificationProcessorImplTest extends AbstractServicesUnitTest {
         resetAll();
         /* Register expectations */
         expect(smsNotificationService.getNotificationById(eq(notificationId))).andReturn(smsNotification).once();
-        persistenceUtilityService.runInNewTransaction(isA(Runnable.class));
-        expectLastCall().andAnswer(() -> {
-            final Runnable runnable = (Runnable) getCurrentArguments()[0];
-            runnable.run();
-            return null;
-        }).times(2);
         expect(smsNotificationService.updateNotificationState(eq(notificationId), eq(NotificationState.PROCESSING))).andReturn(smsNotification).once();
         expect(twillioApiCommunicator.sendMessage(isA(SendMessageRequest.class))).andAnswer(new IAnswer<SendMessageResponse>() {
             @Override
             public SendMessageResponse answer() {
                 final SendMessageRequest sendMessageRequest = (SendMessageRequest) getCurrentArguments()[0];
                 assertSendMessageRequest(sendMessageRequest, smsNotification);
-                throw new TwillioClientRuntimeException(sendMessageRequest.getSenderNumber(), sendMessageRequest.getRecipientNumber(), sendMessageRequest.getMessageBody(), new TwilioRestException("message", 1));
+                throw new TwillioClientRuntimeException(sendMessageRequest.getSenderNumber(), sendMessageRequest.getRecipientNumber(), sendMessageRequest.getMessageBody(), new Exception("message"));
             }
         }).once();
         expect(smsNotificationService.updateNotificationState(eq(notificationId), eq(NotificationState.FAILED))).andReturn(smsNotification).once();
@@ -144,12 +137,6 @@ public class SmsNotificationProcessorImplTest extends AbstractServicesUnitTest {
         resetAll();
         /* Register expectations */
         expect(smsNotificationService.getNotificationById(eq(notificationId))).andReturn(smsNotification).once();
-        persistenceUtilityService.runInNewTransaction(isA(Runnable.class));
-        expectLastCall().andAnswer(() -> {
-            final Runnable runnable = (Runnable) getCurrentArguments()[0];
-            runnable.run();
-            return null;
-        }).times(3);
         expect(smsNotificationService.updateNotificationState(eq(notificationId), eq(NotificationState.PROCESSING))).andReturn(smsNotification).once();
         expect(twillioApiCommunicator.sendMessage(isA(SendMessageRequest.class))).andAnswer(new IAnswer<SendMessageResponse>() {
             @Override

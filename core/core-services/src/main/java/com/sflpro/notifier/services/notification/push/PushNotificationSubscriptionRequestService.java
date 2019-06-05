@@ -1,8 +1,8 @@
 package com.sflpro.notifier.services.notification.push;
 
-import com.sflpro.notifier.services.notification.dto.push.PushNotificationSubscriptionRequestDto;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationSubscriptionRequest;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationSubscriptionRequestState;
+import com.sflpro.notifier.services.notification.dto.push.PushNotificationSubscriptionRequestDto;
 
 import javax.annotation.Nonnull;
 

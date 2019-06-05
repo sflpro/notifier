@@ -17,9 +17,9 @@ public class UniquelyNamedConfigurableQueue extends Queue
 	 * @param exclusive
 	 * @param autoDelete
 	 */
-	public UniquelyNamedConfigurableQueue(final boolean durable, final boolean exclusive, final boolean autoDelete)
+	public UniquelyNamedConfigurableQueue(final String namePrefix, final boolean durable, final boolean exclusive, final boolean autoDelete)
 	{
-		super(UUID.randomUUID().toString(), durable, exclusive, autoDelete);
+		super(namePrefix + UUID.randomUUID().toString(), durable, exclusive, autoDelete);
 	}
 
 }

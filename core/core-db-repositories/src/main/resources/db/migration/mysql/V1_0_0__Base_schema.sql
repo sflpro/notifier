@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS device_user (
-  id BIGINT NOT NULL primary key,
+  id BIGINT NOT NULL AUTO_INCREMENT primary key,
   uuid VARCHAR(36) NOT NULL,
   os_type VARCHAR(50) NOT NULL,
   nms_user_id BIGINT NOT NULL,
@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS device_user (
 );
 
 CREATE TABLE IF NOT EXISTS nms_user (
-  id BIGINT NOT NULL PRIMARY KEY,
+  id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   uuid VARCHAR(36) NOT NULL UNIQUE,
   created DATETIME NOT NULL,
   removed DATETIME,
@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS nms_user (
 ALTER TABLE device_user ADD CONSTRAINT fk_device_user_nms_user FOREIGN KEY (nms_user_id) REFERENCES nms_user (id);
 
 CREATE TABLE IF NOT EXISTS notification (
-  id BIGINT NOT NULL PRIMARY KEY,
+  id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   uuid VARCHAR(36) NOT NULL UNIQUE,
   type VARCHAR(31) NOT NULL,
   client_ip_address VARCHAR(255),
@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS notification (
 );
 
 CREATE TABLE IF NOT EXISTS notification_email (
-  id BIGINT NOT NULL PRIMARY KEY,
+  id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   recipient_email varchar(255) not null,
   sender_email varchar(255),
   template_name varchar(255),
@@ -43,12 +43,12 @@ CREATE TABLE IF NOT EXISTS notification_email (
 );
 
 CREATE TABLE IF NOT EXISTS notification_email_third_party (
-  id BIGINT NOT NULL PRIMARY KEY,
+  id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   CONSTRAINT fk_notification_email_third_party_notification_email FOREIGN KEY (id) references notification_email (id)
 );
 
 CREATE TABLE IF NOT EXISTS notification_email_third_party_property (
-  id BIGINT NOT NULL PRIMARY KEY,
+  id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   notification_id BIGINT NOT NULL,
   property_key varchar(255) NOT NULL,
   property_value varchar(4000),
@@ -59,13 +59,13 @@ CREATE TABLE IF NOT EXISTS notification_email_third_party_property (
 );
 
 CREATE TABLE IF NOT EXISTS notification_push (
-  id BIGINT NOT NULL PRIMARY KEY,
+  id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   recipient_id bigint NOT NULL,
   CONSTRAINT fk_notification_push_notification FOREIGN KEY (id) references notification (id)
 );
 
 CREATE TABLE IF NOT EXISTS notification_push_property (
-  id BIGINT NOT NULL PRIMARY KEY,
+  id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   push_notification_id BIGINT NOT NULL,
   property_key VARCHAR(255) NOT NULL,
   property_value VARCHAR(255) NOT NULL,
@@ -76,7 +76,7 @@ CREATE TABLE IF NOT EXISTS notification_push_property (
 );
 
 CREATE TABLE IF NOT EXISTS notification_push_recipient (
-  id BIGINT NOT NULL PRIMARY KEY,
+  id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   uuid VARCHAR(36) NOT NULL UNIQUE,
   type VARCHAR(31) NOT NULL,
   application_type VARCHAR(50) NOT NULL,
@@ -101,7 +101,7 @@ ALTER TABLE notification_push
   ADD CONSTRAINT fk_notification_push_notification_push_recipient FOREIGN KEY (recipient_id) REFERENCES notification_push_recipient (id);
 
 CREATE TABLE IF NOT EXISTS notification_push_recipient_device (
-  id BIGINT NOT NULL primary key,
+  id BIGINT NOT NULL AUTO_INCREMENT primary key,
   device_id BIGINT NOT NULL ,
   recipient_id BIGINT NOT NULL,
   created DATETIME NOT NULL,
@@ -113,13 +113,13 @@ CREATE TABLE IF NOT EXISTS notification_push_recipient_device (
 );
 
 CREATE TABLE IF NOT EXISTS notification_push_recipient_sns (
-  id BIGINT NOT NULL PRIMARY KEY,
+  id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   platform_application_arn VARCHAR(500) NOT NULL,
   CONSTRAINT fk_notification_push_recipient_sns_notification_push_recipient FOREIGN KEY (id) REFERENCES notification_push_recipient (id)
 );
 
 CREATE TABLE IF NOT EXISTS notification_push_subscription (
-  id BIGINT NOT NULL PRIMARY KEY,
+  id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   nms_user_id BIGINT NOT NULL UNIQUE ,
   created DATETIME NOT NULL,
   removed DATETIME,
@@ -131,7 +131,7 @@ ALTER TABLE notification_push_recipient
   ADD CONSTRAINT fk_notification_push_recipient_subscription FOREIGN KEY (subscription_id) REFERENCES notification_push_subscription (id);
 
 CREATE TABLE IF NOT EXISTS notification_push_subscription_request (
-  id BIGINT NOT NULL PRIMARY KEY ,
+  id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
   uuid VARCHAR(36) NOT NULL UNIQUE,
   application_type VARCHAR(50) NOT NULL,
   previous_subscription_request_uuid VARCHAR(36),
@@ -150,13 +150,13 @@ CREATE TABLE IF NOT EXISTS notification_push_subscription_request (
 );
 
 CREATE TABLE IF NOT EXISTS notification_sms (
-  id BIGINT NOT NULL PRIMARY KEY ,
+  id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
   recipient_mobile_number VARCHAR(255) NOT NULL,
   CONSTRAINT fk_notification_sms_notification FOREIGN KEY (id) REFERENCES notification (id)
 );
 
-CREATE TABLE IF NOT EXISTS notification_usernotification_sms (
-  id BIGINT NOT NULL PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS notification_user (
+  id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   notification_id BIGINT NOT NULL UNIQUE,
   nms_user_id bigint NOT NULL ,
   created DATETIME NOT NULL ,

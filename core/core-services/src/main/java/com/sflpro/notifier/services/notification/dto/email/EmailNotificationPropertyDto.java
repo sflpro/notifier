@@ -1,7 +1,7 @@
 package com.sflpro.notifier.services.notification.dto.email;
 
-import com.sflpro.notifier.services.common.dto.AbstractDomainEntityModelDto;
 import com.sflpro.notifier.db.entities.notification.email.EmailNotificationProperty;
+import com.sflpro.notifier.services.common.dto.AbstractDomainEntityModelDto;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;

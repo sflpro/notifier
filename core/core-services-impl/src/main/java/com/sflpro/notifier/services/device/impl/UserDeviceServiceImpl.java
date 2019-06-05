@@ -46,8 +46,7 @@ public class UserDeviceServiceImpl implements UserDeviceService {
     public UserDevice getUserDeviceById(@Nonnull final Long userDeviceId) {
         Assert.notNull(userDeviceId, "User device id should not be null");
         LOGGER.debug("Retrieving user device for id - {}", userDeviceId);
-        final UserDevice userDevice = userDeviceRepository.findOne(userDeviceId);
-        assertUserDeviceNotNullForId(userDevice, userDeviceId);
+        final UserDevice userDevice = userDeviceRepository.findById(userDeviceId).orElseThrow(() -> new UserDeviceNotFoundForIdException(userDeviceId));
         LOGGER.debug("Successfully retrieved user device for id - {}, user device - {}", userDeviceId, userDevice);
         return userDevice;
     }
@@ -136,13 +135,6 @@ public class UserDeviceServiceImpl implements UserDeviceService {
         if (userDevice != null) {
             LOGGER.error("User device with uuid - {} already exists for user with id - {}, existing device id - {}", uuId, user.getId(), userDevice.getId());
             throw new UserDeviceAlreadyExistsException(user.getId(), uuId, userDevice.getId());
-        }
-    }
-
-    private void assertUserDeviceNotNullForId(final UserDevice userDevice, final Long id) {
-        if (userDevice == null) {
-            LOGGER.error("No user device was found for id - {}", id);
-            throw new UserDeviceNotFoundForIdException(id);
         }
     }
 

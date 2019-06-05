@@ -85,7 +85,7 @@ public class SmsNotificationProcessorImpl implements SmsNotificationProcessor {
 
     /* Utility methods */
     private void updateSmsNotificationExternalUuId(final Long notificationId, final String providerUuId) {
-        persistenceUtilityService.runInNewTransaction(() -> smsNotificationService.updateProviderExternalUuid(notificationId, providerUuId));
+        smsNotificationService.updateProviderExternalUuid(notificationId, providerUuId);
     }
 
     private void assertNotificationStateIsCreated(final Notification notification) {
@@ -93,7 +93,7 @@ public class SmsNotificationProcessorImpl implements SmsNotificationProcessor {
     }
 
     private void updateSmsNotificationState(final Long notificationId, final NotificationState notificationState) {
-        persistenceUtilityService.runInNewTransaction(() -> smsNotificationService.updateNotificationState(notificationId, notificationState));
+        smsNotificationService.updateNotificationState(notificationId, notificationState);
     }
 
     private SmsServiceApiOperationsHandler getSmsServiceApiOperationsHandler(final NotificationProviderType notificationProviderType) {

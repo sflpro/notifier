@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.orm.jpa.EntityManagerFactoryUtils;
 import org.springframework.orm.jpa.EntityManagerHolder;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionSynchronizationAdapter;
@@ -28,6 +29,7 @@ import java.util.concurrent.Executors;
  * Date: 11/15/14
  * Time: 9:50 AM
  */
+@Service
 public class PersistenceUtilityServiceImpl implements PersistenceUtilityService {
     private static final Logger LOGGER = LoggerFactory.getLogger(PersistenceUtilityServiceImpl.class);
 

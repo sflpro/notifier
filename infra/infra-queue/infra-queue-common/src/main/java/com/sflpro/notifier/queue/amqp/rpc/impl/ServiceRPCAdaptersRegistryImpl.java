@@ -6,11 +6,16 @@ import com.sflpro.notifier.queue.amqp.rpc.message.RPCMethodHandler;
 import com.sflpro.notifier.services.common.exception.ServicesRuntimeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.annotation.Nonnull;
 import javax.annotation.PostConstruct;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * User: Ruben Dilanyan
@@ -18,18 +23,20 @@ import java.util.*;
  * Date: 12/12/14
  * Time: 1:52 PM
  */
+@Service
 public class ServiceRPCAdaptersRegistryImpl implements ServiceRPCAdaptersRegistry {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceRPCAdaptersRegistryImpl.class);
 
     /* Dependencies */
-    private List<RPCServiceAdapter> adapters;
+    private final List<RPCServiceAdapter> adapters;
 
     private Map<String, RPCMethodHandler> handlersMap;
 
     /* Constructors */
-    public ServiceRPCAdaptersRegistryImpl() {
-        this.adapters = new ArrayList<>();
+    @Autowired
+    public ServiceRPCAdaptersRegistryImpl(final List<RPCServiceAdapter> adapters) {
+        this.adapters = Collections.unmodifiableList(adapters);
         this.handlersMap = new HashMap<>();
     }
 
@@ -71,10 +78,6 @@ public class ServiceRPCAdaptersRegistryImpl implements ServiceRPCAdaptersRegistr
     /* Properties getters and setters */
     public List<RPCServiceAdapter> getAdapters() {
         return adapters;
-    }
-
-    public void setAdapters(List<RPCServiceAdapter> adapters) {
-        this.adapters = adapters;
     }
 }
 

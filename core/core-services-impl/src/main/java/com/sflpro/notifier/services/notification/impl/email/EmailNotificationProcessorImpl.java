@@ -92,6 +92,6 @@ public class EmailNotificationProcessorImpl implements EmailNotificationProcesso
     }
 
     private void updateEmailNotificationState(final Long notificationId, final NotificationState notificationState) {
-        persistenceUtilityService.runInNewTransaction(() -> emailNotificationService.updateNotificationState(notificationId, notificationState));
+        emailNotificationService.updateNotificationState(notificationId, notificationState);
     }
 }

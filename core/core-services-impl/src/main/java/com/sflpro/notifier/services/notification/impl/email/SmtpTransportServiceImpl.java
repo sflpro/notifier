@@ -6,6 +6,7 @@ import com.sflpro.notifier.services.notification.exception.email.SmtpTransportEx
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -22,6 +23,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * Date: 1/11/16
  * Time: 11:02 AM
  */
+@Profile("!test")
 @Service("smtpTransportService")
 public class SmtpTransportServiceImpl implements SmtpTransportService {
 

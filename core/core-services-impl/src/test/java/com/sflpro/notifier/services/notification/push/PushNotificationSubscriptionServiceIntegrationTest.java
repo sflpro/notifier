@@ -1,9 +1,9 @@
 package com.sflpro.notifier.services.notification.push;
 
+import com.sflpro.notifier.db.entities.notification.push.PushNotificationSubscription;
 import com.sflpro.notifier.db.entities.user.User;
 import com.sflpro.notifier.services.notification.dto.push.PushNotificationSubscriptionDto;
 import com.sflpro.notifier.services.notification.exception.push.PushNotificationSubscriptionAlreadyExistsForUserException;
-import com.sflpro.notifier.db.entities.notification.push.PushNotificationSubscription;
 import com.sflpro.notifier.services.test.AbstractServiceIntegrationTest;
 import org.junit.Assert;
 import org.junit.Test;

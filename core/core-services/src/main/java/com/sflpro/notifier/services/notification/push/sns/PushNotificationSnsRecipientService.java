@@ -1,7 +1,7 @@
 package com.sflpro.notifier.services.notification.push.sns;
 
-import com.sflpro.notifier.services.notification.dto.push.sns.PushNotificationSnsRecipientDto;
 import com.sflpro.notifier.db.entities.notification.push.sns.PushNotificationSnsRecipient;
+import com.sflpro.notifier.services.notification.dto.push.sns.PushNotificationSnsRecipientDto;
 import com.sflpro.notifier.services.notification.push.AbstractPushNotificationRecipientService;
 
 import javax.annotation.Nonnull;

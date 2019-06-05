@@ -11,6 +11,8 @@ import org.easymock.Mock;
 import org.easymock.TestSubject;
 import org.junit.Test;
 
+import java.util.Optional;
+
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.*;
 
@@ -63,7 +65,7 @@ public class UserServiceImplTest extends AbstractServicesUnitTest {
         // Reset
         resetAll();
         // Expectations
-        expect(userRepository.findByUuId(eq(userUuId))).andReturn(user).once();
+        expect(userRepository.findByUuId(eq(userUuId))).andReturn(Optional.of(user)).once();
         // Replay
         replayAll();
         // Run test scenario
@@ -80,7 +82,7 @@ public class UserServiceImplTest extends AbstractServicesUnitTest {
         // Reset
         resetAll();
         // Expectations
-        expect(userRepository.findByUuId(eq(userUuId))).andReturn(null).times(2);
+        expect(userRepository.findByUuId(eq(userUuId))).andReturn(Optional.empty()).times(2);
         expect(userRepository.save(isA(User.class))).andAnswer(() -> (User) getCurrentArguments()[0]).once();
         // Replay
         replayAll();
@@ -115,7 +117,7 @@ public class UserServiceImplTest extends AbstractServicesUnitTest {
         // Reset
         resetAll();
         // Expectations
-        expect(userRepository.findByUuId(eq(uuId))).andReturn(null).once();
+        expect(userRepository.findByUuId(eq(uuId))).andReturn(Optional.empty()).once();
         // Replay
         replayAll();
         // Run test scenario
@@ -138,7 +140,7 @@ public class UserServiceImplTest extends AbstractServicesUnitTest {
         // Reset
         resetAll();
         // Expectations
-        expect(userRepository.findByUuId(eq(uuId))).andReturn(user).once();
+        expect(userRepository.findByUuId(eq(uuId))).andReturn(Optional.of(user)).once();
         // Replay
         replayAll();
         // Run test scenario
@@ -173,7 +175,7 @@ public class UserServiceImplTest extends AbstractServicesUnitTest {
         // Reset
         resetAll();
         // Expectations
-        expect(userRepository.findByUuId(eq(uuId))).andReturn(user).once();
+        expect(userRepository.findByUuId(eq(uuId))).andReturn(Optional.of(user)).once();
         // Replay
         replayAll();
         // Run test scenario
@@ -190,7 +192,7 @@ public class UserServiceImplTest extends AbstractServicesUnitTest {
         // Reset
         resetAll();
         // Expectations
-        expect(userRepository.findByUuId(eq(uuId))).andReturn(null).once();
+        expect(userRepository.findByUuId(eq(uuId))).andReturn(Optional.empty()).once();
         // Replay
         replayAll();
         // Run test scenario
@@ -233,7 +235,7 @@ public class UserServiceImplTest extends AbstractServicesUnitTest {
         // Reset
         resetAll();
         // Expectations
-        expect(userRepository.findByUuId(eq(userDto.getUuId()))).andReturn(existingUser).once();
+        expect(userRepository.findByUuId(eq(userDto.getUuId()))).andReturn(Optional.of(existingUser)).once();
         // Replay
         replayAll();
         // Run test scenario
@@ -255,7 +257,7 @@ public class UserServiceImplTest extends AbstractServicesUnitTest {
         // Reset
         resetAll();
         // Expectations
-        expect(userRepository.findByUuId(eq(userDto.getUuId()))).andReturn(null).once();
+        expect(userRepository.findByUuId(eq(userDto.getUuId()))).andReturn(Optional.empty()).once();
         expect(userRepository.save(isA(User.class))).andAnswer(() -> (User) getCurrentArguments()[0]).once();
         // Replay
         replayAll();
@@ -291,7 +293,7 @@ public class UserServiceImplTest extends AbstractServicesUnitTest {
         // Reset
         resetAll();
         // Expectations
-        expect(userRepository.findOne(eq(userId))).andReturn(null).once();
+        expect(userRepository.findById(eq(userId))).andReturn(Optional.empty()).once();
         // Replay
         replayAll();
         // Run test scenarios
@@ -315,7 +317,7 @@ public class UserServiceImplTest extends AbstractServicesUnitTest {
         // Reset
         resetAll();
         // Expectations
-        expect(userRepository.findOne(eq(userId))).andReturn(user).once();
+        expect(userRepository.findById(eq(userId))).andReturn(Optional.of(user)).once();
         // Replay
         replayAll();
         // Run test scenarios

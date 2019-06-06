@@ -31,6 +31,7 @@ create table if not exists notification (
   provider_type varchar(50) not null,
   state varchar(50) not null,
   subject varchar(255),
+  has_secure_properties boolean not null default false,
   created timestamp not null,
   removed timestamp,
   updated timestamp not null

@@ -46,6 +46,9 @@ public abstract class Notification extends AbstractDomainUuIdAwareEntityModel {
     @Column(name = "provider_external_uuid", nullable = true)
     private String providerExternalUuId;
 
+    @Column(name = "has_secure_properties", nullable = false)
+    private boolean hasSecureProperties;
+
     /* Constructors */
     public Notification() {
         initializeDefaults();
@@ -113,6 +116,14 @@ public abstract class Notification extends AbstractDomainUuIdAwareEntityModel {
         this.providerExternalUuId = providerExternalUuId;
     }
 
+    public boolean isHasSecureProperties() {
+        return hasSecureProperties;
+    }
+
+    public void setHasSecureProperties(final boolean hasSecureProperties) {
+        this.hasSecureProperties = hasSecureProperties;
+    }
+
     /* Private utility methods */
     private void initializeDefaults() {
         this.state = NotificationState.CREATED;
@@ -137,6 +148,7 @@ public abstract class Notification extends AbstractDomainUuIdAwareEntityModel {
         builder.append(this.getContent(), that.getContent());
         builder.append(this.getSubject(), that.getSubject());
         builder.append(this.getProviderExternalUuId(), that.getProviderExternalUuId());
+        builder.append(this.isHasSecureProperties(), that.isHasSecureProperties());
         return builder.isEquals();
     }
 
@@ -151,6 +163,7 @@ public abstract class Notification extends AbstractDomainUuIdAwareEntityModel {
         builder.append(this.getContent());
         builder.append(this.getSubject());
         builder.append(this.getProviderExternalUuId());
+        builder.append(this.isHasSecureProperties());
         return builder.build();
     }
 
@@ -166,6 +179,7 @@ public abstract class Notification extends AbstractDomainUuIdAwareEntityModel {
         builder.append("content", this.getContent());
         builder.append("subject", this.getSubject());
         builder.append("providerExternalUuId", this.getProviderExternalUuId());
+        builder.append("has_secure_properties", this.isHasSecureProperties());
         return builder.build();
     }
 }

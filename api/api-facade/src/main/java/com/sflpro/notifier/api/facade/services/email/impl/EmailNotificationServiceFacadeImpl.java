@@ -58,9 +58,7 @@ public class EmailNotificationServiceFacadeImpl extends AbstractNotificationServ
             return new ResultResponseModel<>(errors);
         }
         // Create notification DTO
-        final EmailNotificationDto emailNotificationDto = new EmailNotificationDto(request.getRecipientEmail(),
-                request.getSenderEmail(), NotificationProviderType.SMTP_SERVER, request.getBody(),
-                request.getSubject(), request.getClientIpAddress(), request.getTemplateName());
+        final EmailNotificationDto emailNotificationDto = builEmailNotificationDto(request);
         final EmailNotification emailNotification;
         final List<EmailNotificationPropertyDto> emailNotificationPropertyDtos = request.getProperties().entrySet()
                 .stream()
@@ -84,5 +82,18 @@ public class EmailNotificationServiceFacadeImpl extends AbstractNotificationServ
         notificationModel.setSenderEmail(emailNotification.getSenderEmail());
         notificationModel.setRecipientEmail(emailNotification.getRecipientEmail());
         return notificationModel;
+    }
+
+    private EmailNotificationDto builEmailNotificationDto(final @Nonnull CreateEmailNotificationRequest request) {
+        final EmailNotificationDto emailNotificationDto = new EmailNotificationDto(
+                request.getRecipientEmail(),
+                request.getSenderEmail(),
+                NotificationProviderType.SMTP_SERVER,
+                request.getBody(),
+                request.getSubject(),
+                request.getClientIpAddress(),
+                request.getTemplateName());
+        emailNotificationDto.setHasSecureProperties(!request.getSecureProperties().isEmpty());
+        return emailNotificationDto;
     }
 }

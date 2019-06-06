@@ -26,6 +26,8 @@ public abstract class NotificationDto<T extends Notification> extends AbstractDo
 
     private String clientIpAddress;
 
+    private boolean hasSecureProperties;
+
     /* Constructors */
     public NotificationDto(final NotificationType type, final String content, final String subject, final String clientIpAddress) {
         this.type = type;
@@ -67,6 +69,14 @@ public abstract class NotificationDto<T extends Notification> extends AbstractDo
         this.clientIpAddress = clientIpAddress;
     }
 
+    public boolean isHasSecureProperties() {
+        return hasSecureProperties;
+    }
+
+    public void setHasSecureProperties(final boolean hasSecureProperties) {
+        this.hasSecureProperties = hasSecureProperties;
+    }
+
     /* Public interface methods */
     @Override
     public void updateDomainEntityProperties(final T notification) {
@@ -74,6 +84,7 @@ public abstract class NotificationDto<T extends Notification> extends AbstractDo
         notification.setContent(getContent());
         notification.setClientIpAddress(getClientIpAddress());
         notification.setSubject(getSubject());
+        notification.setHasSecureProperties(isHasSecureProperties());
     }
 
     /* Equals, HashCode and ToString */
@@ -92,6 +103,7 @@ public abstract class NotificationDto<T extends Notification> extends AbstractDo
         builder.append(this.getClientIpAddress(), that.getClientIpAddress());
         builder.append(this.getContent(), that.getContent());
         builder.append(this.getSubject(), that.getSubject());
+        builder.append(this.isHasSecureProperties(), that.isHasSecureProperties());
         return builder.isEquals();
     }
 
@@ -103,6 +115,7 @@ public abstract class NotificationDto<T extends Notification> extends AbstractDo
         builder.append(this.getClientIpAddress());
         builder.append(this.getContent());
         builder.append(this.getSubject());
+        builder.append(this.isHasSecureProperties());
         return builder.build();
     }
 
@@ -115,6 +128,7 @@ public abstract class NotificationDto<T extends Notification> extends AbstractDo
         builder.append("clientIpAddress", this.getClientIpAddress());
         builder.append("content", this.getContent());
         builder.append("subject", this.getSubject());
+        builder.append("hasSecureProperties", this.isHasSecureProperties());
         return builder.build();
     }
 }

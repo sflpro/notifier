@@ -330,7 +330,7 @@
                             <phase>none</phase>
                         </execution>
                         <execution>
-                            <id>it-postgres</id>
+                            <id>it-postgresql</id>
                             <goals>
                                 <goal>integration-test</goal>
                             </goals>
@@ -341,23 +341,24 @@
                                     <SPRING_DATASOURCE_USERNAME>notifier</SPRING_DATASOURCE_USERNAME>
                                     <SPRING_DATASOURCE_PASSWORD>notifier</SPRING_DATASOURCE_PASSWORD>
                                 </environmentVariables>
+                                <reportNameSuffix>postgresql</reportNameSuffix>
                             </configuration>
                         </execution>
-<!--                        <execution>-->
-<!--                            <id>it-mysql</id>-->
-<!--                            <goals>-->
-<!--                                <goal>integration-test</goal>-->
-<!--                            </goals>-->
-<!--                            <configuration>-->
-<!--                                <argLine>@{jacoco.failsafe.argLine}</argLine>-->
-<!--                            </configuration>-->
-<!--                        </execution>-->
-<!--                        <execution>-->
-<!--                            <id>verify</id>-->
-<!--                            <goals>-->
-<!--                                <goal>verify</goal>-->
-<!--                            </goals>-->
-<!--                        </execution>-->
+                        <execution>
+                            <id>it-mysql</id>
+                            <goals>
+                                <goal>integration-test</goal>
+                            </goals>
+                            <configuration>
+                                <argLine>@{jacoco.failsafe.argLine}</argLine>
+                                <environmentVariables>
+                                    <SPRING_DATASOURCE_URL>jdbc:mysql://127.0.0.1:${mysqlPort}/notifier</SPRING_DATASOURCE_URL>
+                                    <SPRING_DATASOURCE_USERNAME>notifier</SPRING_DATASOURCE_USERNAME>
+                                    <SPRING_DATASOURCE_PASSWORD>notifier</SPRING_DATASOURCE_PASSWORD>
+                                </environmentVariables>
+                                <reportNameSuffix>mysql</reportNameSuffix>
+                            </configuration>
+                        </execution>
                         <execution>
                             <id>verify</id>
                             <phase>verify</phase>
@@ -393,52 +394,74 @@
                 <plugin>
                     <groupId>io.fabric8</groupId>
                     <artifactId>docker-maven-plugin</artifactId>
-                    <version>${fabric8.docker.maven.plugin.version}</version>
+                    <configuration>
+                        <showLogs>true</showLogs>
+                        <images>
+                            <image>
+                                <name>postgres:11-alpine</name>
+                                <alias>postgresql</alias>
+                                <run>
+                                    <ports>
+                                        <port>${postgresqlPort}:5432</port>
+                                    </ports>
+                                    <env>
+                                        <POSTGRES_USER>notifier</POSTGRES_USER>
+                                        <POSTGRES_PASSWORD>notifier</POSTGRES_PASSWORD>
+                                        <POSTGRES_DB>notifier</POSTGRES_DB>
+                                    </env>
+                                    <wait>
+                                        <tcp>
+                                            <mode>direct</mode>
+                                            <host>localhost</host>
+                                            <ports>
+                                                <port>5432</port>
+                                            </ports>
+                                        </tcp>
+                                        <log>(?s)database system is ready to accept connections.*database system is ready to accept connections</log>
+                                        <time>60000</time>
+                                    </wait>
+                                    <network>
+                                        <mode>bridge</mode>
+                                    </network>
+                                </run>
+                            </image>
+                            <image>
+                                <name>mysql:8</name>
+                                <alias>mysql</alias>
+                                <run>
+                                    <ports>
+                                        <port>${mysqlPort}:3306</port>
+                                    </ports>
+                                    <env>
+                                        <!-- MYSQL_ROOT_PASSWORD is only needed cause mysql requires it to start -->
+                                        <MYSQL_ROOT_PASSWORD>notifier_root</MYSQL_ROOT_PASSWORD>
+                                        <MYSQL_USER>notifier</MYSQL_USER>
+                                        <MYSQL_PASSWORD>notifier</MYSQL_PASSWORD>
+                                        <MYSQL_DATABASE>notifier</MYSQL_DATABASE>
+                                    </env>
+                                    <wait>
+                                        <log>^.*/usr/sbin/mysqld: ready for connections. Version: '8(.*)'  socket: '/var/run/mysqld/mysqld.sock'  port: 3306.*$</log>
+                                        <time>30000</time>
+                                    </wait>
+                                    <network>
+                                        <mode>bridge</mode>
+                                    </network>
+                                </run>
+                            </image>
+                        </images>
+                    </configuration>
                     <executions>
                         <execution>
-                            <id>prepare-it-postgre-database</id>
+                            <id>prepare-it-databases</id>
                             <phase>pre-integration-test</phase>
                             <goals>
                                 <goal>start</goal>
                             </goals>
-                            <configuration>
-                                <images>
-                                    <image>
-                                        <name>postgres:11-alpine</name>
-                                        <alias>postgresql</alias>
-                                        <run>
-                                            <ports>
-                                                <port>${postgresqlPort}:5432</port>
-                                            </ports>
-                                            <env>
-                                                <POSTGRES_USER>notifier</POSTGRES_USER>
-                                                <POSTGRES_PASSWORD>notifier</POSTGRES_PASSWORD>
-                                                <POSTGRES_DB>notifier</POSTGRES_DB>
-                                            </env>
-                                            <wait>
-                                                <tcp>
-                                                    <mode>direct</mode>
-                                                    <host>127.0.0.1</host>
-                                                    <ports>
-                                                        <port>${postgresqlPort}</port>
-                                                    </ports>
-                                                </tcp>
-                                                <log>(?s)database system is ready to accept connections.*database system is ready to accept connections</log>
-                                                <time>60000</time>
-                                            </wait>
-                                            <network>
-                                                <mode>bridge</mode>
-                                            </network>
-                                        </run>
-                                    </image>
-                                </images>
-                            </configuration>
                         </execution>
                         <execution>
-                            <id>remove-it-database</id>
+                            <id>remove-it-databases</id>
                             <phase>post-integration-test</phase>
                             <goals>
-                                <goal>logs</goal>
                                 <goal>stop</goal>
                             </goals>
                         </execution>

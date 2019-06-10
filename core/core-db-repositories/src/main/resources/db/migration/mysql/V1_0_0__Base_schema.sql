@@ -29,7 +29,6 @@ CREATE TABLE IF NOT EXISTS notification (
   provider_type VARCHAR(50) NOT NULL,
   state VARCHAR(50) NOT NULL,
   subject VARCHAR(255),
-  has_secure_properties bit(1) not null default false,
   created DATETIME NOT NULL,
   removed DATETIME,
   updated DATETIME NOT NULL

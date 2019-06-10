@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS notification (
   uuid VARCHAR(36) NOT NULL UNIQUE,
   type VARCHAR(31) NOT NULL,
   client_ip_address VARCHAR(255),
-  content VARCHAR(20000),
+  content TEXT,
   provider_external_uuid VARCHAR(36),
   provider_type VARCHAR(50) NOT NULL,
   state VARCHAR(50) NOT NULL,

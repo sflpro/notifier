@@ -58,7 +58,7 @@ public class EmailNotificationServiceFacadeImpl extends AbstractNotificationServ
             return new ResultResponseModel<>(errors);
         }
         // Create notification DTO
-        final EmailNotificationDto emailNotificationDto = builEmailNotificationDto(request);
+        final EmailNotificationDto emailNotificationDto = buildEmailNotificationDto(request);
         final EmailNotification emailNotification;
         final List<EmailNotificationPropertyDto> emailNotificationPropertyDtos = request.getProperties().entrySet()
                 .stream()
@@ -84,15 +84,15 @@ public class EmailNotificationServiceFacadeImpl extends AbstractNotificationServ
         return notificationModel;
     }
 
-    private EmailNotificationDto builEmailNotificationDto(final @Nonnull CreateEmailNotificationRequest request) {
-        final EmailNotificationDto emailNotificationDto = new EmailNotificationDto(
-                request.getRecipientEmail(),
-                request.getSenderEmail(),
-                NotificationProviderType.SMTP_SERVER,
-                request.getBody(),
-                request.getSubject(),
-                request.getClientIpAddress(),
-                request.getTemplateName());
+    private EmailNotificationDto buildEmailNotificationDto(final CreateEmailNotificationRequest request) {
+        final EmailNotificationDto emailNotificationDto = new EmailNotificationDto();
+        emailNotificationDto.setRecipientEmail(request.getRecipientEmail());
+        emailNotificationDto.setSenderEmail(request.getSenderEmail());
+        emailNotificationDto.setProviderType(NotificationProviderType.SMTP_SERVER);
+        emailNotificationDto.setContent(request.getBody());
+        emailNotificationDto.setSubject(request.getSubject());
+        emailNotificationDto.setClientIpAddress(request.getClientIpAddress());
+        emailNotificationDto.setTemplateName(request.getTemplateName());
         emailNotificationDto.setHasSecureProperties(!request.getSecureProperties().isEmpty());
         return emailNotificationDto;
     }

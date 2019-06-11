@@ -73,7 +73,7 @@ public abstract class PushNotificationRecipientDto<T extends PushNotificationRec
     /* Public interface methods */
     @Override
     public void updateDomainEntityProperties(final T recipient) {
-        Assert.notNull("Push notification recipient should not be null");
+        Assert.notNull(recipient, "Push notification recipient should not be null");
         recipient.setDestinationRouteToken(getDestinationRouteToken());
         recipient.setDeviceOperatingSystemType(getDeviceOperatingSystemType());
         recipient.setApplicationType(getApplicationType());

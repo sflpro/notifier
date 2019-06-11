@@ -29,16 +29,12 @@ public class CreateSmsNotificationRequest extends AbstractCreateNotificationRequ
     @JsonProperty("templateName")
     private String templateName;
 
-    @JsonProperty("properties")
-    private Map<String, String> properties;
-
     @JsonProperty("secureProperties")
     private Map<String, String> secureProperties;
 
     /* Constructors */
     public CreateSmsNotificationRequest() {
         super();
-        properties = new HashMap<>();
         secureProperties = new HashMap<>();
     }
 
@@ -59,14 +55,6 @@ public class CreateSmsNotificationRequest extends AbstractCreateNotificationRequ
         this.templateName = templateName;
     }
 
-    public Map<String, String> getProperties() {
-        return properties;
-    }
-
-    public void setProperties(final Map<String, String> properties) {
-        this.properties = properties;
-    }
-
     public Map<String, String> getSecureProperties() {
         return secureProperties;
     }
@@ -85,7 +73,6 @@ public class CreateSmsNotificationRequest extends AbstractCreateNotificationRequ
         }
         return errors;
     }
-
 
     /* Equals, HashCode and ToString */
     @Override
@@ -119,7 +106,6 @@ public class CreateSmsNotificationRequest extends AbstractCreateNotificationRequ
         builder.appendSuper(super.toString());
         builder.append("recipientNumber", this.getRecipientNumber());
         builder.append("templateName", this.getTemplateName());
-        builder.append("properties", this.getProperties());
         builder.append("secureProperties", this.getSecureProperties());
         return builder.build();
     }

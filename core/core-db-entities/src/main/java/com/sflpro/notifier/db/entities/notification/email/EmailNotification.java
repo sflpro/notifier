@@ -46,7 +46,6 @@ public class EmailNotification extends Notification {
     }
 
 
-
     /* Properties getters and setters */
     public String getRecipientEmail() {
         return recipientEmail;

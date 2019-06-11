@@ -4,8 +4,6 @@ import com.sflpro.notifier.db.NotifierPersistenceConfiguration;
 import com.sflpro.notifier.services.system.concurrency.ExecutorBuilder;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.*;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.concurrent.ExecutorService;
@@ -20,14 +18,6 @@ import java.util.concurrent.ExecutorService;
         "applicationContext-externalclients-sms.xml"
 })
 public class NotifierServicesConfiguration {
-
-    /**
-     * TODO find out why this is needed
-     */
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-    }
 
     @Bean
     public ExecutorService executorService(ExecutorBuilder executorBuilder) {

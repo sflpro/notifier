@@ -200,7 +200,10 @@ public class PushNotificationServiceFacadeImplTest extends AbstractFacadeUnitTes
         user.setId(userId);
         // Expected push notification DTO
         final PushNotificationDto pushNotificationDto = new PushNotificationDto(request.getBody(), request.getSubject(), request.getClientIpAddress());
-        final List<PushNotificationPropertyDto> propertyDTOs = request.getProperties().stream().map(propertyModel -> new PushNotificationPropertyDto(propertyModel.getPropertyKey(), propertyModel.getPropertyValue())).collect(Collectors.toCollection(ArrayList::new));
+        final List<PushNotificationPropertyDto> propertyDTOs = request.getProperties().entrySet()
+                .stream()
+                .map(propertyModel -> new PushNotificationPropertyDto(propertyModel.getKey(), propertyModel.getValue()))
+                .collect(Collectors.toCollection(ArrayList::new));
         final List<PushNotification> pushNotifications = createPushNotifications(10);
         // Reset
         resetAll();

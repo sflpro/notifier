@@ -37,16 +37,12 @@ public class CreateEmailNotificationRequest extends AbstractCreateNotificationRe
     @JsonProperty("templateName")
     private String templateName;
 
-    @JsonProperty("properties")
-    private Map<String, String> properties;
-
     @JsonProperty("secureProperties")
     private Map<String, String> secureProperties;
 
     /* Constructors */
     public CreateEmailNotificationRequest() {
         super();
-        properties = new HashMap<>();
         secureProperties = new HashMap<>();
     }
 
@@ -81,14 +77,6 @@ public class CreateEmailNotificationRequest extends AbstractCreateNotificationRe
 
     public void setTemplateName(final String templateName) {
         this.templateName = templateName;
-    }
-
-    public Map<String, String> getProperties() {
-        return properties;
-    }
-
-    public void setProperties(final Map<String, String> properties) {
-        this.properties = properties;
     }
 
     public Map<String, String> getSecureProperties() {
@@ -140,7 +128,6 @@ public class CreateEmailNotificationRequest extends AbstractCreateNotificationRe
         builder.append(this.getRecipientEmail());
         builder.append(this.getSubject());
         builder.append(this.getTemplateName());
-        builder.append(this.getProperties());
         return builder.build();
     }
 
@@ -152,7 +139,6 @@ public class CreateEmailNotificationRequest extends AbstractCreateNotificationRe
         builder.append("recipientEmail", this.getRecipientEmail());
         builder.append("subject", this.getSubject());
         builder.append("templateName", this.getTemplateName());
-        builder.append("properties", this.getProperties());
         builder.append("secureProperties", this.getSecureProperties());
         return builder.build();
     }

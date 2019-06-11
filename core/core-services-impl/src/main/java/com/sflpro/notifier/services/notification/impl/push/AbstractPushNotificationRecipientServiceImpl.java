@@ -67,7 +67,7 @@ public abstract class AbstractPushNotificationRecipientServiceImpl<T extends Pus
         assertPushNotificationRecipientIdNotNull(recipientId);
         Assert.notNull(userDeviceId, "User device id should not be null");
         LOGGER.debug("Updating user device for push notification recipient with id - {}, user device id - {}", recipientId, userDeviceId);
-        T recipient = getRepository().findById(recipientId).orElseThrow(() -> new PushNotificationRecipientNotFoundForIdException(recipientId, getInstanceClass()));;
+        T recipient = getRepository().findById(recipientId).orElseThrow(() -> new PushNotificationRecipientNotFoundForIdException(recipientId, getInstanceClass()));
         // Load user device
         final UserDevice userDevice = userDeviceService.getUserDeviceById(userDeviceId);
         assertPushNotificationRecipientAndDeviceBelongToSameUser(recipient, userDevice);
@@ -100,7 +100,7 @@ public abstract class AbstractPushNotificationRecipientServiceImpl<T extends Pus
         assertPushNotificationRecipientIdNotNull(recipientId);
         Assert.notNull(status, "Push notification recipient status should not be null");
         LOGGER.debug("Updating push notification recipient status for recipient with id - {} , status - {}", recipientId, status);
-        T recipient = getRepository().findById(recipientId).orElseThrow(() -> new PushNotificationRecipientNotFoundForIdException(recipientId, getInstanceClass()));;
+        T recipient = getRepository().findById(recipientId).orElseThrow(() -> new PushNotificationRecipientNotFoundForIdException(recipientId, getInstanceClass()));
         // Update recipient status
         recipient.setStatus(status);
         recipient.setUpdated(new Date());

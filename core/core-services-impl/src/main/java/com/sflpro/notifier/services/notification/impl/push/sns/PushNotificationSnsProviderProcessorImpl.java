@@ -1,5 +1,6 @@
 package com.sflpro.notifier.services.notification.impl.push.sns;
 
+import com.sflpro.notifier.db.entities.NotificationProperty;
 import com.sflpro.notifier.db.entities.device.mobile.DeviceOperatingSystemType;
 import com.sflpro.notifier.db.entities.notification.push.PushNotification;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationProviderType;
@@ -19,6 +20,7 @@ import org.springframework.util.Assert;
 import javax.annotation.Nonnull;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * User: Ruben Dilanyan
@@ -76,12 +78,7 @@ public class PushNotificationSnsProviderProcessorImpl implements PushNotificatio
     }
 
     private Map<String, String> createPushNotificationAttributes(final PushNotification pushNotification) {
-        final Map<String, String> attributes = new LinkedHashMap<>();
-        pushNotification.getProperties().forEach(pushNotificationProperty -> {
-            // Add to the map of attributes
-            attributes.put(pushNotificationProperty.getPropertyKey(), pushNotificationProperty.getPropertyValue());
-        });
-        return attributes;
+        return pushNotification.getProperties().stream().collect(Collectors.toMap(NotificationProperty::getPropertyValue, NotificationProperty::getPropertyValue));
     }
 
     /* Properties getters and setters */

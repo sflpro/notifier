@@ -106,16 +106,7 @@ public class ServiceFacadeImplTestHelper {
         request.setBody("Push notification body");
         request.setClientIpAddress("127.0.0.1");
         request.setUserUuId("UGITYDTGUIGFITYDTDTFYKTYCL");
-        request.setProperties(createProperties(10));
         return request;
-    }
-
-    private List<PushNotificationPropertyModel> createProperties(final int count) {
-        final List<PushNotificationPropertyModel> propertyModels = new ArrayList<>();
-        for (int i = 0; i < count; i++) {
-            propertyModels.add(createPushNotificationPropertyModel(i));
-        }
-        return propertyModels;
     }
 
     private PushNotificationPropertyModel createPushNotificationPropertyModel(final int index) {

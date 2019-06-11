@@ -1,13 +1,13 @@
 package com.sflpro.notifier.db.entities;
 
-import com.sflpro.notifier.db.entities.notification.Notification;
 import com.sflpro.notifier.db.entities.notification.email.EmailNotificationProperty;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.annotations.Type;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
 
 /**
  * User: Syuzanna Eprikyan
@@ -16,7 +16,7 @@ import javax.persistence.*;
  * Time: 2:24 PM
  */
 @MappedSuperclass
-public abstract class NotificationProperty<T extends Notification> extends AbstractDomainEntityModel {
+public abstract class NotificationProperty extends AbstractDomainEntityModel {
     private static final long serialVersionUID = 3260222187701442985L;
 
     /* Properties */

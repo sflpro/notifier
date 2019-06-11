@@ -75,6 +75,7 @@ public class PushNotificationSubscriptionRequestQueueProducerServiceImpl impleme
 
         /* Constructors */
         public StartPushNotificationProcessingEventListener() {
+            // default constructor
         }
 
         @Override

@@ -10,8 +10,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * User: Ruben Dilanyan
@@ -33,8 +32,12 @@ public abstract class AbstractCreateNotificationRequest extends AbstractRequestM
     @JsonProperty("clientIpAddress")
     private String clientIpAddress;
 
+    @JsonProperty("properties")
+    private Map<String, String> properties;
+
     /* Constructors */
     public AbstractCreateNotificationRequest() {
+        properties = new LinkedHashMap<>();
     }
 
     /* Properties getters and setters */
@@ -60,6 +63,14 @@ public abstract class AbstractCreateNotificationRequest extends AbstractRequestM
 
     public void setClientIpAddress(final String clientIpAddress) {
         this.clientIpAddress = clientIpAddress;
+    }
+
+    public Map<String, String> getProperties() {
+        return properties;
+    }
+
+    public void setProperties(final Map<String, String> properties) {
+        this.properties = properties;
     }
 
     /* Validation methods */
@@ -108,6 +119,7 @@ public abstract class AbstractCreateNotificationRequest extends AbstractRequestM
         builder.append("userUuId", this.getUserUuId());
         builder.append("body", this.getBody());
         builder.append("clientIpAddress", this.getClientIpAddress());
+        builder.append("properties", this.getProperties());
         return builder.build();
     }
 }

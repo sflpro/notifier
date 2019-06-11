@@ -43,8 +43,11 @@ import static org.junit.Assert.assertNotNull;
  */
 public class ServicesImplTestHelper {
 
+    public static final String CLIENT_IP_ADDRESS = "127.0.0.1";
+
     /* Constructors */
     public ServicesImplTestHelper() {
+        // default constructor
     }
 
     /* User */
@@ -98,7 +101,7 @@ public class ServicesImplTestHelper {
         final EmailNotificationDto notificationDto = new EmailNotificationDto();
         notificationDto.setRecipientEmail("dummy_recipient@dummy.com");
         notificationDto.setSenderEmail("dummy_sender@dummy.com");
-        notificationDto.setClientIpAddress("127.0.0.1");
+        notificationDto.setClientIpAddress(CLIENT_IP_ADDRESS);
         notificationDto.setContent("YoYoYo");
         notificationDto.setSubject("YoYo");
         notificationDto.setProviderType(NotificationProviderType.SMTP_SERVER);
@@ -142,7 +145,7 @@ public class ServicesImplTestHelper {
     public SmsNotificationDto createSmsNotificationDto() {
         final SmsNotificationDto notificationDto = new SmsNotificationDto();
         notificationDto.setRecipientMobileNumber("+37455000000");
-        notificationDto.setClientIpAddress("127.0.0.1");
+        notificationDto.setClientIpAddress(CLIENT_IP_ADDRESS);
         notificationDto.setContent("YoYoYo");
         notificationDto.setSubject(null);
         notificationDto.setProviderType(NotificationProviderType.TWILLIO);
@@ -176,7 +179,7 @@ public class ServicesImplTestHelper {
     /* Push notification */
     public PushNotificationDto createPushNotificationDto() {
         final PushNotificationDto notificationDto = new PushNotificationDto();
-        notificationDto.setClientIpAddress("127.0.0.1");
+        notificationDto.setClientIpAddress(CLIENT_IP_ADDRESS);
         notificationDto.setContent("YoYoYo");
         notificationDto.setSubject("YoYo");
         return notificationDto;
@@ -249,8 +252,7 @@ public class ServicesImplTestHelper {
 
     /* Push notification request */
     public PushNotificationSubscriptionDto createPushNotificationSubscriptionDto() {
-        final PushNotificationSubscriptionDto subscriptionDto = new PushNotificationSubscriptionDto();
-        return subscriptionDto;
+        return new PushNotificationSubscriptionDto();
     }
 
     public PushNotificationSubscription createPushNotificationSubscription(final PushNotificationSubscriptionDto subscriptionDto) {

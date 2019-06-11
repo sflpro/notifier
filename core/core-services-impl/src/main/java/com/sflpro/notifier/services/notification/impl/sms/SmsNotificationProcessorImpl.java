@@ -103,14 +103,11 @@ public class SmsNotificationProcessorImpl implements SmsNotificationProcessor {
     }
 
     private SmsServiceApiOperationsHandler getSmsServiceApiOperationsHandler(final NotificationProviderType notificationProviderType) {
-        switch (notificationProviderType) {
-            case TWILLIO: {
-                return new TwillioSmsServiceApiOperationsHandler();
-            }
-            default: {
-                LOGGER.debug("Sms messaging provider with type - {} is  not supported, use - {}", notificationProviderType, NotificationProviderType.TWILLIO);
-                throw new ServicesRuntimeException("Sms messaging provider with type - " + notificationProviderType + " is not supported");
-            }
+        if (NotificationProviderType.TWILLIO.equals(notificationProviderType)) {
+            return new TwillioSmsServiceApiOperationsHandler();
+        } else {
+            LOGGER.debug("Sms messaging provider with type - {} is  not supported, use - {}", notificationProviderType, NotificationProviderType.TWILLIO);
+            throw new ServicesRuntimeException("Sms messaging provider with type - " + notificationProviderType + " is not supported");
         }
     }
 

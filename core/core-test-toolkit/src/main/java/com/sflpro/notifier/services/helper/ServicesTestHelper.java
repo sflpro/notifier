@@ -317,7 +317,7 @@ public class ServicesTestHelper {
     }
 
     public SmsNotification createSmsNotification(final SmsNotificationDto notificationDto, final List<SmsNotificationPropertyDto> smsNotificationPropertyDtos) {
-        return smsNotificationService.createSmsNotification(notificationDto, createSmsNotificationPropertyDtos(5));
+        return smsNotificationService.createSmsNotification(notificationDto, smsNotificationPropertyDtos);
     }
 
     public void assertSmsNotification(final SmsNotification notification, final SmsNotificationDto notificationDto, final List<SmsNotificationPropertyDto> smsNotificationPropertyDtos) {

@@ -52,7 +52,7 @@ public class PersistenceUtilityServiceImpl implements PersistenceUtilityService 
     @Nonnull
     public <T> T initializeAndUnProxy(@Nonnull final T entity) {
         Assert.notNull(entity, "Entity should not be null");
-        LOGGER.debug("UnProxying entity - {}", new Object[]{entity});
+        LOGGER.debug("UnProxying entity - {}", entity);
         // UnProxied entity
         T unProxiedEntity = entity;
         // Initialize

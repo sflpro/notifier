@@ -4,15 +4,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sflpro.notifier.api.model.common.result.ErrorResponseModel;
 import com.sflpro.notifier.api.model.common.result.ErrorType;
 import com.sflpro.notifier.api.model.notification.request.AbstractCreateNotificationRequest;
+import com.sflpro.notifier.api.model.notification.request.AbstractTemplateAwareCreateNotificationRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.annotation.Nonnull;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * User: Ruben Dilanyan
@@ -20,22 +19,15 @@ import java.util.Map;
  * Date: 1/13/16
  * Time: 2:57 PM
  */
-public class CreateSmsNotificationRequest extends AbstractCreateNotificationRequest {
+public class CreateSmsNotificationRequest extends AbstractTemplateAwareCreateNotificationRequest {
 
     /* Properties */
     @JsonProperty("recipientNumber")
     private String recipientNumber;
 
-    @JsonProperty("templateName")
-    private String templateName;
-
-    @JsonProperty("secureProperties")
-    private Map<String, String> secureProperties;
-
     /* Constructors */
     public CreateSmsNotificationRequest() {
         super();
-        secureProperties = new HashMap<>();
     }
 
     /* Properties getters and setters */
@@ -45,22 +37,6 @@ public class CreateSmsNotificationRequest extends AbstractCreateNotificationRequ
 
     public void setRecipientNumber(final String recipientNumber) {
         this.recipientNumber = recipientNumber;
-    }
-
-    public String getTemplateName() {
-        return templateName;
-    }
-
-    public void setTemplateName(final String templateName) {
-        this.templateName = templateName;
-    }
-
-    public Map<String, String> getSecureProperties() {
-        return secureProperties;
-    }
-
-    public void setSecureProperties(final Map<String, String> secureProperties) {
-        this.secureProperties = secureProperties;
     }
 
     /* Validation methods */
@@ -87,7 +63,6 @@ public class CreateSmsNotificationRequest extends AbstractCreateNotificationRequ
         final EqualsBuilder builder = new EqualsBuilder();
         builder.appendSuper(super.equals(o));
         builder.append(this.getRecipientNumber(), that.getRecipientNumber());
-        builder.append(this.getTemplateName(), that.getTemplateName());
         return builder.isEquals();
     }
 
@@ -96,7 +71,6 @@ public class CreateSmsNotificationRequest extends AbstractCreateNotificationRequ
         final HashCodeBuilder builder = new HashCodeBuilder();
         builder.appendSuper(super.hashCode());
         builder.append(this.getRecipientNumber());
-        builder.append(this.getTemplateName());
         return builder.build();
     }
 
@@ -105,8 +79,6 @@ public class CreateSmsNotificationRequest extends AbstractCreateNotificationRequ
         final ToStringBuilder builder = new ToStringBuilder(this);
         builder.appendSuper(super.toString());
         builder.append("recipientNumber", this.getRecipientNumber());
-        builder.append("templateName", this.getTemplateName());
-        builder.append("secureProperties", this.getSecureProperties());
         return builder.build();
     }
 }

@@ -81,9 +81,9 @@ public class PushNotificationServiceFacadeImpl extends AbstractNotificationServi
         final User user = getUserService().getOrCreateUserForUuId(request.getUserUuId());
         // Create push notification DTO
         final PushNotificationDto pushNotificationDto = new PushNotificationDto(request.getBody(), request.getSubject(), request.getClientIpAddress());
-        final List<PushNotificationPropertyDto> propertyDTOs = request.getProperties().entrySet()
+        final List<PushNotificationPropertyDto> propertyDTOs = request.getProperties()
                 .stream()
-                .map(propertyModel -> new PushNotificationPropertyDto(propertyModel.getKey(), propertyModel.getValue()))
+                .map(propertyModel -> new PushNotificationPropertyDto(propertyModel.getPropertyKey(), propertyModel.getPropertyValue()))
                 .collect(Collectors.toCollection(ArrayList::new));
         // Create push notifications
         final List<PushNotification> pushNotifications = pushNotificationService.createNotificationsForUserActiveRecipients(user.getId(), pushNotificationDto, propertyDTOs);

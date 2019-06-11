@@ -2,7 +2,6 @@ package com.sflpro.notifier.services.notification.dto;
 
 import com.sflpro.notifier.db.entities.NotificationProperty;
 import com.sflpro.notifier.services.common.dto.AbstractDomainEntityModelDto;
-import com.sflpro.notifier.services.notification.dto.email.EmailNotificationPropertyDto;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -61,26 +60,25 @@ public abstract class AbstractNotificationPropertyModelDto<T extends Notificatio
         if (this == o) {
             return true;
         }
-        if (!(o instanceof EmailNotificationPropertyDto)) {
+        if (!(o instanceof AbstractNotificationPropertyModelDto)) {
             return false;
         }
-        final EmailNotificationPropertyDto that = (EmailNotificationPropertyDto) o;
-        final EqualsBuilder builder = new EqualsBuilder();
-        builder.appendSuper(super.equals(that));
-        builder.append(this.getPropertyKey(), that.getPropertyKey());
-        builder.append(this.getPropertyValue(), that.getPropertyValue());
-        return builder.isEquals();
+        final AbstractNotificationPropertyModelDto<?> that = (AbstractNotificationPropertyModelDto<?>) o;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(o))
+                .append(propertyKey, that.propertyKey)
+                .append(propertyValue, that.propertyValue)
+                .isEquals();
     }
 
     @Override
     public int hashCode() {
-        final HashCodeBuilder builder = new HashCodeBuilder();
-        builder.appendSuper(super.hashCode());
-        builder.append(this.getPropertyKey());
-        builder.append(this.getPropertyValue());
-        return builder.build();
+        return new HashCodeBuilder()
+                .appendSuper(super.hashCode())
+                .append(propertyKey)
+                .append(propertyValue)
+                .toHashCode();
     }
-
 
     @Override
     public String toString() {

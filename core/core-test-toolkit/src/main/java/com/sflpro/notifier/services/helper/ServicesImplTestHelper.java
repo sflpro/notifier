@@ -23,6 +23,7 @@ import com.sflpro.notifier.services.notification.dto.push.PushNotificationSubscr
 import com.sflpro.notifier.services.notification.dto.push.PushNotificationSubscriptionRequestDto;
 import com.sflpro.notifier.services.notification.dto.push.sns.PushNotificationSnsRecipientDto;
 import com.sflpro.notifier.services.notification.dto.sms.SmsNotificationDto;
+import com.sflpro.notifier.services.notification.dto.sms.SmsNotificationPropertyDto;
 import com.sflpro.notifier.services.user.dto.UserDto;
 import org.junit.Assert;
 
@@ -162,6 +163,14 @@ public class ServicesImplTestHelper {
         assertNotification(notification, notificationDto);
         Assert.assertEquals(notificationDto.getRecipientMobileNumber(), notification.getRecipientMobileNumber());
         Assert.assertEquals(notificationDto.getProviderType(), notification.getProviderType());
+    }
+
+    public List<SmsNotificationPropertyDto> createSmsNotificationPropertyDtos(final int count) {
+        final List<SmsNotificationPropertyDto> propertyDtos = new ArrayList<>();
+        for (int i = 0; i < count; i++) {
+            propertyDtos.add(new SmsNotificationPropertyDto("key" + i, "value" + i));
+        }
+        return propertyDtos;
     }
 
     /* Push notification */

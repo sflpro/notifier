@@ -4,14 +4,17 @@ import com.sflpro.notifier.db.entities.notification.sms.SmsNotification;
 import com.sflpro.notifier.db.repositories.repositories.notification.AbstractNotificationRepository;
 import com.sflpro.notifier.db.repositories.repositories.notification.sms.SmsNotificationRepository;
 import com.sflpro.notifier.services.notification.dto.sms.SmsNotificationDto;
+import com.sflpro.notifier.services.notification.dto.sms.SmsNotificationPropertyDto;
 import com.sflpro.notifier.services.notification.impl.AbstractNotificationServiceImpl;
 import com.sflpro.notifier.services.notification.impl.AbstractNotificationServiceImplTest;
 import org.easymock.Mock;
 import org.easymock.TestSubject;
 import org.junit.Test;
 
+import java.util.List;
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.easymock.EasyMock.*;
-import static org.junit.Assert.fail;
 
 /**
  * User: Ruben Dilanyan
@@ -37,29 +40,31 @@ public class SmsNotificationServiceImplTest extends AbstractNotificationServiceI
     public void testCreateEmailNotificationWithInvalidArguments() {
         // Test data
         final SmsNotificationDto smsNotificationDto = getServicesImplTestHelper().createSmsNotificationDto();
+        final List<SmsNotificationPropertyDto> properties = getServicesImplTestHelper().createSmsNotificationPropertyDtos(2);
         // Reset
         resetAll();
         // Replay
         replayAll();
         // Run test scenario
-        try {
-            smsNotificationService.createSmsNotification(null);
-            fail("Exception should be thrown");
-        } catch (final IllegalArgumentException ex) {
-            // Expected
-        }
-        try {
-            smsNotificationService.createSmsNotification(new SmsNotificationDto(null, smsNotificationDto.getProviderType(), smsNotificationDto.getContent(), smsNotificationDto.getClientIpAddress()));
-            fail("Exception should be thrown");
-        } catch (final IllegalArgumentException ex) {
-            // Expected
-        }
-        try {
-            smsNotificationService.createSmsNotification(new SmsNotificationDto(smsNotificationDto.getRecipientMobileNumber(), null, smsNotificationDto.getContent(), smsNotificationDto.getClientIpAddress()));
-            fail("Exception should be thrown");
-        } catch (final IllegalArgumentException ex) {
-            // Expected
-        }
+        assertThatThrownBy(() -> smsNotificationService.createSmsNotification(null, properties)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> smsNotificationService.createSmsNotification(smsNotificationDto, null)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> smsNotificationService.createSmsNotification(new SmsNotificationDto(
+                        null,
+                        smsNotificationDto.getProviderType(),
+                        smsNotificationDto.getContent(),
+                        smsNotificationDto.getClientIpAddress(),
+                        smsNotificationDto.getTemplateName()),
+                properties)
+        ).isInstanceOf(IllegalArgumentException.class);
+
+        assertThatThrownBy(() -> smsNotificationService.createSmsNotification(new SmsNotificationDto(
+                        smsNotificationDto.getRecipientMobileNumber(),
+                        null,
+                        smsNotificationDto.getContent(),
+                        smsNotificationDto.getClientIpAddress(),
+                        smsNotificationDto.getTemplateName()),
+                properties)
+        ).isInstanceOf(IllegalArgumentException.class);
         // Verify
         verifyAll();
     }
@@ -68,6 +73,7 @@ public class SmsNotificationServiceImplTest extends AbstractNotificationServiceI
     public void testCreateEmailNotification() {
         // Test data
         final SmsNotificationDto notificationDto = getServicesImplTestHelper().createSmsNotificationDto();
+        final List<SmsNotificationPropertyDto> properties = getServicesImplTestHelper().createSmsNotificationPropertyDtos(2);
         // Reset
         resetAll();
         // Expectations
@@ -75,7 +81,7 @@ public class SmsNotificationServiceImplTest extends AbstractNotificationServiceI
         // Replay
         replayAll();
         // Run test scenario
-        final SmsNotification notification = smsNotificationService.createSmsNotification(notificationDto);
+        final SmsNotification notification = smsNotificationService.createSmsNotification(notificationDto, properties);
         getServicesImplTestHelper().assertSmsNotification(notification, notificationDto);
     }
 

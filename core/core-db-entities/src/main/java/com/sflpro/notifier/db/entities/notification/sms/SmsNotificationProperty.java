@@ -1,4 +1,4 @@
-package com.sflpro.notifier.db.entities.notification.push;
+package com.sflpro.notifier.db.entities.notification.sms;
 
 import com.sflpro.notifier.db.entities.NotificationProperty;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -8,34 +8,28 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import javax.persistence.*;
 
 /**
- * User: Ruben Dilanyan
  * Company: SFL LLC
- * Date: 9/10/15
- * Time: 10:52 AM
+ * Created on 04/12/2017
+ *
+ * @author Davit Harutyunyan
  */
 @Entity
-@Table(name = "notification_push_property")
-public class PushNotificationProperty extends NotificationProperty {
-
-    private static final long serialVersionUID = 5488885427885340245L;
+@Table(name = "notification_sms_property")
+public class SmsNotificationProperty extends NotificationProperty {
+    private static final long serialVersionUID = 5563571324365190567L;
 
     /* Properties */
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "push_notification_id", nullable = false, unique = false)
-    private PushNotification pushNotification;
-
-    /* Constructors */
-    public PushNotificationProperty() {
-        super();
-    }
+    @JoinColumn(name = "notification_id", nullable = false, unique = false)
+    private SmsNotification smsNotification;
 
     /* Properties getters and setters */
-    public PushNotification getPushNotification() {
-        return pushNotification;
+    public SmsNotification getSmsNotification() {
+        return smsNotification;
     }
 
-    public void setPushNotification(final PushNotification pushNotification) {
-        this.pushNotification = pushNotification;
+    public void setSmsNotification(final SmsNotification smsNotification) {
+        this.smsNotification = smsNotification;
     }
 
     /* Equals, HashCode and ToString */
@@ -44,13 +38,13 @@ public class PushNotificationProperty extends NotificationProperty {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof PushNotificationProperty)) {
+        if (!(o instanceof SmsNotificationProperty)) {
             return false;
         }
-        final PushNotificationProperty that = (PushNotificationProperty) o;
+        final SmsNotificationProperty that = (SmsNotificationProperty) o;
         final EqualsBuilder builder = new EqualsBuilder();
         builder.appendSuper(super.equals(that));
-        builder.append(getIdOrNull(this.getPushNotification()), getIdOrNull(that.getPushNotification()));
+        builder.append(getIdOrNull(this.getSmsNotification()), getIdOrNull(that.getSmsNotification()));
         return builder.isEquals();
     }
 
@@ -58,7 +52,7 @@ public class PushNotificationProperty extends NotificationProperty {
     public int hashCode() {
         final HashCodeBuilder builder = new HashCodeBuilder();
         builder.appendSuper(super.hashCode());
-        builder.append(getIdOrNull(this.getPushNotification()));
+        builder.append(getIdOrNull(this.getSmsNotification()));
         return builder.build();
     }
 
@@ -67,7 +61,7 @@ public class PushNotificationProperty extends NotificationProperty {
     public String toString() {
         final ToStringBuilder builder = new ToStringBuilder(this);
         builder.appendSuper(super.toString());
-        builder.append("pushNotification", getIdOrNull(this.getPushNotification()));
+        builder.append("smsNotification", getIdOrNull(this.getSmsNotification()));
         return builder.build();
     }
 }

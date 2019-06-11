@@ -6,10 +6,9 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * User: Ruben Dilanyan
@@ -26,6 +25,12 @@ public class SmsNotification extends Notification {
     /* Properties */
     @Column(name = "recipient_mobile_number", nullable = false)
     private String recipientMobileNumber;
+
+    @Column(name = "template_name")
+    private String templateName;
+
+    @OneToMany(mappedBy = "smsNotification", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<SmsNotificationProperty> properties;
 
     /* Constructors */
     public SmsNotification() {
@@ -46,9 +51,26 @@ public class SmsNotification extends Notification {
         this.recipientMobileNumber = recipientMobileNumber;
     }
 
+    public String getTemplateName() {
+        return templateName;
+    }
+
+    public void setTemplateName(final String templateName) {
+        this.templateName = templateName;
+    }
+
+    public Set<SmsNotificationProperty> getProperties() {
+        return properties;
+    }
+
+    public void setProperties(final Set<SmsNotificationProperty> properties) {
+        this.properties = properties;
+    }
+
     /* Private utility methods */
     private void initializeDefaults() {
         setType(NotificationType.SMS);
+        this.properties = new LinkedHashSet<>();
     }
 
     /* Equals, HashCode and ToString */
@@ -64,6 +86,7 @@ public class SmsNotification extends Notification {
         final EqualsBuilder builder = new EqualsBuilder();
         builder.appendSuper(super.equals(that));
         builder.append(this.getRecipientMobileNumber(), that.getRecipientMobileNumber());
+        builder.append(this.getTemplateName(), that.getTemplateName());
         return builder.isEquals();
     }
 
@@ -72,6 +95,7 @@ public class SmsNotification extends Notification {
         final HashCodeBuilder builder = new HashCodeBuilder();
         builder.appendSuper(super.hashCode());
         builder.append(this.getRecipientMobileNumber());
+        builder.append(this.getTemplateName());
         return builder.build();
     }
 
@@ -81,6 +105,7 @@ public class SmsNotification extends Notification {
         final ToStringBuilder builder = new ToStringBuilder(this);
         builder.appendSuper(super.toString());
         builder.append("recipientMobileNumber", this.getRecipientMobileNumber());
+        builder.append("templateName", this.getTemplateName());
         return builder.build();
     }
 }

@@ -4,6 +4,7 @@ import com.sflpro.notifier.db.entities.notification.Notification;
 import com.sflpro.notifier.db.entities.notification.NotificationProviderType;
 import com.sflpro.notifier.db.entities.notification.NotificationState;
 import com.sflpro.notifier.db.entities.notification.sms.SmsNotification;
+import com.sflpro.notifier.db.entities.notification.sms.SmsNotificationProperty;
 import com.sflpro.notifier.db.repositories.utility.PersistenceUtilityService;
 import com.sflpro.notifier.externalclients.sms.twillio.communicator.TwillioApiCommunicator;
 import com.sflpro.notifier.externalclients.sms.twillio.model.request.SendMessageRequest;
@@ -11,6 +12,7 @@ import com.sflpro.notifier.externalclients.sms.twillio.model.response.SendMessag
 import com.sflpro.notifier.services.common.exception.ServicesRuntimeException;
 import com.sflpro.notifier.services.notification.sms.SmsNotificationProcessor;
 import com.sflpro.notifier.services.notification.sms.SmsNotificationService;
+import com.sflpro.notifier.services.template.TemplatingService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +23,7 @@ import org.springframework.util.Assert;
 
 import javax.annotation.Nonnull;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * User: Mher Sargsyan
@@ -42,6 +45,9 @@ public class SmsNotificationProcessorImpl implements SmsNotificationProcessor {
 
     @Autowired
     private TwillioApiCommunicator twillioApiCommunicator;
+
+    @Autowired
+    private TemplatingService templatingService;
 
     /* Properties */
     @Value("${twillio.account.sender.phone}")
@@ -66,7 +72,7 @@ public class SmsNotificationProcessorImpl implements SmsNotificationProcessor {
         /* Start processing external sms service operation */
         try {
             final SmsServiceApiOperationsHandler smsServiceApiOperationsHandler = getSmsServiceApiOperationsHandler(NotificationProviderType.TWILLIO);
-            final String smsMessageProviderExternalId = smsServiceApiOperationsHandler.sendMessage(getAccountSenderNumber(), smsNotification.getRecipientMobileNumber(), smsNotification.getContent());
+            final String smsMessageProviderExternalId = smsServiceApiOperationsHandler.processMessage(smsNotification, secureProperties);
             LOGGER.debug("Successfully sent sms message to recipient - {}, with body - {}", smsNotification.getRecipientMobileNumber(), smsNotification.getContent());
             /* Update message external id if it is provided */
             if (StringUtils.isNotBlank(smsMessageProviderExternalId)) {
@@ -148,13 +154,12 @@ public class SmsNotificationProcessorImpl implements SmsNotificationProcessor {
         /**
          * Handle sms message sending operation through external service
          *
-         * @param senderNumber
-         * @param recipientNumber
-         * @param messageBody
+         * @param smsNotification
+         * @param secureProperties
          * @return messageExternalId
          */
         @Nonnull
-        String sendMessage(@Nonnull final String senderNumber, @Nonnull final String recipientNumber, @Nonnull final String messageBody);
+        String processMessage(@Nonnull final SmsNotification smsNotification, @Nonnull final Map<String, String> secureProperties);
     }
 
     private class TwillioSmsServiceApiOperationsHandler implements SmsServiceApiOperationsHandler {
@@ -166,7 +171,21 @@ public class SmsNotificationProcessorImpl implements SmsNotificationProcessor {
 
         @Nonnull
         @Override
-        public String sendMessage(@Nonnull final String senderNumber, @Nonnull final String recipientNumber, @Nonnull final String messageBody) {
+        public String processMessage(@Nonnull final SmsNotification smsNotification, @Nonnull final Map<String, String> secureProperties) {
+            if (StringUtils.isBlank(smsNotification.getTemplateName())) {
+                Assert.notNull(smsNotification.getContent(), "Sms content should not be null when template not provided");
+                return sendMessage(getAccountSenderNumber(), smsNotification.getRecipientMobileNumber(), smsNotification.getContent());
+            } else {
+                final Map<String, String> parameters = smsNotification.getProperties()
+                        .stream()
+                        .collect(Collectors.toMap(SmsNotificationProperty::getPropertyKey, SmsNotificationProperty::getPropertyValue));
+                parameters.putAll(secureProperties);
+                final String content = templatingService.getContentForTemplate(smsNotification.getTemplateName(), parameters);
+                return sendMessage(getAccountSenderNumber(), smsNotification.getRecipientMobileNumber(), content);
+            }
+        }
+
+        private String sendMessage(@Nonnull final String senderNumber, @Nonnull final String recipientNumber, @Nonnull final String messageBody) {
             /* Create send message request model */
             final SendMessageRequest sendMessageRequest = new SendMessageRequest(senderNumber, recipientNumber, messageBody);
             LOGGER.debug("Sending sms message with request model - {}", sendMessageRequest);

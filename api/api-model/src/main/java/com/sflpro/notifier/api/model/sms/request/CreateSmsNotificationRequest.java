@@ -10,7 +10,9 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.annotation.Nonnull;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * User: Ruben Dilanyan
@@ -24,9 +26,20 @@ public class CreateSmsNotificationRequest extends AbstractCreateNotificationRequ
     @JsonProperty("recipientNumber")
     private String recipientNumber;
 
+    @JsonProperty("templateName")
+    private String templateName;
+
+    @JsonProperty("properties")
+    private Map<String, String> properties;
+
+    @JsonProperty("secureProperties")
+    private Map<String, String> secureProperties;
+
     /* Constructors */
     public CreateSmsNotificationRequest() {
-        //default constructor
+        super();
+        properties = new HashMap<>();
+        secureProperties = new HashMap<>();
     }
 
     /* Properties getters and setters */
@@ -36,6 +49,30 @@ public class CreateSmsNotificationRequest extends AbstractCreateNotificationRequ
 
     public void setRecipientNumber(final String recipientNumber) {
         this.recipientNumber = recipientNumber;
+    }
+
+    public String getTemplateName() {
+        return templateName;
+    }
+
+    public void setTemplateName(final String templateName) {
+        this.templateName = templateName;
+    }
+
+    public Map<String, String> getProperties() {
+        return properties;
+    }
+
+    public void setProperties(final Map<String, String> properties) {
+        this.properties = properties;
+    }
+
+    public Map<String, String> getSecureProperties() {
+        return secureProperties;
+    }
+
+    public void setSecureProperties(final Map<String, String> secureProperties) {
+        this.secureProperties = secureProperties;
     }
 
     /* Validation methods */
@@ -63,6 +100,7 @@ public class CreateSmsNotificationRequest extends AbstractCreateNotificationRequ
         final EqualsBuilder builder = new EqualsBuilder();
         builder.appendSuper(super.equals(o));
         builder.append(this.getRecipientNumber(), that.getRecipientNumber());
+        builder.append(this.getTemplateName(), that.getTemplateName());
         return builder.isEquals();
     }
 
@@ -71,6 +109,7 @@ public class CreateSmsNotificationRequest extends AbstractCreateNotificationRequ
         final HashCodeBuilder builder = new HashCodeBuilder();
         builder.appendSuper(super.hashCode());
         builder.append(this.getRecipientNumber());
+        builder.append(this.getTemplateName());
         return builder.build();
     }
 
@@ -79,6 +118,9 @@ public class CreateSmsNotificationRequest extends AbstractCreateNotificationRequ
         final ToStringBuilder builder = new ToStringBuilder(this);
         builder.appendSuper(super.toString());
         builder.append("recipientNumber", this.getRecipientNumber());
+        builder.append("templateName", this.getTemplateName());
+        builder.append("properties", this.getProperties());
+        builder.append("secureProperties", this.getSecureProperties());
         return builder.build();
     }
 }

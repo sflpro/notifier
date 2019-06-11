@@ -4,8 +4,11 @@ import com.sflpro.notifier.db.entities.notification.sms.SmsNotification;
 import com.sflpro.notifier.services.notification.AbstractNotificationService;
 import com.sflpro.notifier.services.notification.AbstractNotificationServiceIntegrationTest;
 import com.sflpro.notifier.services.notification.dto.sms.SmsNotificationDto;
+import com.sflpro.notifier.services.notification.dto.sms.SmsNotificationPropertyDto;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
 
 /**
  * User: Ruben Dilanyan
@@ -28,13 +31,14 @@ public class SmsNotificationServiceIntegrationTest extends AbstractNotificationS
     public void testCreateSmsNotification() {
         // Prepare data
         final SmsNotificationDto notificationDto = getServicesTestHelper().createSmsNotificationDto();
+        final List<SmsNotificationPropertyDto> smsNotificationPropertyDtos = getServicesTestHelper().createSmsNotificationPropertyDtos(3);
         // Create notification
-        SmsNotification smsNotification = smsNotificationService.createSmsNotification(notificationDto);
-        getServicesTestHelper().assertSmsNotification(smsNotification, notificationDto);
+        SmsNotification smsNotification = smsNotificationService.createSmsNotification(notificationDto, smsNotificationPropertyDtos);
+        getServicesTestHelper().assertSmsNotification(smsNotification, notificationDto, smsNotificationPropertyDtos);
         // Flush, clear, reload and assert
         flushAndClear();
         smsNotification = smsNotificationService.getNotificationById(smsNotification.getId());
-        getServicesTestHelper().assertSmsNotification(smsNotification, notificationDto);
+        getServicesTestHelper().assertSmsNotification(smsNotification, notificationDto, smsNotificationPropertyDtos);
     }
 
     /* Utility methods */

@@ -11,6 +11,7 @@ import com.sflpro.notifier.db.entities.notification.email.EmailNotificationPrope
 import com.sflpro.notifier.db.entities.notification.push.*;
 import com.sflpro.notifier.db.entities.notification.push.sns.PushNotificationSnsRecipient;
 import com.sflpro.notifier.db.entities.notification.sms.SmsNotification;
+import com.sflpro.notifier.db.entities.notification.sms.SmsNotificationProperty;
 import com.sflpro.notifier.db.entities.user.User;
 import com.sflpro.notifier.services.device.UserDeviceService;
 import com.sflpro.notifier.services.device.dto.UserDeviceDto;
@@ -22,6 +23,7 @@ import com.sflpro.notifier.services.notification.dto.email.EmailNotificationProp
 import com.sflpro.notifier.services.notification.dto.push.*;
 import com.sflpro.notifier.services.notification.dto.push.sns.PushNotificationSnsRecipientDto;
 import com.sflpro.notifier.services.notification.dto.sms.SmsNotificationDto;
+import com.sflpro.notifier.services.notification.dto.sms.SmsNotificationPropertyDto;
 import com.sflpro.notifier.services.notification.email.EmailNotificationService;
 import com.sflpro.notifier.services.notification.push.PushNotificationService;
 import com.sflpro.notifier.services.notification.push.PushNotificationSubscriptionProcessingService;
@@ -311,17 +313,36 @@ public class ServicesTestHelper {
     }
 
     public SmsNotification createSmsNotification() {
-        return createSmsNotification(createSmsNotificationDto());
+        return createSmsNotification(createSmsNotificationDto(), createSmsNotificationPropertyDtos(5));
     }
 
-    public SmsNotification createSmsNotification(final SmsNotificationDto notificationDto) {
-        return smsNotificationService.createSmsNotification(notificationDto);
+    public SmsNotification createSmsNotification(final SmsNotificationDto notificationDto, final List<SmsNotificationPropertyDto> smsNotificationPropertyDtos) {
+        return smsNotificationService.createSmsNotification(notificationDto, createSmsNotificationPropertyDtos(5));
     }
 
-    public void assertSmsNotification(final SmsNotification notification, final SmsNotificationDto notificationDto) {
+    public void assertSmsNotification(final SmsNotification notification, final SmsNotificationDto notificationDto, final List<SmsNotificationPropertyDto> smsNotificationPropertyDtos) {
         assertNotification(notification, notificationDto);
         assertEquals(notificationDto.getRecipientMobileNumber(), notification.getRecipientMobileNumber());
         Assert.assertEquals(notificationDto.getProviderType(), notification.getProviderType());
+        assertEquals(notificationDto.getTemplateName(), notification.getTemplateName());
+        assertEquals(smsNotificationPropertyDtos.size(), notification.getProperties().size());
+        smsNotificationPropertyDtos.forEach(propertyDto -> {
+            final Optional<SmsNotificationProperty> smsNotificationProperty = notification.getProperties()
+                    .stream()
+                    .filter(property -> property.getPropertyKey().equals(propertyDto.getPropertyKey()))
+                    .findFirst();
+            assertTrue(smsNotificationProperty.isPresent());
+            assertEquals(propertyDto.getPropertyValue(), smsNotificationProperty.get().getPropertyValue());
+            assertEquals(notification.getId(), smsNotificationProperty.get().getSmsNotification().getId());
+        });
+    }
+
+    public List<SmsNotificationPropertyDto> createSmsNotificationPropertyDtos(final int count) {
+        final List<SmsNotificationPropertyDto> propertyDtos = new ArrayList<>();
+        for (int i = 0; i < count; i++) {
+            propertyDtos.add(new SmsNotificationPropertyDto("key" + i, "value" + i));
+        }
+        return propertyDtos;
     }
 
     /* Push notification */

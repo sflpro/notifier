@@ -129,8 +129,6 @@ public class CreateEmailNotificationRequest extends AbstractCreateNotificationRe
         builder.append(this.getRecipientEmail(), that.getRecipientEmail());
         builder.append(this.getSubject(), that.getSubject());
         builder.append(this.getTemplateName(), that.getTemplateName());
-        builder.append(this.getSecureProperties(), that.getSecureProperties());
-        builder.append(this.getSecureProperties(), that.getSecureProperties());
         return builder.isEquals();
     }
 
@@ -143,7 +141,6 @@ public class CreateEmailNotificationRequest extends AbstractCreateNotificationRe
         builder.append(this.getSubject());
         builder.append(this.getTemplateName());
         builder.append(this.getProperties());
-        builder.append(this.getSecureProperties());
         return builder.build();
     }
 

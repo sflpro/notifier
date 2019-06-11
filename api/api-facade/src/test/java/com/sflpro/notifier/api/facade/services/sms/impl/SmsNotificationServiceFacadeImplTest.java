@@ -13,6 +13,7 @@ import com.sflpro.notifier.db.entities.user.User;
 import com.sflpro.notifier.services.notification.UserNotificationService;
 import com.sflpro.notifier.services.notification.dto.UserNotificationDto;
 import com.sflpro.notifier.services.notification.dto.sms.SmsNotificationDto;
+import com.sflpro.notifier.services.notification.dto.sms.SmsNotificationPropertyDto;
 import com.sflpro.notifier.services.notification.event.sms.StartSendingNotificationEvent;
 import com.sflpro.notifier.services.notification.sms.SmsNotificationService;
 import com.sflpro.notifier.services.system.event.ApplicationEventDistributionService;
@@ -20,6 +21,9 @@ import com.sflpro.notifier.services.user.UserService;
 import org.easymock.Mock;
 import org.easymock.TestSubject;
 import org.junit.Test;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.*;
@@ -95,14 +99,22 @@ public class SmsNotificationServiceFacadeImplTest extends AbstractFacadeUnitTest
         // Test data
         final CreateSmsNotificationRequest request = getServiceFacadeImplTestHelper().createCreateSmsNotificationRequest();
         request.setUserUuId(null);
-        final SmsNotificationDto smsNotificationDto = new SmsNotificationDto(request.getRecipientNumber(), NotificationProviderType.AMAZON_SNS, request.getBody(), request.getClientIpAddress());
+        final SmsNotificationDto smsNotificationDto = new SmsNotificationDto(request.getRecipientNumber(),
+                NotificationProviderType.AMAZON_SNS,
+                request.getBody(),
+                request.getClientIpAddress(),
+                request.getTemplateName());
+        final List<SmsNotificationPropertyDto> properties = request.getProperties().entrySet()
+                .stream()
+                .map(entry -> new SmsNotificationPropertyDto(entry.getKey(), entry.getValue()))
+                .collect(Collectors.toList());
         final Long notificationId = 1L;
         final SmsNotification smsNotification = getServiceFacadeImplTestHelper().createSmsNotification();
         smsNotification.setId(notificationId);
         // Reset
         resetAll();
         // Expectations
-        expect(smsNotificationService.createSmsNotification(eq(smsNotificationDto))).andReturn(smsNotification).once();
+        expect(smsNotificationService.createSmsNotification(eq(smsNotificationDto), eq(properties))).andReturn(smsNotification).once();
         applicationEventDistributionService.publishAsynchronousEvent(eq(new StartSendingNotificationEvent(notificationId)));
         expectLastCall().once();
         // Replay
@@ -123,7 +135,15 @@ public class SmsNotificationServiceFacadeImplTest extends AbstractFacadeUnitTest
     public void testCreateSmsNotificationWithUser() {
         // Test data
         final CreateSmsNotificationRequest request = getServiceFacadeImplTestHelper().createCreateSmsNotificationRequest();
-        final SmsNotificationDto smsNotificationDto = new SmsNotificationDto(request.getRecipientNumber(), NotificationProviderType.AMAZON_SNS, request.getBody(), request.getClientIpAddress());
+        final SmsNotificationDto smsNotificationDto = new SmsNotificationDto(request.getRecipientNumber(),
+                NotificationProviderType.AMAZON_SNS,
+                request.getBody(),
+                request.getClientIpAddress(),
+                request.getTemplateName());
+        final List<SmsNotificationPropertyDto> properties = request.getProperties().entrySet()
+                .stream()
+                .map(entry -> new SmsNotificationPropertyDto(entry.getKey(), entry.getValue()))
+                .collect(Collectors.toList());
         final Long notificationId = 1L;
         final SmsNotification smsNotification = getServiceFacadeImplTestHelper().createSmsNotification();
         smsNotification.setId(notificationId);
@@ -136,7 +156,7 @@ public class SmsNotificationServiceFacadeImplTest extends AbstractFacadeUnitTest
         // Reset
         resetAll();
         // Expectations
-        expect(smsNotificationService.createSmsNotification(eq(smsNotificationDto))).andReturn(smsNotification).once();
+        expect(smsNotificationService.createSmsNotification(eq(smsNotificationDto), eq(properties))).andReturn(smsNotification).once();
         expect(userService.getOrCreateUserForUuId(eq(request.getUserUuId()))).andReturn(user).once();
         expect(userNotificationService.createUserNotification(eq(userId), eq(notificationId), eq(new UserNotificationDto()))).andReturn(userNotification).once();
         applicationEventDistributionService.publishAsynchronousEvent(eq(new StartSendingNotificationEvent(notificationId)));

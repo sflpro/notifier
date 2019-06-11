@@ -22,11 +22,18 @@ public class SmsNotificationDto extends NotificationDto<SmsNotification> {
 
     private NotificationProviderType providerType;
 
+    private String templateName;
+
     /* Constructors */
-    public SmsNotificationDto(final String recipientMobileNumber, final NotificationProviderType providerType, final String content, final String clientIpAddress) {
+    public SmsNotificationDto(final String recipientMobileNumber,
+                              final NotificationProviderType providerType,
+                              final String content,
+                              final String clientIpAddress,
+                              final String templateName) {
         super(NotificationType.SMS, content, null, clientIpAddress);
         this.recipientMobileNumber = recipientMobileNumber;
         this.providerType = providerType;
+        this.templateName = templateName;
     }
 
     public SmsNotificationDto() {
@@ -50,12 +57,21 @@ public class SmsNotificationDto extends NotificationDto<SmsNotification> {
         this.providerType = providerType;
     }
 
+    public String getTemplateName() {
+        return templateName;
+    }
+
+    public void setTemplateName(final String templateName) {
+        this.templateName = templateName;
+    }
+
     /* Public interface methods */
     @Override
     public void updateDomainEntityProperties(final SmsNotification notification) {
         super.updateDomainEntityProperties(notification);
         notification.setRecipientMobileNumber(getRecipientMobileNumber());
         notification.setProviderType(getProviderType());
+        notification.setTemplateName(getTemplateName());
     }
 
     /* Equals, HashCode and ToString */
@@ -72,6 +88,7 @@ public class SmsNotificationDto extends NotificationDto<SmsNotification> {
         builder.appendSuper(super.equals(that));
         builder.append(this.getRecipientMobileNumber(), that.getRecipientMobileNumber());
         builder.append(this.getProviderType(), that.getProviderType());
+        builder.append(this.getTemplateName(), that.getTemplateName());
         return builder.isEquals();
     }
 
@@ -81,6 +98,7 @@ public class SmsNotificationDto extends NotificationDto<SmsNotification> {
         builder.appendSuper(super.hashCode());
         builder.append(this.getRecipientMobileNumber());
         builder.append(this.getProviderType());
+        builder.append(this.getTemplateName());
         return builder.build();
     }
 
@@ -91,6 +109,7 @@ public class SmsNotificationDto extends NotificationDto<SmsNotification> {
         builder.appendSuper(super.toString());
         builder.append("recipientMobileNumber", this.getRecipientMobileNumber());
         builder.append("providerType", this.getProviderType());
+        builder.append("templateName", this.getTemplateName());
         return builder.build();
     }
 }

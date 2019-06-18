@@ -13,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -26,7 +25,6 @@ import java.util.List;
  * Date: 4/9/15
  * Time: 3:26 PM
  */
-@Component
 public class TwillioApiCommunicatorImpl implements TwillioApiCommunicator, InitializingBean {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TwillioApiCommunicatorImpl.class);

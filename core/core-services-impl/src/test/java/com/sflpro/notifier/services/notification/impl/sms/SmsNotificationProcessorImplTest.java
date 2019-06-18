@@ -3,20 +3,20 @@ package com.sflpro.notifier.services.notification.impl.sms;
 import com.sflpro.notifier.db.entities.notification.NotificationState;
 import com.sflpro.notifier.db.entities.notification.sms.SmsNotification;
 import com.sflpro.notifier.db.repositories.utility.PersistenceUtilityService;
-import com.sflpro.notifier.externalclients.sms.twillio.communicator.TwillioApiCommunicator;
-import com.sflpro.notifier.externalclients.sms.twillio.exception.TwillioClientRuntimeException;
-import com.sflpro.notifier.externalclients.sms.twillio.model.request.SendMessageRequest;
-import com.sflpro.notifier.externalclients.sms.twillio.model.response.SendMessageResponse;
 import com.sflpro.notifier.services.common.exception.ServicesRuntimeException;
+import com.sflpro.notifier.sms.SmsMessage;
+import com.sflpro.notifier.sms.SmsMessageSendingResult;
+import com.sflpro.notifier.sms.SmsSender;
 import com.sflpro.notifier.services.notification.sms.SmsNotificationService;
 import com.sflpro.notifier.services.test.AbstractServicesUnitTest;
-import com.twilio.sdk.TwilioRestException;
 import org.easymock.IAnswer;
 import org.easymock.Mock;
 import org.easymock.TestSubject;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.Optional;
 
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.*;
@@ -43,7 +43,10 @@ public class SmsNotificationProcessorImplTest extends AbstractServicesUnitTest {
     private PersistenceUtilityService persistenceUtilityService;
 
     @Mock
-    private TwillioApiCommunicator twillioApiCommunicator;
+    private SmsSenderProvider smsSenderProvider;
+
+    @Mock
+    private SmsSender smsSender;
 
     /* Constructors */
     public SmsNotificationProcessorImplTest() {
@@ -112,12 +115,13 @@ public class SmsNotificationProcessorImplTest extends AbstractServicesUnitTest {
             return null;
         }).times(2);
         expect(smsNotificationService.updateNotificationState(eq(notificationId), eq(NotificationState.PROCESSING))).andReturn(smsNotification).once();
-        expect(twillioApiCommunicator.sendMessage(isA(SendMessageRequest.class))).andAnswer(new IAnswer<SendMessageResponse>() {
+        expect(smsSenderProvider.lookupSenderFor(smsNotification.getProviderType().name().toLowerCase())).andReturn(Optional.of(smsSender));
+        expect(smsSender.send(isA(SmsMessage.class))).andAnswer(new IAnswer<SmsMessageSendingResult>() {
             @Override
-            public SendMessageResponse answer() {
-                final SendMessageRequest sendMessageRequest = (SendMessageRequest) getCurrentArguments()[0];
-                assertSendMessageRequest(sendMessageRequest, smsNotification);
-                throw new TwillioClientRuntimeException(sendMessageRequest.getSenderNumber(), sendMessageRequest.getRecipientNumber(), sendMessageRequest.getMessageBody(), new TwilioRestException("message", 1));
+            public SmsMessageSendingResult answer() {
+                final SmsMessage message = (SmsMessage) getCurrentArguments()[0];
+                assertSendMessageRequest(message, smsNotification);
+                throw new ServicesRuntimeException("Failed to send message");
             }
         }).once();
         expect(smsNotificationService.updateNotificationState(eq(notificationId), eq(NotificationState.FAILED))).andReturn(smsNotification).once();
@@ -151,12 +155,13 @@ public class SmsNotificationProcessorImplTest extends AbstractServicesUnitTest {
             return null;
         }).times(3);
         expect(smsNotificationService.updateNotificationState(eq(notificationId), eq(NotificationState.PROCESSING))).andReturn(smsNotification).once();
-        expect(twillioApiCommunicator.sendMessage(isA(SendMessageRequest.class))).andAnswer(new IAnswer<SendMessageResponse>() {
+        expect(smsSenderProvider.lookupSenderFor(smsNotification.getProviderType().name().toLowerCase())).andReturn(Optional.of(smsSender));
+        expect(smsSender.send(isA(SmsMessage.class))).andAnswer(new IAnswer<SmsMessageSendingResult>() {
             @Override
-            public SendMessageResponse answer() {
-                final SendMessageRequest sendMessageRequest = (SendMessageRequest) getCurrentArguments()[0];
-                assertSendMessageRequest(sendMessageRequest, smsNotification);
-                return new SendMessageResponse(messageId, sendMessageRequest.getRecipientNumber(), sendMessageRequest.getMessageBody());
+            public SmsMessageSendingResult answer() {
+                final SmsMessage message = (SmsMessage) getCurrentArguments()[0];
+                assertSendMessageRequest(message, smsNotification);
+                return SmsMessageSendingResult.of(messageId);
             }
         }).once();
         expect(smsNotificationService.updateProviderExternalUuid(eq(notificationId), eq(messageId))).andReturn(smsNotification).once();
@@ -169,9 +174,9 @@ public class SmsNotificationProcessorImplTest extends AbstractServicesUnitTest {
     }
 
     /* Utility methods */
-    private void assertSendMessageRequest(final SendMessageRequest sendMessageRequest, final SmsNotification smsNotification) {
+    private void assertSendMessageRequest(final SmsMessage sendMessageRequest, final SmsNotification smsNotification) {
         assertNotNull(sendMessageRequest);
-        Assert.assertEquals(sendMessageRequest.getMessageBody(), smsNotification.getContent());
-        assertEquals(sendMessageRequest.getRecipientNumber(), smsNotification.getRecipientMobileNumber());
+        Assert.assertEquals(sendMessageRequest.messageBody(), smsNotification.getContent());
+        assertEquals(sendMessageRequest.recipientNumber(), smsNotification.getRecipientMobileNumber());
     }
 }

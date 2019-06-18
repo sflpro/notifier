@@ -12,6 +12,7 @@
         <module>infra</module>
         <module>worker</module>
         <module>api</module>
+        <module>notification-provider-api</module>
     </modules>
 
     <groupId>com.sflpro.notifier</groupId>
@@ -86,7 +87,7 @@
         <jersey.version>2.21</jersey.version>
 
         <!-- Spring -->
-        <spring.version>4.3.13.RELEASE</spring.version>
+        <spring.version>5.1.8.RELEASE</spring.version>
         <spring.data.version>1.8.2.RELEASE</spring.data.version>
         <spring.security.version>3.2.5.RELEASE</spring.security.version>
         <spring.amqp.version>1.4.5.RELEASE</spring.amqp.version>

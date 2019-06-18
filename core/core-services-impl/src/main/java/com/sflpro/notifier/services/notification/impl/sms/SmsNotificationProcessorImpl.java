@@ -5,10 +5,10 @@ import com.sflpro.notifier.db.entities.notification.NotificationProviderType;
 import com.sflpro.notifier.db.entities.notification.NotificationState;
 import com.sflpro.notifier.db.entities.notification.sms.SmsNotification;
 import com.sflpro.notifier.db.repositories.utility.PersistenceUtilityService;
-import com.sflpro.notifier.externalclients.sms.twillio.communicator.TwillioApiCommunicator;
-import com.sflpro.notifier.externalclients.sms.twillio.model.request.SendMessageRequest;
-import com.sflpro.notifier.externalclients.sms.twillio.model.response.SendMessageResponse;
 import com.sflpro.notifier.services.common.exception.ServicesRuntimeException;
+import com.sflpro.notifier.sms.SmsMessage;
+import com.sflpro.notifier.sms.SmsMessageSendingResult;
+import com.sflpro.notifier.sms.SmsSender;
 import com.sflpro.notifier.services.notification.sms.SmsNotificationProcessor;
 import com.sflpro.notifier.services.notification.sms.SmsNotificationService;
 import org.apache.commons.lang3.StringUtils;
@@ -21,6 +21,8 @@ import org.springframework.util.Assert;
 
 import javax.annotation.Nonnull;
 
+import static java.lang.String.format;
+
 /**
  * User: Mher Sargsyan
  * Company: SFL LLC
@@ -28,7 +30,7 @@ import javax.annotation.Nonnull;
  * Time: 12:52 PM
  */
 @Service
-public class SmsNotificationProcessorImpl implements SmsNotificationProcessor {
+class SmsNotificationProcessorImpl implements SmsNotificationProcessor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SmsNotificationProcessorImpl.class);
 
@@ -40,14 +42,14 @@ public class SmsNotificationProcessorImpl implements SmsNotificationProcessor {
     private PersistenceUtilityService persistenceUtilityService;
 
     @Autowired
-    private TwillioApiCommunicator twillioApiCommunicator;
+    private SmsSenderProvider smsSenderProvider;
 
     /* Properties */
-    @Value("${twillio.account.sender.phone}")
+    @Value("${sms.account.sender.phone}")
     private String accountSenderNumber;
 
     /* Constructors */
-    public SmsNotificationProcessorImpl() {
+    SmsNotificationProcessorImpl() {
         super();
     }
 
@@ -63,8 +65,12 @@ public class SmsNotificationProcessorImpl implements SmsNotificationProcessor {
         updateSmsNotificationState(smsNotification.getId(), NotificationState.PROCESSING);
         /* Start processing external sms service operation */
         try {
-            final SmsServiceApiOperationsHandler smsServiceApiOperationsHandler = getSmsServiceApiOperationsHandler(NotificationProviderType.TWILLIO);
-            final String smsMessageProviderExternalId = smsServiceApiOperationsHandler.sendMessage(getAccountSenderNumber(), smsNotification.getRecipientMobileNumber(), smsNotification.getContent());
+            final MessageSender sender = getSmsServiceApiOperationsHandlerr(smsNotification.getProviderType());
+            final String smsMessageProviderExternalId = sender.sendMessage(
+                    getAccountSenderNumber(),
+                    smsNotification.getRecipientMobileNumber(),
+                    smsNotification.getContent()
+            );
             LOGGER.debug("Successfully sent sms message to recipient - {}, with body - {}", smsNotification.getRecipientMobileNumber(), smsNotification.getContent());
             /* Update message external id if it is provided */
             if (StringUtils.isNotBlank(smsMessageProviderExternalId)) {
@@ -94,16 +100,12 @@ public class SmsNotificationProcessorImpl implements SmsNotificationProcessor {
         persistenceUtilityService.runInNewTransaction(() -> smsNotificationService.updateNotificationState(notificationId, notificationState));
     }
 
-    private SmsServiceApiOperationsHandler getSmsServiceApiOperationsHandler(final NotificationProviderType notificationProviderType) {
-        switch (notificationProviderType) {
-            case TWILLIO: {
-                return new TwillioSmsServiceApiOperationsHandler();
-            }
-            default: {
-                LOGGER.debug("Sms messaging provider with type - {} is  not supported, use - {}", notificationProviderType, NotificationProviderType.TWILLIO);
-                throw new ServicesRuntimeException("Sms messaging provider with type - " + notificationProviderType + " is not supported");
-            }
-        }
+    private MessageSender getSmsServiceApiOperationsHandlerr(final NotificationProviderType notificationProviderType) {
+        final String providerType = notificationProviderType.name().toLowerCase();
+        return smsSenderProvider
+                .lookupSenderFor(NotificationProviderType.TWILLIO.name().toLowerCase())
+                .map(MessageSenderAdpater::new)
+                .orElseThrow(() -> new IllegalStateException(format("Sms messaging provider with type - '%s' is not supported", providerType)));
     }
 
     /* Properties getters and setters */
@@ -124,14 +126,6 @@ public class SmsNotificationProcessorImpl implements SmsNotificationProcessor {
         this.smsNotificationService = smsNotificationService;
     }
 
-    public TwillioApiCommunicator getTwillioApiCommunicator() {
-        return twillioApiCommunicator;
-    }
-
-    public void setTwillioApiCommunicator(final TwillioApiCommunicator twillioApiCommunicator) {
-        this.twillioApiCommunicator = twillioApiCommunicator;
-    }
-
     public PersistenceUtilityService getPersistenceUtilityService() {
         return persistenceUtilityService;
     }
@@ -141,7 +135,7 @@ public class SmsNotificationProcessorImpl implements SmsNotificationProcessor {
     }
 
     /* Inner classes */
-    private interface SmsServiceApiOperationsHandler {
+    private interface MessageSender {
 
         /**
          * Handle sms message sending operation through external service
@@ -155,22 +149,25 @@ public class SmsNotificationProcessorImpl implements SmsNotificationProcessor {
         String sendMessage(@Nonnull final String senderNumber, @Nonnull final String recipientNumber, @Nonnull final String messageBody);
     }
 
-    private class TwillioSmsServiceApiOperationsHandler implements SmsServiceApiOperationsHandler {
+    private static final class MessageSenderAdpater implements MessageSender {
+
+        private final SmsSender smsSender;
 
         /* Constructors */
-        public TwillioSmsServiceApiOperationsHandler() {
+        MessageSenderAdpater(final SmsSender smsSender) {
             super();
+            this.smsSender = smsSender;
         }
 
         @Nonnull
         @Override
         public String sendMessage(@Nonnull final String senderNumber, @Nonnull final String recipientNumber, @Nonnull final String messageBody) {
             /* Create send message request model */
-            final SendMessageRequest sendMessageRequest = new SendMessageRequest(senderNumber, recipientNumber, messageBody);
-            LOGGER.debug("Sending sms message with request model - {}", sendMessageRequest);
-            final SendMessageResponse sendMessageResponse = getTwillioApiCommunicator().sendMessage(sendMessageRequest);
-            LOGGER.debug("Successfully sent sms message, response - {}", sendMessageResponse);
-            return sendMessageResponse.getSid();
+            final SmsMessage message = SmsMessage.of(senderNumber, recipientNumber, messageBody);
+            LOGGER.debug("Sending sms message - {}", message);
+            final SmsMessageSendingResult sendingResult = smsSender.send(message);
+            LOGGER.debug("Successfully sent sms message, response - {}", sendingResult);
+            return sendingResult.sid();
         }
     }
 }

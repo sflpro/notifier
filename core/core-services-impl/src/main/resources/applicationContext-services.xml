@@ -14,7 +14,6 @@
 
     <import resource="applicationContext-persistence-jpa.xml"/>
     <import resource="applicationContext-externalclients-email.xml"/>
-    <import resource="applicationContext-externalclients-sms.xml"/>
     <import resource="applicationContext-externalclients-push.xml"/>
 
     <bean id="passwordEncoder" class="org.springframework.security.crypto.password.StandardPasswordEncoder"/>

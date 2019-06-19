@@ -15,6 +15,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -55,7 +56,14 @@ public class PushNotificationProcessorImplTest extends AbstractServicesUnitTest 
         replayAll();
         // Run test scenario
         try {
-            pushNotificationProcessingService.processNotification(null);
+            pushNotificationProcessingService.processNotification(null, Collections.emptyMap());
+            fail("Exception should be thrown");
+        } catch (final IllegalArgumentException ex) {
+            // Expected
+        }
+        try {
+            final Long notificationId = 1L;
+            pushNotificationProcessingService.processNotification(notificationId, null);
             fail("Exception should be thrown");
         } catch (final IllegalArgumentException ex) {
             // Expected
@@ -79,7 +87,7 @@ public class PushNotificationProcessorImplTest extends AbstractServicesUnitTest 
         replayAll();
         // Run test scenario
         try {
-            pushNotificationProcessingService.processNotification(notificationId);
+            pushNotificationProcessingService.processNotification(notificationId, Collections.emptyMap());
             fail("Exception should be thrown");
         } catch (final NotificationInvalidStateException ex) {
             // Expected
@@ -119,7 +127,7 @@ public class PushNotificationProcessorImplTest extends AbstractServicesUnitTest 
         replayAll();
         // Run test scenario
         try {
-            pushNotificationProcessingService.processNotification(notificationId);
+            pushNotificationProcessingService.processNotification(notificationId, Collections.emptyMap());
         } catch (final ServicesRuntimeException ex) {
             // Expected
             ex.getCause().getMessage().equals(exceptionMessage);
@@ -157,7 +165,7 @@ public class PushNotificationProcessorImplTest extends AbstractServicesUnitTest 
         // Replay
         replayAll();
         // Run test scenario
-        pushNotificationProcessingService.processNotification(notificationId);
+        pushNotificationProcessingService.processNotification(notificationId, Collections.emptyMap());
         // Verify
         verifyAll();
     }

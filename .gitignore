@@ -2,3 +2,6 @@
 .idea/
 target/
 data/
+/secret
+secret.tar.bz2
+.DS_Store

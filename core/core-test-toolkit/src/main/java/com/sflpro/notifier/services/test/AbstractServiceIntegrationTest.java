@@ -1,10 +1,14 @@
 package com.sflpro.notifier.services.test;
 
 import com.sflpro.notifier.services.helper.ServicesTestHelper;
+import com.sflpro.notifier.services.springboot.NotifierTestApplication;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -13,9 +17,15 @@ import javax.persistence.PersistenceContext;
  * @author Ruben Dilanyan
  * Aug 25, 2013
  */
-@ContextConfiguration("classpath:applicationContext-services-integrationtest.xml")
-@TestPropertySource("classpath:ms_notifications_integrationtest.properties")
-public abstract class AbstractServiceIntegrationTest extends AbstractTransactionalJUnit4SpringContextTests {
+@ActiveProfiles("test")
+@Transactional
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = NotifierTestApplication.class)
+@TestPropertySource(properties = {
+        "database.driver=org.h2.Driver",
+        "database.url=jdbc:hsqldb:mem:ms_notifications;shutdown=true",
+        "database.hibernate.dialect=org.hibernate.dialect.H2Dialect"})
+public abstract class AbstractServiceIntegrationTest {
 
     @Autowired
     private ServicesTestHelper servicesTestHelper;

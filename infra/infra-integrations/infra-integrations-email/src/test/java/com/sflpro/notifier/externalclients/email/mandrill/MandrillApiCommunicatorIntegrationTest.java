@@ -15,7 +15,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 /**
  * Company: SFL LLC
@@ -44,8 +43,7 @@ public class MandrillApiCommunicatorIntegrationTest extends AbstractEmailNotific
         templateContent.put("token", "super-secure-token");
         final TemplatedEmailMessage message = TemplatedEmailMessage.of("some_dummy_mail_from@weadapt.digital", "some_dummy_mail@weadapt.digital", templateName, templateContent);
         // Execute send request
-        final boolean response = mandrillApiCommunicator.sendEmailTemplate(message);
-        assertTrue(response);
+        mandrillApiCommunicator.sendEmailTemplate(message);
     }
 
     @Test

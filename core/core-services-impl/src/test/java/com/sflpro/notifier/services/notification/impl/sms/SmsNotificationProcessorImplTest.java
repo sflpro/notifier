@@ -16,6 +16,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Collections;
 import java.util.Optional;
 
 import static org.easymock.EasyMock.*;
@@ -67,7 +68,14 @@ public class SmsNotificationProcessorImplTest extends AbstractServicesUnitTest {
         replayAll();
         /* Run test cases */
         try {
-            smsMessageProcessingService.processNotification(null);
+            smsMessageProcessingService.processNotification(null, Collections.emptyMap());
+            fail("Exception");
+        } catch (final IllegalArgumentException e) {
+            //Exception
+        }
+        try {
+            final Long notificationId = 1L;
+            smsMessageProcessingService.processNotification(notificationId, null);
             fail("Exception");
         } catch (final IllegalArgumentException e) {
             //Exception
@@ -90,7 +98,7 @@ public class SmsNotificationProcessorImplTest extends AbstractServicesUnitTest {
         replayAll();
         /* Run test cases */
         try {
-            smsMessageProcessingService.processNotification(notificationId);
+            smsMessageProcessingService.processNotification(notificationId, Collections.emptyMap());
             fail("Exception");
         } catch (final IllegalArgumentException e) {
             //Exception
@@ -108,12 +116,6 @@ public class SmsNotificationProcessorImplTest extends AbstractServicesUnitTest {
         resetAll();
         /* Register expectations */
         expect(smsNotificationService.getNotificationById(eq(notificationId))).andReturn(smsNotification).once();
-        persistenceUtilityService.runInNewTransaction(isA(Runnable.class));
-        expectLastCall().andAnswer(() -> {
-            final Runnable runnable = (Runnable) getCurrentArguments()[0];
-            runnable.run();
-            return null;
-        }).times(2);
         expect(smsNotificationService.updateNotificationState(eq(notificationId), eq(NotificationState.PROCESSING))).andReturn(smsNotification).once();
         expect(smsSenderProvider.lookupSenderFor(smsNotification.getProviderType().name().toLowerCase())).andReturn(Optional.of(smsSender));
         expect(smsSender.send(isA(SmsMessage.class))).andAnswer(new IAnswer<SmsMessageSendingResult>() {
@@ -129,7 +131,7 @@ public class SmsNotificationProcessorImplTest extends AbstractServicesUnitTest {
         replayAll();
         /* Run test cases */
         try {
-            smsMessageProcessingService.processNotification(notificationId);
+            smsMessageProcessingService.processNotification(notificationId, Collections.emptyMap());
             fail("Exception");
         } catch (final ServicesRuntimeException e) {
             //Exception
@@ -148,12 +150,6 @@ public class SmsNotificationProcessorImplTest extends AbstractServicesUnitTest {
         resetAll();
         /* Register expectations */
         expect(smsNotificationService.getNotificationById(eq(notificationId))).andReturn(smsNotification).once();
-        persistenceUtilityService.runInNewTransaction(isA(Runnable.class));
-        expectLastCall().andAnswer(() -> {
-            final Runnable runnable = (Runnable) getCurrentArguments()[0];
-            runnable.run();
-            return null;
-        }).times(3);
         expect(smsNotificationService.updateNotificationState(eq(notificationId), eq(NotificationState.PROCESSING))).andReturn(smsNotification).once();
         expect(smsSenderProvider.lookupSenderFor(smsNotification.getProviderType().name().toLowerCase())).andReturn(Optional.of(smsSender));
         expect(smsSender.send(isA(SmsMessage.class))).andAnswer(new IAnswer<SmsMessageSendingResult>() {
@@ -169,12 +165,12 @@ public class SmsNotificationProcessorImplTest extends AbstractServicesUnitTest {
         /* Replay mocks */
         replayAll();
         /* Run test cases */
-        smsMessageProcessingService.processNotification(notificationId);
+        smsMessageProcessingService.processNotification(notificationId, Collections.emptyMap());
         verifyAll();
     }
 
     /* Utility methods */
-    private void assertSendMessageRequest(final SmsMessage sendMessageRequest, final SmsNotification smsNotification) {
+    private static void assertSendMessageRequest(final SmsMessage sendMessageRequest, final SmsNotification smsNotification) {
         assertNotNull(sendMessageRequest);
         Assert.assertEquals(sendMessageRequest.messageBody(), smsNotification.getContent());
         assertEquals(sendMessageRequest.recipientNumber(), smsNotification.getRecipientMobileNumber());

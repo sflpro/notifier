@@ -7,6 +7,8 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Collections;
+
 /**
  * User: Ruben Dilanyan
  * Company: SFL LLC
@@ -30,9 +32,10 @@ public class EmailNotificationProcessorIntegrationTest extends AbstractServiceIn
     public void testProcessPushNotification() {
         // Prepare data
         EmailNotification emailNotification = getServicesTestHelper().createEmailNotification();
+        flushAndClear();
         Assert.assertEquals(NotificationState.CREATED, emailNotification.getState());
         // Process push notification
-        emailNotificationProcessor.processNotification(emailNotification.getId());
+        emailNotificationProcessor.processNotification(emailNotification.getId(), Collections.emptyMap());
         flushAndClear();
         // Reload push notification
         emailNotification = emailNotificationService.getNotificationById(emailNotification.getId());

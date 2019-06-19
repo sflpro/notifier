@@ -8,6 +8,8 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Collections;
+
 import static org.junit.Assert.assertNotNull;
 
 /**
@@ -37,7 +39,7 @@ public class SmsNotificationProcessorIntegrationTest extends AbstractServiceInte
         SmsNotification smsNotification = getServicesTestHelper().createSmsNotification();
         /* Flush, clear  and process sending sms message */
         flushAndClear();
-        smsNotificationProcessingService.processNotification(smsNotification.getId());
+        smsNotificationProcessingService.processNotification(smsNotification.getId(), Collections.emptyMap());
         /* Flush, clear, reload notification and check state */
         smsNotification = smsNotificationService.getNotificationById(smsNotification.getId());
         assertNotNull(smsNotification);

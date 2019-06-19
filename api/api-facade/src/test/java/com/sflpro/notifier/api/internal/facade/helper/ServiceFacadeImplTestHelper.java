@@ -1,24 +1,33 @@
 package com.sflpro.notifier.api.internal.facade.helper;
 
-import com.sflpro.notifier.core.api.internal.model.device.DeviceOperatingSystemClientType;
-import com.sflpro.notifier.core.api.internal.model.email.EmailNotificationModel;
-import com.sflpro.notifier.core.api.internal.model.email.request.CreateEmailNotificationRequest;
-import com.sflpro.notifier.core.api.internal.model.notification.NotificationClientType;
-import com.sflpro.notifier.core.api.internal.model.notification.NotificationModel;
-import com.sflpro.notifier.core.api.internal.model.notification.NotificationStateClientType;
-import com.sflpro.notifier.core.api.internal.model.push.PushNotificationModel;
-import com.sflpro.notifier.core.api.internal.model.push.PushNotificationPropertyModel;
-import com.sflpro.notifier.core.api.internal.model.push.PushNotificationRecipientModel;
-import com.sflpro.notifier.core.api.internal.model.push.request.CreatePushNotificationRequest;
-import com.sflpro.notifier.core.api.internal.model.push.request.UpdatePushNotificationSubscriptionRequest;
-import com.sflpro.notifier.core.api.internal.model.sms.SmsNotificationModel;
-import com.sflpro.notifier.core.api.internal.model.sms.request.CreateSmsNotificationRequest;
+import com.sflpro.notifier.api.model.device.DeviceOperatingSystemClientType;
+import com.sflpro.notifier.api.model.email.EmailNotificationModel;
+import com.sflpro.notifier.api.model.email.request.CreateEmailNotificationRequest;
+import com.sflpro.notifier.api.model.notification.NotificationClientType;
+import com.sflpro.notifier.api.model.notification.NotificationModel;
+import com.sflpro.notifier.api.model.notification.NotificationStateClientType;
+import com.sflpro.notifier.api.model.push.PushNotificationModel;
+import com.sflpro.notifier.api.model.push.PushNotificationPropertyModel;
+import com.sflpro.notifier.api.model.push.PushNotificationRecipientModel;
+import com.sflpro.notifier.api.model.push.request.CreatePushNotificationRequest;
+import com.sflpro.notifier.api.model.push.request.UpdatePushNotificationSubscriptionRequest;
+import com.sflpro.notifier.api.model.sms.SmsNotificationModel;
+import com.sflpro.notifier.api.model.sms.request.CreateSmsNotificationRequest;
 import com.sflpro.notifier.db.entities.device.UserDevice;
-import com.sflpro.notifier.db.entities.notification.*;
+import com.sflpro.notifier.db.entities.device.mobile.DeviceOperatingSystemType;
+import com.sflpro.notifier.db.entities.notification.Notification;
+import com.sflpro.notifier.db.entities.notification.NotificationProviderType;
+import com.sflpro.notifier.db.entities.notification.NotificationState;
+import com.sflpro.notifier.db.entities.notification.UserNotification;
+import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
+import com.sflpro.notifier.db.entities.notification.push.PushNotification;
+import com.sflpro.notifier.db.entities.notification.push.PushNotificationProperty;
+import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipient;
+import com.sflpro.notifier.db.entities.notification.push.PushNotificationSubscriptionRequest;
+import com.sflpro.notifier.db.entities.notification.push.sns.PushNotificationSnsRecipient;
 import com.sflpro.notifier.db.entities.notification.sms.SmsNotification;
 import com.sflpro.notifier.db.entities.user.User;
 import com.sflpro.notifier.services.device.dto.UserDeviceDto;
-import com.sflpro.notifier.db.entities.device.mobile.DeviceOperatingSystemType;
 import com.sflpro.notifier.services.notification.dto.NotificationDto;
 import com.sflpro.notifier.services.notification.dto.UserNotificationDto;
 import com.sflpro.notifier.services.notification.dto.email.EmailNotificationDto;
@@ -27,15 +36,10 @@ import com.sflpro.notifier.services.notification.dto.push.PushNotificationProper
 import com.sflpro.notifier.services.notification.dto.push.PushNotificationSubscriptionRequestDto;
 import com.sflpro.notifier.services.notification.dto.push.sns.PushNotificationSnsRecipientDto;
 import com.sflpro.notifier.services.notification.dto.sms.SmsNotificationDto;
-import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
-import com.sflpro.notifier.db.entities.notification.push.*;
-import com.sflpro.notifier.db.entities.notification.push.sns.PushNotificationSnsRecipient;
 import com.sflpro.notifier.services.user.dto.UserDto;
 import org.apache.commons.lang3.mutable.MutableInt;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -77,6 +81,12 @@ public class ServiceFacadeImplTestHelper {
         request.setBody("Email body");
         request.setClientIpAddress("127.0.0.1");
         request.setUserUuId("UGITYDTGUIGFITYDTDTFYKTYCL");
+        request.setTemplateName("confirmation_template");
+        final Map<String, String> properties = new HashMap<>();
+        properties.put("prop1", "value1");
+        properties.put("prop2", "value2");
+        properties.put("prop3", "value3");
+        request.setProperties(properties);
         return request;
     }
 

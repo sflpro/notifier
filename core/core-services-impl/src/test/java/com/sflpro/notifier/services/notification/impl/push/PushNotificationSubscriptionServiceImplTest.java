@@ -14,6 +14,8 @@ import org.easymock.TestSubject;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.Optional;
+
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.*;
 
@@ -189,7 +191,7 @@ public class PushNotificationSubscriptionServiceImplTest extends AbstractService
         // Reset
         resetAll();
         // Expectations
-        expect(pushNotificationSubscriptionRepository.findOne(eq(subscriptionId))).andReturn(null).once();
+        expect(pushNotificationSubscriptionRepository.findById(eq(subscriptionId))).andReturn(Optional.empty()).once();
         // Replay
         replayAll();
         // Run test scenario
@@ -213,7 +215,7 @@ public class PushNotificationSubscriptionServiceImplTest extends AbstractService
         // Reset
         resetAll();
         // Expectations
-        expect(pushNotificationSubscriptionRepository.findOne(eq(subscriptionId))).andReturn(subscription).once();
+        expect(pushNotificationSubscriptionRepository.findById(eq(subscriptionId))).andReturn(Optional.of(subscription)).once();
         // Replay
         replayAll();
         // Run test scenario

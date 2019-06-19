@@ -4,7 +4,7 @@ import com.sflpro.notifier.db.entities.notification.Notification;
 import com.sflpro.notifier.db.entities.notification.NotificationProviderType;
 import com.sflpro.notifier.db.entities.notification.NotificationState;
 import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
-import com.sflpro.notifier.db.entities.notification.email.TemplatedEmailNotification;
+import com.sflpro.notifier.db.entities.notification.email.EmailNotificationProperty;
 import com.sflpro.notifier.db.repositories.utility.PersistenceUtilityService;
 import com.sflpro.notifier.email.SimpleEmailMessage;
 import com.sflpro.notifier.email.SimpleEmailSender;
@@ -16,14 +16,14 @@ import com.sflpro.notifier.services.notification.email.EmailNotificationService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 import javax.annotation.Nonnull;
-import java.util.Collections;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static java.lang.String.format;
+
 
 /**
  * User: Ruben Dilanyan
@@ -31,7 +31,6 @@ import static java.lang.String.format;
  * Date: 1/11/16
  * Time: 11:08 AM
  */
-@Component
 class EmailNotificationProcessorImpl implements EmailNotificationProcessor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EmailNotificationProcessorImpl.class);
@@ -39,8 +38,7 @@ class EmailNotificationProcessorImpl implements EmailNotificationProcessor {
     /* Dependencies */
     private final EmailNotificationService emailNotificationService;
     private final PersistenceUtilityService persistenceUtilityService;
-    private final EmailSenderProvider emailSenderProvider;
-
+    private final EmailSenderProvider emailSenderProvider;;
     /* Constructors */
     EmailNotificationProcessorImpl(final EmailNotificationService emailNotificationService,
                                    final EmailSenderProvider emailSenderProvider, final PersistenceUtilityService persistenceUtilityService) {
@@ -50,8 +48,9 @@ class EmailNotificationProcessorImpl implements EmailNotificationProcessor {
     }
 
     @Override
-    public void processNotification(@Nonnull final Long notificationId) {
+    public void processNotification(@Nonnull final Long notificationId, @Nonnull final Map<String, String> secureProperties) {
         Assert.notNull(notificationId, "Email notification id should not be null");
+        Assert.notNull(secureProperties, "Secure properties map should not be null");
         LOGGER.debug("Sending email notification for id - {}", notificationId);
         /* Retrieve email notification */
         final EmailNotification emailNotification = persistenceUtilityService.initializeAndUnProxy(
@@ -109,19 +108,20 @@ class EmailNotificationProcessorImpl implements EmailNotificationProcessor {
     }
 
     private Map<String, Object> variablesFor(final EmailNotification emailNotification) {
-        if (!(emailNotification instanceof TemplatedEmailNotification)) {
-            return Collections.emptyMap();
-        }
-        final TemplatedEmailNotification templatedEmailNotification = (TemplatedEmailNotification) emailNotification;
-        return templatedEmailNotification.variables();
+        return emailNotification.getProperties().stream()
+                .collect(Collectors.toMap(
+                        EmailNotificationProperty::getPropertyKey, EmailNotificationProperty::getPropertyValue)
+                );
     }
 
     private static void assertNotificationStateIsCreated(final Notification notification) {
         Assert.isTrue(notification.getState().equals(NotificationState.CREATED), "Notification state must be NotificationState.CREATED in order to proceed.");
     }
 
+
     private void updateEmailNotificationState(final Long notificationId, final NotificationState notificationState) {
-        persistenceUtilityService.runInNewTransaction(() -> emailNotificationService.updateNotificationState(notificationId, notificationState));
+        emailNotificationService.updateNotificationState(notificationId, notificationState);
+
     }
 
 }

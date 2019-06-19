@@ -44,16 +44,18 @@
             <artifactId>infra-queue-common</artifactId>
             <version>${project.version}</version>
         </dependency>
+
+        <!-- TODO remove this dependency from here -->
         <dependency>
             <groupId>com.sflpro.notifier</groupId>
             <artifactId>core-db-repositories</artifactId>
             <version>${project.version}</version>
-            <!--TODO chk with Mr. Smith-->
         </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.easymock</groupId>

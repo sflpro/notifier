@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
  * Date: 6/19/19
  * Time: 12:36 PM
  */
-class DummyTemplatedEmailSender implements TemplatedEmailSender {
+public class DummyTemplatedEmailSender implements TemplatedEmailSender {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DummyTemplatedEmailSender.class);
 

@@ -12,12 +12,12 @@ import java.util.List;
  */
 public enum NotificationProviderType {
     TWILLIO(NotificationType.SMS), SMTP_SERVER((NotificationType.EMAIL)), AMAZON_SNS(NotificationType.PUSH),
-    GOOGLE_GCM(NotificationType.PUSH), APPLE_APNS(NotificationType.PUSH), MANDRILL(NotificationType.EMAIL_THIRD_PARTY);
+    GOOGLE_GCM(NotificationType.PUSH), APPLE_APNS(NotificationType.PUSH), MANDRILL(NotificationType.EMAIL);
 
     /* Properties */
     private final List<NotificationType> supportedNotificationTypes;
 
-    private NotificationProviderType(final NotificationType... notificationTypes) {
+    NotificationProviderType(final NotificationType... notificationTypes) {
         this.supportedNotificationTypes = Collections.unmodifiableList(Arrays.asList(notificationTypes));
     }
 

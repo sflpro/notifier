@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -14,8 +13,7 @@
     <artifactId>core-services-impl</artifactId>
     <version>1.5.0-SNAPSHOT</version>
 
-    <description>Services implementation sub module represents implementation of services layer for Future project.
-    </description>
+    <description>Services implementation sub module represents implementation of services layer for Future project.</description>
 
     <build>
         <plugins>
@@ -24,6 +22,11 @@
             </plugin>
             <plugin>
                 <artifactId>maven-failsafe-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <configuration/>
             </plugin>
             <plugin>
                 <groupId>org.sonatype.plugins</groupId>
@@ -60,6 +63,12 @@
         </dependency>
 
         <dependency>
+            <groupId>org.freemarker</groupId>
+            <artifactId>freemarker</artifactId>
+            <version>${freemarker.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.apache.velocity</groupId>
             <artifactId>velocity</artifactId>
         </dependency>
@@ -74,7 +83,7 @@
             <artifactId>bcprov-jdk16</artifactId>
         </dependency>
 
-        <!-- provider API -->
+ 		<!-- provider API -->
         <dependency>
             <groupId>com.sflpro.notifier</groupId>
             <artifactId>notification-provider-api</artifactId>
@@ -85,6 +94,7 @@
         <dependency>
             <groupId>org.easymock</groupId>
             <artifactId>easymock</artifactId>
+            <scope>test</scope>
         </dependency>
 
         <dependency>

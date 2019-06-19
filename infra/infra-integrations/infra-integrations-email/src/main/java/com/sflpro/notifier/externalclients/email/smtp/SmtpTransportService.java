@@ -1,9 +1,5 @@
 package com.sflpro.notifier.externalclients.email.smtp;
 
-import com.sflpro.notifier.email.SimpleEmailMessage;
-
-import javax.annotation.Nonnull;
-
 /**
  * User: Ruben Dilanyan
  * Company: SFL LLC
@@ -19,5 +15,5 @@ interface SmtpTransportService {
      *
      * @param message
      */
-    void sendMessageOverSmtp(@Nonnull final SimpleEmailMessage message);
+    void sendMessageOverSmtp(final String from, final String to, final String subject, final String body);
 }

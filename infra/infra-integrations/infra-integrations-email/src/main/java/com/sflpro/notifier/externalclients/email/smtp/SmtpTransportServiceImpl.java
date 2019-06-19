@@ -1,12 +1,10 @@
 package com.sflpro.notifier.externalclients.email.smtp;
 
-import com.sflpro.notifier.email.SimpleEmailMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.Assert;
 
-import javax.annotation.Nonnull;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
@@ -19,12 +17,12 @@ import java.util.concurrent.locks.ReentrantLock;
  * Date: 1/11/16
  * Time: 11:02 AM
  */
-class SmtpTransportServiceImpl implements SmtpTransportService {
+public class SmtpTransportServiceImpl implements SmtpTransportService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SmtpTransportServiceImpl.class);
 
     /**
-     * Default body type
+     * Default content type
      */
     private static final String MAIL_CONTENT_TYPE = "text/html; charset=utf-8";
 
@@ -68,19 +66,18 @@ class SmtpTransportServiceImpl implements SmtpTransportService {
     }
 
     @Override
-    public void sendMessageOverSmtp(@Nonnull final SimpleEmailMessage emailMessage) {
-        Assert.notNull(emailMessage, "emailMessage should not be null");
-        Assert.hasText(emailMessage.subject(), "Message subject should not be empty");
-        Assert.hasText(emailMessage.to(), "Recipient email address should not be empty");
-        Assert.hasText(emailMessage.from(), "Sender email address should not be empty");
-        Assert.hasText(emailMessage.body(), "Message body should not be empty");
+    public void sendMessageOverSmtp(final String from, final String to, final String subject, final String body) {
+        Assert.hasText(from, "from should not be null");
+        Assert.hasText(to, "from should not be null");
+        Assert.hasText(subject, "from should not be null");
+        Assert.hasText(body, "from should not be null");
         try {
             /* Create and configure email message */
             final MimeMessage message = new MimeMessage(getSmtpSession());
-            message.setSubject(emailMessage.subject());
-            message.setFrom(emailMessage.from());
-            message.addRecipient(Message.RecipientType.TO, new InternetAddress(emailMessage.to()));
-            message.setContent(emailMessage.body(), MAIL_CONTENT_TYPE);
+            message.setSubject(subject);
+            message.setFrom(from);
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
+            message.setContent(body, MAIL_CONTENT_TYPE);
             /* Transport message over smtp */
             Transport.send(message);
         } catch (final MessagingException ex) {

@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.annotation.Nonnull;
+import java.util.Map;
 
 import static java.lang.String.format;
 
@@ -55,8 +56,9 @@ class SmsNotificationProcessorImpl implements SmsNotificationProcessor {
 
     /* Public method overrides */
     @Override
-    public void processNotification(@Nonnull final Long notificationId) {
+    public void processNotification(@Nonnull final Long notificationId, @Nonnull final Map<String, String> secureProperties) {
         Assert.notNull(notificationId, "Sms notification id should not be null");
+        Assert.notNull(secureProperties, "Secure properties map should not be null");
         /* Retrieve sms notification */
         final SmsNotification smsNotification = smsNotificationService.getNotificationById(notificationId);
         assertNotificationStateIsCreated(smsNotification);
@@ -89,7 +91,7 @@ class SmsNotificationProcessorImpl implements SmsNotificationProcessor {
 
     /* Utility methods */
     private void updateSmsNotificationExternalUuId(final Long notificationId, final String providerUuId) {
-        persistenceUtilityService.runInNewTransaction(() -> smsNotificationService.updateProviderExternalUuid(notificationId, providerUuId));
+        smsNotificationService.updateProviderExternalUuid(notificationId, providerUuId);
     }
 
     private void assertNotificationStateIsCreated(final Notification notification) {
@@ -97,7 +99,7 @@ class SmsNotificationProcessorImpl implements SmsNotificationProcessor {
     }
 
     private void updateSmsNotificationState(final Long notificationId, final NotificationState notificationState) {
-        persistenceUtilityService.runInNewTransaction(() -> smsNotificationService.updateNotificationState(notificationId, notificationState));
+        smsNotificationService.updateNotificationState(notificationId, notificationState);
     }
 
     private MessageSender getSmsServiceApiOperationsHandlerr(final NotificationProviderType notificationProviderType) {

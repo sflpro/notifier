@@ -18,6 +18,10 @@ class SmtpSimpleEmailSender implements SimpleEmailSender {
 
     @Override
     public void send(final SimpleEmailMessage message) {
-        smtpTransportService.sendMessageOverSmtp(message);
+        smtpTransportService.sendMessageOverSmtp(
+                message.from(),
+                message.to(),
+                message.subject(),
+                message.body());
     }
 }

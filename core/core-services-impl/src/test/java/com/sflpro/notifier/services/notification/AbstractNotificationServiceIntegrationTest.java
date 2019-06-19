@@ -4,7 +4,6 @@ import com.sflpro.notifier.db.entities.notification.Notification;
 import com.sflpro.notifier.db.entities.notification.NotificationState;
 import com.sflpro.notifier.services.test.AbstractServiceIntegrationTest;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -15,7 +14,6 @@ import static org.junit.Assert.*;
  * Date: 3/21/15
  * Time: 8:35 PM
  */
-@Ignore
 public abstract class AbstractNotificationServiceIntegrationTest<T extends Notification> extends AbstractServiceIntegrationTest {
 
 
@@ -41,8 +39,6 @@ public abstract class AbstractNotificationServiceIntegrationTest<T extends Notif
         assertEquals(externalUuid, notification.getProviderExternalUuId());
     }
 
-    // TODO fix this test failing @mikron
-    @Ignore
     @Test
     public void testGetNotificationById() {
         // Prepare data

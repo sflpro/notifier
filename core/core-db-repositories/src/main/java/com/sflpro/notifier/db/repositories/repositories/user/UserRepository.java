@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Nonnull;
+import java.util.Optional;
 
 /**
  * User: Ruben Dilanyan
@@ -21,5 +22,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
      * @param uuId
      * @return user
      */
-    User findByUuId(@Nonnull final String uuId);
+    Optional<User> findByUuId(@Nonnull final String uuId);
 }

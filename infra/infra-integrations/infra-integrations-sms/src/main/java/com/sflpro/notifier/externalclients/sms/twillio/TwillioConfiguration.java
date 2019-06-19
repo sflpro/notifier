@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
  * Time: 5:07 PM
  */
 @Configuration
-@ConditionalOnProperty(name = "twillio.enabled", havingValue = "true")
+@ConditionalOnProperty(name = "twillio.account.sid", havingValue = "true")
 @SuppressWarnings("unused")
 class TwillioConfiguration {
 

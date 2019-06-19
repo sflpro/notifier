@@ -14,7 +14,7 @@ class SmtpTransportException extends RuntimeException {
 
     private final String smtpUsername;
 
-    public SmtpTransportException(final String smtpHost, final String smtpUsername, final Throwable cause) {
+    SmtpTransportException(final String smtpHost, final String smtpUsername, final Throwable cause) {
         super("Unable to send message over smtp for host - " + smtpHost + " with username - " + smtpUsername, cause);
         this.smtpHost = smtpHost;
         this.smtpUsername = smtpUsername;

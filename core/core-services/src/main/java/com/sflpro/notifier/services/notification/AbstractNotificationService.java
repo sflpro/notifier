@@ -5,6 +5,7 @@ import com.sflpro.notifier.db.entities.notification.Notification;
 import com.sflpro.notifier.db.entities.notification.NotificationState;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * User: Ruben Dilanyan
@@ -43,4 +44,6 @@ public interface AbstractNotificationService<T extends Notification> {
      */
     @Nonnull
     T updateProviderExternalUuid(@Nonnull final Long notificationId, @Nonnull final String providerExternalUuid);
+
+    void associateUserWithNotificationIfRequired(@Nullable final String userUuId, final Notification notification);
 }

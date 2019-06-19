@@ -24,6 +24,8 @@ public class SmsNotificationDto extends NotificationDto<SmsNotification> {
 
     private String templateName;
 
+    private String userUuid;
+
     /* Constructors */
     public SmsNotificationDto(final String recipientMobileNumber,
                               final NotificationProviderType providerType,
@@ -65,6 +67,14 @@ public class SmsNotificationDto extends NotificationDto<SmsNotification> {
         this.templateName = templateName;
     }
 
+    public String getUserUuid() {
+        return userUuid;
+    }
+
+    public void setUserUuid(final String userUuid) {
+        this.userUuid = userUuid;
+    }
+
     /* Public interface methods */
     @Override
     public void updateDomainEntityProperties(final SmsNotification notification) {
@@ -72,6 +82,7 @@ public class SmsNotificationDto extends NotificationDto<SmsNotification> {
         notification.setRecipientMobileNumber(getRecipientMobileNumber());
         notification.setProviderType(getProviderType());
         notification.setTemplateName(getTemplateName());
+        notification.setHasSecureProperties(!getSecureProperties().isEmpty());
     }
 
     /* Equals, HashCode and ToString */
@@ -89,6 +100,7 @@ public class SmsNotificationDto extends NotificationDto<SmsNotification> {
         builder.append(this.getRecipientMobileNumber(), that.getRecipientMobileNumber());
         builder.append(this.getProviderType(), that.getProviderType());
         builder.append(this.getTemplateName(), that.getTemplateName());
+        builder.append(this.getUserUuid(), that.getUserUuid());
         return builder.isEquals();
     }
 
@@ -99,6 +111,7 @@ public class SmsNotificationDto extends NotificationDto<SmsNotification> {
         builder.append(this.getRecipientMobileNumber());
         builder.append(this.getProviderType());
         builder.append(this.getTemplateName());
+        builder.append(this.getUserUuid());
         return builder.build();
     }
 
@@ -109,7 +122,7 @@ public class SmsNotificationDto extends NotificationDto<SmsNotification> {
         builder.appendSuper(super.toString());
         builder.append("recipientMobileNumber", this.getRecipientMobileNumber());
         builder.append("providerType", this.getProviderType());
-        builder.append("templateName", this.getTemplateName());
+        builder.append("userUuid", this.getUserUuid());
         return builder.build();
     }
 }

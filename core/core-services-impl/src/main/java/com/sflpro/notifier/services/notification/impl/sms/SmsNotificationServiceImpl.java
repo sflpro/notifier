@@ -6,8 +6,10 @@ import com.sflpro.notifier.db.repositories.repositories.notification.AbstractNot
 import com.sflpro.notifier.db.repositories.repositories.notification.sms.SmsNotificationRepository;
 import com.sflpro.notifier.services.notification.dto.sms.SmsNotificationDto;
 import com.sflpro.notifier.services.notification.dto.sms.SmsNotificationPropertyDto;
+import com.sflpro.notifier.services.notification.event.sms.StartSendingNotificationEvent;
 import com.sflpro.notifier.services.notification.impl.AbstractNotificationServiceImpl;
 import com.sflpro.notifier.services.notification.sms.SmsNotificationService;
+import com.sflpro.notifier.services.system.event.ApplicationEventDistributionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +34,9 @@ public class SmsNotificationServiceImpl extends AbstractNotificationServiceImpl<
     @Autowired
     private SmsNotificationRepository smsNotificationRepository;
 
+    @Autowired
+    private ApplicationEventDistributionService applicationEventDistributionService;
+
     /* Constructors */
     public SmsNotificationServiceImpl() {
         LOGGER.debug("Initializing SMS notification service");
@@ -49,6 +54,8 @@ public class SmsNotificationServiceImpl extends AbstractNotificationServiceImpl<
         createAndAddSmsNotificationProperties(smsNotification, smsNotificationPropertyDtos);
         // Persist notification
         smsNotification = smsNotificationRepository.save(smsNotification);
+        associateUserWithNotificationIfRequired(smsNotificationDto.getUserUuid(), smsNotification);
+        applicationEventDistributionService.publishAsynchronousEvent(new StartSendingNotificationEvent(smsNotification.getId(), smsNotificationDto.getSecureProperties()));
         LOGGER.debug("Successfully created SMS notification with id - {}, notification - {}", smsNotification.getId(), smsNotification);
         return smsNotification;
     }
@@ -93,4 +100,5 @@ public class SmsNotificationServiceImpl extends AbstractNotificationServiceImpl<
         Assert.notNull(propertyDto, "Notification property DTO should not be null");
         Assert.notNull(propertyDto.getPropertyKey(), "Property key in notification property DTO should not be null");
     }
+
 }

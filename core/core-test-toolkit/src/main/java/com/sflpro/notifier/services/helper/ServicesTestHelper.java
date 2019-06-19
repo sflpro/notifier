@@ -282,6 +282,7 @@ public class ServicesTestHelper {
         assertEquals(notificationDto.getTemplateName(), notification.getTemplateName());
         Assert.assertEquals(notificationDto.getProviderType(), notification.getProviderType());
         assertEquals(emailNotificationPropertyDtos.size(), notification.getProperties().size());
+        assertEquals(!notificationDto.getSecureProperties().isEmpty(),notification.hasSecureProperties());
         emailNotificationPropertyDtos.forEach(emailNotificationPropertyDto -> {
             final Optional<EmailNotificationProperty> emailNotificationProperty = notification.getProperties()
                     .stream()
@@ -326,6 +327,7 @@ public class ServicesTestHelper {
         Assert.assertEquals(notificationDto.getProviderType(), notification.getProviderType());
         assertEquals(notificationDto.getTemplateName(), notification.getTemplateName());
         assertEquals(smsNotificationPropertyDtos.size(), notification.getProperties().size());
+        assertEquals(!notificationDto.getSecureProperties().isEmpty(),notification.hasSecureProperties());
         smsNotificationPropertyDtos.forEach(propertyDto -> {
             final Optional<SmsNotificationProperty> smsNotificationProperty = notification.getProperties()
                     .stream()

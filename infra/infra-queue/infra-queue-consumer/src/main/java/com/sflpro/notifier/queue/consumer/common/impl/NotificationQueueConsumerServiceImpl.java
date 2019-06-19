@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.annotation.Nonnull;
+import java.util.Map;
 
 /**
  * User: Mher Sargsyan
@@ -46,10 +47,11 @@ public class NotificationQueueConsumerServiceImpl implements NotificationQueueCo
 
     /* Public methods */
     @Override
-    public void processNotification(@Nonnull final Long notificationId) {
+    public void processNotification(@Nonnull final Long notificationId, @Nonnull final Map<String, String> secureProperties) {
         Assert.notNull(notificationId, "Notification id should not be null");
+        Assert.notNull(secureProperties, "Secure properties map should not be null");
         LOGGER.debug("Processing notification with id - {}", notificationId);
-        notificationProcessingService.processNotification(notificationId);
+        notificationProcessingService.processNotification(notificationId, secureProperties);
         LOGGER.debug("Successfully processed notification with id - {}", notificationId);
     }
 
@@ -72,7 +74,7 @@ public class NotificationQueueConsumerServiceImpl implements NotificationQueueCo
 
         @Override
         protected void processStartSendingNotificationEvent(final StartSendingNotificationEvent event) {
-            NotificationQueueConsumerServiceImpl.this.processNotification(event.getNotificationId());
+            NotificationQueueConsumerServiceImpl.this.processNotification(event.getNotificationId(), event.getSecureProperties());
         }
     }
 }

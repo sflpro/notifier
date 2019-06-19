@@ -42,7 +42,7 @@ public class NotificationQueueConsumerServiceRPCAdapterImpl extends AbstractRPCS
                 final NotificationRPCTransferModel notificationRPCTransferModel = (NotificationRPCTransferModel) parameter;
                 /* Process consumer service call */
                 persistenceUtilityService.runInPersistenceSession(() ->
-                        notificationQueueConsumerService.processNotification(notificationRPCTransferModel.getNotificationId())
+                        notificationQueueConsumerService.processNotification(notificationRPCTransferModel.getNotificationId(), notificationRPCTransferModel.getSecureProperties())
                 );
                 return notificationRPCTransferModel;
             }

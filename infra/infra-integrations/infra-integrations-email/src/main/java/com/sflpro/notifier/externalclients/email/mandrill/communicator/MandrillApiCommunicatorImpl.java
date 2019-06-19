@@ -47,7 +47,7 @@ public class MandrillApiCommunicatorImpl implements MandrillApiCommunicator, Ini
         LOGGER.debug("Initializing Mandrill web service communicator");
     }
 
-    private void chkMandrillApi() {
+    private void checkMandrillApi() {
         if (token == null) {
             throw new MandrillApiDisabledException();
         }
@@ -56,7 +56,7 @@ public class MandrillApiCommunicatorImpl implements MandrillApiCommunicator, Ini
     @Override
     public void afterPropertiesSet() {
         LOGGER.debug("Initializing Mandrill Messages API");
-        chkMandrillApi();
+        checkMandrillApi();
         this.mandrillMessagesApi = new MandrillMessagesApi(token);
     }
 
@@ -93,7 +93,7 @@ public class MandrillApiCommunicatorImpl implements MandrillApiCommunicator, Ini
         assertMandrillEmailModel(sendEmailRequest);
         LOGGER.debug("Requested to send email via mandrill, email model - {}", sendEmailRequest);
 
-        chkMandrillApi();
+        checkMandrillApi();
 
         // Create email send to customer request model
         MandrillMessage mandrillMessage = createMandrillMessage(sendEmailRequest);

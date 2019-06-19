@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.annotation.Nonnull;
+import java.util.Map;
 
 /**
  * User: Ruben Dilanyan
@@ -47,13 +48,14 @@ public class NotificationProcessingServiceImpl implements NotificationProcessing
     }
 
     @Override
-    public void processNotification(@Nonnull final Long notificationId) {
+    public void processNotification(@Nonnull final Long notificationId, @Nonnull final Map<String, String> secureProperties) {
         Assert.notNull(notificationId, "Notification id should not be null");
+        Assert.notNull(secureProperties, "Secure properties map should not be null");
         LOGGER.debug("Processing notification with id - {}", notificationId);
         final Notification notification = notificationService.getNotificationById(notificationId);
         final NotificationProcessor notificationProcessor = getNotificationProcessorForType(notification.getType());
         // Process notification
-        notificationProcessor.processNotification(notification.getId());
+        notificationProcessor.processNotification(notification.getId(), secureProperties);
         LOGGER.debug("Successfully processed notification with id - {}, notification - {}", notificationId, notification);
     }
 

@@ -6,6 +6,8 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import java.util.Map;
+
 /**
  * User: Mher Sargsyan
  * Company: SFL LLC
@@ -19,9 +21,17 @@ public class NotificationRPCTransferModel extends AbstractRPCTransferModel {
     @JsonProperty(value = "notificationId", required = true)
     private Long notificationId;
 
+    @JsonProperty(value = "secureProperties")
+    private Map<String, String> secureProperties;
+
     /* Constructors */
     public NotificationRPCTransferModel(final Long notificationId) {
         this.notificationId = notificationId;
+    }
+
+    public NotificationRPCTransferModel(final Long notificationId, final Map<String, String> secureProperties) {
+        this.notificationId = notificationId;
+        this.secureProperties = secureProperties;
     }
 
     public NotificationRPCTransferModel() {
@@ -36,6 +46,14 @@ public class NotificationRPCTransferModel extends AbstractRPCTransferModel {
         this.notificationId = notificationId;
     }
 
+    public Map<String, String> getSecureProperties() {
+        return secureProperties;
+    }
+
+    public void setSecureProperties(final Map<String, String> secureProperties) {
+        this.secureProperties = secureProperties;
+    }
+
     /* Equals, HashCode and ToString */
     @Override
     public boolean equals(final Object o) {
@@ -48,6 +66,7 @@ public class NotificationRPCTransferModel extends AbstractRPCTransferModel {
         final NotificationRPCTransferModel that = (NotificationRPCTransferModel) o;
         final EqualsBuilder builder = new EqualsBuilder();
         builder.append(getNotificationId(), that.getNotificationId());
+        builder.append(getSecureProperties(), that.getSecureProperties());
         return builder.isEquals();
     }
 
@@ -55,6 +74,7 @@ public class NotificationRPCTransferModel extends AbstractRPCTransferModel {
     public int hashCode() {
         final HashCodeBuilder builder = new HashCodeBuilder();
         builder.append(getNotificationId());
+        builder.append(getSecureProperties());
         return builder.build();
     }
 
@@ -62,6 +82,7 @@ public class NotificationRPCTransferModel extends AbstractRPCTransferModel {
     public String toString() {
         final ToStringBuilder builder = new ToStringBuilder(this);
         builder.append("notificationId", getNotificationId());
+        builder.append("secureProperties", getSecureProperties());
         return builder.build();
     }
 }

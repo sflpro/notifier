@@ -6,6 +6,8 @@ import org.easymock.Mock;
 import org.easymock.TestSubject;
 import org.junit.Test;
 
+import java.util.Collections;
+
 import static org.easymock.EasyMock.eq;
 import static org.easymock.EasyMock.expectLastCall;
 import static org.junit.Assert.fail;
@@ -40,7 +42,14 @@ public class NotificationQueueConsumerServiceImplTest extends AbstractQueueConsu
         replayAll();
         /* Test cases */
         try {
-            smsNotificationQueueConsumerService.processNotification(null);
+            smsNotificationQueueConsumerService.processNotification(null, Collections.emptyMap());
+            fail("Exception will be thrown");
+        } catch (final IllegalArgumentException e) {
+            // Exception
+        }
+        try {
+            final Long notificationId = 1L;
+            smsNotificationQueueConsumerService.processNotification(notificationId, null);
             fail("Exception will be thrown");
         } catch (final IllegalArgumentException e) {
             // Exception
@@ -55,12 +64,12 @@ public class NotificationQueueConsumerServiceImplTest extends AbstractQueueConsu
         /* Reset mocks */
         resetAll();
         /* Register expectations */
-        notificationProcessingService.processNotification(eq(notificationId));
+        notificationProcessingService.processNotification(eq(notificationId), eq(Collections.emptyMap()));
         expectLastCall().once();
         /* Replay mocks */
         replayAll();
         /* Test cases */
-        smsNotificationQueueConsumerService.processNotification(notificationId);
+        smsNotificationQueueConsumerService.processNotification(notificationId, Collections.emptyMap());
         verifyAll();
     }
 }

@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.annotation.Nonnull;
+import java.util.Map;
 
 /**
  * User: Mher Sargsyan
@@ -53,10 +54,11 @@ public class NotificationQueueProducerServiceImpl implements NotificationQueuePr
 
     /* Public methods */
     @Override
-    public void processStartSendingNotificationEvent(@Nonnull final Long notificationId) {
+    public void processStartSendingNotificationEvent(@Nonnull final Long notificationId, @Nonnull final Map<String, String> secureProperties) {
         Assert.notNull(notificationId, "Notification id should not be null.");
+        Assert.notNull(secureProperties, "Secure properties should not be null.");
         LOGGER.debug("Processing notification sending event for notification by id - {}", notificationId);
-        amqpConnectorService.publishMessage(RPCCallType.START_NOTIFICATION_PROCESSING, new NotificationRPCTransferModel(notificationId), NotificationRPCTransferModel.class, new NotificationMessageSendingEventListenerRPCResponseHandler());
+        amqpConnectorService.publishMessage(RPCCallType.START_NOTIFICATION_PROCESSING, new NotificationRPCTransferModel(notificationId, secureProperties), NotificationRPCTransferModel.class, new NotificationMessageSendingEventListenerRPCResponseHandler());
     }
 
     /* Inner classes */
@@ -69,7 +71,7 @@ public class NotificationQueueProducerServiceImpl implements NotificationQueuePr
 
         @Override
         protected void processStartSendingNotificationEvent(final StartSendingNotificationEvent event) {
-            NotificationQueueProducerServiceImpl.this.processStartSendingNotificationEvent(event.getNotificationId());
+            NotificationQueueProducerServiceImpl.this.processStartSendingNotificationEvent(event.getNotificationId(), event.getSecureProperties());
         }
     }
 

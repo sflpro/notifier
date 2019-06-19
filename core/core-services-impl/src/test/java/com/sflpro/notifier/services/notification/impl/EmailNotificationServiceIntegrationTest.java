@@ -34,7 +34,7 @@ public class EmailNotificationServiceIntegrationTest extends AbstractNotificatio
         final EmailNotificationDto notificationDto = getServicesTestHelper().createEmailNotificationDto();
         final List<EmailNotificationPropertyDto> emailNotificationPropertyDtos = getServicesTestHelper().createEmailNotificationPropertyDtos(3);
         // Create notification
-        EmailNotification emailNotification = emailNotificationService.createEmailNotification(notificationDto, emailNotificationPropertyDtos);
+        EmailNotification emailNotification = emailNotificationService.createAndSendEmailNotification(notificationDto, emailNotificationPropertyDtos);
         getServicesTestHelper().assertEmailNotification(emailNotification, notificationDto, emailNotificationPropertyDtos);
         // Flush, clear, reload and assert
         flushAndClear();

@@ -9,6 +9,8 @@ import org.easymock.Mock;
 import org.easymock.TestSubject;
 import org.junit.Test;
 
+import java.util.Collections;
+
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.fail;
 
@@ -41,7 +43,14 @@ public class NotificationQueueProducerServiceImplTest extends AbstractQueueProdu
         replayAll();
         /* Test cases */
         try {
-            smsNotificationQueueProducerService.processStartSendingNotificationEvent(null);
+            smsNotificationQueueProducerService.processStartSendingNotificationEvent(null, Collections.emptyMap());
+            fail("Exception will be thrown");
+        } catch (final IllegalArgumentException e) {
+            // Exception
+        }
+        try {
+            final Long notificationId = 1L;
+            smsNotificationQueueProducerService.processStartSendingNotificationEvent(notificationId, null);
             fail("Exception will be thrown");
         } catch (final IllegalArgumentException e) {
             // Exception
@@ -61,7 +70,7 @@ public class NotificationQueueProducerServiceImplTest extends AbstractQueueProdu
         /* Replay mocks */
         replayAll();
         /* Test cases */
-        smsNotificationQueueProducerService.processStartSendingNotificationEvent(notificationId);
+        smsNotificationQueueProducerService.processStartSendingNotificationEvent(notificationId, Collections.emptyMap());
         verifyAll();
     }
 }

@@ -3,6 +3,7 @@ package com.sflpro.notifier.services.notification.impl.email;
 import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
 
 import javax.annotation.Nonnull;
+import java.util.Map;
 
 /**
  * User: Ruben Vardanyan
@@ -12,5 +13,5 @@ import javax.annotation.Nonnull;
  */
 public interface EmailNotificationProviderProcessor {
 
-    boolean processEmailNotification(@Nonnull final EmailNotification emailNotification);
+    boolean processEmailNotification(@Nonnull final EmailNotification emailNotification, @Nonnull final Map<String, String> secureProperties);
 }

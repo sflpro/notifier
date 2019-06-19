@@ -17,6 +17,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Collections;
+
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.*;
 
@@ -63,7 +65,14 @@ public class SmsNotificationProcessorImplTest extends AbstractServicesUnitTest {
         replayAll();
         /* Run test cases */
         try {
-            smsMessageProcessingService.processNotification(null);
+            smsMessageProcessingService.processNotification(null, Collections.emptyMap());
+            fail("Exception");
+        } catch (final IllegalArgumentException e) {
+            //Exception
+        }
+        try {
+            final Long notificationId = 1L;
+            smsMessageProcessingService.processNotification(notificationId, null);
             fail("Exception");
         } catch (final IllegalArgumentException e) {
             //Exception
@@ -86,7 +95,7 @@ public class SmsNotificationProcessorImplTest extends AbstractServicesUnitTest {
         replayAll();
         /* Run test cases */
         try {
-            smsMessageProcessingService.processNotification(notificationId);
+            smsMessageProcessingService.processNotification(notificationId, Collections.emptyMap());
             fail("Exception");
         } catch (final IllegalArgumentException e) {
             //Exception
@@ -118,7 +127,7 @@ public class SmsNotificationProcessorImplTest extends AbstractServicesUnitTest {
         replayAll();
         /* Run test cases */
         try {
-            smsMessageProcessingService.processNotification(notificationId);
+            smsMessageProcessingService.processNotification(notificationId, Collections.emptyMap());
             fail("Exception");
         } catch (final ServicesRuntimeException e) {
             //Exception
@@ -138,20 +147,17 @@ public class SmsNotificationProcessorImplTest extends AbstractServicesUnitTest {
         /* Register expectations */
         expect(smsNotificationService.getNotificationById(eq(notificationId))).andReturn(smsNotification).once();
         expect(smsNotificationService.updateNotificationState(eq(notificationId), eq(NotificationState.PROCESSING))).andReturn(smsNotification).once();
-        expect(twillioApiCommunicator.sendMessage(isA(SendMessageRequest.class))).andAnswer(new IAnswer<SendMessageResponse>() {
-            @Override
-            public SendMessageResponse answer() {
-                final SendMessageRequest sendMessageRequest = (SendMessageRequest) getCurrentArguments()[0];
-                assertSendMessageRequest(sendMessageRequest, smsNotification);
-                return new SendMessageResponse(messageId, sendMessageRequest.getRecipientNumber(), sendMessageRequest.getMessageBody());
-            }
+        expect(twillioApiCommunicator.sendMessage(isA(SendMessageRequest.class))).andAnswer(() -> {
+            final SendMessageRequest sendMessageRequest = (SendMessageRequest) getCurrentArguments()[0];
+            assertSendMessageRequest(sendMessageRequest, smsNotification);
+            return new SendMessageResponse(messageId, sendMessageRequest.getRecipientNumber(), sendMessageRequest.getMessageBody());
         }).once();
         expect(smsNotificationService.updateProviderExternalUuid(eq(notificationId), eq(messageId))).andReturn(smsNotification).once();
         expect(smsNotificationService.updateNotificationState(eq(notificationId), eq(NotificationState.SENT))).andReturn(smsNotification).once();
         /* Replay mocks */
         replayAll();
         /* Run test cases */
-        smsMessageProcessingService.processNotification(notificationId);
+        smsMessageProcessingService.processNotification(notificationId, Collections.emptyMap());
         verifyAll();
     }
 

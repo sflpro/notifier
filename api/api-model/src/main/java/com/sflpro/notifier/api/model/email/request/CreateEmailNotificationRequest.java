@@ -40,10 +40,14 @@ public class CreateEmailNotificationRequest extends AbstractCreateNotificationRe
     @JsonProperty("properties")
     private Map<String, String> properties;
 
+    @JsonProperty("secureProperties")
+    private Map<String, String> secureProperties;
+
     /* Constructors */
     public CreateEmailNotificationRequest() {
         super();
         properties = new HashMap<>();
+        secureProperties = new HashMap<>();
     }
 
     /* Properties getters and setters */
@@ -87,6 +91,14 @@ public class CreateEmailNotificationRequest extends AbstractCreateNotificationRe
         this.properties = properties;
     }
 
+    public Map<String, String> getSecureProperties() {
+        return secureProperties;
+    }
+
+    public void setSecureProperties(final Map<String, String> secureProperties) {
+        this.secureProperties = secureProperties;
+    }
+
     /* Validation methods */
     @Nonnull
     @Override
@@ -117,7 +129,8 @@ public class CreateEmailNotificationRequest extends AbstractCreateNotificationRe
         builder.append(this.getRecipientEmail(), that.getRecipientEmail());
         builder.append(this.getSubject(), that.getSubject());
         builder.append(this.getTemplateName(), that.getTemplateName());
-        builder.append(this.getProperties(), that.getProperties());
+        builder.append(this.getSecureProperties(), that.getSecureProperties());
+        builder.append(this.getSecureProperties(), that.getSecureProperties());
         return builder.isEquals();
     }
 
@@ -130,6 +143,7 @@ public class CreateEmailNotificationRequest extends AbstractCreateNotificationRe
         builder.append(this.getSubject());
         builder.append(this.getTemplateName());
         builder.append(this.getProperties());
+        builder.append(this.getSecureProperties());
         return builder.build();
     }
 
@@ -142,6 +156,7 @@ public class CreateEmailNotificationRequest extends AbstractCreateNotificationRe
         builder.append("subject", this.getSubject());
         builder.append("templateName", this.getTemplateName());
         builder.append("properties", this.getProperties());
+        builder.append("secureProperties", this.getSecureProperties());
         return builder.build();
     }
 }

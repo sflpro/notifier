@@ -3,6 +3,7 @@ package com.sflpro.notifier.services.test;
 import com.sflpro.notifier.services.helper.ServicesTestHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 
 import javax.persistence.EntityManager;
@@ -10,9 +11,10 @@ import javax.persistence.PersistenceContext;
 
 /**
  * @author Ruben Dilanyan
- *         Aug 25, 2013
+ * Aug 25, 2013
  */
 @ContextConfiguration("classpath:applicationContext-services-integrationtest.xml")
+@TestPropertySource("classpath:ms_notifications_integrationtest.properties")
 public abstract class AbstractServiceIntegrationTest extends AbstractTransactionalJUnit4SpringContextTests {
 
     @Autowired

@@ -81,7 +81,7 @@ public abstract class AbstractNotificationServiceImpl<T extends Notification> im
     protected abstract Class<T> getInstanceClass();
 
     /* Utility methods */
-    protected void assertNotificationNotNullForId(final T notification, final Long id) {
+    private void assertNotificationNotNullForId(final T notification, final Long id) {
         if (notification == null) {
             LOGGER.error("Was not able to find notification for id - {}, notification class - {}", id, getInstanceClass());
             throw new NotificationNotFoundForIdException(id, getInstanceClass());

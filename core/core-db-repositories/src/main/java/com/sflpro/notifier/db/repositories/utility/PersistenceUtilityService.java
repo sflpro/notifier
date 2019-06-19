@@ -17,8 +17,9 @@ public interface PersistenceUtilityService {
      * @return unProxied entity
      */
     @Nonnull
-    <T> T initializeAndUnProxy(@Nonnull final T entity);
-
+    default <T> T initializeAndUnProxy(@Nonnull final T entity) {
+        return EntityInitializer.initializeAndUnProxy(entity);
+    }
 
     /**
      * Wrap task running in persistence session

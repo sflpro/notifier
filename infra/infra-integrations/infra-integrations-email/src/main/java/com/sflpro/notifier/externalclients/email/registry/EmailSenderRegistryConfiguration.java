@@ -1,4 +1,4 @@
-package com.sflpro.notifier.externalclients.sms.registry;
+package com.sflpro.notifier.externalclients.email.registry;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -10,9 +10,10 @@ import org.springframework.context.annotation.PropertySource;
  * Time: 7:49 PM
  */
 @Configuration
-@PropertySource("classpath:integrations-sms.properties")
+@PropertySource("classpath:integrations-email.properties")
 @ComponentScan(basePackages = {
-        "com.sflpro.notifier.externalclients.sms.twillio"
+        "com.sflpro.notifier.externalclients.email.mandrill",
+        "com.sflpro.notifier.externalclients.email.smtp"
 })
-public class RegistryConfiguration {
+public class EmailSenderRegistryConfiguration {
 }

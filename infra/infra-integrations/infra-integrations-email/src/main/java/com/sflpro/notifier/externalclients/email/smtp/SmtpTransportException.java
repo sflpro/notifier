@@ -1,6 +1,4 @@
-package com.sflpro.notifier.services.notification.exception.email;
-
-import com.sflpro.notifier.services.common.exception.ServicesRuntimeException;
+package com.sflpro.notifier.externalclients.email.smtp;
 
 /**
  * User: Ruben Dilanyan
@@ -8,7 +6,7 @@ import com.sflpro.notifier.services.common.exception.ServicesRuntimeException;
  * Date: 11/4/14
  * Time: 4:16 PM
  */
-public class SmtpTransportException extends ServicesRuntimeException {
+class SmtpTransportException extends RuntimeException {
     private static final long serialVersionUID = -8536487738405812588L;
 
     /* Properties */

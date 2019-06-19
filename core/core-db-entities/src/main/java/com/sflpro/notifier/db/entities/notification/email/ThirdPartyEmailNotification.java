@@ -7,7 +7,9 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.persistence.*;
 import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Company: SFL LLC
@@ -18,7 +20,7 @@ import java.util.Set;
 @Entity
 @DiscriminatorValue(value = "EMAIL_THIRD_PARTY")
 @Table(name = "notification_email_third_party")
-public class ThirdPartyEmailNotification extends EmailNotification {
+public class ThirdPartyEmailNotification extends EmailNotification implements TemplatedEmailNotification {
     private static final long serialVersionUID = 3070320628734635835L;
 
     @OneToMany(mappedBy = "thirdPartyEmailNotification", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -47,6 +49,17 @@ public class ThirdPartyEmailNotification extends EmailNotification {
     private void initializeDefaults() {
         setType(NotificationType.EMAIL_THIRD_PARTY);
         this.properties = new LinkedHashSet<>();
+    }
+
+    @Override
+    public String templateId() {
+        return getTemplateName();
+    }
+
+    @Override
+    public Map<String, Object> variables() {
+        return getProperties().stream()
+                .collect(Collectors.toMap(ThirdPartyEmailNotificationProperty::getPropertyKey,ThirdPartyEmailNotificationProperty::getPropertyValue));
     }
 
     /* Equals, HashCode and ToString */

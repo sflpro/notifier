@@ -1,5 +1,7 @@
 package com.sflpro.notifier.db.repositories.utility.impl;
 
+import com.sflpro.notifier.db.repositories.utility.PersistenceUtilityService;
+
 import javax.annotation.Nonnull;
 
 /**
@@ -8,10 +10,12 @@ import javax.annotation.Nonnull;
  * Date: 1/16/15
  * Time: 6:15 PM
  */
-public class SingleTransactionAwarePersistenceUtilityServiceImpl extends PersistenceUtilityServiceImpl {
+class DummyTransactionAwarePersistenceUtilityService implements PersistenceUtilityService {
+
+
 
     /* Constructors */
-    public SingleTransactionAwarePersistenceUtilityServiceImpl() {
+    public DummyTransactionAwarePersistenceUtilityService() {
         super();
     }
 
@@ -22,6 +26,16 @@ public class SingleTransactionAwarePersistenceUtilityServiceImpl extends Persist
 
     @Override
     public void runAfterTransactionCommitIsSuccessful(@Nonnull final Runnable runnable, @Nonnull final boolean executeAsynchronously) {
+        runnable.run();
+    }
+
+    @Override
+    public void runInPersistenceSession(@Nonnull final Runnable runnable) {
+        runnable.run();
+    }
+
+    @Override
+    public void runInTransaction(@Nonnull final Runnable runnable) {
         runnable.run();
     }
 }

@@ -85,7 +85,7 @@ public class AmazonSnsApiCommunicatorImpl implements AmazonSnsApiCommunicator, I
         Assert.notNull(messageInformation.getAmazonSNSPlatformType(), "Platform type in push notification message information should not be null");
         Assert.notNull(deviceEndpointArn, "Device endpoint ARN should not be null");
         LOGGER.debug("Sending push notification to with information - {}, device endpoint ARN - {}", messageInformation, deviceEndpointArn);
-        // Generate notification content
+        // Generate notification body
         final String notificationContent = generateNotificationContent(messageInformation.getMessageBody(), messageInformation.getMessageProperties(), messageInformation.getAmazonSNSPlatformType());
         // Create publish request
         final PublishRequest publishRequest = new PublishRequest();
@@ -212,7 +212,7 @@ public class AmazonSnsApiCommunicatorImpl implements AmazonSnsApiCommunicator, I
         }
         // Generate message and return
         final String notificationContent = messageBuilder.generateJsonContent();
-        LOGGER.debug("Successfully generated notification content for properties map - {}, platform type - {}, message - {}, generated content - {}", propertiesMap, amazonSNSPlatformType, message, notificationContent);
+        LOGGER.debug("Successfully generated notification body for properties map - {}, platform type - {}, message - {}, generated body - {}", propertiesMap, amazonSNSPlatformType, message, notificationContent);
         return notificationContent;
     }
 
@@ -286,7 +286,7 @@ public class AmazonSnsApiCommunicatorImpl implements AmazonSnsApiCommunicator, I
                 final ObjectMapper objectMapper = new ObjectMapper();
                 content = objectMapper.writeValueAsString(propertiesMap);
             } catch (final JsonProcessingException ex) {
-                final String errorMessage = "Error occurred while generating JSON content for properties - " + propertiesMap;
+                final String errorMessage = "Error occurred while generating JSON body for properties - " + propertiesMap;
                 LOGGER.error(errorMessage, ex);
                 throw new AmazonSnsClientRuntimeException(errorMessage, ex);
             }

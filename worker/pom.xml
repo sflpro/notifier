@@ -170,6 +170,11 @@
         </dependency>
         <dependency>
             <groupId>com.sflpro.notifier</groupId>
+            <artifactId>infra-integrations-email</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sflpro.notifier</groupId>
             <artifactId>core-services-impl</artifactId>
             <version>${project.version}</version>
         </dependency>

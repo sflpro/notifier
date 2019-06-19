@@ -1,12 +1,9 @@
-package com.sflpro.notifier.services.notification.impl.email;
+package com.sflpro.notifier.externalclients.email.smtp;
 
-import com.sflpro.notifier.services.notification.dto.email.MailSendConfiguration;
-import com.sflpro.notifier.services.notification.email.SmtpTransportService;
-import com.sflpro.notifier.services.notification.exception.email.SmtpTransportException;
+import com.sflpro.notifier.email.SimpleEmailMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.annotation.Nonnull;
@@ -22,13 +19,12 @@ import java.util.concurrent.locks.ReentrantLock;
  * Date: 1/11/16
  * Time: 11:02 AM
  */
-@Service("smtpTransportService")
-public class SmtpTransportServiceImpl implements SmtpTransportService {
+class SmtpTransportServiceImpl implements SmtpTransportService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SmtpTransportServiceImpl.class);
 
     /**
-     * Default content type
+     * Default body type
      */
     private static final String MAIL_CONTENT_TYPE = "text/html; charset=utf-8";
 
@@ -66,25 +62,25 @@ public class SmtpTransportServiceImpl implements SmtpTransportService {
 
 
     /* Constructors */
-    public SmtpTransportServiceImpl() {
+    SmtpTransportServiceImpl() {
         this.smtpSessionInitializationLock = new ReentrantLock();
         LOGGER.debug("Initializing smtp transporter service");
     }
 
     @Override
-    public void sendMessageOverSmtp(@Nonnull final MailSendConfiguration mailSendConfiguration) {
-        Assert.notNull(mailSendConfiguration, "Configuration should not be null");
-        Assert.hasText(mailSendConfiguration.getSubject(), "Message subject should not be empty");
-        Assert.hasText(mailSendConfiguration.getTo(), "Recipient email address should not be empty");
-        Assert.hasText(mailSendConfiguration.getFrom(), "Sender email address should not be empty");
-        Assert.hasText(mailSendConfiguration.getContent(), "Message content should not be empty");
+    public void sendMessageOverSmtp(@Nonnull final SimpleEmailMessage emailMessage) {
+        Assert.notNull(emailMessage, "emailMessage should not be null");
+        Assert.hasText(emailMessage.subject(), "Message subject should not be empty");
+        Assert.hasText(emailMessage.to(), "Recipient email address should not be empty");
+        Assert.hasText(emailMessage.from(), "Sender email address should not be empty");
+        Assert.hasText(emailMessage.body(), "Message body should not be empty");
         try {
             /* Create and configure email message */
             final MimeMessage message = new MimeMessage(getSmtpSession());
-            message.setSubject(mailSendConfiguration.getSubject());
-            message.setFrom(mailSendConfiguration.getFrom());
-            message.addRecipient(Message.RecipientType.TO, new InternetAddress(mailSendConfiguration.getTo()));
-            message.setContent(mailSendConfiguration.getContent(), MAIL_CONTENT_TYPE);
+            message.setSubject(emailMessage.subject());
+            message.setFrom(emailMessage.from());
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(emailMessage.to()));
+            message.setContent(emailMessage.body(), MAIL_CONTENT_TYPE);
             /* Transport message over smtp */
             Transport.send(message);
         } catch (final MessagingException ex) {
@@ -139,7 +135,7 @@ public class SmtpTransportServiceImpl implements SmtpTransportService {
         private final String smtpPassword;
 
         /* Constructors */
-        public UsernamePasswordAuthenticator(final String smtpUsername, final String smtpPassword) {
+        UsernamePasswordAuthenticator(final String smtpUsername, final String smtpPassword) {
             Assert.hasText(smtpUsername, "Smtp username should not be empty");
             Assert.hasText(smtpPassword, "Smtp password should not be empty");
             this.smtpUsername = smtpUsername;
@@ -150,46 +146,5 @@ public class SmtpTransportServiceImpl implements SmtpTransportService {
         protected PasswordAuthentication getPasswordAuthentication() {
             return new PasswordAuthentication(smtpUsername, smtpPassword);
         }
-    }
-
-    /* Getters and setters */
-    public String getSmtpHost() {
-        return smtpHost;
-    }
-
-    public void setSmtpHost(final String smtpHost) {
-        this.smtpHost = smtpHost;
-    }
-
-    public Integer getSmtpPort() {
-        return smtpPort;
-    }
-
-    public void setSmtpPort(final Integer smtpPort) {
-        this.smtpPort = smtpPort;
-    }
-
-    public Integer getSmtpTimeout() {
-        return smtpTimeout;
-    }
-
-    public void setSmtpTimeout(final Integer smtpTimeout) {
-        this.smtpTimeout = smtpTimeout;
-    }
-
-    public String getSmtpUsername() {
-        return smtpUsername;
-    }
-
-    public void setSmtpUsername(final String smtpUsername) {
-        this.smtpUsername = smtpUsername;
-    }
-
-    public String getSmtpPassword() {
-        return smtpPassword;
-    }
-
-    public void setSmtpPassword(final String smtpPassword) {
-        this.smtpPassword = smtpPassword;
     }
 }

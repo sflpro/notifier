@@ -3,6 +3,7 @@ package com.sflpro.notifier.services.notification.impl.email;
 import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
 import com.sflpro.notifier.db.repositories.repositories.notification.AbstractNotificationRepository;
 import com.sflpro.notifier.db.repositories.repositories.notification.email.EmailNotificationRepository;
+import com.sflpro.notifier.services.notification.component.UserNotificationComponent;
 import com.sflpro.notifier.services.notification.dto.email.EmailNotificationDto;
 import com.sflpro.notifier.services.notification.dto.email.EmailNotificationPropertyDto;
 import com.sflpro.notifier.services.notification.impl.AbstractNotificationServiceImpl;
@@ -31,6 +32,9 @@ public class EmailNotificationServiceImplTest extends AbstractNotificationServic
 
     @Mock
     private EmailNotificationRepository emailNotificationRepository;
+
+    @Mock
+    private UserNotificationComponent userNotificationComponent;
 
     /* Constructors */
     public EmailNotificationServiceImplTest() {
@@ -78,15 +82,17 @@ public class EmailNotificationServiceImplTest extends AbstractNotificationServic
     public void testCreateEmailNotification() {
         // Test data
         final EmailNotificationDto emailNotificationDto = getServicesImplTestHelper().createEmailNotificationDto();
+        final EmailNotification emailNotification = getServicesImplTestHelper().createEmailNotification();
         // Reset
         resetAll();
         // Expectations
-        expect(emailNotificationRepository.save(isA(EmailNotification.class))).andAnswer(() -> (EmailNotification) getCurrentArguments()[0]).once();
+        expect(emailNotificationRepository.save(isA(EmailNotification.class))).andReturn(emailNotification);
+        userNotificationComponent.associateUserWithNotification(emailNotificationDto.getUserUuid(), emailNotification);
         // Replay
         replayAll();
         // Run test scenario
-        final EmailNotification emailNotification = emailNotificationService.createEmailNotification(emailNotificationDto, Collections.emptyList());
-        getServicesImplTestHelper().assertEmailNotification(emailNotification, emailNotificationDto);
+        final EmailNotification result = emailNotificationService.createEmailNotification(emailNotificationDto, Collections.emptyList());
+        getServicesImplTestHelper().assertEmailNotification(result, emailNotificationDto);
     }
 
     /* Utility methods */

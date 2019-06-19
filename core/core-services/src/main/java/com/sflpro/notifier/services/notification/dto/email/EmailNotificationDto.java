@@ -26,6 +26,8 @@ public class EmailNotificationDto extends NotificationDto<EmailNotification> {
 
     private String templateName;
 
+    private String userUuid;
+
     /* Constructors */
     public EmailNotificationDto(final String recipientEmail,
                                 final String senderEmail,
@@ -78,6 +80,14 @@ public class EmailNotificationDto extends NotificationDto<EmailNotification> {
         this.templateName = templateName;
     }
 
+    public String getUserUuid() {
+        return userUuid;
+    }
+
+    public void setUserUuid(final String userUuid) {
+        this.userUuid = userUuid;
+    }
+
     /* Public interface methods */
     @Override
     public void updateDomainEntityProperties(final EmailNotification notification) {
@@ -86,6 +96,7 @@ public class EmailNotificationDto extends NotificationDto<EmailNotification> {
         notification.setProviderType(getProviderType());
         notification.setSenderEmail(getSenderEmail());
         notification.setTemplateName(getTemplateName());
+        notification.setHasSecureProperties(!getSecureProperties().isEmpty());
     }
 
     /* Equals, HashCode and ToString */

@@ -4,6 +4,7 @@ import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
 import com.sflpro.notifier.db.entities.notification.email.EmailNotificationProperty;
 import com.sflpro.notifier.db.repositories.repositories.notification.AbstractNotificationRepository;
 import com.sflpro.notifier.db.repositories.repositories.notification.email.EmailNotificationRepository;
+import com.sflpro.notifier.services.notification.component.UserNotificationComponent;
 import com.sflpro.notifier.services.notification.dto.email.EmailNotificationDto;
 import com.sflpro.notifier.services.notification.dto.email.EmailNotificationPropertyDto;
 import com.sflpro.notifier.services.notification.email.EmailNotificationService;
@@ -32,6 +33,9 @@ public class EmailNotificationServiceImpl extends AbstractNotificationServiceImp
     @Autowired
     private EmailNotificationRepository emailNotificationRepository;
 
+    @Autowired
+    private UserNotificationComponent userNotificationComponent;
+
     /* Constructors */
     public EmailNotificationServiceImpl() {
         LOGGER.debug("Initializing email notification service");
@@ -40,8 +44,7 @@ public class EmailNotificationServiceImpl extends AbstractNotificationServiceImp
     @Transactional
     @Nonnull
     @Override
-    public EmailNotification createEmailNotification(@Nonnull final EmailNotificationDto emailNotificationDto,
-                                                     @Nonnull final List<EmailNotificationPropertyDto> emailNotificationPropertyDtos) {
+    public EmailNotification createEmailNotification(@Nonnull final EmailNotificationDto emailNotificationDto, @Nonnull final List<EmailNotificationPropertyDto> emailNotificationPropertyDtos) {
         assertEmailNotificationDto(emailNotificationDto);
         Assert.notNull(emailNotificationPropertyDtos, "emailNotificationPropertyDtos should not be null");
         LOGGER.debug("Creating email notification for DTO - {} and property dtos - {}", emailNotificationDto, emailNotificationPropertyDtos);
@@ -50,6 +53,7 @@ public class EmailNotificationServiceImpl extends AbstractNotificationServiceImp
         createAndAddEmailNotificationProperties(emailNotification, emailNotificationPropertyDtos);
         // Persist notification
         emailNotification = emailNotificationRepository.save(emailNotification);
+        userNotificationComponent.associateUserWithNotification(emailNotificationDto.getUserUuid(), emailNotification);
         LOGGER.debug("Successfully created email notification with id - {}, email notification - {}", emailNotification.getId(), emailNotification);
         return emailNotification;
     }

@@ -270,7 +270,7 @@ public class ServicesTestHelper {
     }
 
     public EmailNotification createEmailNotification(final EmailNotificationDto notificationDto, final List<EmailNotificationPropertyDto> emailNotificationPropertyDtos) {
-        return emailNotificationService.createEmailNotification(notificationDto, emailNotificationPropertyDtos);
+        return emailNotificationService.createAndSendEmailNotification(notificationDto, emailNotificationPropertyDtos);
     }
 
     public void assertEmailNotification(final EmailNotification notification, final EmailNotificationDto notificationDto, final List<EmailNotificationPropertyDto> emailNotificationPropertyDtos) {

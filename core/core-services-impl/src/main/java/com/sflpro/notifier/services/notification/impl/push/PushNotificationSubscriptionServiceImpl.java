@@ -89,8 +89,8 @@ public class PushNotificationSubscriptionServiceImpl implements PushNotification
     public PushNotificationSubscription getPushNotificationSubscriptionById(@Nonnull final Long subscriptionId) {
         assertPushNotificationSubscriptionId(subscriptionId);
         LOGGER.debug("Getting push notification subscription for id - {}", subscriptionId);
-        final PushNotificationSubscription subscription = pushNotificationSubscriptionRepository.findOne(subscriptionId);
-        assertPushNotificationSubscriptionNotNullForId(subscription, subscriptionId);
+        final PushNotificationSubscription subscription = pushNotificationSubscriptionRepository.findById(subscriptionId)
+                .orElseThrow(() -> new PushNotificationSubscriptionNotFoundForIdException(subscriptionId));
         LOGGER.debug("Successfully retrieved push notification subscription for id - {}, subscription - {}", subscription.getId(), subscription);
         return subscription;
     }
@@ -105,13 +105,6 @@ public class PushNotificationSubscriptionServiceImpl implements PushNotification
 
     private void assertUserIdNotNull(final Long userId) {
         Assert.notNull(userId, "User id should not be null");
-    }
-
-    private void assertPushNotificationSubscriptionNotNullForId(final PushNotificationSubscription subscription, final Long id) {
-        if (subscription == null) {
-            LOGGER.error("No push notification subscription was found for id - {}", id);
-            throw new PushNotificationSubscriptionNotFoundForIdException(id);
-        }
     }
 
     private void assertPushNotificationSubscriptionId(@Nonnull final Long subscriptionId) {

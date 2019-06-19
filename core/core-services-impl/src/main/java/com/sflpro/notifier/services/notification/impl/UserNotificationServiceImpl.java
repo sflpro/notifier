@@ -75,8 +75,7 @@ public class UserNotificationServiceImpl implements UserNotificationService {
     public UserNotification getUserNotificationById(@Nonnull final Long userNotificationId) {
         assertUserNotificationIdNotNull(userNotificationId);
         LOGGER.debug("Getting user notification for id - {}", userNotificationId);
-        final UserNotification userNotification = userNotificationRepository.findOne(userNotificationId);
-        assertUserNotificationNotNull(userNotification, userNotificationId);
+        final UserNotification userNotification = userNotificationRepository.findById(userNotificationId).orElseThrow(() -> new UserNotificationNotFoundForIdException(userNotificationId));
         LOGGER.debug("Successfully retrieved user notification for id - {}, user notification - {}", userNotification.getId(), userNotification);
         return userNotification;
     }
@@ -93,13 +92,6 @@ public class UserNotificationServiceImpl implements UserNotificationService {
     }
 
     /* Utility methods */
-    private void assertUserNotificationNotNull(final UserNotification userNotification, final Long id) {
-        if (userNotification == null) {
-            LOGGER.error("No user notification was found for id - {}", id);
-            throw new UserNotificationNotFoundForIdException(id);
-        }
-    }
-
     private void assertUserNotificationIdNotNull(final Long userNotificationId) {
         Assert.notNull(userNotificationId, "User notification id should not be null");
     }

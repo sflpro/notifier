@@ -10,7 +10,6 @@ import com.sflpro.notifier.externalclients.email.mandrill.exception.MandrillMess
 import com.sflpro.notifier.externalclients.email.mandrill.exception.MandrillMessageRejectedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.Assert;
 
 import javax.annotation.Nonnull;
@@ -33,9 +32,6 @@ public class MandrillApiCommunicatorImpl implements MandrillApiCommunicator {
     private static final String MERGE_LANGUAGE_MAILCHIMP = "mailchimp";
 
     /* Properties */
-    @Value("${mandrill.service.token}")
-    private String token;
-
     private final MandrillMessagesApi mandrillMessagesApi;
 
     /* Constructors */
@@ -74,7 +70,7 @@ public class MandrillApiCommunicatorImpl implements MandrillApiCommunicator {
 
     /* Interface public methods overrides */
     @Override
-    public boolean sendEmailTemplate(@Nonnull final TemplatedEmailMessage message) {
+    public void sendEmailTemplate(@Nonnull final TemplatedEmailMessage message) {
         assertMandrillEmailModel(message);
         LOGGER.debug("Requested to send email via mandrill, email model - {}", message);
         // Create email send to customer request model
@@ -103,7 +99,6 @@ public class MandrillApiCommunicatorImpl implements MandrillApiCommunicator {
                         break;
                 }
             }
-            return true;
         } catch (final MandrillApiError | IOException e) {
             LOGGER.error("Error occurred while sending sms message", e);
             throw new MandrillEmailClientRuntimeException("MandrillApiError", e);

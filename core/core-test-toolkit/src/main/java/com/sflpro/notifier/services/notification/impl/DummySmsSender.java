@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
  * Date: 6/19/19
  * Time: 12:36 PM
  */
-class DummySmsSender implements SmsSender {
+public class DummySmsSender implements SmsSender {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DummySmsSender.class);
 

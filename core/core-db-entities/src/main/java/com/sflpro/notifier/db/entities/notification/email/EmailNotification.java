@@ -6,10 +6,9 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * User: Ruben Dilanyan
@@ -33,6 +32,9 @@ public class EmailNotification extends Notification {
     @Column(name = "template_name", nullable = true)
     private String templateName;
 
+    @OneToMany(mappedBy = "emailNotification", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<EmailNotificationProperty> properties;
+
     /* Constructors */
     public EmailNotification() {
         initializeDefaults();
@@ -42,6 +44,8 @@ public class EmailNotification extends Notification {
         super(generateUuId);
         initializeDefaults();
     }
+
+
 
     /* Properties getters and setters */
     public String getRecipientEmail() {
@@ -68,9 +72,18 @@ public class EmailNotification extends Notification {
         this.templateName = templateName;
     }
 
+    public Set<EmailNotificationProperty> getProperties() {
+        return properties;
+    }
+
+    public void setProperties(final Set<EmailNotificationProperty> properties) {
+        this.properties = properties;
+    }
+
     /* Private utility methods */
     private void initializeDefaults() {
         setType(NotificationType.EMAIL);
+        this.properties = new LinkedHashSet<>();
     }
 
     /* Equals, HashCode and ToString */

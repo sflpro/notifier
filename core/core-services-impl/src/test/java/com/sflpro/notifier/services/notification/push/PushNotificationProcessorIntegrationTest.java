@@ -10,6 +10,8 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Collections;
+
 import static org.junit.Assert.assertNotNull;
 
 /**
@@ -45,7 +47,7 @@ public class PushNotificationProcessorIntegrationTest extends AbstractServiceInt
         PushNotification pushNotification = getServicesTestHelper().createPushNotification(recipient, getServicesTestHelper().createPushNotificationDto(), getServicesTestHelper().createPushNotificationPropertyDTOs(10));
         Assert.assertEquals(NotificationState.CREATED, pushNotification.getState());
         // Process push notification
-        pushNotificationProcessingService.processNotification(pushNotification.getId());
+        pushNotificationProcessingService.processNotification(pushNotification.getId(), Collections.emptyMap());
         flushAndClear();
         // Reload push notification
         pushNotification = pushNotificationService.getNotificationById(pushNotification.getId());

@@ -16,5 +16,5 @@ public interface MandrillApiCommunicator {
      * @param message
      * @return true/false
      */
-    boolean sendEmailTemplate(final TemplatedEmailMessage message);
+    void sendEmailTemplate(final TemplatedEmailMessage message);
 }

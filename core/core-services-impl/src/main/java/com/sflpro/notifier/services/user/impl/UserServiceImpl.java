@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import javax.annotation.Nonnull;
+import java.util.Optional;
 
 /**
  * User: Ruben Dilanyan
@@ -25,7 +26,7 @@ import javax.annotation.Nonnull;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     /* Properties */
     @Autowired
@@ -41,10 +42,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserById(@Nonnull final Long id) {
         Assert.notNull(id, "User id should not be null");
-        LOGGER.debug("Getting user for id - {}", id);
-        final User user = userRepository.findOne(id);
-        assertUserNotNullForId(user, id);
-        LOGGER.debug("Successfully retrieved user for id - {}, user - {}", user.getId(), user);
+        logger.debug("Getting user for id - {}", id);
+        final User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundForIdException(id));
+        logger.debug("Successfully retrieved user for id - {}, user - {}", user.getId(), user);
         return user;
     }
 
@@ -53,14 +53,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public User createUser(@Nonnull final UserDto userDto) {
         assertUserDto(userDto);
-        LOGGER.debug("Creating user for DTO - {}", userDto);
+        logger.debug("Creating user for DTO - {}", userDto);
         assertNoUserExistsForUuId(userDto.getUuId());
         // Create new user
         User user = new User();
         userDto.updateDomainEntityProperties(user);
         // Persist user
         user = userRepository.save(user);
-        LOGGER.debug("Successfully created user with id - {}, user - {}", user.getId(), user);
+        logger.debug("Successfully created user with id - {}, user - {}", user.getId(), user);
         return user;
     }
 
@@ -68,21 +68,17 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean checkIfUserExistsForUuId(@Nonnull final String uuId) {
         assertUserUuIdNotNull(uuId);
-        LOGGER.debug("Checking if user exists for uuid - {}", uuId);
-        final User user = userRepository.findByUuId(uuId);
-        final boolean exists = (user != null);
-        LOGGER.debug("Check if user exists for uuid - {} is - {}", uuId, exists);
-        return exists;
+        logger.debug("Checking if user exists for uuid - {}", uuId);
+        return userRepository.findByUuId(uuId).isPresent();
     }
 
     @Nonnull
     @Override
     public User getUserByUuId(@Nonnull final String uuId) {
         assertUserUuIdNotNull(uuId);
-        LOGGER.debug("Getting user for uuid - {}", uuId);
-        final User user = userRepository.findByUuId(uuId);
-        assertUserNotNullForUuId(user, uuId);
-        LOGGER.debug("Successfully retrieved user for uuid - {}, user - {}", uuId, user);
+        logger.debug("Getting user for uuid - {}", uuId);
+        final User user = userRepository.findByUuId(uuId).orElseThrow(() -> new UserNotFoundForUuidException(uuId));
+        logger.debug("Successfully retrieved user for uuid - {}, user - {}", uuId, user);
         return user;
     }
 
@@ -91,15 +87,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getOrCreateUserForUuId(final String uuId) {
         assertUserUuIdNotNull(uuId);
-        LOGGER.debug("Getting or creating user for uuid - {}", uuId);
-        User user = userRepository.findByUuId(uuId);
-        if (user == null) {
-            LOGGER.debug("No user was found for uuid - {}, creating new one", uuId);
-            user = createUser(new UserDto(uuId));
-        } else {
-            LOGGER.debug("User for uuid already exists, using it, uuid - {}, user - {}", uuId, user);
+        logger.debug("Getting or creating user for uuid - {}", uuId);
+        Optional<User> user = userRepository.findByUuId(uuId);
+        if (!user.isPresent()) {
+            logger.debug("No user was found for uuid - {}, creating new one", uuId);
+            return createUser(new UserDto(uuId));
         }
-        return user;
+
+        logger.debug("User for uuid already exists, using it, uuid - {}, user - {}", uuId, user);
+        return user.get();
     }
 
     /* Utility methods */
@@ -108,9 +104,10 @@ public class UserServiceImpl implements UserService {
     }
 
     private void assertNoUserExistsForUuId(final String uuId) {
-        final User user = userRepository.findByUuId(uuId);
-        if (user != null) {
-            LOGGER.error("User with id -{} already exists for UUID - {}", user.getId(), user.getUuId());
+        final Optional<User> userOptional = userRepository.findByUuId(uuId);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            logger.error("User with id -{} already exists for UUID - {}", user.getId(), user.getUuId());
             throw new UserAlreadyExistsForUuIdException(uuId, user.getId());
         }
     }
@@ -118,20 +115,6 @@ public class UserServiceImpl implements UserService {
     private void assertUserDto(@Nonnull final UserDto userDto) {
         Assert.notNull(userDto, "User DTO should not be null");
         Assert.notNull(userDto.getUuId(), "UUID in User DTO should not be null");
-    }
-
-    private void assertUserNotNullForId(final User user, final Long id) {
-        if (user == null) {
-            LOGGER.error("No user was found for id - {}", id);
-            throw new UserNotFoundForIdException(id);
-        }
-    }
-
-    private void assertUserNotNullForUuId(final User user, final String uuId) {
-        if (user == null) {
-            LOGGER.error("No user was found for uuid - {}", uuId);
-            throw new UserNotFoundForUuidException(uuId);
-        }
     }
 
     /* Properties getters and setters */

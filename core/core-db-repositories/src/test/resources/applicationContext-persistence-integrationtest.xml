@@ -1,23 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns="http://www.springframework.org/schema/beans"
-       xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
-           http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd" >
 
-       default-lazy-init="true" default-autowire="byName">
-
-    <!--Load datasource context-->
-    <import resource="applicationContext-persistence-jpa.xml"/>
-
-    <context:property-placeholder location="classpath:repositories_integration_test.properties"
-                                  ignore-unresolvable="true"/>
-
-    <jdbc:embedded-database id="datasource" type="H2"/>
-
-
-
+    <import resource="applicationContext-persistence.xml"/>
 
 </beans>

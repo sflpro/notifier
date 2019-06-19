@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.5.9.RELEASE</version>
+        <version>2.1.5.RELEASE</version>
     </parent>
 
     <modules>
@@ -12,7 +12,8 @@
         <module>infra</module>
         <module>worker</module>
         <module>api</module>
-        <module>notification-provider-api</module>
+        <module>report</module>
+		<module>notification-provider-api</module>
     </modules>
 
     <groupId>com.sflpro.notifier</groupId>
@@ -51,6 +52,12 @@
             <organization>SFL LLC</organization>
             <organizationUrl>https://sflpro.com</organizationUrl>
         </developer>
+        <developer>
+            <name>Ruben Vardanyan</name>
+            <email>ruben.vardanyan@sflpro.com</email>
+            <organization>SFL LLC</organization>
+            <organizationUrl>https://sflpro.com</organizationUrl>
+        </developer>
     </developers>
 
     <scm>
@@ -86,26 +93,13 @@
         <jackson.version>2.9.2</jackson.version>
         <jersey.version>2.21</jersey.version>
 
-        <!-- Spring -->
-        <spring.version>5.1.8.RELEASE</spring.version>
-        <spring.data.version>1.8.2.RELEASE</spring.data.version>
-        <spring.security.version>3.2.5.RELEASE</spring.security.version>
-        <spring.amqp.version>1.4.5.RELEASE</spring.amqp.version>
-        <spring.kafka.version>1.3.3.RELEASE</spring.kafka.version>
-
         <!-- Database -->
-        <postgresql.version>42.1.4</postgresql.version>
+        <postgresql.version>42.2.5</postgresql.version>
         <mysql.connector.version>5.1.36</mysql.connector.version>
-        <h2.version>1.4.196</h2.version>
-        <c3po.version>0.9.5.1</c3po.version>
-        <hibernate.version>5.0.0.Final</hibernate.version>
-        <hibernate.javax.persistence.version>1.0.0.Final</hibernate.javax.persistence.version>
         <com.github.usc.jdbcdslog.version>1.0.6</com.github.usc.jdbcdslog.version>
-        <flyway.version>3.0</flyway.version>
+        <flyway.version>5.2.4</flyway.version>
 
         <easymock.version>3.3.1</easymock.version>
-        <junit.version>4.12</junit.version>
-        <hsqldb.version>2.3.3</hsqldb.version>
 
         <logstash-encoder.version>4.7</logstash-encoder.version>
         <logback.logstash.encoder.version>4.5.1</logback.logstash.encoder.version>
@@ -120,11 +114,9 @@
         <asm.version>5.0.3</asm.version>
 
         <amazon.sdk.version>1.10.13</amazon.sdk.version>
-        <twillio.sdk.version>4.5.0</twillio.sdk.version>
+        <twillio.sdk.version>7.38.1</twillio.sdk.version>
 
         <bouncycastle.version>140</bouncycastle.version>
-
-        <aspectj.version>1.8.9</aspectj.version>
 
         <joda.time.version>2.8.2</joda.time.version>
         <swagger.version>1.5.13</swagger.version>
@@ -134,7 +126,10 @@
         <mail.version>1.5.2</mail.version>
         <velocity.version>1.6.2</velocity.version>
 
+        <google.guave.version>18.0</google.guave.version>
         <google.java.cloud.version>0.37.0-alpha</google.java.cloud.version>
+
+        <apache.tika.version>1.20</apache.tika.version>
 
         <!--Infrasturcture third party libs-->
         <mandrillapp.wrapper.lutung.version>0.0.8</mandrillapp.wrapper.lutung.version>
@@ -142,25 +137,28 @@
         <!--Sonar config-->
         <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
         <sonar.language>java</sonar.language>
+        <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
         <sonar.jacoco.includes>com.sflpro.*</sonar.jacoco.includes>
-        <sonar.jacoco.itReportPath>${project.basedir}/../target/jacoco-it.exec</sonar.jacoco.itReportPath>
-        <sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
-        <sonar.jacoco.version>0.7.2.201409121644</sonar.jacoco.version>
-        <sonar.jacoco.jar>${projectbasedir}/lib/jacocoagent.jar</sonar.jacoco.jar>
-        <google.guave.version>18.0</google.guave.version>
-        <apache.tika.version>1.16</apache.tika.version>
+        <sonar.jacoco.version>1.0.1</sonar.jacoco.version>
+        <sonar.coverage.jacoco.xmlReportPaths>${user.dir}/report/target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+        <jacoco.plugin.version>0.8.4</jacoco.plugin.version>
 
         <!--Maven plugins-->
-        <maven.failsafe.plugin.version>2.20.1</maven.failsafe.plugin.version>
-        <maven.surefire.plugin.version>2.20.1</maven.surefire.plugin.version>
+        <maven.build.helper.plugin.version>3.0.0</maven.build.helper.plugin.version>
+        <maven.source.plugin.version>3.0.1</maven.source.plugin.version>
+        <maven.failsafe.plugin.version>3.0.0-M3</maven.failsafe.plugin.version>
+        <maven.surefire.plugin.version>3.0.0-M3</maven.surefire.plugin.version>
         <maven.compiler.plugin.version>2.4</maven.compiler.plugin.version>
-        <maven.release.plugin.version>2.4.1</maven.release.plugin.version>
-        <maven.site.plugin.version>3.3</maven.site.plugin.version>
+        <maven.release.plugin.version>2.5.3</maven.release.plugin.version>
+        <maven.site.plugin.version>3.7.1</maven.site.plugin.version>
         <maven.assembly.plugin.version>2.6</maven.assembly.plugin.version>
-        <dockerfile.maven.plugin.version>1.3.6</dockerfile.maven.plugin.version>
+        <maven.enforcer.plugin.version>3.0.0-M2</maven.enforcer.plugin.version>
+        <maven.javadoc.plugin.version>3.1.0</maven.javadoc.plugin.version>
+        <dockerfile.maven.plugin.version>1.4.10</dockerfile.maven.plugin.version>
         <maven.gpg.plugin.version>1.6</maven.gpg.plugin.version>
-        <gitflow.plugin.version>1.9.0</gitflow.plugin.version>
+        <gitflow.plugin.version>1.12.0</gitflow.plugin.version>
         <nexus.staging.maven.plugin.version>1.6.8</nexus.staging.maven.plugin.version>
+        <fabric8.docker.maven.plugin.version>0.30.0</fabric8.docker.maven.plugin.version>
     </properties>
 
     <profiles>
@@ -235,16 +233,37 @@
             </plugin>
             
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
+                <!-- Generates arglines to be used by surefire/failsafe plugins downstream -->
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>${maven.enforcer.plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>enforce-versions</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <requireMavenVersion>
+                                    <version>3.0.4</version>
+                                </requireMavenVersion>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
 
@@ -262,6 +281,31 @@
                 </plugin>
                 <!-- Test -->
                 <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>${jacoco.plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <id>prepare-agent</id>
+                            <goals>
+                                <goal>prepare-agent</goal>
+                            </goals>
+                            <configuration>
+                                <propertyName>jacoco.surefire.argLine</propertyName>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>prepare-agent-integration</id>
+                            <goals>
+                                <goal>prepare-agent-integration</goal>
+                            </goals>
+                            <configuration>
+                                <propertyName>jacoco.failsafe.argLine</propertyName>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>${maven.surefire.plugin.version}</version>
@@ -269,7 +313,7 @@
                         <excludes>
                             <exclude>**IntegrationTest</exclude>
                         </excludes>
-                        <argLine>${jacoco.surefire.argLine}</argLine>
+                        <argLine>@{jacoco.surefire.argLine}</argLine>
                     </configuration>
                 </plugin>
                 <plugin>
@@ -284,17 +328,142 @@
                     <executions>
                         <execution>
                             <id>default</id>
+                            <phase>none</phase>
+                        </execution>
+                        <execution>
+                            <id>it-postgresql</id>
                             <goals>
                                 <goal>integration-test</goal>
                             </goals>
                             <configuration>
-                                <argLine>${jacoco.failsafe.argLine}</argLine>
+                                <argLine>@{jacoco.failsafe.argLine}</argLine>
+                                <environmentVariables>
+                                    <SPRING_DATASOURCE_URL>jdbc:postgresql://127.0.0.1:${postgresqlPort}/notifier</SPRING_DATASOURCE_URL>
+                                    <SPRING_DATASOURCE_USERNAME>notifier</SPRING_DATASOURCE_USERNAME>
+                                    <SPRING_DATASOURCE_PASSWORD>notifier</SPRING_DATASOURCE_PASSWORD>
+                                </environmentVariables>
+                                <reportNameSuffix>postgresql</reportNameSuffix>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>it-mysql</id>
+                            <goals>
+                                <goal>integration-test</goal>
+                            </goals>
+                            <configuration>
+                                <argLine>@{jacoco.failsafe.argLine}</argLine>
+                                <environmentVariables>
+                                    <SPRING_DATASOURCE_URL>jdbc:mysql://127.0.0.1:${mysqlPort}/notifier</SPRING_DATASOURCE_URL>
+                                    <SPRING_DATASOURCE_USERNAME>notifier</SPRING_DATASOURCE_USERNAME>
+                                    <SPRING_DATASOURCE_PASSWORD>notifier</SPRING_DATASOURCE_PASSWORD>
+                                </environmentVariables>
+                                <reportNameSuffix>mysql</reportNameSuffix>
                             </configuration>
                         </execution>
                         <execution>
                             <id>verify</id>
+                            <phase>verify</phase>
                             <goals>
                                 <goal>verify</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>build-helper-maven-plugin</artifactId>
+                    <version>3.0.0</version>
+                    <executions>
+                        <execution>
+                            <id>reserve-database-ports</id>
+                            <phase>generate-test-resources</phase>
+                            <goals>
+                                <goal>reserve-network-port</goal>
+                            </goals>
+                            <configuration>
+                                <randomPort>true</randomPort>
+                                <portNames>
+                                    <portName>postgresqlPort</portName>
+                                    <portName>mysqlPort</portName>
+                                </portNames>
+                                <minPortNumber>10000</minPortNumber>
+                                <maxPortNumber>20000</maxPortNumber>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>io.fabric8</groupId>
+                    <artifactId>docker-maven-plugin</artifactId>
+                    <configuration>
+                        <showLogs>true</showLogs>
+                        <images>
+                            <image>
+                                <name>postgres:11-alpine</name>
+                                <alias>postgresql</alias>
+                                <run>
+                                    <ports>
+                                        <port>${postgresqlPort}:5432</port>
+                                    </ports>
+                                    <env>
+                                        <POSTGRES_USER>notifier</POSTGRES_USER>
+                                        <POSTGRES_PASSWORD>notifier</POSTGRES_PASSWORD>
+                                        <POSTGRES_DB>notifier</POSTGRES_DB>
+                                    </env>
+                                    <wait>
+                                        <tcp>
+                                            <mode>direct</mode>
+                                            <host>localhost</host>
+                                            <ports>
+                                                <port>5432</port>
+                                            </ports>
+                                        </tcp>
+                                        <log>(?s)database system is ready to accept connections.*database system is ready to accept connections</log>
+                                        <time>60000</time>
+                                    </wait>
+                                    <network>
+                                        <mode>bridge</mode>
+                                    </network>
+                                </run>
+                            </image>
+                            <image>
+                                <name>mysql:8</name>
+                                <alias>mysql</alias>
+                                <run>
+                                    <ports>
+                                        <port>${mysqlPort}:3306</port>
+                                    </ports>
+                                    <env>
+                                        <!-- MYSQL_ROOT_PASSWORD is only needed cause mysql requires it to start -->
+                                        <MYSQL_ROOT_PASSWORD>notifier_root</MYSQL_ROOT_PASSWORD>
+                                        <MYSQL_USER>notifier</MYSQL_USER>
+                                        <MYSQL_PASSWORD>notifier</MYSQL_PASSWORD>
+                                        <MYSQL_DATABASE>notifier</MYSQL_DATABASE>
+                                    </env>
+                                    <wait>
+                                        <log>^.*/usr/sbin/mysqld: ready for connections. Version: '8(.*)'  socket: '/var/run/mysqld/mysqld.sock'  port: 3306.*$</log>
+                                        <time>30000</time>
+                                    </wait>
+                                    <network>
+                                        <mode>bridge</mode>
+                                    </network>
+                                </run>
+                            </image>
+                        </images>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>prepare-it-databases</id>
+                            <phase>pre-integration-test</phase>
+                            <goals>
+                                <goal>start</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>remove-it-databases</id>
+                            <phase>post-integration-test</phase>
+                            <goals>
+                                <goal>stop</goal>
                             </goals>
                         </execution>
                     </executions>
@@ -319,6 +488,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-source-plugin</artifactId>
+                    <version>${maven.source.plugin.version}</version>
                     <executions>
                         <execution>
                             <id>attach-sources</id>
@@ -331,6 +501,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>${maven.javadoc.plugin.version}</version>
                     <executions>
                         <execution>
                             <id>attach-javadocs</id>
@@ -344,19 +515,12 @@
         </pluginManagement>
     </build>
 
-
     <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>net.logstash.logback</groupId>
                 <artifactId>logstash-logback-encoder</artifactId>
                 <version>${logback.logstash.encoder.version}</version>
-            </dependency>
-            <!-- Spring dependencies -->
-            <dependency>
-                <groupId>org.springframework.kafka</groupId>
-                <artifactId>spring-kafka</artifactId>
-                <version>${spring.kafka.version}</version>
             </dependency>
             <!-- Apache commons -->
             <dependency>
@@ -405,7 +569,7 @@
             <!-- Infrastructure third party libs -->
             <dependency>
                 <groupId>com.twilio.sdk</groupId>
-                <artifactId>twilio-java-sdk</artifactId>
+                <artifactId>twilio</artifactId>
                 <version>${twillio.sdk.version}</version>
             </dependency>
             <dependency>
@@ -460,21 +624,6 @@
                 <artifactId>jdbcdslog</artifactId>
                 <version>${com.github.usc.jdbcdslog.version}</version>
             </dependency>
-            <dependency>
-                <groupId>org.ow2.asm</groupId>
-                <artifactId>asm</artifactId>
-                <version>${asm.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.google.cloud</groupId>
-                <artifactId>google-cloud-logging-logback</artifactId>
-                <version>${google.java.cloud.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.google.cloud</groupId>
-                <artifactId>google-cloud-bom</artifactId>
-            </dependency>
         </dependencies>
     </dependencyManagement>
-
 </project>	

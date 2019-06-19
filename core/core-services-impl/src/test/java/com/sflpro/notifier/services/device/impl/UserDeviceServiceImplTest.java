@@ -14,6 +14,8 @@ import org.easymock.TestSubject;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.Optional;
+
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.*;
 
@@ -380,7 +382,7 @@ public class UserDeviceServiceImplTest extends AbstractServicesUnitTest {
         // Reset
         resetAll();
         // Expectations
-        expect(userDeviceRepository.findOne(eq(deviceId))).andReturn(null).once();
+        expect(userDeviceRepository.findById(eq(deviceId))).andReturn(Optional.empty()).once();
         // Replay
         replayAll();
         // Run test scenario
@@ -404,7 +406,7 @@ public class UserDeviceServiceImplTest extends AbstractServicesUnitTest {
         // Reset
         resetAll();
         // Expectations
-        expect(userDeviceRepository.findOne(eq(deviceId))).andReturn(userDevice).once();
+        expect(userDeviceRepository.findById(eq(deviceId))).andReturn(Optional.of(userDevice)).once();
         // Replay
         replayAll();
         // Run test scenario

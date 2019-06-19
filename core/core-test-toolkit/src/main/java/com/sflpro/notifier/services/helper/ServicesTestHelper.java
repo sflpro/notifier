@@ -1,23 +1,28 @@
 package com.sflpro.notifier.services.helper;
 
 import com.sflpro.notifier.db.entities.device.UserDevice;
-import com.sflpro.notifier.db.entities.notification.*;
+import com.sflpro.notifier.db.entities.device.mobile.DeviceOperatingSystemType;
+import com.sflpro.notifier.db.entities.notification.Notification;
+import com.sflpro.notifier.db.entities.notification.NotificationProviderType;
+import com.sflpro.notifier.db.entities.notification.NotificationState;
+import com.sflpro.notifier.db.entities.notification.UserNotification;
+import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
+import com.sflpro.notifier.db.entities.notification.email.EmailNotificationProperty;
+import com.sflpro.notifier.db.entities.notification.push.*;
+import com.sflpro.notifier.db.entities.notification.push.sns.PushNotificationSnsRecipient;
 import com.sflpro.notifier.db.entities.notification.sms.SmsNotification;
 import com.sflpro.notifier.db.entities.user.User;
 import com.sflpro.notifier.services.device.UserDeviceService;
 import com.sflpro.notifier.services.device.dto.UserDeviceDto;
-import com.sflpro.notifier.db.entities.device.mobile.DeviceOperatingSystemType;
 import com.sflpro.notifier.services.notification.UserNotificationService;
 import com.sflpro.notifier.services.notification.dto.NotificationDto;
 import com.sflpro.notifier.services.notification.dto.UserNotificationDto;
 import com.sflpro.notifier.services.notification.dto.email.EmailNotificationDto;
+import com.sflpro.notifier.services.notification.dto.email.EmailNotificationPropertyDto;
 import com.sflpro.notifier.services.notification.dto.push.*;
 import com.sflpro.notifier.services.notification.dto.push.sns.PushNotificationSnsRecipientDto;
 import com.sflpro.notifier.services.notification.dto.sms.SmsNotificationDto;
 import com.sflpro.notifier.services.notification.email.EmailNotificationService;
-import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
-import com.sflpro.notifier.db.entities.notification.push.*;
-import com.sflpro.notifier.db.entities.notification.push.sns.PushNotificationSnsRecipient;
 import com.sflpro.notifier.services.notification.push.PushNotificationService;
 import com.sflpro.notifier.services.notification.push.PushNotificationSubscriptionProcessingService;
 import com.sflpro.notifier.services.notification.push.PushNotificationSubscriptionRequestService;
@@ -35,10 +40,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 /**
  * User: Ruben Dilanyan
@@ -256,22 +261,42 @@ public class ServicesTestHelper {
         notificationDto.setContent(YO_YO + YO_YO);
         notificationDto.setSubject(YO_YO);
         notificationDto.setProviderType(NotificationProviderType.SMTP_SERVER);
+        notificationDto.setTemplateName(YO_YO + "_template");
         return notificationDto;
     }
 
     public EmailNotification createEmailNotification() {
-        return createEmailNotification(createEmailNotificationDto());
+        return createEmailNotification(createEmailNotificationDto(), createEmailNotificationPropertyDtos(5));
     }
 
-    public EmailNotification createEmailNotification(final EmailNotificationDto notificationDto) {
-        return emailNotificationService.createEmailNotification(notificationDto);
+    public EmailNotification createEmailNotification(final EmailNotificationDto notificationDto, final List<EmailNotificationPropertyDto> emailNotificationPropertyDtos) {
+        return emailNotificationService.createAndSendEmailNotification(notificationDto, emailNotificationPropertyDtos);
     }
 
-    public void assertEmailNotification(final EmailNotification notification, final EmailNotificationDto notificationDto) {
+    public void assertEmailNotification(final EmailNotification notification, final EmailNotificationDto notificationDto, final List<EmailNotificationPropertyDto> emailNotificationPropertyDtos) {
         assertNotification(notification, notificationDto);
         assertEquals(notificationDto.getRecipientEmail(), notification.getRecipientEmail());
         assertEquals(notificationDto.getSenderEmail(), notification.getSenderEmail());
+        assertEquals(notificationDto.getTemplateName(), notification.getTemplateName());
         Assert.assertEquals(notificationDto.getProviderType(), notification.getProviderType());
+        assertEquals(emailNotificationPropertyDtos.size(), notification.getProperties().size());
+        emailNotificationPropertyDtos.forEach(emailNotificationPropertyDto -> {
+            final Optional<EmailNotificationProperty> emailNotificationProperty = notification.getProperties()
+                    .stream()
+                    .filter(property -> property.getPropertyKey().equals(emailNotificationPropertyDto.getPropertyKey()))
+                    .findFirst();
+            assertTrue(emailNotificationProperty.isPresent());
+            assertEquals(emailNotificationPropertyDto.getPropertyValue(), emailNotificationProperty.get().getPropertyValue());
+            assertEquals(notification.getId(), emailNotificationProperty.get().getEmailNotification().getId());
+        });
+    }
+
+    public List<EmailNotificationPropertyDto> createEmailNotificationPropertyDtos(final int count) {
+        final List<EmailNotificationPropertyDto> propertyDtos = new ArrayList<>();
+        for (int i = 0; i < count; i++) {
+            propertyDtos.add(new EmailNotificationPropertyDto("key" + i, "value" + i));
+        }
+        return propertyDtos;
     }
 
     /* SMS notification */

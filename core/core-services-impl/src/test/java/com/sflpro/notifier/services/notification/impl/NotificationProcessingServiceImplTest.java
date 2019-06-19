@@ -13,6 +13,8 @@ import org.easymock.TestSubject;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.Collections;
+
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.fail;
 
@@ -53,7 +55,14 @@ public class NotificationProcessingServiceImplTest extends AbstractServicesUnitT
         replayAll();
         // Run test scenario
         try {
-            notificationProcessingService.processNotification(null);
+            notificationProcessingService.processNotification(null, Collections.emptyMap());
+            fail("Exception should be thrown");
+        } catch (final IllegalArgumentException ex) {
+            // Expected
+        }
+        try {
+            final Long notificationId = 1L;
+            notificationProcessingService.processNotification(notificationId, null);
             fail("Exception should be thrown");
         } catch (final IllegalArgumentException ex) {
             // Expected
@@ -72,12 +81,12 @@ public class NotificationProcessingServiceImplTest extends AbstractServicesUnitT
         resetAll();
         // Expectations
         expect(notificationService.getNotificationById(eq(notificationId))).andReturn(notification).once();
-        emailNotificationProcessor.processNotification(eq(notificationId));
+        emailNotificationProcessor.processNotification(eq(notificationId), eq(Collections.emptyMap()));
         expectLastCall();
         // Replay
         replayAll();
         // Run test scenario
-        notificationProcessingService.processNotification(notificationId);
+        notificationProcessingService.processNotification(notificationId, Collections.emptyMap());
         // Verify
         verifyAll();
     }
@@ -92,12 +101,12 @@ public class NotificationProcessingServiceImplTest extends AbstractServicesUnitT
         resetAll();
         // Expectations
         expect(notificationService.getNotificationById(eq(notificationId))).andReturn(notification).once();
-        smsNotificationProcessor.processNotification(eq(notificationId));
+        smsNotificationProcessor.processNotification(eq(notificationId), eq(Collections.emptyMap()));
         expectLastCall();
         // Replay
         replayAll();
         // Run test scenario
-        notificationProcessingService.processNotification(notificationId);
+        notificationProcessingService.processNotification(notificationId, Collections.emptyMap());
         // Verify
         verifyAll();
     }
@@ -112,12 +121,12 @@ public class NotificationProcessingServiceImplTest extends AbstractServicesUnitT
         resetAll();
         // Expectations
         expect(notificationService.getNotificationById(eq(notificationId))).andReturn(notification).once();
-        pushNotificationProcessor.processNotification(eq(notificationId));
+        pushNotificationProcessor.processNotification(eq(notificationId), eq(Collections.emptyMap()));
         expectLastCall();
         // Replay
         replayAll();
         // Run test scenario
-        notificationProcessingService.processNotification(notificationId);
+        notificationProcessingService.processNotification(notificationId, Collections.emptyMap());
         // Verify
         verifyAll();
     }

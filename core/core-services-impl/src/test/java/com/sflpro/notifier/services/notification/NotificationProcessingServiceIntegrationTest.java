@@ -9,6 +9,10 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.UUID;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -18,7 +22,6 @@ import static org.junit.Assert.assertNotNull;
  * Date: 8/24/15
  * Time: 1:40 PM
  */
-@Ignore
 public class NotificationProcessingServiceIntegrationTest extends AbstractServiceIntegrationTest {
 
     /* Dependencies */
@@ -33,6 +36,7 @@ public class NotificationProcessingServiceIntegrationTest extends AbstractServic
     }
 
     /* Test methods */
+    @Ignore
     @Test
     public void testProcessNotificationWithPushNotification() {
         // Prepare data
@@ -45,7 +49,7 @@ public class NotificationProcessingServiceIntegrationTest extends AbstractServic
         Notification notification = getServicesTestHelper().createPushNotification(recipient, getServicesTestHelper().createPushNotificationDto(), getServicesTestHelper().createPushNotificationPropertyDTOs(10));
         assertEquals(NotificationState.CREATED, notification.getState());
         // Process push notification
-        notificationProcessingService.processNotification(notification.getId());
+        notificationProcessingService.processNotification(notification.getId(), Collections.emptyMap());
         flushAndClear();
         // Reload push notification
         notification = notificationService.getNotificationById(notification.getId());
@@ -61,7 +65,7 @@ public class NotificationProcessingServiceIntegrationTest extends AbstractServic
         Notification notification = getServicesTestHelper().createSmsNotification();
         assertEquals(NotificationState.CREATED, notification.getState());
         // Process push notification
-        notificationProcessingService.processNotification(notification.getId());
+        notificationProcessingService.processNotification(notification.getId(), Collections.emptyMap());
         flushAndClear();
         // Reload push notification
         notification = notificationService.getNotificationById(notification.getId());
@@ -76,8 +80,10 @@ public class NotificationProcessingServiceIntegrationTest extends AbstractServic
         // Create push notification
         Notification notification = getServicesTestHelper().createEmailNotification();
         assertEquals(NotificationState.CREATED, notification.getState());
+        final HashMap<String, String> secureProperties = new HashMap<>();
+        secureProperties.putIfAbsent("token", UUID.randomUUID().toString());
         // Process push notification
-        notificationProcessingService.processNotification(notification.getId());
+        notificationProcessingService.processNotification(notification.getId(), secureProperties);
         flushAndClear();
         // Reload push notification
         notification = notificationService.getNotificationById(notification.getId());

@@ -1,7 +1,12 @@
 package com.sflpro.notifier.services.notification.impl.email;
 
+import com.sflpro.notifier.db.repositories.utility.PersistenceUtilityService;
+import com.sflpro.notifier.email.EmailTemplateContentResolver;
 import com.sflpro.notifier.email.SimpleEmailSenderRegistry;
 import com.sflpro.notifier.email.TemplatedEmailSenderRegistry;
+import com.sflpro.notifier.services.notification.email.EmailNotificationProcessor;
+import com.sflpro.notifier.services.notification.email.EmailNotificationService;
+import com.sflpro.notifier.services.template.TemplatingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
@@ -31,5 +36,16 @@ class EmailConfiguration {
             LOGGER.info("No any component was registered for sending templated email");
         }
         return new DefaultEmailSenderProvider(simpleEmailSenderRegistries, templatedEmailSenderRegistries);
+    }
+
+    @Bean
+    EmailTemplateContentResolver emailTemplateContentResolver(final TemplatingService templatingService) {
+        return new LocalEmailTemplateContentResolver(templatingService);
+    }
+
+    @Bean
+    EmailNotificationProcessor emailNotificationProcessor(final EmailNotificationService emailNotificationService,
+                                                          final EmailSenderProvider emailSenderProvider, final PersistenceUtilityService persistenceUtilityService){
+        return new EmailNotificationProcessorImpl(emailNotificationService,emailSenderProvider,persistenceUtilityService);
     }
 }

@@ -1,14 +1,14 @@
 package com.sflpro.notifier.services.notification.impl.push.sns;
 
+import com.sflpro.notifier.db.entities.device.mobile.DeviceOperatingSystemType;
+import com.sflpro.notifier.db.entities.notification.push.PushNotification;
+import com.sflpro.notifier.db.entities.notification.push.PushNotificationProviderType;
+import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipient;
 import com.sflpro.notifier.externalclients.push.amazon.communicator.AmazonSnsApiCommunicator;
 import com.sflpro.notifier.externalclients.push.amazon.model.AmazonSNSPlatformType;
 import com.sflpro.notifier.externalclients.push.amazon.model.request.SendPushNotificationRequestMessageInformation;
 import com.sflpro.notifier.externalclients.push.amazon.model.response.SendPushNotificationResponse;
 import com.sflpro.notifier.services.common.exception.ServicesRuntimeException;
-import com.sflpro.notifier.db.entities.device.mobile.DeviceOperatingSystemType;
-import com.sflpro.notifier.db.entities.notification.push.PushNotification;
-import com.sflpro.notifier.db.entities.notification.push.PushNotificationProviderType;
-import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

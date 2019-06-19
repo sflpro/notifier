@@ -13,7 +13,8 @@ import org.springframework.context.annotation.PropertySource;
 @PropertySource("classpath:integrations-email.properties")
 @ComponentScan(basePackages = {
         "com.sflpro.notifier.externalclients.email.mandrill",
-        "com.sflpro.notifier.externalclients.email.smtp"
+        "com.sflpro.notifier.externalclients.email.smtp",
+        "com.sflpro.notifier.externalclients.email.provider.autoconfiguration"
 })
 public class EmailSenderRegistryConfiguration {
 }

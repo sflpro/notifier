@@ -12,7 +12,8 @@ import org.springframework.context.annotation.PropertySource;
 @Configuration
 @PropertySource("classpath:integrations-sms.properties")
 @ComponentScan(basePackages = {
-        "com.sflpro.notifier.externalclients.sms.twillio"
+        "com.sflpro.notifier.externalclients.sms.twillio",
+        "com.sflpro.notifier.externalclients.sms.provider.autoconfiguration"
 })
 class SmsRegistryConfiguration {
 }

@@ -23,6 +23,5 @@ public interface EmailNotificationService extends AbstractNotificationService<Em
      * @return emailNotification
      */
     @Nonnull
-    EmailNotification createEmailNotification(@Nonnull final EmailNotificationDto emailNotificationDto,
-                                              @Nonnull final List<EmailNotificationPropertyDto> emailNotificationPropertyDtos);
+    EmailNotification createAndSendEmailNotification(@Nonnull final EmailNotificationDto emailNotificationDto, @Nonnull final List<EmailNotificationPropertyDto> emailNotificationPropertyDtos);
 }

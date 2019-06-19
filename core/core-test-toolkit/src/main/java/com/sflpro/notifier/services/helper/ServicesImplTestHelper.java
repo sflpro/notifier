@@ -27,10 +27,7 @@ import com.sflpro.notifier.services.notification.dto.sms.SmsNotificationProperty
 import com.sflpro.notifier.services.user.dto.UserDto;
 import org.junit.Assert;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertNotNull;
@@ -106,6 +103,7 @@ public class ServicesImplTestHelper {
         notificationDto.setSubject("YoYo");
         notificationDto.setProviderType(NotificationProviderType.SMTP_SERVER);
         notificationDto.setTemplateName("YoTemplate");
+        notificationDto.setSecureProperties(Collections.singletonMap("token", UUID.randomUUID().toString()));
         return notificationDto;
     }
 

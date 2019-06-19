@@ -116,7 +116,7 @@ public abstract class Notification extends AbstractDomainUuIdAwareEntityModel {
         this.providerExternalUuId = providerExternalUuId;
     }
 
-    public boolean isHasSecureProperties() {
+    public boolean hasSecureProperties() {
         return hasSecureProperties;
     }
 
@@ -148,7 +148,7 @@ public abstract class Notification extends AbstractDomainUuIdAwareEntityModel {
         builder.append(this.getContent(), that.getContent());
         builder.append(this.getSubject(), that.getSubject());
         builder.append(this.getProviderExternalUuId(), that.getProviderExternalUuId());
-        builder.append(this.isHasSecureProperties(), that.isHasSecureProperties());
+        builder.append(this.hasSecureProperties(), that.hasSecureProperties());
         return builder.isEquals();
     }
 
@@ -163,7 +163,7 @@ public abstract class Notification extends AbstractDomainUuIdAwareEntityModel {
         builder.append(this.getContent());
         builder.append(this.getSubject());
         builder.append(this.getProviderExternalUuId());
-        builder.append(this.isHasSecureProperties());
+        builder.append(this.hasSecureProperties());
         return builder.build();
     }
 
@@ -179,7 +179,7 @@ public abstract class Notification extends AbstractDomainUuIdAwareEntityModel {
         builder.append("content", this.getContent());
         builder.append("subject", this.getSubject());
         builder.append("providerExternalUuId", this.getProviderExternalUuId());
-        builder.append("has_secure_properties", this.isHasSecureProperties());
+        builder.append("has_secure_properties", this.hasSecureProperties());
         return builder.build();
     }
 }

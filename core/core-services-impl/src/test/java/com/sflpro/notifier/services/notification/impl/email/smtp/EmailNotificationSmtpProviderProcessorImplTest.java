@@ -70,7 +70,7 @@ public class EmailNotificationSmtpProviderProcessorImplTest extends AbstractServ
             // Expected
         }
         try {
-//            final EmailNotification emailNotification = getServicesImplTestHelper().createEmailNotification();
+//            final EmailNotification emailNotification = getServicesImplTestHelper().createAndSendEmailNotification();
             emailNotification.setProviderType(NotificationProviderType.SMTP_SERVER);
             emailNotification.setTemplateName(null);
             emailNotification.setContent(null);

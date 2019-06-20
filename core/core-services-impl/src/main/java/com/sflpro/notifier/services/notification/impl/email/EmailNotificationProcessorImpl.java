@@ -38,7 +38,8 @@ class EmailNotificationProcessorImpl implements EmailNotificationProcessor {
     /* Dependencies */
     private final EmailNotificationService emailNotificationService;
     private final PersistenceUtilityService persistenceUtilityService;
-    private final EmailSenderProvider emailSenderProvider;;
+    private final EmailSenderProvider emailSenderProvider;
+
     /* Constructors */
     EmailNotificationProcessorImpl(final EmailNotificationService emailNotificationService,
                                    final EmailSenderProvider emailSenderProvider, final PersistenceUtilityService persistenceUtilityService) {

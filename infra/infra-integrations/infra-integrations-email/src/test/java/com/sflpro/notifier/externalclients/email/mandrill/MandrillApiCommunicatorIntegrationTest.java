@@ -7,6 +7,8 @@ import com.sflpro.notifier.externalclients.email.mandrill.exception.MandrillEmai
 import com.sflpro.notifier.externalclients.email.test.AbstractEmailNotificationIntegrationTest;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
@@ -15,6 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 /**
  * Company: SFL LLC
@@ -25,6 +28,8 @@ import static org.junit.Assert.assertEquals;
 @ContextConfiguration(value = {"classpath:applicationContext-externalclients-email-integrationtest.xml"})
 @TestPropertySource(properties = {"mandrill.service.token=sx3Ielt1VEGrmi_ANXEFcg"})
 public class MandrillApiCommunicatorIntegrationTest extends AbstractEmailNotificationIntegrationTest {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(MandrillApiCommunicatorIntegrationTest.class);
 
     /* Dependencies */
     @Autowired
@@ -39,11 +44,16 @@ public class MandrillApiCommunicatorIntegrationTest extends AbstractEmailNotific
     public void testSendEmailTemplate() {
         // Prepare data
         final String templateName = "integration-test-template";
-        Map<String, Object> templateContent = new HashMap<>();
+        final Map<String, Object> templateContent = new HashMap<>();
         templateContent.put("token", "super-secure-token");
         final TemplatedEmailMessage message = TemplatedEmailMessage.of("some_dummy_mail_from@weadapt.digital", "some_dummy_mail@weadapt.digital", templateName, templateContent);
         // Execute send request
-        mandrillApiCommunicator.sendEmailTemplate(message);
+        try {
+            mandrillApiCommunicator.sendEmailTemplate(message);
+        } catch (final MandrillEmailClientRuntimeException ex) {
+            LOGGER.error("Mandrill API call failed.", ex);
+            fail(ex.getMessage());
+        }
     }
 
     @Test

@@ -17,6 +17,6 @@ public interface TemplatingService {
      * @param parameters parameters
      * @return Generated content
      */
-    String getContentForTemplate(@Nonnull final String templateName, @Nonnull final Map<String, ? extends Object> parameters);
+    String getContentForTemplate(@Nonnull final String templateName, @Nonnull final Map<String, ?> parameters);
 
 }

@@ -1,6 +1,5 @@
 package com.sflpro.notifier.db.repositories.utility;
 
-import com.sflpro.notifier.db.repositories.utility.impl.PersistenceUtilityServiceImpl;
 import org.hibernate.Hibernate;
 import org.hibernate.proxy.HibernateProxy;
 import org.slf4j.Logger;
@@ -16,7 +15,7 @@ import javax.annotation.Nonnull;
  */
 final class EntityInitializer {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(PersistenceUtilityServiceImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(EntityInitializer.class);
 
     private EntityInitializer() {
         super();
@@ -24,7 +23,7 @@ final class EntityInitializer {
 
     static  <T> T initializeAndUnProxy(@Nonnull final T entity) {
         Assert.notNull(entity, "Entity should not be null");
-        LOGGER.debug("UnProxying entity - {}", new Object[]{entity});
+        LOGGER.debug("UnProxying entity - {}", entity);
         // UnProxied entity
         T unProxiedEntity = entity;
         // Initialize

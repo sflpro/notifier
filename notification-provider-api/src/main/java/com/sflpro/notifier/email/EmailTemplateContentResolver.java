@@ -9,5 +9,5 @@ import java.util.Map;
  */
 public interface EmailTemplateContentResolver {
 
-    EmailTemplateContent resolve(final String templateId, final Map<String, ? extends Object> variables);
+    EmailTemplateContent resolve(final String templateId, final Map<String, ?> variables);
 }

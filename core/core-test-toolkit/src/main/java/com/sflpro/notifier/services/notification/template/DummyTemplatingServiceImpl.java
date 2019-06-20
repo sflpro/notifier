@@ -17,7 +17,7 @@ import java.util.Map;
 public class DummyTemplatingServiceImpl implements TemplatingService {
 
     @Override
-    public String getContentForTemplate(@Nonnull final String templateName, @Nonnull final Map<String, ? extends Object> parameters) {
+    public String getContentForTemplate(@Nonnull final String templateName, @Nonnull final Map<String, ?> parameters) {
         Assert.notNull(templateName, "templateName should not be null");
         Assert.notNull(parameters, "parameters should not be null");
         return "Generated content";

@@ -24,7 +24,7 @@ class LocalEmailTemplateContentResolver implements EmailTemplateContentResolver 
     }
 
     @Override
-    public EmailTemplateContent resolve(final String templateId, final Map<String, ? extends Object> variables) {
+    public EmailTemplateContent resolve(final String templateId, final Map<String, ?> variables) {
         final String subject = templatingService.getContentForTemplate(templateId + SUBJECT_SUFFIX, variables);
         final String body = templatingService.getContentForTemplate(templateId + BODY_SUFFIX, variables);
         return EmailTemplateContent.of(subject, body);

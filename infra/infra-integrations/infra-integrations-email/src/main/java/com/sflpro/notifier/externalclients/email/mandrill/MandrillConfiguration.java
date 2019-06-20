@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.Assert;
 
-import static com.sflpro.notifier.externalclients.email.mandrill.MandrillConfiguration.TOKEN_PLACE_HOLDER;
 
 /**
  * Created by Hayk Mkrtchyan.
@@ -18,7 +17,7 @@ import static com.sflpro.notifier.externalclients.email.mandrill.MandrillConfigu
  * Time: 11:39 AM
  */
 @Configuration
-@ConditionalOnProperty(name = TOKEN_PLACE_HOLDER)
+@ConditionalOnProperty(name = MandrillConfiguration.TOKEN_PLACE_HOLDER)
 class MandrillConfiguration {
 
     static final String TOKEN_PLACE_HOLDER = "mandrill.service.token";

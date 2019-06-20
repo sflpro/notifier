@@ -34,7 +34,7 @@ public class TemplatingServiceImpl implements TemplatingService {
     }
 
     @Override
-    public String getContentForTemplate(@Nonnull final String templateName, @Nonnull final Map<String, ? extends Object> parameters) {
+    public String getContentForTemplate(@Nonnull final String templateName, @Nonnull final Map<String, ?> parameters) {
         Assert.notNull(templateName, "Template name should not be null");
         Assert.notNull(parameters, "Parameters should not be null");
         try {

@@ -14,9 +14,9 @@ import java.util.Map;
 final class ImmutableTemplatedEmailMessage extends AbstractEmailMessage implements TemplatedEmailMessage {
 
     private final String templateId;
-    private  final Map<String,? extends Object> variables;
+    private final Map<String, ?> variables;
 
-    ImmutableTemplatedEmailMessage(final String from, final String to, final String templateId,final Map<String, ? extends Object> variables) {
+    ImmutableTemplatedEmailMessage(final String from, final String to, final String templateId, final Map<String, ?> variables) {
         super(from, to);
         this.templateId = templateId;
         this.variables = variables;
@@ -50,7 +50,7 @@ final class ImmutableTemplatedEmailMessage extends AbstractEmailMessage implemen
     public String toString() {
         return new ToStringBuilder(this)
                 .append("templateId", templateId)
-                .append("variables",variables)
+                .append("variables", variables)
                 .toString();
     }
 
@@ -60,7 +60,7 @@ final class ImmutableTemplatedEmailMessage extends AbstractEmailMessage implemen
     }
 
     @Override
-    public Map<String, ? extends Object> variables() {
+    public Map<String, ?> variables() {
         return variables;
     }
 }

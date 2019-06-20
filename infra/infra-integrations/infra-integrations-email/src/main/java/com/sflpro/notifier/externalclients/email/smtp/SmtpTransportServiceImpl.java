@@ -1,5 +1,7 @@
 package com.sflpro.notifier.externalclients.email.smtp;
 
+import org.apache.commons.lang3.concurrent.ConcurrentException;
+import org.apache.commons.lang3.concurrent.LazyInitializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,7 +11,6 @@ import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Properties;
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * User: Ruben Dilanyan
@@ -54,23 +55,26 @@ public class SmtpTransportServiceImpl implements SmtpTransportService {
     private String smtpPassword;
 
     /* Properties */
-    private final ReentrantLock smtpSessionInitializationLock;
 
-    private volatile Session smtpSession;
+    private final LazyInitializer<Session> smtpSessionHolder = new LazyInitializer<Session>() {
+        @Override
+        protected Session initialize() {
+            return createSmtpSession();
+        }
+    };
 
 
     /* Constructors */
     SmtpTransportServiceImpl() {
-        this.smtpSessionInitializationLock = new ReentrantLock();
         LOGGER.debug("Initializing smtp transporter service");
     }
 
     @Override
     public void sendMessageOverSmtp(final String from, final String to, final String subject, final String body) {
-        Assert.hasText(from, "from should not be null");
-        Assert.hasText(to, "from should not be null");
-        Assert.hasText(subject, "from should not be null");
-        Assert.hasText(body, "from should not be null");
+        Assert.hasText(from, "from should not be null or empty.");
+        Assert.hasText(to, "to should not be null or empty.");
+        Assert.hasText(subject, "subject should not be null or empty.");
+        Assert.hasText(body, "body should not be null or empty.");
         try {
             /* Create and configure email message */
             final MimeMessage message = new MimeMessage(getSmtpSession());
@@ -81,46 +85,34 @@ public class SmtpTransportServiceImpl implements SmtpTransportService {
             /* Transport message over smtp */
             Transport.send(message);
         } catch (final MessagingException ex) {
-            LOGGER.error("Unable to send email: Original stack trace - ", ex);
+            LOGGER.error("Unable to send email from {} to {} with subject {} with body {}", from, to, subject, body);
             throw new SmtpTransportException(smtpHost, smtpUsername, ex);
         }
     }
 
-    /* Utility methods */
-
-    /**
-     * Create or return instance of smtp session
-     *
-     * @return smtpSession
-     */
     private Session getSmtpSession() {
-        if (smtpSession != null) {
-            return this.smtpSession;
-        }
-        smtpSessionInitializationLock.lock();
         try {
-            if (smtpSession != null) {
-                return this.smtpSession;
-            }
-            /* Set properties */
-            Properties properties = System.getProperties();
-            properties.put(PROPERTY_KEY_STARTTLS_ENABLE, "true");
-            properties.put(PROPERTY_KEY_HOST, smtpHost);
-            properties.put(PROPERTY_KEY_PORT, smtpPort);
-            /* Set socket read smtpTimeout */
-            properties.put(PROPERTY_KEY_TIMEOUT, smtpTimeout);
-            /* Create new smtp session with authentication */
-            if (smtpUsername != null && smtpPassword != null) {
-                properties.put(PROPERTY_KEY_AUTH, "true");
-                this.smtpSession = Session.getInstance(properties, new UsernamePasswordAuthenticator(smtpUsername, smtpPassword));
-            } else {
-                properties.put(PROPERTY_KEY_AUTH, "false");
-                this.smtpSession = Session.getInstance(properties);
-            }
-        } finally {
-            smtpSessionInitializationLock.unlock();
+            return smtpSessionHolder.get();
+        } catch (final ConcurrentException ex) {
+            throw new IllegalStateException("Unable to initialize smtp session", ex);
         }
-        return smtpSession;
+    }
+
+    private Session createSmtpSession() {
+        final Properties properties = System.getProperties();
+        properties.put(PROPERTY_KEY_STARTTLS_ENABLE, "true");
+        properties.put(PROPERTY_KEY_HOST, smtpHost);
+        properties.put(PROPERTY_KEY_PORT, smtpPort);
+        /* Set socket read smtpTimeout */
+        properties.put(PROPERTY_KEY_TIMEOUT, smtpTimeout);
+        /* Create new smtp session with authentication */
+        if (smtpUsername != null && smtpPassword != null) {
+            properties.put(PROPERTY_KEY_AUTH, "true");
+            return Session.getInstance(properties, new UsernamePasswordAuthenticator(smtpUsername, smtpPassword));
+        } else {
+            properties.put(PROPERTY_KEY_AUTH, "false");
+            return Session.getInstance(properties);
+        }
     }
 
     /* Inner classes */

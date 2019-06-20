@@ -13,7 +13,10 @@ interface SmtpTransportService {
     /**
      * Perform email over SMTP
      *
-     * @param message
+     * @param from
+     * @param to
+     * @param subject
+     * @param body
      */
     void sendMessageOverSmtp(final String from, final String to, final String subject, final String body);
 }

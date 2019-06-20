@@ -44,7 +44,7 @@ class SmtpEmailSenderConfiguration {
     @Bean("smtpSimpleEmailSenderRegistry")
     @ConditionalOnBean(name = "smtpTemplatedEmailSender")
     TemplatedEmailSenderRegistry smtpTemplatedEmailSenderRegistry(final TemplatedEmailSender smtpTemplatedEmailSender) {
-        return TemplatedEmailSenderRegistry.of("smtp_server", smtpTemplatedEmailSender);
+        return TemplatedEmailSenderRegistry.of(SMTP_PROVIDER_REGISTRY_NAME, smtpTemplatedEmailSender);
     }
 
 }

@@ -6,10 +6,8 @@ import com.sflpro.notifier.externalclients.sms.twillio.exception.TwillioClientRu
 import com.sflpro.notifier.externalclients.sms.twillio.model.request.SendMessageRequest;
 import com.sflpro.notifier.externalclients.sms.twillio.model.response.SendMessageResponse;
 import org.apache.commons.lang3.StringUtils;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.TestPropertySource;
 
 import static org.junit.Assert.*;
 
@@ -19,8 +17,6 @@ import static org.junit.Assert.*;
  * Date: 3/15/15
  * Time: 11:03 AM
  */
-@TestPropertySource(properties = {"twillio.account.sid = ACtwillio_account_sid2222222222222",
-        "twillio.account.authToken = twillio_account_auth_token"})
 public class TwillioApiCommunicatorIntegrationTest extends AbstractSmsIntegrationTest {
 
     /* Constants */
@@ -46,7 +42,6 @@ public class TwillioApiCommunicatorIntegrationTest extends AbstractSmsIntegratio
 
     /* Test methods */
     @Test
-    @Ignore
     public void testSendMessage() {
         /* Test data */
         final SendMessageRequest sendMessageRequest = createValidSendMessageRequest();

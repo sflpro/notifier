@@ -214,6 +214,6 @@ public class EmailNotificationProcessorImplTest extends AbstractServicesUnitTest
     private static void assertTemplatedEmailMessage(final TemplatedEmailMessage message, final EmailNotification notification) {
         assertEquals(notification.getSenderEmail(), message.from());
         assertEquals(notification.getRecipientEmail(), message.to());
-        assertEquals(notification.getTemplateName(), message.getTemplateId());
+        assertEquals(notification.getTemplateName(), message.templateId());
     }
 }

@@ -33,7 +33,7 @@ final class ImmutableTemplatedEmailMessage extends AbstractEmailMessage implemen
         final TemplatedEmailMessage that = (TemplatedEmailMessage) o;
         return new EqualsBuilder()
                 .appendSuper(super.equals(o))
-                .append(templateId, that.getTemplateId())
+                .append(templateId, that.templateId())
                 .append(variables, that.variables())
                 .isEquals();
     }
@@ -55,7 +55,7 @@ final class ImmutableTemplatedEmailMessage extends AbstractEmailMessage implemen
     }
 
     @Override
-    public String getTemplateId() {
+    public String templateId() {
         return templateId;
     }
 

@@ -74,40 +74,45 @@ public class MandrillApiCommunicatorImpl implements MandrillApiCommunicator {
         assertMandrillEmailModel(message);
         LOGGER.debug("Requested to send email via mandrill, email model - {}", message);
         // Create email send to customer request model
-        MandrillMessage mandrillMessage = createMandrillMessage(message);
+        final MandrillMessage mandrillMessage = createMandrillMessage(message);
         try {
             LOGGER.debug("Performing send email request with parameters - {}", message);
             // Execute request
-            final MandrillMessageStatus[] mandrillMessageStatuses = mandrillMessagesApi.sendTemplate(message.getTemplateId(),
+            final MandrillMessageStatus[] mandrillMessageStatuses = mandrillMessagesApi.sendTemplate(message.templateId(),
                     null, mandrillMessage, false);
-            // Extract response
-            for (MandrillMessageStatus mandrillMessageStatus : mandrillMessageStatuses) {
-                switch (mandrillMessageStatus.getStatus()) {
-                    case "rejected":
-                        LOGGER.debug("Email '{}' was not sent successfully to '{}', due to '{}' rejection reason.", message.getTemplateId(),
-                                message.to(), mandrillMessageStatus.getRejectReason());
-
-                        throw new MandrillMessageRejectedException(mandrillMessageStatus);
-                    case "invalid":
-                        LOGGER.debug("Email '{}' was not sent successfully to '{}', since it was considered invalid.", message.getTemplateId(),
-                                message.to());
-
-                        throw new MandrillMessageInvalidException(mandrillMessageStatus);
-                    default:
-                        LOGGER.info("Email '{}' was sent successfully to '{}' with '{}' reference number.", message.getTemplateId(),
-                                mandrillMessageStatus.getEmail(), mandrillMessageStatus.getId());
-                        break;
-                }
-            }
+            // Handle response
+            handleResult(mandrillMessageStatuses, message.templateId(), message.to());
         } catch (final MandrillApiError | IOException e) {
             LOGGER.error("Error occurred while sending sms message", e);
             throw new MandrillEmailClientRuntimeException("MandrillApiError", e);
         }
     }
 
+
+
     /* Utility methods */
+    private static void handleResult(final MandrillMessageStatus[] mandrillMessageStatuses,
+                                     final String templateId, final String recipientEmail) {
+        for (final MandrillMessageStatus mandrillMessageStatus : mandrillMessageStatuses) {
+            switch (mandrillMessageStatus.getStatus()) {
+                case "rejected":
+                    LOGGER.debug("Email '{}' was not sent successfully to '{}', due to '{}' rejection reason.", templateId,
+                            recipientEmail, mandrillMessageStatus.getRejectReason());
+                    throw new MandrillMessageRejectedException(mandrillMessageStatus);
+                case "invalid":
+                    LOGGER.debug("Email '{}' was not sent successfully to '{}', since it was considered invalid.", templateId,
+                            recipientEmail);
+                    throw new MandrillMessageInvalidException(mandrillMessageStatus);
+                default:
+                    LOGGER.info("Email '{}' was sent successfully to '{}' with '{}' reference number.", templateId,
+                            mandrillMessageStatus.getEmail(), mandrillMessageStatus.getId());
+                    break;
+            }
+        }
+    }
+
     private static void assertMandrillEmailModel(final TemplatedEmailMessage sendEmailRequest) {
         Assert.notNull(sendEmailRequest, "Mandrill email model should not be null");
-        Assert.notNull(sendEmailRequest.getTemplateId(), "Mandrill email model template should not be null");
+        Assert.notNull(sendEmailRequest.templateId(), "Mandrill email model template should not be null");
     }
 }

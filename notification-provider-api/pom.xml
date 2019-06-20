@@ -15,8 +15,8 @@
 
     <properties>
         <sonar.exclusions>
-            **/email/*.java
-            **/sms/*.java
+            **/email/**
+            **/sms/**
         </sonar.exclusions>
     </properties>
 

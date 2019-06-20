@@ -13,10 +13,10 @@ public interface TemplatedEmailMessage extends EmailMessage {
 
     String templateId();
 
-    //NOSONAR
+    @SuppressWarnings("squid:S1452")
     Map<String, ?> variables();
 
-    static TemplatedEmailMessage of(final String from, final String to, final String templateId, final Map<String,?> variables) {
+    static TemplatedEmailMessage of(final String from, final String to, final String templateId, final Map<String, ?> variables) {
         Assert.hasText(from, "Null or empty text was passed as an argument for parameter 'from'.");
         Assert.hasText(to, "Null or empty text was passed as an argument for parameter 'to'.");
         Assert.hasText(templateId, "Null or empty text was passed as an argument for parameter 'templateId'.");

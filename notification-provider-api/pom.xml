@@ -13,6 +13,13 @@
 
     <artifactId>notification-provider-api</artifactId>
 
+    <properties>
+        <sonar.exclusions>
+            **/email/*.java
+            **/sms/*.java
+        </sonar.exclusions>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework</groupId>

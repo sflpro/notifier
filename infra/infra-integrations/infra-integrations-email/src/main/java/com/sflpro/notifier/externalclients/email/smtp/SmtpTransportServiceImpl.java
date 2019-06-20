@@ -92,23 +92,6 @@ public class SmtpTransportServiceImpl implements SmtpTransportService {
         }
     }
 
-    private Session createSmtpSession() {
-        final Properties properties = System.getProperties();
-        properties.put(PROPERTY_KEY_STARTTLS_ENABLE, "true");
-        properties.put(PROPERTY_KEY_HOST, smtpHost);
-        properties.put(PROPERTY_KEY_PORT, smtpPort);
-        /* Set socket read smtpTimeout */
-        properties.put(PROPERTY_KEY_TIMEOUT, smtpTimeout);
-        /* Create new smtp session with authentication */
-        if (smtpUsername != null && smtpPassword != null) {
-            properties.put(PROPERTY_KEY_AUTH, "true");
-            return Session.getInstance(properties, new UsernamePasswordAuthenticator(smtpUsername, smtpPassword));
-        } else {
-            properties.put(PROPERTY_KEY_AUTH, "false");
-            return Session.getInstance(properties);
-        }
-    }
-
     /* Inner classes */
     private final class SmtpSessionHolder extends LazyInitializer<Session> {
 

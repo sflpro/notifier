@@ -55,7 +55,7 @@ public class SmsNotificationResource {
         Assert.notNull(request, "Request model should not be null");
         final List<ErrorResponseModel> errors = request.validateRequiredFields();
         if (!errors.isEmpty()) {
-            return Response.status(Response.Status.BAD_REQUEST).entity(new ResultResponseModel<CreateSmsNotificationResponse>(errors)).build();
+            return Response.ok(new ResultResponseModel<CreateSmsNotificationResponse>(errors)).build();
         }
         LOGGER.debug("Processing create SMS notification request - {}", request);
         final SmsNotificationDto smsNotificationDto = buildSmsNotificationDto(request);

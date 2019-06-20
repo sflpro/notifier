@@ -11,7 +11,7 @@ import java.util.Map;
  */
 public interface TemplatedEmailMessage extends EmailMessage {
 
-    String templateId();
+    String getTemplateId();
 
     Map<String, ?> variables();
 

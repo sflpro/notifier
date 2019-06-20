@@ -22,7 +22,7 @@ class SmtpTemplatedEmailSender implements TemplatedEmailSender {
 
     @Override
     public void send(final TemplatedEmailMessage message) {
-        final EmailTemplateContent content = emailTemplateContentResolver.resolve(message.templateId(), message.variables());
+        final EmailTemplateContent content = emailTemplateContentResolver.resolve(message.getTemplateId(), message.variables());
         smtpTransportService.sendMessageOverSmtp(message.from(),
                 message.to(),
                 content.subject(),

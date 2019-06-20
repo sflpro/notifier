@@ -1,10 +1,10 @@
 package com.sflpro.notifier.services.notification.impl.sms;
 
+import com.sflpro.notifier.db.entities.NotificationProperty;
 import com.sflpro.notifier.db.entities.notification.Notification;
 import com.sflpro.notifier.db.entities.notification.NotificationProviderType;
 import com.sflpro.notifier.db.entities.notification.NotificationState;
 import com.sflpro.notifier.db.entities.notification.sms.SmsNotification;
-import com.sflpro.notifier.db.entities.notification.sms.SmsNotificationProperty;
 import com.sflpro.notifier.db.repositories.utility.PersistenceUtilityService;
 import com.sflpro.notifier.externalclients.sms.twillio.communicator.TwillioApiCommunicator;
 import com.sflpro.notifier.externalclients.sms.twillio.model.request.SendMessageRequest;
@@ -175,7 +175,7 @@ public class SmsNotificationProcessorImpl implements SmsNotificationProcessor {
             } else {
                 final Map<String, String> parameters = smsNotification.getProperties()
                         .stream()
-                        .collect(Collectors.toMap(SmsNotificationProperty::getPropertyKey, SmsNotificationProperty::getPropertyValue));
+                        .collect(Collectors.toMap(NotificationProperty::getPropertyKey, NotificationProperty::getPropertyValue));
                 parameters.putAll(secureProperties);
                 final String content = templatingService.getContentForTemplate(smsNotification.getTemplateName(), parameters);
                 return sendMessage(getAccountSenderNumber(), smsNotification.getRecipientMobileNumber(), content);

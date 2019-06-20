@@ -19,8 +19,8 @@ import com.sflpro.notifier.db.entities.notification.push.PushNotificationSubscri
 import com.sflpro.notifier.db.entities.user.User;
 import com.sflpro.notifier.services.device.UserDeviceService;
 import com.sflpro.notifier.services.device.dto.UserDeviceDto;
+import com.sflpro.notifier.services.notification.dto.NotificationPropertyDto;
 import com.sflpro.notifier.services.notification.dto.push.PushNotificationDto;
-import com.sflpro.notifier.services.notification.dto.push.PushNotificationPropertyDto;
 import com.sflpro.notifier.services.notification.dto.push.PushNotificationSubscriptionRequestDto;
 import com.sflpro.notifier.services.notification.event.push.StartPushNotificationSubscriptionRequestProcessingEvent;
 import com.sflpro.notifier.services.notification.event.sms.StartSendingNotificationEvent;
@@ -81,9 +81,9 @@ public class PushNotificationServiceFacadeImpl extends AbstractNotificationServi
         final User user = getUserService().getOrCreateUserForUuId(request.getUserUuId());
         // Create push notification DTO
         final PushNotificationDto pushNotificationDto = new PushNotificationDto(request.getBody(), request.getSubject(), request.getClientIpAddress());
-        final List<PushNotificationPropertyDto> propertyDTOs = request.getProperties()
+        final List<NotificationPropertyDto> propertyDTOs = request.getProperties()
                 .stream()
-                .map(propertyModel -> new PushNotificationPropertyDto(propertyModel.getPropertyKey(), propertyModel.getPropertyValue()))
+                .map(propertyModel -> new NotificationPropertyDto(propertyModel.getPropertyKey(), propertyModel.getPropertyValue()))
                 .collect(Collectors.toCollection(ArrayList::new));
         // Create push notifications
         final List<PushNotification> pushNotifications = pushNotificationService.createNotificationsForUserActiveRecipients(user.getId(), pushNotificationDto, propertyDTOs);

@@ -3,8 +3,8 @@ package com.sflpro.notifier.services.notification.sms;
 import com.sflpro.notifier.db.entities.notification.sms.SmsNotification;
 import com.sflpro.notifier.services.notification.AbstractNotificationService;
 import com.sflpro.notifier.services.notification.AbstractNotificationServiceIntegrationTest;
+import com.sflpro.notifier.services.notification.dto.NotificationPropertyDto;
 import com.sflpro.notifier.services.notification.dto.sms.SmsNotificationDto;
-import com.sflpro.notifier.services.notification.dto.sms.SmsNotificationPropertyDto;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -31,7 +31,7 @@ public class SmsNotificationServiceIntegrationTest extends AbstractNotificationS
     public void testCreateSmsNotification() {
         // Prepare data
         final SmsNotificationDto notificationDto = getServicesTestHelper().createSmsNotificationDto();
-        final List<SmsNotificationPropertyDto> smsNotificationPropertyDtos = getServicesTestHelper().createSmsNotificationPropertyDtos(3);
+        final List<NotificationPropertyDto> smsNotificationPropertyDtos = getServicesTestHelper().createSmsNotificationPropertyDtos(3);
         // Create notification
         SmsNotification smsNotification = smsNotificationService.createSmsNotification(notificationDto, smsNotificationPropertyDtos);
         getServicesTestHelper().assertSmsNotification(smsNotification, notificationDto, smsNotificationPropertyDtos);

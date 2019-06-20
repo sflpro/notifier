@@ -1,13 +1,12 @@
 package com.sflpro.notifier.db.entities;
 
-import com.sflpro.notifier.db.entities.notification.email.EmailNotificationProperty;
+import com.sflpro.notifier.db.entities.notification.Notification;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.annotations.Type;
 
-import javax.persistence.Column;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 
 /**
  * User: Syuzanna Eprikyan
@@ -15,8 +14,9 @@ import javax.persistence.MappedSuperclass;
  * Date: 6/10/19
  * Time: 2:24 PM
  */
-@MappedSuperclass
-public abstract class NotificationProperty extends AbstractDomainEntityModel {
+@Entity
+@Table(name = "notification_property")
+public class NotificationProperty extends AbstractDomainEntityModel {
     private static final long serialVersionUID = 3260222187701442985L;
 
     /* Properties */
@@ -26,6 +26,10 @@ public abstract class NotificationProperty extends AbstractDomainEntityModel {
     @Column(name = "property_value", nullable = false)
     @Type(type = "text")
     private String propertyValue;
+
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "notification_id", nullable = false, unique = false)
+    private Notification notification;
 
     /* Properties getters and setters */
     public String getPropertyKey() {
@@ -44,30 +48,40 @@ public abstract class NotificationProperty extends AbstractDomainEntityModel {
         this.propertyValue = propertyValue;
     }
 
+    public Notification getNotification() {
+        return notification;
+    }
+
+    public void setNotification(final Notification notification) {
+        this.notification = notification;
+    }
+
     /* Equals, HashCode and ToString */
     @Override
     public boolean equals(final Object o) {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof EmailNotificationProperty)) {
+        if (!(o instanceof NotificationProperty)) {
             return false;
         }
-        final EmailNotificationProperty that = (EmailNotificationProperty) o;
-        final EqualsBuilder builder = new EqualsBuilder();
-        builder.appendSuper(super.equals(that));
-        builder.append(this.getPropertyKey(), that.getPropertyKey());
-        builder.append(this.getPropertyValue(), that.getPropertyValue());
-        return builder.isEquals();
+        final NotificationProperty that = (NotificationProperty) o;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(o))
+                .append(propertyKey, that.propertyKey)
+                .append(propertyValue, that.propertyValue)
+                .append(getIdOrNull(notification), getIdOrNull(that.notification))
+                .isEquals();
     }
 
     @Override
     public int hashCode() {
-        final HashCodeBuilder builder = new HashCodeBuilder();
-        builder.appendSuper(super.hashCode());
-        builder.append(this.getPropertyKey());
-        builder.append(this.getPropertyValue());
-        return builder.build();
+        return new HashCodeBuilder()
+                .appendSuper(super.hashCode())
+                .append(propertyKey)
+                .append(propertyValue)
+                .append(notification)
+                .toHashCode();
     }
 
     @Override

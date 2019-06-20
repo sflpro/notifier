@@ -2,6 +2,7 @@ package com.sflpro.notifier.db.entities.notification.push;
 
 
 import com.sflpro.notifier.db.entities.AbstractDomainEntityModel;
+import com.sflpro.notifier.db.entities.NotificationProperty;
 import com.sflpro.notifier.db.entities.notification.Notification;
 import com.sflpro.notifier.db.entities.notification.NotificationType;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -30,8 +31,8 @@ public class PushNotification extends Notification {
     @JoinColumn(name = "recipient_id", nullable = false, unique = false)
     private PushNotificationRecipient recipient;
 
-    @OneToMany(mappedBy = "pushNotification", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<PushNotificationProperty> properties;
+    @OneToMany(mappedBy = "notification", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<NotificationProperty> properties;
 
     /* Constructors */
     public PushNotification() {
@@ -52,11 +53,11 @@ public class PushNotification extends Notification {
         this.recipient = subscription;
     }
 
-    public Set<PushNotificationProperty> getProperties() {
+    public Set<NotificationProperty> getProperties() {
         return properties;
     }
 
-    public void setProperties(final Set<PushNotificationProperty> properties) {
+    public void setProperties(final Set<NotificationProperty> properties) {
         this.properties = properties;
     }
 

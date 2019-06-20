@@ -1,11 +1,11 @@
 package com.sflpro.notifier.services.notification.impl.sms;
 
+import com.sflpro.notifier.db.entities.NotificationProperty;
 import com.sflpro.notifier.db.entities.notification.sms.SmsNotification;
-import com.sflpro.notifier.db.entities.notification.sms.SmsNotificationProperty;
 import com.sflpro.notifier.db.repositories.repositories.notification.AbstractNotificationRepository;
 import com.sflpro.notifier.db.repositories.repositories.notification.sms.SmsNotificationRepository;
+import com.sflpro.notifier.services.notification.dto.NotificationPropertyDto;
 import com.sflpro.notifier.services.notification.dto.sms.SmsNotificationDto;
-import com.sflpro.notifier.services.notification.dto.sms.SmsNotificationPropertyDto;
 import com.sflpro.notifier.services.notification.event.sms.StartSendingNotificationEvent;
 import com.sflpro.notifier.services.notification.impl.AbstractNotificationServiceImpl;
 import com.sflpro.notifier.services.notification.sms.SmsNotificationService;
@@ -45,7 +45,7 @@ public class SmsNotificationServiceImpl extends AbstractNotificationServiceImpl<
     @Transactional
     @Nonnull
     @Override
-    public SmsNotification createSmsNotification(@Nonnull final SmsNotificationDto smsNotificationDto, final List<SmsNotificationPropertyDto> smsNotificationPropertyDtos) {
+    public SmsNotification createSmsNotification(@Nonnull final SmsNotificationDto smsNotificationDto, final List<NotificationPropertyDto> smsNotificationPropertyDtos) {
         assertSmsNotificationDto(smsNotificationDto);
         Assert.notNull(smsNotificationPropertyDtos, "Properties list should not be null.");
         LOGGER.debug("Creating SMS notification for DTO - {}", smsNotificationDto);
@@ -86,17 +86,17 @@ public class SmsNotificationServiceImpl extends AbstractNotificationServiceImpl<
         this.smsNotificationRepository = smsNotificationRepository;
     }
 
-    private static void createAndAddSmsNotificationProperties(final SmsNotification smsNotification, final List<SmsNotificationPropertyDto> smsNotificationPropertyDtos) {
-        smsNotificationPropertyDtos.forEach(propertyDto -> {
+    private static void createAndAddSmsNotificationProperties(final SmsNotification smsNotification, final List<NotificationPropertyDto> notificationPropertyDtos) {
+        notificationPropertyDtos.forEach(propertyDto -> {
             assertEmailNotificationPropertyDto(propertyDto);
-            final SmsNotificationProperty smsNotificationProperty = new SmsNotificationProperty();
+            final NotificationProperty smsNotificationProperty = new NotificationProperty();
             propertyDto.updateDomainEntityProperties(smsNotificationProperty);
-            smsNotificationProperty.setSmsNotification(smsNotification);
+            smsNotificationProperty.setNotification(smsNotification);
             smsNotification.getProperties().add(smsNotificationProperty);
         });
     }
 
-    private static void assertEmailNotificationPropertyDto(final SmsNotificationPropertyDto propertyDto) {
+    private static void assertEmailNotificationPropertyDto(final NotificationPropertyDto propertyDto) {
         Assert.notNull(propertyDto, "Notification property DTO should not be null");
         Assert.notNull(propertyDto.getPropertyKey(), "Property key in notification property DTO should not be null");
     }

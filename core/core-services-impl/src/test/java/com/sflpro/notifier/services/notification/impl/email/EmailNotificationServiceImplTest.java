@@ -6,9 +6,9 @@ import com.sflpro.notifier.db.entities.user.User;
 import com.sflpro.notifier.db.repositories.repositories.notification.AbstractNotificationRepository;
 import com.sflpro.notifier.db.repositories.repositories.notification.email.EmailNotificationRepository;
 import com.sflpro.notifier.services.notification.UserNotificationService;
+import com.sflpro.notifier.services.notification.dto.NotificationPropertyDto;
 import com.sflpro.notifier.services.notification.dto.UserNotificationDto;
 import com.sflpro.notifier.services.notification.dto.email.EmailNotificationDto;
-import com.sflpro.notifier.services.notification.dto.email.EmailNotificationPropertyDto;
 import com.sflpro.notifier.services.notification.event.sms.StartSendingNotificationEvent;
 import com.sflpro.notifier.services.notification.impl.AbstractNotificationServiceImpl;
 import com.sflpro.notifier.services.notification.impl.AbstractNotificationServiceImplTest;
@@ -59,7 +59,7 @@ public class EmailNotificationServiceImplTest extends AbstractNotificationServic
     public void testCreateEmailNotificationWithInvalidArguments() {
         // Test data
         final EmailNotificationDto emailNotificationDto = getServicesImplTestHelper().createEmailNotificationDto();
-        final List<EmailNotificationPropertyDto> properties = getServicesImplTestHelper().createEmailNotificationPropertyDtos(2);
+        final List<NotificationPropertyDto> properties = getServicesImplTestHelper().createNotificationPropertyDtos(2);
         // Reset
         resetAll();
         // Replay

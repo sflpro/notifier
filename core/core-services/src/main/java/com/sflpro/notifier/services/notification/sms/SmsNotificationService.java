@@ -2,8 +2,8 @@ package com.sflpro.notifier.services.notification.sms;
 
 import com.sflpro.notifier.db.entities.notification.sms.SmsNotification;
 import com.sflpro.notifier.services.notification.AbstractNotificationService;
+import com.sflpro.notifier.services.notification.dto.NotificationPropertyDto;
 import com.sflpro.notifier.services.notification.dto.sms.SmsNotificationDto;
-import com.sflpro.notifier.services.notification.dto.sms.SmsNotificationPropertyDto;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -24,5 +24,5 @@ public interface SmsNotificationService extends AbstractNotificationService<SmsN
      * @return smsNotification
      */
     @Nonnull
-    SmsNotification createSmsNotification(@Nonnull final SmsNotificationDto smsNotificationDto, final List<SmsNotificationPropertyDto> smsNotificationPropertyDtos);
+    SmsNotification createSmsNotification(@Nonnull final SmsNotificationDto smsNotificationDto, final List<NotificationPropertyDto> smsNotificationPropertyDtos);
 }

@@ -13,7 +13,7 @@ import org.springframework.util.Assert;
  * Date: 6/10/19
  * Time: 2:44 PM
  */
-public abstract class AbstractNotificationPropertyModelDto<T extends NotificationProperty> extends AbstractDomainEntityModelDto<T> {
+public class NotificationPropertyDto<T extends NotificationProperty> extends AbstractDomainEntityModelDto<T> {
     private static final long serialVersionUID = -6041671930476167207L;
 
     /* Properties */
@@ -22,10 +22,10 @@ public abstract class AbstractNotificationPropertyModelDto<T extends Notificatio
     private String propertyValue;
 
     /* Constructors */
-    public AbstractNotificationPropertyModelDto() {
+    public NotificationPropertyDto() {
     }
 
-    public AbstractNotificationPropertyModelDto(final String propertyKey, final String propertyValue) {
+    public NotificationPropertyDto(final String propertyKey, final String propertyValue) {
         this.propertyKey = propertyKey;
         this.propertyValue = propertyValue;
     }
@@ -60,10 +60,10 @@ public abstract class AbstractNotificationPropertyModelDto<T extends Notificatio
         if (this == o) {
             return true;
         }
-        if (!(o instanceof AbstractNotificationPropertyModelDto)) {
+        if (!(o instanceof NotificationPropertyDto)) {
             return false;
         }
-        final AbstractNotificationPropertyModelDto<?> that = (AbstractNotificationPropertyModelDto<?>) o;
+        final NotificationPropertyDto<?> that = (NotificationPropertyDto<?>) o;
         return new EqualsBuilder()
                 .appendSuper(super.equals(o))
                 .append(propertyKey, that.propertyKey)

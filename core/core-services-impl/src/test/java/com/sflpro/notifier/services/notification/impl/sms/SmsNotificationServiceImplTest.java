@@ -6,9 +6,9 @@ import com.sflpro.notifier.db.entities.user.User;
 import com.sflpro.notifier.db.repositories.repositories.notification.AbstractNotificationRepository;
 import com.sflpro.notifier.db.repositories.repositories.notification.sms.SmsNotificationRepository;
 import com.sflpro.notifier.services.notification.UserNotificationService;
+import com.sflpro.notifier.services.notification.dto.NotificationPropertyDto;
 import com.sflpro.notifier.services.notification.dto.UserNotificationDto;
 import com.sflpro.notifier.services.notification.dto.sms.SmsNotificationDto;
-import com.sflpro.notifier.services.notification.dto.sms.SmsNotificationPropertyDto;
 import com.sflpro.notifier.services.notification.event.sms.StartSendingNotificationEvent;
 import com.sflpro.notifier.services.notification.impl.AbstractNotificationServiceImpl;
 import com.sflpro.notifier.services.notification.impl.AbstractNotificationServiceImplTest;
@@ -58,7 +58,7 @@ public class SmsNotificationServiceImplTest extends AbstractNotificationServiceI
     public void testCreateEmailNotificationWithInvalidArguments() {
         // Test data
         final SmsNotificationDto smsNotificationDto = getServicesImplTestHelper().createSmsNotificationDto();
-        final List<SmsNotificationPropertyDto> properties = getServicesImplTestHelper().createSmsNotificationPropertyDtos(2);
+        final List<NotificationPropertyDto> properties = getServicesImplTestHelper().createNotificationPropertyDtos(2);
         // Reset
         resetAll();
         // Replay
@@ -91,7 +91,7 @@ public class SmsNotificationServiceImplTest extends AbstractNotificationServiceI
     public void testCreateSmsNotification_WhenUserUuidNull() {
         // Test data
         final SmsNotificationDto notificationDto = getServicesImplTestHelper().createSmsNotificationDto();
-        final List<SmsNotificationPropertyDto> properties = getServicesImplTestHelper().createSmsNotificationPropertyDtos(2);
+        final List<NotificationPropertyDto> properties = getServicesImplTestHelper().createNotificationPropertyDtos(2);
         final SmsNotification smsNotification = getServicesImplTestHelper().createSmsNotification();
         smsNotification.setId(2L);
         // Reset
@@ -112,7 +112,7 @@ public class SmsNotificationServiceImplTest extends AbstractNotificationServiceI
         final String userUuid = UUID.randomUUID().toString();
         final SmsNotificationDto notificationDto = getServicesImplTestHelper().createSmsNotificationDto();
         notificationDto.setUserUuid(userUuid);
-        final List<SmsNotificationPropertyDto> properties = getServicesImplTestHelper().createSmsNotificationPropertyDtos(2);
+        final List<NotificationPropertyDto> properties = getServicesImplTestHelper().createNotificationPropertyDtos(2);
         final SmsNotification smsNotification = getServicesImplTestHelper().createSmsNotification();
         smsNotification.setId(2L);
         final User user = getServicesImplTestHelper().createUser();

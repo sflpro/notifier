@@ -1,8 +1,8 @@
 package com.sflpro.notifier.services.notification.impl.email.mandrill;
 
+import com.sflpro.notifier.db.entities.NotificationProperty;
 import com.sflpro.notifier.db.entities.notification.NotificationProviderType;
 import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
-import com.sflpro.notifier.db.entities.notification.email.EmailNotificationProperty;
 import com.sflpro.notifier.externalclients.email.mandrill.communicator.MandrillApiCommunicator;
 import com.sflpro.notifier.externalclients.email.mandrill.model.request.SendEmailRequest;
 import com.sflpro.notifier.services.test.AbstractServicesUnitTest;
@@ -102,7 +102,7 @@ public class EmailNotificationMandrillProviderProcessorImplTest extends Abstract
         emailNotification.setProviderType(NotificationProviderType.MANDRILL);
         final Map<String, String> secureProperties = new HashMap<>();
         secureProperties.putIfAbsent("token", UUID.randomUUID().toString());
-        final Map<String, String> templateContent = emailNotification.getProperties().stream().collect(Collectors.toMap(EmailNotificationProperty::getPropertyKey, EmailNotificationProperty::getPropertyValue));
+        final Map<String, String> templateContent = emailNotification.getProperties().stream().collect(Collectors.toMap(NotificationProperty::getPropertyKey, NotificationProperty::getPropertyValue));
         templateContent.putAll(secureProperties);
         // Reset
         resetAll();

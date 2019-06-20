@@ -9,8 +9,8 @@ import com.sflpro.notifier.api.model.sms.request.CreateSmsNotificationRequest;
 import com.sflpro.notifier.api.model.sms.response.CreateSmsNotificationResponse;
 import com.sflpro.notifier.db.entities.notification.NotificationProviderType;
 import com.sflpro.notifier.db.entities.notification.sms.SmsNotification;
+import com.sflpro.notifier.services.notification.dto.NotificationPropertyDto;
 import com.sflpro.notifier.services.notification.dto.sms.SmsNotificationDto;
-import com.sflpro.notifier.services.notification.dto.sms.SmsNotificationPropertyDto;
 import com.sflpro.notifier.services.notification.sms.SmsNotificationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,7 +59,7 @@ public class SmsNotificationResource {
         }
         LOGGER.debug("Processing create SMS notification request - {}", request);
         final SmsNotificationDto smsNotificationDto = buildSmsNotificationDto(request);
-        final List<SmsNotificationPropertyDto> smsNotificationPropertyDtos = buildPropertiesDto(request);
+        final List<NotificationPropertyDto> smsNotificationPropertyDtos = buildPropertiesDto(request);
 
         final SmsNotification smsNotification = smsNotificationService.createSmsNotification(smsNotificationDto, smsNotificationPropertyDtos);
 
@@ -94,10 +94,10 @@ public class SmsNotificationResource {
         return smsNotificationDto;
     }
 
-    private List<SmsNotificationPropertyDto>  buildPropertiesDto(final CreateSmsNotificationRequest request) {
+    private List<NotificationPropertyDto>  buildPropertiesDto(final CreateSmsNotificationRequest request) {
         return request.getProperties().entrySet()
                 .stream()
-                .map(entry -> new SmsNotificationPropertyDto(entry.getKey(), entry.getValue()))
+                .map(entry -> new NotificationPropertyDto(entry.getKey(), entry.getValue()))
                 .collect(Collectors.toList());
     }
 }

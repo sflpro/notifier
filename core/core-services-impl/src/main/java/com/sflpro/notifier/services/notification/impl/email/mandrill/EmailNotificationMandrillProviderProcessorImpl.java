@@ -1,8 +1,8 @@
 package com.sflpro.notifier.services.notification.impl.email.mandrill;
 
+import com.sflpro.notifier.db.entities.NotificationProperty;
 import com.sflpro.notifier.db.entities.notification.NotificationProviderType;
 import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
-import com.sflpro.notifier.db.entities.notification.email.EmailNotificationProperty;
 import com.sflpro.notifier.externalclients.email.mandrill.communicator.MandrillApiCommunicator;
 import com.sflpro.notifier.externalclients.email.mandrill.model.request.SendEmailRequest;
 import org.slf4j.Logger;
@@ -47,7 +47,7 @@ public class EmailNotificationMandrillProviderProcessorImpl implements EmailNoti
     }
 
     private static SendEmailRequest createEmailRequest(final EmailNotification emailNotification, final Map<String, String> secureProperties) {
-        final Set<EmailNotificationProperty> properties = emailNotification.getProperties();
+        final Set<NotificationProperty> properties = emailNotification.getProperties();
         final Map<String, String> templateContent = new HashMap<>();
         if (!CollectionUtils.isEmpty(properties)) {
             properties.forEach(property -> templateContent.put(property.getPropertyKey(), property.getPropertyValue()));

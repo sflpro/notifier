@@ -1,5 +1,6 @@
 package com.sflpro.notifier.db.entities.notification.email;
 
+import com.sflpro.notifier.db.entities.NotificationProperty;
 import com.sflpro.notifier.db.entities.notification.Notification;
 import com.sflpro.notifier.db.entities.notification.NotificationType;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -32,8 +33,8 @@ public class EmailNotification extends Notification {
     @Column(name = "template_name", nullable = true)
     private String templateName;
 
-    @OneToMany(mappedBy = "emailNotification", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<EmailNotificationProperty> properties;
+    @OneToMany(mappedBy = "notification", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<NotificationProperty> properties;
 
     /* Constructors */
     public EmailNotification() {
@@ -44,7 +45,6 @@ public class EmailNotification extends Notification {
         super(generateUuId);
         initializeDefaults();
     }
-
 
     /* Properties getters and setters */
     public String getRecipientEmail() {
@@ -71,11 +71,11 @@ public class EmailNotification extends Notification {
         this.templateName = templateName;
     }
 
-    public Set<EmailNotificationProperty> getProperties() {
+    public Set<NotificationProperty> getProperties() {
         return properties;
     }
 
-    public void setProperties(final Set<EmailNotificationProperty> properties) {
+    public void setProperties(final Set<NotificationProperty> properties) {
         this.properties = properties;
     }
 

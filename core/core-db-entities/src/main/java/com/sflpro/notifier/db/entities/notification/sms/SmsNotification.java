@@ -1,5 +1,6 @@
 package com.sflpro.notifier.db.entities.notification.sms;
 
+import com.sflpro.notifier.db.entities.NotificationProperty;
 import com.sflpro.notifier.db.entities.notification.Notification;
 import com.sflpro.notifier.db.entities.notification.NotificationType;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -29,8 +30,8 @@ public class SmsNotification extends Notification {
     @Column(name = "template_name")
     private String templateName;
 
-    @OneToMany(mappedBy = "smsNotification", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<SmsNotificationProperty> properties;
+    @OneToMany(mappedBy = "notification", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<NotificationProperty> properties;
 
     /* Constructors */
     public SmsNotification() {
@@ -59,11 +60,11 @@ public class SmsNotification extends Notification {
         this.templateName = templateName;
     }
 
-    public Set<SmsNotificationProperty> getProperties() {
+    public Set<NotificationProperty> getProperties() {
         return properties;
     }
 
-    public void setProperties(final Set<SmsNotificationProperty> properties) {
+    public void setProperties(final Set<NotificationProperty> properties) {
         this.properties = properties;
     }
 

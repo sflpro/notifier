@@ -1,8 +1,8 @@
 package com.sflpro.notifier.services.notification.impl.email.smtp;
 
+import com.sflpro.notifier.db.entities.NotificationProperty;
 import com.sflpro.notifier.db.entities.notification.NotificationProviderType;
 import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
-import com.sflpro.notifier.db.entities.notification.email.EmailNotificationProperty;
 import com.sflpro.notifier.services.notification.dto.email.MailSendConfiguration;
 import com.sflpro.notifier.services.notification.email.SmtpTransportService;
 import com.sflpro.notifier.services.template.TemplatingService;
@@ -61,7 +61,7 @@ public class EmailNotificationSmtpProviderProcessorImpl implements EmailNotifica
         } else {
             final Map<String, String> parameters = emailNotification.getProperties()
                     .stream()
-                    .collect(Collectors.toMap(EmailNotificationProperty::getPropertyKey, EmailNotificationProperty::getPropertyValue));
+                    .collect(Collectors.toMap(NotificationProperty::getPropertyKey, NotificationProperty::getPropertyValue));
             parameters.putAll(secureProperties);
             final String content = templatingService.getContentForTemplate(emailNotification.getTemplateName(), parameters);
             mailSendConfiguration.setContent(content);

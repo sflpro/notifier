@@ -69,7 +69,7 @@ public class CreatePushNotificationRequest extends AbstractCreateNotificationReq
         if (this == o) {
             return true;
         }
-        if (!(o instanceof PushNotificationPropertyModel)) {
+        if (!(o instanceof CreatePushNotificationRequest)) {
             return false;
         }
         final CreatePushNotificationRequest that = (CreatePushNotificationRequest) o;

@@ -6,20 +6,17 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
  * Created by Hayk Mkrtchyan.
- * Date: 6/18/19
- * Time: 3:53 PM
+ * Date: 6/20/19
+ * Time: 3:04 PM
  */
+abstract class AbstractSmsMessage implements SmsMessage {
 
-final class ImmutableSmsMessage implements SmsMessage {
-
-    private final String senderNumber;
     private final String recipientNumber;
-    private final String messageBody;
+    private final String senderNumber;
 
-    ImmutableSmsMessage(final String senderNumber, final String recipientNumber, final String messageBody) {
+    AbstractSmsMessage(final String senderNumber,final String recipientNumber) {
         this.senderNumber = senderNumber;
         this.recipientNumber = recipientNumber;
-        this.messageBody = messageBody;
     }
 
     @Override
@@ -27,47 +24,39 @@ final class ImmutableSmsMessage implements SmsMessage {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof SmsMessage)) {
+        if (!(o instanceof AbstractSmsMessage)) {
             return false;
         }
-        final SmsMessage that = (SmsMessage) o;
+        final AbstractSmsMessage that = (AbstractSmsMessage) o;
         return new EqualsBuilder()
-                .append(senderNumber, that.senderNumber())
-                .append(recipientNumber, that.recipientNumber())
-                .append(messageBody, that.messageBody())
+                .append(recipientNumber, that.recipientNumber)
+                .append(senderNumber, that.senderNumber)
                 .isEquals();
     }
 
     @Override
     public int hashCode() {
         return new HashCodeBuilder(17, 37)
-                .append(senderNumber)
                 .append(recipientNumber)
-                .append(messageBody)
+                .append(senderNumber)
                 .toHashCode();
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .append("senderNumber", senderNumber)
                 .append("recipientNumber", recipientNumber)
-                .append("messageBody", messageBody)
+                .append("sender", senderNumber)
                 .toString();
     }
 
     @Override
-    public String senderNumber() {
+    public String sender() {
         return senderNumber;
     }
 
     @Override
     public String recipientNumber() {
         return recipientNumber;
-    }
-
-    @Override
-    public String messageBody() {
-        return messageBody;
     }
 }

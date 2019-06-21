@@ -6,12 +6,15 @@ import com.sflpro.notifier.email.SimpleEmailSenderRegistry;
 import com.sflpro.notifier.email.TemplatedEmailSender;
 import com.sflpro.notifier.email.TemplatedEmailSenderRegistry;
 import com.sflpro.notifier.services.notification.impl.DummySimpleEmailSender;
-import com.sflpro.notifier.services.notification.impl.DummySmsSender;
+import com.sflpro.notifier.services.notification.impl.DummySimpleSmsSender;
 import com.sflpro.notifier.services.notification.impl.DummyTemplatedEmailSender;
+import com.sflpro.notifier.services.notification.impl.DummyTemplatedSmsSender;
 import com.sflpro.notifier.services.notification.template.DummyTemplatingServiceImpl;
 import com.sflpro.notifier.services.template.TemplatingService;
-import com.sflpro.notifier.sms.SmsSender;
-import com.sflpro.notifier.sms.SmsSenderRegistry;
+import com.sflpro.notifier.sms.SimpleSmsSender;
+import com.sflpro.notifier.sms.SimpleSmsSenderRegistry;
+import com.sflpro.notifier.sms.TemplatedSmsSender;
+import com.sflpro.notifier.sms.TemplatedSmsSenderRegistry;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -38,13 +41,23 @@ public class NotifierTestApplication {
     }
 
     @Bean
-    SmsSender smsSender() {
-        return new DummySmsSender();
+    SimpleSmsSender simpleSmsSender() {
+        return new DummySimpleSmsSender();
     }
 
     @Bean
-    SmsSenderRegistry smsSenderRegistry() {
-        return SmsSenderRegistry.of("twillio", smsSender());
+    SimpleSmsSenderRegistry smsSenderRegistry() {
+        return SimpleSmsSenderRegistry.of("twillio", simpleSmsSender());
+    }
+
+    @Bean
+    TemplatedSmsSender templatedSmsSender() {
+        return new DummyTemplatedSmsSender();
+    }
+
+    @Bean
+    TemplatedSmsSenderRegistry templatedSmsSenderRegistry() {
+        return TemplatedSmsSenderRegistry.of("twillio", templatedSmsSender());
     }
 
     @Bean

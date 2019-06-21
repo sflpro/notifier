@@ -4,14 +4,12 @@ import com.sflpro.notifier.db.entities.notification.NotificationState;
 import com.sflpro.notifier.db.entities.notification.sms.SmsNotification;
 import com.sflpro.notifier.db.repositories.utility.PersistenceUtilityService;
 import com.sflpro.notifier.services.common.exception.ServicesRuntimeException;
-import com.sflpro.notifier.sms.SmsMessage;
-import com.sflpro.notifier.sms.SmsMessageSendingResult;
-import com.sflpro.notifier.sms.SmsSender;
 import com.sflpro.notifier.services.notification.sms.SmsNotificationService;
 import com.sflpro.notifier.services.test.AbstractServicesUnitTest;
-import org.easymock.IAnswer;
+import com.sflpro.notifier.sms.SimpleSmsMessage;
+import com.sflpro.notifier.sms.SimpleSmsSender;
+import com.sflpro.notifier.sms.SmsMessageSendingResult;
 import org.easymock.Mock;
-import org.easymock.TestSubject;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,8 +32,7 @@ public class SmsNotificationProcessorImplTest extends AbstractServicesUnitTest {
     private static final String SENDER_PHONE_NUMBER = "+105050509";
 
     /* Test subject and mocks */
-    @TestSubject
-    private SmsNotificationProcessorImpl smsMessageProcessingService = new SmsNotificationProcessorImpl();
+    private SmsNotificationProcessorImpl smsMessageProcessingService;
 
     @Mock
     private SmsNotificationService smsNotificationService;
@@ -47,15 +44,18 @@ public class SmsNotificationProcessorImplTest extends AbstractServicesUnitTest {
     private SmsSenderProvider smsSenderProvider;
 
     @Mock
-    private SmsSender smsSender;
+    private SimpleSmsSender simpleSmsSender;
 
     /* Constructors */
     public SmsNotificationProcessorImplTest() {
     }
 
     @Before
-    public void setTestSubjectProperties() {
-        smsMessageProcessingService.setAccountSenderNumber(SENDER_PHONE_NUMBER);
+    public void prepare() {
+        smsMessageProcessingService = new SmsNotificationProcessorImpl(smsNotificationService,
+                smsSenderProvider,
+                persistenceUtilityService,
+                "Test");
     }
 
     /* Test methods */
@@ -93,7 +93,8 @@ public class SmsNotificationProcessorImplTest extends AbstractServicesUnitTest {
         /* Reset mocks */
         resetAll();
         /* Register expectations */
-        expect(smsNotificationService.getNotificationById(eq(notificationId))).andReturn(smsNotification).once();
+        expect(smsNotificationService.getNotificationById(notificationId)).andReturn(smsNotification).once();
+        expect(persistenceUtilityService.initializeAndUnProxy(smsNotification)).andReturn(smsNotification);
         /* Replay mocks */
         replayAll();
         /* Run test cases */
@@ -115,18 +116,16 @@ public class SmsNotificationProcessorImplTest extends AbstractServicesUnitTest {
         /* Reset mocks */
         resetAll();
         /* Register expectations */
-        expect(smsNotificationService.getNotificationById(eq(notificationId))).andReturn(smsNotification).once();
-        expect(smsNotificationService.updateNotificationState(eq(notificationId), eq(NotificationState.PROCESSING))).andReturn(smsNotification).once();
-        expect(smsSenderProvider.lookupSenderFor(smsNotification.getProviderType().name().toLowerCase())).andReturn(Optional.of(smsSender));
-        expect(smsSender.send(isA(SmsMessage.class))).andAnswer(new IAnswer<SmsMessageSendingResult>() {
-            @Override
-            public SmsMessageSendingResult answer() {
-                final SmsMessage message = (SmsMessage) getCurrentArguments()[0];
-                assertSendMessageRequest(message, smsNotification);
-                throw new ServicesRuntimeException("Failed to send message");
-            }
+        expect(smsNotificationService.getNotificationById(notificationId)).andReturn(smsNotification).once();
+        expect(persistenceUtilityService.initializeAndUnProxy(smsNotification)).andReturn(smsNotification);
+        expect(smsNotificationService.updateNotificationState(notificationId, NotificationState.PROCESSING)).andReturn(smsNotification).once();
+        expect(smsSenderProvider.lookupSimpleSmsMessageSenderFor(smsNotification.getProviderType().name().toLowerCase())).andReturn(Optional.of(simpleSmsSender));
+        expect(simpleSmsSender.send(isA(SimpleSmsMessage.class))).andAnswer(() -> {
+            final SimpleSmsMessage message = (SimpleSmsMessage) getCurrentArguments()[0];
+            assertSendMessageRequest(message, smsNotification);
+            throw new ServicesRuntimeException("Failed to send message");
         }).once();
-        expect(smsNotificationService.updateNotificationState(eq(notificationId), eq(NotificationState.FAILED))).andReturn(smsNotification).once();
+        expect(smsNotificationService.updateNotificationState(notificationId, NotificationState.FAILED)).andReturn(smsNotification).once();
         /* Replay mocks */
         replayAll();
         /* Run test cases */
@@ -149,19 +148,17 @@ public class SmsNotificationProcessorImplTest extends AbstractServicesUnitTest {
         /* Reset mocks */
         resetAll();
         /* Register expectations */
-        expect(smsNotificationService.getNotificationById(eq(notificationId))).andReturn(smsNotification).once();
-        expect(smsNotificationService.updateNotificationState(eq(notificationId), eq(NotificationState.PROCESSING))).andReturn(smsNotification).once();
-        expect(smsSenderProvider.lookupSenderFor(smsNotification.getProviderType().name().toLowerCase())).andReturn(Optional.of(smsSender));
-        expect(smsSender.send(isA(SmsMessage.class))).andAnswer(new IAnswer<SmsMessageSendingResult>() {
-            @Override
-            public SmsMessageSendingResult answer() {
-                final SmsMessage message = (SmsMessage) getCurrentArguments()[0];
-                assertSendMessageRequest(message, smsNotification);
-                return SmsMessageSendingResult.of(messageId);
-            }
+        expect(smsNotificationService.getNotificationById(notificationId)).andReturn(smsNotification).once();
+        expect(persistenceUtilityService.initializeAndUnProxy(smsNotification)).andReturn(smsNotification);
+        expect(smsNotificationService.updateNotificationState(notificationId, NotificationState.PROCESSING)).andReturn(smsNotification).once();
+        expect(smsSenderProvider.lookupSimpleSmsMessageSenderFor(smsNotification.getProviderType().name().toLowerCase())).andReturn(Optional.of(simpleSmsSender));
+        expect(simpleSmsSender.send(isA(SimpleSmsMessage.class))).andAnswer(() -> {
+            final SimpleSmsMessage message = (SimpleSmsMessage) getCurrentArguments()[0];
+            assertSendMessageRequest(message, smsNotification);
+            return SmsMessageSendingResult.of(messageId);
         }).once();
-        expect(smsNotificationService.updateProviderExternalUuid(eq(notificationId), eq(messageId))).andReturn(smsNotification).once();
-        expect(smsNotificationService.updateNotificationState(eq(notificationId), eq(NotificationState.SENT))).andReturn(smsNotification).once();
+        expect(smsNotificationService.updateProviderExternalUuid(notificationId, messageId)).andReturn(smsNotification).once();
+        expect(smsNotificationService.updateNotificationState(notificationId, NotificationState.SENT)).andReturn(smsNotification).once();
         /* Replay mocks */
         replayAll();
         /* Run test cases */
@@ -170,7 +167,7 @@ public class SmsNotificationProcessorImplTest extends AbstractServicesUnitTest {
     }
 
     /* Utility methods */
-    private static void assertSendMessageRequest(final SmsMessage sendMessageRequest, final SmsNotification smsNotification) {
+    private static void assertSendMessageRequest(final SimpleSmsMessage sendMessageRequest, final SmsNotification smsNotification) {
         assertNotNull(sendMessageRequest);
         Assert.assertEquals(sendMessageRequest.messageBody(), smsNotification.getContent());
         assertEquals(sendMessageRequest.recipientNumber(), smsNotification.getRecipientMobileNumber());

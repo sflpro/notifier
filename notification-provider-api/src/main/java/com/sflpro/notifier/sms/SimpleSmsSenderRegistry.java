@@ -7,15 +7,15 @@ import org.springframework.util.Assert;
  * Date: 6/18/19
  * Time: 5:21 PM
  */
-public interface SmsSenderRegistry {
+public interface SimpleSmsSenderRegistry {
 
     String name();
 
-    SmsSender sender();
+    SimpleSmsSender sender();
 
-    static SmsSenderRegistry of(final String name, final SmsSender sender) {
+    static SimpleSmsSenderRegistry of(final String name, final SimpleSmsSender sender) {
         Assert.hasText(name, "Null or empty text was passed as an argument for parameter 'sender'.");
         Assert.notNull(sender, "Null was passed as an argument for parameter 'sender'.");
-        return new ImmutableSmsSenderRegistry(name, sender);
+        return new ImmutableSimpleSmsSenderRegistry(name, sender);
     }
 }

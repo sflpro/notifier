@@ -2,11 +2,10 @@ package com.sflpro.notifier.sms;
 
 /**
  * Created by Hayk Mkrtchyan.
- * Date: 6/18/19
- * Time: 3:45 PM
+ * Date: 6/20/19
+ * Time: 3:15 PM
  */
-public interface SmsSender {
+public interface SmsSender<M extends SmsMessage> {
 
-    SmsMessageSendingResult send(final SmsMessage smsMessage);
-
+    SmsMessageSendingResult send(final M message);
 }

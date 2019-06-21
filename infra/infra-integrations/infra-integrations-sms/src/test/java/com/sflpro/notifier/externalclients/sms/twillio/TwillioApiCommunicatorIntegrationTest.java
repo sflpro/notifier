@@ -20,13 +20,13 @@ import static org.junit.Assert.*;
 public class TwillioApiCommunicatorIntegrationTest extends AbstractSmsIntegrationTest {
 
     /* Constants */
-    private static final String VALID_RECIPIENT_PHONE_NUMBER = "+37498000000";
+    private static final String VALID_RECIPIENT_PHONE_NUMBER = "+37494668425";
 
-    private static final String INVALID_RECIPIENT_PHONE_NUMBER = "+15005550001";
+    private static final String INVALID_RECIPIENT_PHONE_NUMBER = "+37494668425";
 
     private static final String VALID_SENDER_PHONE_NUMBER = "+15005550006";
 
-    private static final String INVALID_SENDER_PHONE_NUMBER = "+15005550001";
+    private static final String INVALID_SENDER_PHONE_NUMBER = "+37494668425";
 
     private static final String MESSAGE_BODY = "Happy message body";
 

@@ -77,7 +77,7 @@ public class SendMessageRequest extends AbstractTwillioApiCommunicatorModel {
     public String toString() {
         final ToStringBuilder builder = new ToStringBuilder(this);
         builder.appendSuper(super.toString());
-        builder.append("senderNumber", getSenderNumber());
+        builder.append("sender", getSenderNumber());
         builder.append("recipientNumber", getRecipientNumber());
         builder.append("messageBody", getMessageBody());
         return builder.build();

@@ -11,25 +11,32 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Created by Hayk Mkrtchyan.
- * Date: 6/18/19
- * Time: 4:37 PM
+ * Date: 6/21/19
+ * Time: 12:12 PM
  */
-class TwillioSmsSender implements SmsSender {
+abstract class AbstractTwillioSmsSender<M extends SmsMessage> implements SmsSender<M> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(TwillioSmsSender.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractTwillioSmsSender.class);
+
 
     private final TwillioApiCommunicator twillioApiCommunicator;
 
-    TwillioSmsSender(final TwillioApiCommunicator twillioApiCommunicator) {
+    AbstractTwillioSmsSender(final TwillioApiCommunicator twillioApiCommunicator) {
         this.twillioApiCommunicator = twillioApiCommunicator;
     }
 
     @Override
-    public SmsMessageSendingResult send(final SmsMessage smsMessage) {
-        LOGGER.debug("Sending sms message with request model - {}", smsMessage);
-        final SendMessageRequest sendMessageRequest = new SendMessageRequest(smsMessage.senderNumber(), smsMessage.recipientNumber(), smsMessage.messageBody());
+    public SmsMessageSendingResult send(final M message) {
+        LOGGER.debug("Sending sms message with request model - {}", message);
+        final SendMessageRequest sendMessageRequest = new SendMessageRequest(
+                message.sender(),
+                message.recipientNumber(),
+                bodyFor(message)
+        );
         final SendMessageResponse sendMessageResponse = twillioApiCommunicator.sendMessage(sendMessageRequest);
         LOGGER.debug("Successfully sent sms message, response - {}", sendMessageResponse);
         return SmsMessageSendingResult.of(sendMessageResponse.getSid());
     }
+
+    abstract String bodyFor(final M message);
 }

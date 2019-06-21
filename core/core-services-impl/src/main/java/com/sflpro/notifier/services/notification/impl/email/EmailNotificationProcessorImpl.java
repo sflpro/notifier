@@ -4,7 +4,7 @@ import com.sflpro.notifier.db.entities.notification.Notification;
 import com.sflpro.notifier.db.entities.notification.NotificationProviderType;
 import com.sflpro.notifier.db.entities.notification.NotificationState;
 import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
-import com.sflpro.notifier.db.entities.notification.email.EmailNotificationProperty;
+import com.sflpro.notifier.db.entities.notification.email.NotificationProperty;
 import com.sflpro.notifier.db.repositories.utility.PersistenceUtilityService;
 import com.sflpro.notifier.email.SimpleEmailMessage;
 import com.sflpro.notifier.email.SimpleEmailSender;
@@ -111,7 +111,7 @@ class EmailNotificationProcessorImpl implements EmailNotificationProcessor {
     private Map<String, Object> variablesFor(final EmailNotification emailNotification) {
         return emailNotification.getProperties().stream()
                 .collect(Collectors.toMap(
-                        EmailNotificationProperty::getPropertyKey, EmailNotificationProperty::getPropertyValue)
+                        NotificationProperty::getPropertyKey, NotificationProperty::getPropertyValue)
                 );
     }
 

@@ -8,12 +8,12 @@ import jdk.nashorn.internal.ir.annotations.Immutable;
  * Time: 5:21 PM
  */
 @Immutable
-final class ImmutableSmsSenderRegistry implements SmsSenderRegistry{
+final class ImmutableSimpleSmsSenderRegistry implements SimpleSmsSenderRegistry {
 
     private final String name;
-    private final SmsSender sender;
+    private final SimpleSmsSender sender;
 
-    ImmutableSmsSenderRegistry(final String name, final SmsSender sender) {
+    ImmutableSimpleSmsSenderRegistry(final String name, final SimpleSmsSender sender) {
         this.name = name;
         this.sender = sender;
     }
@@ -24,7 +24,7 @@ final class ImmutableSmsSenderRegistry implements SmsSenderRegistry{
     }
 
     @Override
-    public SmsSender sender() {
+    public SimpleSmsSender sender() {
         return sender;
     }
 }

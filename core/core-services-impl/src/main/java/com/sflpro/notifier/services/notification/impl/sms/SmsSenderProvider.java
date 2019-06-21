@@ -1,6 +1,7 @@
 package com.sflpro.notifier.services.notification.impl.sms;
 
-import com.sflpro.notifier.sms.SmsSender;
+import com.sflpro.notifier.sms.SimpleSmsSender;
+import com.sflpro.notifier.sms.TemplatedSmsSender;
 
 import java.util.Optional;
 
@@ -11,5 +12,7 @@ import java.util.Optional;
  */
 interface SmsSenderProvider {
 
-    Optional<SmsSender> lookupSenderFor(final String providerType);
+    Optional<SimpleSmsSender> lookupSimpleSmsMessageSenderFor(final String providerType);
+
+    Optional<TemplatedSmsSender> lookupTemplatedSmsMessageSenderFor(final String providerType);
 }

@@ -1,7 +1,9 @@
 package com.sflpro.notifier.services.notification.impl.sms;
 
-import com.sflpro.notifier.sms.SmsSender;
-import com.sflpro.notifier.sms.SmsSenderRegistry;
+import com.sflpro.notifier.sms.SimpleSmsSender;
+import com.sflpro.notifier.sms.SimpleSmsSenderRegistry;
+import com.sflpro.notifier.sms.TemplatedSmsSender;
+import com.sflpro.notifier.sms.TemplatedSmsSenderRegistry;
 import org.springframework.util.Assert;
 
 import java.util.Collections;
@@ -17,19 +19,32 @@ import java.util.stream.Collectors;
  */
 class DefaultSmsSenderProvider implements SmsSenderProvider {
 
-    private final Map<String, SmsSender> registeredSenders;
+    private final Map<String, SimpleSmsSender> registeredSimpleSmsSenders;
+    private final Map<String, TemplatedSmsSender> registeredTemplatedSmsSender;
 
-    DefaultSmsSenderProvider(final List<SmsSenderRegistry> registries) {
+    DefaultSmsSenderProvider(final List<SimpleSmsSenderRegistry> simpleSmsSenderRegistries,
+                             final List<TemplatedSmsSenderRegistry> templatedSmsSenderRegistries) {
         super();
-        this.registeredSenders = Collections.unmodifiableMap(
-                registries.stream()
-                        .collect(Collectors.toMap(SmsSenderRegistry::name, SmsSenderRegistry::sender))
+        this.registeredSimpleSmsSenders = Collections.unmodifiableMap(
+                simpleSmsSenderRegistries.stream()
+                        .collect(Collectors.toMap(SimpleSmsSenderRegistry::name, SimpleSmsSenderRegistry::sender))
+        );
+
+        this.registeredTemplatedSmsSender = Collections.unmodifiableMap(
+                templatedSmsSenderRegistries.stream()
+                        .collect(Collectors.toMap(TemplatedSmsSenderRegistry::name, TemplatedSmsSenderRegistry::sender))
         );
     }
 
     @Override
-    public Optional<SmsSender> lookupSenderFor(final String providerType) {
+    public Optional<SimpleSmsSender> lookupSimpleSmsMessageSenderFor(final String providerType) {
         Assert.hasText(providerType, "Null or empty text was passed as an argument for parameter 'providerType'.");
-        return Optional.ofNullable(registeredSenders.get(providerType));
+        return Optional.ofNullable(registeredSimpleSmsSenders.get(providerType));
+    }
+
+    @Override
+    public Optional<TemplatedSmsSender> lookupTemplatedSmsMessageSenderFor(final String providerType) {
+        Assert.hasText(providerType, "Null or empty text was passed as an argument for parameter 'providerType'.");
+        return Optional.ofNullable(registeredTemplatedSmsSender.get(providerType));
     }
 }

@@ -6,8 +6,6 @@ import com.sflpro.notifier.spi.sms.TemplatedSmsSender;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-;
-
 /**
  * Created by Hayk Mkrtchyan.
  * Date: 6/19/19

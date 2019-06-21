@@ -1,4 +1,4 @@
-package com.sflpro.notifier.email;
+package com.sflpro.notifier.spi.email;
 
 import org.springframework.util.Assert;
 
@@ -7,7 +7,7 @@ import org.springframework.util.Assert;
  * Date: 6/19/19
  * Time: 10:31 AM
  */
-public interface SimpleEmailMessage extends EmailMessage{
+public interface SimpleEmailMessage extends EmailMessage {
 
     String body();
 

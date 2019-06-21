@@ -1,4 +1,4 @@
-package com.sflpro.notifier.email;
+package com.sflpro.notifier.spi.email;
 
 import java.util.Map;
 

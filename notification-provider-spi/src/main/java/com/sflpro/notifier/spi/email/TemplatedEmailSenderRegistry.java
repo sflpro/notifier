@@ -1,5 +1,4 @@
-package com.sflpro.notifier.email;
-
+package com.sflpro.notifier.spi.email;
 import org.springframework.util.Assert;
 
 /**

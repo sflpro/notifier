@@ -1,4 +1,4 @@
-package com.sflpro.notifier.sms;
+package com.sflpro.notifier.spi.sms;
 
 import org.springframework.util.Assert;
 

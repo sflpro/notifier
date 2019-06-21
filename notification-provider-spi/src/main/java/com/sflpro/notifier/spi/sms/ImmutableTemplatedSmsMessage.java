@@ -1,4 +1,4 @@
-package com.sflpro.notifier.sms;
+package com.sflpro.notifier.spi.sms;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;

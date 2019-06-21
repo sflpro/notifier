@@ -1,4 +1,4 @@
-package com.sflpro.notifier.sms;
+package com.sflpro.notifier.spi.sms;
 
 import org.springframework.util.Assert;
 
@@ -7,7 +7,7 @@ import org.springframework.util.Assert;
  * Date: 6/18/19
  * Time: 3:48 PM
  */
-public interface SimpleSmsMessage extends SmsMessage{
+public interface SimpleSmsMessage extends SmsMessage {
 
     String messageBody();
 

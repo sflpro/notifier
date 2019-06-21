@@ -1,13 +1,12 @@
-package com.sflpro.notifier.sms;
+package com.sflpro.notifier.spi.sms;
 
-import jdk.nashorn.internal.ir.annotations.Immutable;
+
 
 /**
  * Created by Hayk Mkrtchyan.
  * Date: 6/18/19
  * Time: 5:21 PM
  */
-@Immutable
 final class ImmutableSimpleSmsSenderRegistry implements SimpleSmsSenderRegistry {
 
     private final String name;

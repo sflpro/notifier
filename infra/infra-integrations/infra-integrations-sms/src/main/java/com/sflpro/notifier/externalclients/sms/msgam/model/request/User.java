@@ -3,7 +3,6 @@ package com.sflpro.notifier.externalclients.sms.msgam.model.request;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.springframework.util.Assert;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -25,8 +24,6 @@ public class User {
     private String pass;
 
     public User(final String senderLogin, final String senderPass) {
-        Assert.hasText(senderLogin);
-        Assert.hasText(senderPass);
         this.login = senderLogin;
         this.pass = senderPass;
     }
@@ -49,12 +46,13 @@ public class User {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-
-        if (!(o instanceof User)) return false;
-
-        User user = (User) o;
-
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof User)) {
+            return false;
+        }
+        final User user = (User) o;
         return new EqualsBuilder()
                 .append(login, user.login)
                 .append(pass, user.pass)

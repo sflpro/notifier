@@ -31,6 +31,7 @@ public class Message {
     private int count;
 
     public Message() {
+        super();
     }
 
     public BigInteger getId() {

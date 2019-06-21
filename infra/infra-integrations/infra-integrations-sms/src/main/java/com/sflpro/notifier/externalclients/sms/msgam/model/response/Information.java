@@ -41,16 +41,18 @@ public class Information {
     }
 
     public Information() {
+        super();
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-
-        if (!(o instanceof Information)) return false;
-
-        Information that = (Information) o;
-
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Information)) {
+            return false;
+        }
+        final Information that = (Information) o;
         return new EqualsBuilder()
                 .append(version, that.version)
                 .append(code, that.code)

@@ -39,7 +39,7 @@
         </dependency>
         <dependency>
             <groupId>com.sflpro.notifier</groupId>
-            <artifactId>notification-provider-api</artifactId>
+            <artifactId>notification-provider-spi</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

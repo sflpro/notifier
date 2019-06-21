@@ -11,7 +11,7 @@
 
     <description>Exposes API for integration notification providers.</description>
 
-    <artifactId>notification-provider-api</artifactId>
+    <artifactId>notification-provider-spi</artifactId>
 
     <dependencies>
         <dependency>

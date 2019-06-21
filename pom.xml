@@ -13,7 +13,7 @@
         <module>worker</module>
         <module>api</module>
         <module>report</module>
-		<module>notification-provider-api</module>
+		<module>notification-provider-spi</module>
     </modules>
 
     <groupId>com.sflpro.notifier</groupId>

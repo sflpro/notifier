@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Date: 6/20/19
  * Time: 6:19 PM
  */
-@TestPropertySource(properties = {"nikitamobile.enabled=true"})
+@TestPropertySource(properties = {"nikitamobile.enabled=true","nikitamobile.api.url=http://smsme.am/api"})
 public class NikitaMobileSimpleSmsSenderIntegrationTest extends AbstractSmsIntegrationTest {
 
     @Value("${integrationtest.send.real.sms:false}")

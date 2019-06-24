@@ -110,6 +110,7 @@ class SmsNotificationProcessorImpl implements SmsNotificationProcessor {
             return getSmsSender(smsSenderProvider::lookupTemplatedSmsMessageSenderFor,
                     smsNotification.getProviderType()).sendMessage(
                     TemplatedSmsMessage.of(
+                            smsNotification.getId(),
                             senderName,
                             smsNotification.getRecipientMobileNumber(),
                             smsNotification.getTemplateName(),
@@ -122,6 +123,7 @@ class SmsNotificationProcessorImpl implements SmsNotificationProcessor {
             return getSmsSender(smsSenderProvider::lookupSimpleSmsMessageSenderFor,
                     smsNotification.getProviderType()).sendMessage(
                     SimpleSmsMessage.of(
+                            smsNotification.getId(),
                             senderName,
                             smsNotification.getRecipientMobileNumber(),
                             smsNotification.getContent()

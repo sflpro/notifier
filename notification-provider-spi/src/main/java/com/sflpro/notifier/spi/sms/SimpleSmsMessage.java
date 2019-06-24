@@ -11,10 +11,10 @@ public interface SimpleSmsMessage extends SmsMessage {
 
     String messageBody();
 
-    static SimpleSmsMessage of(final String sender, final String recipientNumber, final String messageBody) {
+    static SimpleSmsMessage of(final long internalId,final String sender, final String recipientNumber, final String messageBody) {
         Assert.hasText(sender, "Null or empty text was passed as an argument for parameter 'sender'.");
         Assert.hasText(recipientNumber, "Null or empty text was passed as an argument for parameter 'recipientNumber'.");
         Assert.hasText(messageBody, "Null or empty text was passed as an argument for parameter 'messageBody'.");
-        return new ImmutableSimpleSmsMessage(sender, recipientNumber, messageBody);
+        return new ImmutableSimpleSmsMessage(internalId,sender, recipientNumber, messageBody);
     }
 }

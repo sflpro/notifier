@@ -8,40 +8,22 @@ import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.type.PhoneNumber;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Value;
 
 import javax.annotation.Nonnull;
 
 /**
- * User: Mher Sargsyan
  * Company: SFL LLC
  * Date: 4/9/15
  * Time: 3:26 PM
  */
-public class TwillioApiCommunicatorImpl implements TwillioApiCommunicator, InitializingBean {
+public class DefaultTwillioApiCommunicator implements TwillioApiCommunicator {
 
-    private static final Logger logger = LoggerFactory.getLogger(TwillioApiCommunicatorImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(DefaultTwillioApiCommunicator.class);
 
-    /* Properties */
-    @Value("${twillio.account.authToken}")
-    private String accountAuthToken;
+    private final TwilioRestClient twillioRestClient;
 
-    @Value("${twillio.account.sid}")
-    private String accountSid;
-
-    private TwilioRestClient twillioRestClient;
-
-    /* Constructors */
-    public TwillioApiCommunicatorImpl() {
-        super();
-    }
-
-    @Override
-    public void afterPropertiesSet() {
-        /* Create instance of twillio rest client */
-        logger.debug("Creating twillio rest client instance with account sid - {} and account authToken - {}", accountSid, accountAuthToken);
-        twillioRestClient = new TwilioRestClient.Builder(accountSid, accountAuthToken).build();
+    public DefaultTwillioApiCommunicator(final TwilioRestClient twillioRestClient) {
+        this.twillioRestClient = twillioRestClient;
     }
 
     /* Public methods */
@@ -57,9 +39,9 @@ public class TwillioApiCommunicatorImpl implements TwillioApiCommunicator, Initi
             final SendMessageResponse sendMessageResponse = new SendMessageResponse(message.getSid(), message.getTo(), message.getBody());
             logger.debug("Created response model for send message request - {}", sendMessageResponse);
             return sendMessageResponse;
-        } catch (final Exception e) {
-            logger.error("Error occurred while sending sms message", e);
-            throw new TwillioClientRuntimeException(request.getSenderNumber(), request.getRecipientNumber(), request.getMessageBody(), e);
+        } catch (final Exception ex) {
+            logger.error("Error occurred while sending sms message via twillio.");
+            throw new TwillioClientRuntimeException(request.getSenderNumber(), request.getRecipientNumber(), ex);
         }
     }
 }

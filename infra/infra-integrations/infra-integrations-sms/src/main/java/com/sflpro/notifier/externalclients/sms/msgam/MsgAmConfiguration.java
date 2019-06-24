@@ -10,7 +10,6 @@ import com.sflpro.notifier.externalclients.sms.msgam.communicator.MsgAmApiCommun
 import com.sflpro.notifier.externalclients.sms.msgam.communicator.MsgAmApiCommunicatorImpl;
 import com.sflpro.notifier.spi.sms.*;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
@@ -65,15 +64,10 @@ class MsgAmConfiguration {
                 msgAmRestClient);
     }
 
-    @Bean("msgAmMessageIdProvider")
-    @ConditionalOnMissingBean(com.sflpro.notifier.externalclients.sms.msgam.MsgAmMessageIdProvider.class)
-    com.sflpro.notifier.externalclients.sms.msgam.MsgAmMessageIdProvider msgAmMessageIdProvider() {
-        return System::currentTimeMillis;
-    }
 
     @Bean("msgAmSimpleSmsSender")
-    SimpleSmsSender msgAmSimpleSmsSender(final MsgAmApiCommunicator msgAmApiCommunicator, MsgAmMessageIdProvider msgAmMessageIdProvider) {
-        return new MsgAmSimpleSmsSender(msgAmApiCommunicator, msgAmMessageIdProvider);
+    SimpleSmsSender msgAmSimpleSmsSender(final MsgAmApiCommunicator msgAmApiCommunicator) {
+        return new MsgAmSimpleSmsSender(msgAmApiCommunicator);
     }
 
     @Bean("msgAmSimpleSmsSenderRegistry")
@@ -83,8 +77,8 @@ class MsgAmConfiguration {
 
     @Bean("msgAmTemplatedSmsSender")
     @ConditionalOnBean(SmsTemplateContentResolver.class)
-    TemplatedSmsSender msgAmTemplatedSmsSender(final MsgAmApiCommunicator msgAmApiCommunicator, final MsgAmMessageIdProvider msgAmMessageIdProvider, final SmsTemplateContentResolver smsTemplateContentResolver) {
-        return new MsgAmTemplatedSmsSender(msgAmApiCommunicator, msgAmMessageIdProvider, smsTemplateContentResolver);
+    TemplatedSmsSender msgAmTemplatedSmsSender(final MsgAmApiCommunicator msgAmApiCommunicator, final SmsTemplateContentResolver smsTemplateContentResolver) {
+        return new MsgAmTemplatedSmsSender(msgAmApiCommunicator, smsTemplateContentResolver);
     }
 
     @Bean("msgAmSimpleSmsSenderRegistry")

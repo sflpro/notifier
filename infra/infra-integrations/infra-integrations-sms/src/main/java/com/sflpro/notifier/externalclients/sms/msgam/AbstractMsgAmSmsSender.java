@@ -16,28 +16,24 @@ import org.slf4j.LoggerFactory;
  */
 abstract class AbstractMsgAmSmsSender<M extends SmsMessage> implements SmsSender<M> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractMsgAmSmsSender.class);
+    private static final Logger logger = LoggerFactory.getLogger(AbstractMsgAmSmsSender.class);
 
     private final MsgAmApiCommunicator msgAmApiCommunicator;
-    private final MsgAmMessageIdProvider msgAmMessageIdProvider;
 
-    AbstractMsgAmSmsSender(final MsgAmApiCommunicator msgAmApiCommunicator,
-                           final MsgAmMessageIdProvider msgAmMessageIdProvider) {
+    AbstractMsgAmSmsSender(final MsgAmApiCommunicator msgAmApiCommunicator) {
         this.msgAmApiCommunicator = msgAmApiCommunicator;
-        this.msgAmMessageIdProvider = msgAmMessageIdProvider;
     }
 
     @Override
     public SmsMessageSendingResult send(final M message) {
-        LOGGER.debug("Sending sms message with request model - {}", message);
-        final long messageId = msgAmMessageIdProvider.nextId();
+        logger.debug("Sending sms message with request model - {}", message);
         final SendMessagesResponse sendMessagesResponse = msgAmApiCommunicator.sendMessage(new SendMessagesRequest(
-                messageId,
+                message.internalId(),
                 message.sender(),
                 message.recipientNumber(),
                 bodyFor(message))
         );
-        LOGGER.debug("Successfully sent sms message, response - {}", sendMessagesResponse);
+        logger.debug("Successfully sent sms message, response - {}", sendMessagesResponse);
         return SmsMessageSendingResult.of(sendMessagesResponse.getSid());
     }
 

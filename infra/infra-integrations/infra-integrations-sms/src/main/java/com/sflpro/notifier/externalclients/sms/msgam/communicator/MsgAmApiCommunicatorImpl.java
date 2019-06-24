@@ -53,7 +53,10 @@ public class MsgAmApiCommunicatorImpl implements MsgAmApiCommunicator {
         final SendMessagesResponse message = msgAmRestClient.sendMessage(clientSmsSendMessagesRequest);
         if (!message.isSuccess()) {
             LOGGER.error("Error occurred while sending sms message by Msg.am e - {}", message.getDescription());
-            throw new MsgAmClientRuntimeException(clientSmsSendMessagesRequest.getMessage().getSourceNumber(), clientSmsSendMessagesRequest.getMessage().getPhoneNumber());
+            throw new MsgAmClientRuntimeException(
+                    clientSmsSendMessagesRequest.getMessage().getSourceNumber(),
+                    clientSmsSendMessagesRequest.getMessage().getPhoneNumber()
+            );
         }
         LOGGER.debug("Msg Am Communicator Successfully sent text message with request - {}, response message - {}", sendMessagesRequest, message);
         return message;

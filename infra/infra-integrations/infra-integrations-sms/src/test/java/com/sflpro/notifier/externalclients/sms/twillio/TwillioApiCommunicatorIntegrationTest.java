@@ -36,11 +36,6 @@ public class TwillioApiCommunicatorIntegrationTest extends AbstractSmsIntegratio
     @Autowired
     private TwillioApiCommunicator twillioApiCommunicator;
 
-    /* Properties */
-
-    /* Constructors */
-    public TwillioApiCommunicatorIntegrationTest() {
-    }
 
     /* Test methods */
     @Test
@@ -79,7 +74,6 @@ public class TwillioApiCommunicatorIntegrationTest extends AbstractSmsIntegratio
 
     /* Utility methods */
     private void assertTwillioClientException(final SendMessageRequest sendMessageRequest, final TwillioClientRuntimeException e) {
-        assertEquals(e.getMessageBody(), sendMessageRequest.getMessageBody());
         assertEquals(e.getRecipientNumber(), sendMessageRequest.getRecipientNumber());
         assertEquals(e.getSenderNumber(), sendMessageRequest.getSenderNumber());
     }

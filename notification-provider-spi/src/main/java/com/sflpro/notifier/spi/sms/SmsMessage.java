@@ -10,4 +10,10 @@ public interface SmsMessage {
     String sender();
 
     String recipientNumber();
+
+    long internalId();
+
+    default String contentType(){
+        return "text/plain";
+    }
 }

@@ -16,9 +16,9 @@ public interface TemplatedSmsMessage extends SmsMessage {
     @SuppressWarnings("squid:S1452")
     Map<String, ?> variables();
 
-    static TemplatedSmsMessage of(final String senderNumber, final String recipientNumber, final String templateId, final Map<String, ?> variables) {
+    static TemplatedSmsMessage of(final long internalId, final String senderNumber, final String recipientNumber, final String templateId, final Map<String, ?> variables) {
         Assert.hasText(senderNumber, "Null or empty text was passed as an argument for parameter 'sender'.");
         Assert.hasText(templateId, "Null or empty text was passed as an argument for parameter 'templateId'.");
-        return new ImmutableTemplatedSmsMessage(senderNumber, recipientNumber, templateId, variables);
+        return new ImmutableTemplatedSmsMessage(internalId, senderNumber, recipientNumber, templateId, variables);
     }
 }

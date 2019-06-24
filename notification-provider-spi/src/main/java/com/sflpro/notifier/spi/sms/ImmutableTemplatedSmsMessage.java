@@ -17,11 +17,12 @@ final class ImmutableTemplatedSmsMessage extends AbstractSmsMessage implements T
     private final String templateId;
     private final Map<String, ?> variables;
 
-    ImmutableTemplatedSmsMessage(final String senderNumber,
+    ImmutableTemplatedSmsMessage(final long internalId,
+                                 final String senderNumber,
                                  final String recipientNumber,
                                  final String templateId,
                                  final Map<String, ?> variables) {
-        super(senderNumber, recipientNumber);
+        super(internalId, senderNumber, recipientNumber);
         this.templateId = templateId;
         this.variables = variables;
     }

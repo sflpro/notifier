@@ -11,10 +11,12 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  */
 abstract class AbstractSmsMessage implements SmsMessage {
 
+    private final long internalId;
     private final String recipientNumber;
     private final String senderNumber;
 
-    AbstractSmsMessage(final String senderNumber,final String recipientNumber) {
+    AbstractSmsMessage(final long internalId, final String senderNumber, final String recipientNumber) {
+        this.internalId = internalId;
         this.senderNumber = senderNumber;
         this.recipientNumber = recipientNumber;
     }
@@ -29,6 +31,7 @@ abstract class AbstractSmsMessage implements SmsMessage {
         }
         final AbstractSmsMessage that = (AbstractSmsMessage) o;
         return new EqualsBuilder()
+                .append(internalId, that.internalId)
                 .append(recipientNumber, that.recipientNumber)
                 .append(senderNumber, that.senderNumber)
                 .isEquals();
@@ -45,6 +48,7 @@ abstract class AbstractSmsMessage implements SmsMessage {
     @Override
     public String toString() {
         return new ToStringBuilder(this)
+                .append("internalId", internalId)
                 .append("recipientNumber", recipientNumber)
                 .append("sender", senderNumber)
                 .toString();
@@ -58,5 +62,10 @@ abstract class AbstractSmsMessage implements SmsMessage {
     @Override
     public String recipientNumber() {
         return recipientNumber;
+    }
+
+    @Override
+    public long internalId() {
+        return internalId;
     }
 }

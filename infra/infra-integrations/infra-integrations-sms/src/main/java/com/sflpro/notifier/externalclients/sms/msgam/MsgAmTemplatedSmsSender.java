@@ -16,9 +16,8 @@ class MsgAmTemplatedSmsSender extends AbstractMsgAmSmsSender<TemplatedSmsMessage
     private final SmsTemplateContentResolver smsTemplateContentResolver;
 
     MsgAmTemplatedSmsSender(final MsgAmApiCommunicator msgAmApiCommunicator,
-                         final MsgAmMessageIdProvider msgAmMessageIdProvider,
                          final SmsTemplateContentResolver smsTemplateContentResolver) {
-        super(msgAmApiCommunicator,msgAmMessageIdProvider);
+        super(msgAmApiCommunicator);
         this.smsTemplateContentResolver = smsTemplateContentResolver;
     }
 

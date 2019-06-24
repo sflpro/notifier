@@ -12,8 +12,6 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  */
 public class SendMessagesRequest {
 
-    private static final long serialVersionUID = 5623687823133511155L;
-
     private String recipientNumber;
 
     private String messageBody;
@@ -22,7 +20,7 @@ public class SendMessagesRequest {
 
     private String senderNumber;
 
-    public SendMessagesRequest(final long messageId,final String senderNumber, final String recipientNumber, final String messageBody) {
+    public SendMessagesRequest(final long messageId, final String senderNumber, final String recipientNumber, final String messageBody) {
         this.senderNumber = senderNumber;
         this.messageId = messageId;
         this.recipientNumber = recipientNumber;
@@ -62,38 +60,39 @@ public class SendMessagesRequest {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) {
             return true;
         }
         if (!(o instanceof SendMessagesRequest)) {
             return false;
         }
-        final SendMessagesRequest that = (SendMessagesRequest) o;
+        final SendMessagesRequest request = (SendMessagesRequest) o;
         return new EqualsBuilder()
-                .appendSuper(super.equals(o))
-                .append(messageId, that.messageId)
-                .append(recipientNumber, that.recipientNumber)
-                .append(messageBody, that.messageBody)
+                .append(messageId, request.messageId)
+                .append(recipientNumber, request.recipientNumber)
+                .append(messageBody, request.messageBody)
+                .append(senderNumber, request.senderNumber)
                 .isEquals();
     }
 
     @Override
     public int hashCode() {
         return new HashCodeBuilder(17, 37)
-                .appendSuper(super.hashCode())
-                .append(messageId)
                 .append(recipientNumber)
                 .append(messageBody)
+                .append(messageId)
+                .append(senderNumber)
                 .toHashCode();
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .append("messageId", messageId)
                 .append("recipientNumber", recipientNumber)
                 .append("messageBody", messageBody)
+                .append("messageId", messageId)
+                .append("senderNumber", senderNumber)
                 .toString();
     }
 }

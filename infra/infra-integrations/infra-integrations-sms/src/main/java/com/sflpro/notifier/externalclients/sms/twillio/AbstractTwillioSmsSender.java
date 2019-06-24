@@ -27,7 +27,7 @@ abstract class AbstractTwillioSmsSender<M extends SmsMessage> implements SmsSend
 
     @Override
     public SmsMessageSendingResult send(final M message) {
-        LOGGER.debug("Sending sms message with request model - {}", message);
+        LOGGER.debug("Sending sms message via trillio with id - {}", message.internalId());
         final SendMessageRequest sendMessageRequest = new SendMessageRequest(
                 message.sender(),
                 message.recipientNumber(),

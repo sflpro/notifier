@@ -1,4 +1,4 @@
-package com.sflpro.notifier.externalclients.sms.msgam;
+package com.sflpro.notifier.externalclients.sms.nikitamobile;
 
 import com.sflpro.notifier.externalclients.sms.test.AbstractSmsIntegrationTest;
 import com.sflpro.notifier.spi.sms.SimpleSmsMessage;
@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.test.context.TestPropertySource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -15,23 +16,24 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Date: 6/20/19
  * Time: 6:19 PM
  */
-public class MsgAmSimpleSmsSenderIntegrationTest extends AbstractSmsIntegrationTest {
+@TestPropertySource(properties = {"nikitamobile.enabled=true"})
+public class NikitaMobileSimpleSmsSenderIntegrationTest extends AbstractSmsIntegrationTest {
 
     @Value("${integrationtest.send.real.sms:false}")
     private Boolean sendRealSms = Boolean.FALSE;
 
     @Autowired(required = false)
-    @Qualifier("msgAmSimpleSmsSender")
-    private SimpleSmsSender msgAmSimpleSmsSender;
+    @Qualifier("nikitamobileSimpleSmsSender")
+    private SimpleSmsSender nikitamobileSimpleSmsSender;
 
     @Test
     public void testSend() {
-        if (!sendRealSms) {
+        if(!sendRealSms){
             return;
         }
-        assertThat(msgAmSimpleSmsSender.send(SimpleSmsMessage.of(
+        assertThat(nikitamobileSimpleSmsSender.send(SimpleSmsMessage.of(
                 1L,
-                "Rate.am",
+                "+37444668425",
                 "+37494668425",
                 "Hi!"
         ))).isNotNull();

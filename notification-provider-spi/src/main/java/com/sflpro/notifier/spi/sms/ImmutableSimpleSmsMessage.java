@@ -14,8 +14,8 @@ final class ImmutableSimpleSmsMessage extends AbstractSmsMessage implements Simp
 
     private final String messageBody;
 
-    ImmutableSimpleSmsMessage(final String senderNumber, final String recipientNumber, final String messageBody) {
-        super(senderNumber, recipientNumber);
+    ImmutableSimpleSmsMessage(final long internalId, final String senderNumber, final String recipientNumber, final String messageBody) {
+        super(internalId, senderNumber, recipientNumber);
         this.messageBody = messageBody;
     }
 

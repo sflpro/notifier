@@ -19,7 +19,7 @@ import java.math.BigInteger;
 public class Message {
 
     @XmlAttribute(name = "sms_id")
-    private BigInteger id;
+    private long id;
 
     @XmlAttribute(name = "number")
     private String phoneNumber;
@@ -34,11 +34,18 @@ public class Message {
         super();
     }
 
-    public BigInteger getId() {
+    public Message(final long id, final String phoneNumber, final BigInteger sourceNumber, final int count) {
+        this.id = id;
+        this.phoneNumber = phoneNumber;
+        this.sourceNumber = sourceNumber;
+        this.count = count;
+    }
+
+    public long getId() {
         return id;
     }
 
-    public void setId(BigInteger id) {
+    public void setId(long id) {
         this.id = id;
     }
 

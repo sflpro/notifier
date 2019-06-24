@@ -11,9 +11,8 @@ import com.sflpro.notifier.spi.sms.SimpleSmsSender;
  */
 class MsgAmSimpleSmsSender extends AbstractMsgAmSmsSender<SimpleSmsMessage> implements SimpleSmsSender {
 
-    MsgAmSimpleSmsSender(final MsgAmApiCommunicator msgAmApiCommunicator,
-                         final MsgAmMessageIdProvider msgAmMessageIdProvider) {
-        super(msgAmApiCommunicator,msgAmMessageIdProvider);
+    MsgAmSimpleSmsSender(final MsgAmApiCommunicator msgAmApiCommunicator) {
+        super(msgAmApiCommunicator);
     }
 
     @Override

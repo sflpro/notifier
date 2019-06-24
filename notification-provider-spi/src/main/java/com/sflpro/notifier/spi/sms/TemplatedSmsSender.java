@@ -6,5 +6,4 @@ package com.sflpro.notifier.spi.sms;
  * Time: 3:14 PM
  */
 public interface TemplatedSmsSender extends SmsSender<TemplatedSmsMessage> {
-    
 }

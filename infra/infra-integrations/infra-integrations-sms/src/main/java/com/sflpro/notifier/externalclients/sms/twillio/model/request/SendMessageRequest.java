@@ -1,6 +1,5 @@
 package com.sflpro.notifier.externalclients.sms.twillio.model.request;
 
-import com.sflpro.notifier.externalclients.sms.twillio.model.AbstractTwillioApiCommunicatorModel;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -12,8 +11,7 @@ import org.springframework.util.Assert;
  * Date: 4/9/15
  * Time: 5:29 PM
  */
-public class SendMessageRequest extends AbstractTwillioApiCommunicatorModel {
-    private static final long serialVersionUID = 7363590368333135655L;
+public class SendMessageRequest{
 
     /* Properties */
     private final String senderNumber;
@@ -56,7 +54,6 @@ public class SendMessageRequest extends AbstractTwillioApiCommunicatorModel {
         }
         SendMessageRequest that = (SendMessageRequest) o;
         final EqualsBuilder builder = new EqualsBuilder();
-        builder.appendSuper(super.equals(that));
         builder.append(getSenderNumber(), that.getSenderNumber());
         builder.append(getMessageBody(), that.getMessageBody());
         builder.append(getRecipientNumber(), that.getRecipientNumber());
@@ -66,7 +63,6 @@ public class SendMessageRequest extends AbstractTwillioApiCommunicatorModel {
     @Override
     public int hashCode() {
         final HashCodeBuilder builder = new HashCodeBuilder();
-        builder.appendSuper(super.hashCode());
         builder.append(getSenderNumber());
         builder.append(getMessageBody());
         builder.append(getRecipientNumber());

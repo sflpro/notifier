@@ -36,7 +36,7 @@ public class SendMessagesResponse {
 
 
     public String getSid() {
-        return message.getId().toString();
+        return String.valueOf(message.getId());
     }
 
     public String getName() {

@@ -6,16 +6,20 @@ import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
 import com.sflpro.notifier.db.repositories.utility.PersistenceUtilityService;
 import com.sflpro.notifier.services.common.exception.ServicesRuntimeException;
 import com.sflpro.notifier.services.notification.email.EmailNotificationService;
-import com.sflpro.notifier.services.notification.impl.email.mandrill.EmailNotificationMandrillProviderProcessor;
-import com.sflpro.notifier.services.notification.impl.email.smtp.EmailNotificationSmtpProviderProcessor;
 import com.sflpro.notifier.services.test.AbstractServicesUnitTest;
+import com.sflpro.notifier.spi.email.SimpleEmailMessage;
+import com.sflpro.notifier.spi.email.SimpleEmailSender;
+import com.sflpro.notifier.spi.email.TemplatedEmailMessage;
+import com.sflpro.notifier.spi.email.TemplatedEmailSender;
 import org.easymock.Mock;
-import org.easymock.TestSubject;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Collections;
+import java.util.Optional;
 
 import static org.easymock.EasyMock.*;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 /**
@@ -27,8 +31,10 @@ import static org.junit.Assert.fail;
 public class EmailNotificationProcessorImplTest extends AbstractServicesUnitTest {
 
     /* Test subject and mocks */
-    @TestSubject
-    private EmailNotificationProcessorImpl emailNotificationProcessor = new EmailNotificationProcessorImpl();
+    private EmailNotificationProcessorImpl emailNotificationProcessor;
+
+    @Mock
+    private EmailSenderProvider emailSenderProvider;
 
     @Mock
     private EmailNotificationService emailNotificationService;
@@ -37,14 +43,14 @@ public class EmailNotificationProcessorImplTest extends AbstractServicesUnitTest
     private PersistenceUtilityService persistenceUtilityService;
 
     @Mock
-    private EmailNotificationSmtpProviderProcessor emailNotificationSmtpProviderProcessor;
+    private SimpleEmailSender simpleEmailSender;
 
     @Mock
-    private EmailNotificationMandrillProviderProcessor emailNotificationMandrillProviderProcessor;
+    private TemplatedEmailSender templatedEmailSender;
 
-
-    /* Constructors */
-    public EmailNotificationProcessorImplTest() {
+    @Before
+    public void prepare() {
+        emailNotificationProcessor = new EmailNotificationProcessorImpl(emailNotificationService, emailSenderProvider, persistenceUtilityService);
     }
 
     /* Test methods */
@@ -77,6 +83,7 @@ public class EmailNotificationProcessorImplTest extends AbstractServicesUnitTest
         resetAll();
         // Expectations
         expect(emailNotificationService.getNotificationById(eq(notificationId))).andReturn(notification).once();
+        expect(persistenceUtilityService.initializeAndUnProxy(notification)).andReturn(notification);
         // Replay
         replayAll();
         // Run test scenario
@@ -102,15 +109,16 @@ public class EmailNotificationProcessorImplTest extends AbstractServicesUnitTest
         resetAll();
         // Expectations
         expect(emailNotificationService.getNotificationById(notificationId)).andReturn(notification).once();
+        expect(persistenceUtilityService.initializeAndUnProxy(notification)).andReturn(notification);
         expect(emailNotificationService.updateNotificationState(notificationId, NotificationState.PROCESSING)).andReturn(notification).once();
-        expect(emailNotificationSmtpProviderProcessor.processEmailNotification(notification, Collections.emptyMap())).andReturn(true).once();
-        expect(emailNotificationService.updateNotificationState(notificationId, NotificationState.SENT)).andReturn(notification).once();
-        persistenceUtilityService.runInNewTransaction(isA(Runnable.class));
-        expectLastCall().andAnswer(() -> {
-            final Runnable runnable = (Runnable) getCurrentArguments()[0];
-            runnable.run();
+        expect(emailSenderProvider.lookupTemplatedEmailSenderFor(notification.getProviderType().name().toLowerCase())).andReturn(Optional.of(templatedEmailSender));
+        templatedEmailSender.send(isA(TemplatedEmailMessage.class));
+        expectLastCall().andAnswer(()->{
+            final TemplatedEmailMessage message = (TemplatedEmailMessage) getCurrentArguments()[0];
+            assertTemplatedEmailMessage(message, notification);
             return null;
-        }).anyTimes();
+        });
+        expect(emailNotificationService.updateNotificationState(notificationId,NotificationState.SENT)).andReturn(notification).once();
         // Replay
         replayAll();
         // Run test scenario
@@ -131,8 +139,15 @@ public class EmailNotificationProcessorImplTest extends AbstractServicesUnitTest
         resetAll();
         // Expectations
         expect(emailNotificationService.getNotificationById(notificationId)).andReturn(notification).once();
+        expect(persistenceUtilityService.initializeAndUnProxy(notification)).andReturn(notification);
         expect(emailNotificationService.updateNotificationState(notificationId, NotificationState.PROCESSING)).andReturn(notification).once();
-        expect(emailNotificationMandrillProviderProcessor.processEmailNotification(notification, Collections.emptyMap())).andReturn(false).once();
+        expect(emailSenderProvider.lookupTemplatedEmailSenderFor(notification.getProviderType().name().toLowerCase())).andReturn(Optional.of(templatedEmailSender));
+        templatedEmailSender.send(isA(TemplatedEmailMessage.class));
+        expectLastCall().andAnswer(()->{
+            final TemplatedEmailMessage message = (TemplatedEmailMessage) getCurrentArguments()[0];
+            assertTemplatedEmailMessage(message, notification);
+            throw new RuntimeException("Failed to send email");
+        });
         expect(emailNotificationService.updateNotificationState(notificationId, NotificationState.FAILED)).andReturn(notification).once();
         persistenceUtilityService.runInNewTransaction(isA(Runnable.class));
         expectLastCall().andAnswer(() -> {
@@ -143,7 +158,13 @@ public class EmailNotificationProcessorImplTest extends AbstractServicesUnitTest
         // Replay
         replayAll();
         // Run test scenario
-        emailNotificationProcessor.processNotification(notificationId, Collections.emptyMap());
+        try {
+            // Run test scenario
+            emailNotificationProcessor.processNotification(notificationId, Collections.emptyMap());
+            fail("Exception should be thrown");
+        } catch (final ServicesRuntimeException ex) {
+            // Expected
+        }
         // Verify
         verifyAll();
     }
@@ -159,15 +180,16 @@ public class EmailNotificationProcessorImplTest extends AbstractServicesUnitTest
         resetAll();
         // Expectations
         expect(emailNotificationService.getNotificationById(notificationId)).andReturn(notification).once();
+        expect(persistenceUtilityService.initializeAndUnProxy(notification)).andReturn(notification);
         expect(emailNotificationService.updateNotificationState(notificationId, NotificationState.PROCESSING)).andReturn(notification).once();
-        expect(emailNotificationSmtpProviderProcessor.processEmailNotification(notification, Collections.emptyMap())).andThrow(new ServicesRuntimeException("Runtime exception")).once();
-        expect(emailNotificationService.updateNotificationState(notificationId, NotificationState.FAILED)).andReturn(notification).once();
-        persistenceUtilityService.runInNewTransaction(isA(Runnable.class));
-        expectLastCall().andAnswer(() -> {
-            final Runnable runnable = (Runnable) getCurrentArguments()[0];
-            runnable.run();
-            return null;
-        }).anyTimes();
+        expect(emailSenderProvider.lookupTemplatedEmailSenderFor(notification.getProviderType().name().toLowerCase())).andReturn(Optional.of(templatedEmailSender));
+        templatedEmailSender.send(isA(TemplatedEmailMessage.class));
+        expectLastCall().andAnswer(()->{
+            final TemplatedEmailMessage message = (TemplatedEmailMessage) getCurrentArguments()[0];
+            assertTemplatedEmailMessage(message, notification);
+            throw new RuntimeException("Failed to send email");
+        });
+        expect(emailNotificationService.updateNotificationState(eq(notificationId), eq(NotificationState.FAILED))).andReturn(notification).once();
         // Replay
         replayAll();
         try {
@@ -179,5 +201,19 @@ public class EmailNotificationProcessorImplTest extends AbstractServicesUnitTest
         }
         // Verify
         verifyAll();
+    }
+
+    /* Utility methods */
+    private static void assertSimpleEmailMessage(final SimpleEmailMessage message, final EmailNotification notification) {
+        assertEquals(notification.getSenderEmail(), message.from());
+        assertEquals(notification.getRecipientEmail(), message.to());
+        assertEquals(notification.getContent(), message.body());
+        assertEquals(notification.getSubject(), message.subject());
+    }
+
+    private static void assertTemplatedEmailMessage(final TemplatedEmailMessage message, final EmailNotification notification) {
+        assertEquals(notification.getSenderEmail(), message.from());
+        assertEquals(notification.getRecipientEmail(), message.to());
+        assertEquals(notification.getTemplateName(), message.templateId());
     }
 }

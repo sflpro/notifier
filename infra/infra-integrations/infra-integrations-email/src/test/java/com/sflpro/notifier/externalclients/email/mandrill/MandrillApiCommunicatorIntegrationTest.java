@@ -3,18 +3,21 @@ package com.sflpro.notifier.externalclients.email.mandrill;
 import com.microtripit.mandrillapp.lutung.model.MandrillApiError;
 import com.sflpro.notifier.externalclients.email.mandrill.communicator.MandrillApiCommunicator;
 import com.sflpro.notifier.externalclients.email.mandrill.exception.MandrillEmailClientRuntimeException;
-import com.sflpro.notifier.externalclients.email.mandrill.model.request.SendEmailRequest;
 import com.sflpro.notifier.externalclients.email.test.AbstractEmailNotificationIntegrationTest;
+import com.sflpro.notifier.spi.email.TemplatedEmailMessage;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * Company: SFL LLC
@@ -23,7 +26,10 @@ import static org.junit.Assert.assertTrue;
  * @author Davit Harutyunyan
  */
 @ContextConfiguration(value = {"classpath:applicationContext-externalclients-email-integrationtest.xml"})
+@TestPropertySource(properties = {"mandrill.enabled=true","mandrill.service.token=sx3Ielt1VEGrmi_ANXEFcg"})
 public class MandrillApiCommunicatorIntegrationTest extends AbstractEmailNotificationIntegrationTest {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(MandrillApiCommunicatorIntegrationTest.class);
 
     /* Dependencies */
     @Autowired
@@ -38,24 +44,28 @@ public class MandrillApiCommunicatorIntegrationTest extends AbstractEmailNotific
     public void testSendEmailTemplate() {
         // Prepare data
         final String templateName = "integration-test-template";
-        Map<String, String> templateContent = new HashMap<>();
+        final Map<String, Object> templateContent = new HashMap<>();
         templateContent.put("token", "super-secure-token");
-        final SendEmailRequest sendEmailRequest = new SendEmailRequest("some_dummy_mail@weadapt.digital", templateName, templateContent);
+        final TemplatedEmailMessage message = TemplatedEmailMessage.of("some_dummy_mail_from@weadapt.digital", "some_dummy_mail@weadapt.digital", templateName, templateContent);
         // Execute send request
-        final boolean response = mandrillApiCommunicator.sendEmailTemplate(sendEmailRequest);
-        assertTrue(response);
+        try {
+            mandrillApiCommunicator.sendEmailTemplate(message);
+        } catch (final MandrillEmailClientRuntimeException ex) {
+            LOGGER.error("Mandrill API call failed.", ex);
+            fail(ex.getMessage());
+        }
     }
 
     @Test
     public void testSendEmailTemplateWithNotExistingTemplate() throws MandrillApiError {
         // Prepare data
         final String templateName = RandomStringUtils.randomAlphanumeric(50) + "MEKA-CHEQ-KARA";
-        Map<String, String> templateContent = new HashMap<>();
+        Map<String, Object> templateContent = new HashMap<>();
         templateContent.put("token", "super-secure-token");
-        final SendEmailRequest sendEmailRequest = new SendEmailRequest("some_dummy_mal@weadapt.digital", templateName, templateContent);
+        final TemplatedEmailMessage message = TemplatedEmailMessage.of("some_dummy_mail_from@weadapt.digital", "some_dummy_mal@weadapt.digital", templateName, templateContent);
         // Execute send request
         try {
-            mandrillApiCommunicator.sendEmailTemplate(sendEmailRequest);
+            mandrillApiCommunicator.sendEmailTemplate(message);
         } catch (final MandrillEmailClientRuntimeException e) {
             // Should throw Unknown template error
             if (e.getCause() instanceof MandrillApiError) {

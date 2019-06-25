@@ -1,8 +1,6 @@
 package com.sflpro.notifier.db.repositories.utility.impl;
 
 import com.sflpro.notifier.db.repositories.utility.PersistenceUtilityService;
-import org.hibernate.Hibernate;
-import org.hibernate.proxy.HibernateProxy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,22 +43,6 @@ public class PersistenceUtilityServiceImpl implements PersistenceUtilityService 
     public PersistenceUtilityServiceImpl() {
         // Initialize thread pool
         initExecutorService();
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    @Nonnull
-    public <T> T initializeAndUnProxy(@Nonnull final T entity) {
-        Assert.notNull(entity, "Entity should not be null");
-        LOGGER.debug("UnProxying entity - {}", new Object[]{entity});
-        // UnProxied entity
-        T unProxiedEntity = entity;
-        // Initialize
-        Hibernate.initialize(unProxiedEntity);
-        if (unProxiedEntity instanceof HibernateProxy) {
-            unProxiedEntity = (T) ((HibernateProxy) unProxiedEntity).getHibernateLazyInitializer().getImplementation();
-        }
-        return unProxiedEntity;
     }
 
     @Override

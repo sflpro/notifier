@@ -9,8 +9,8 @@ import com.sflpro.notifier.api.model.notification.NotificationClientType;
 import com.sflpro.notifier.api.model.notification.NotificationStateClientType;
 import com.sflpro.notifier.db.entities.notification.NotificationProviderType;
 import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
+import com.sflpro.notifier.services.notification.dto.NotificationPropertyDto;
 import com.sflpro.notifier.services.notification.dto.email.EmailNotificationDto;
-import com.sflpro.notifier.services.notification.dto.email.EmailNotificationPropertyDto;
 import com.sflpro.notifier.services.notification.email.EmailNotificationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -97,10 +97,10 @@ public class EmailNotificationResource {
         return notificationModel;
     }
 
-    private List<EmailNotificationPropertyDto> buildPropertiesDto(final Map<String, String> properties) {
+    private List<NotificationPropertyDto> buildPropertiesDto(final Map<String, String> properties) {
         return properties.entrySet()
                 .stream()
-                .map(entry -> new EmailNotificationPropertyDto(entry.getKey(), entry.getValue()))
+                .map(entry -> new NotificationPropertyDto(entry.getKey(), entry.getValue()))
                 .collect(Collectors.toList());
     }
 }

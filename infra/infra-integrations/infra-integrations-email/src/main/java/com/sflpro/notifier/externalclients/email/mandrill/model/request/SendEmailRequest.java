@@ -14,9 +14,9 @@ public class SendEmailRequest {
 
     private String templateName;
 
-    private Map<String, String> templateContent;
+    private Map<String, Object> templateContent;
 
-    public SendEmailRequest(String recipientMail, String templateName, Map<String, String> templateContent) {
+    public SendEmailRequest(String recipientMail, String templateName, Map<String, Object> templateContent) {
         this.recipientMail = recipientMail;
         this.templateName = templateName;
         this.templateContent = templateContent;
@@ -38,11 +38,11 @@ public class SendEmailRequest {
         this.templateName = templateName;
     }
 
-    public Map<String, String> getTemplateContent() {
+    public Map<String, Object> getTemplateContent() {
         return templateContent;
     }
 
-    public void setTemplateContent(Map<String, String> templateContent) {
+    public void setTemplateContent(Map<String, Object> templateContent) {
         this.templateContent = templateContent;
     }
 }

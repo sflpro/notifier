@@ -13,7 +13,7 @@ public class TwillioClientRuntimeException extends ExternalSmsClientRuntimeExcep
     private static final long serialVersionUID = 3157858197834455252L;
 
     /* Constructors */
-    public TwillioClientRuntimeException(final String senderNumber, final String recipientNumber, final String messageBody, final Exception originalException) {
-        super(senderNumber, recipientNumber, messageBody, originalException);
+    public TwillioClientRuntimeException(final String senderNumber, final String recipientNumber,final Exception originalException) {
+        super(senderNumber, recipientNumber, originalException);
     }
 }

@@ -38,6 +38,11 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
+            <groupId>com.sflpro.notifier</groupId>
+            <artifactId>notification-provider-spi</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
         </dependency>
@@ -49,6 +54,7 @@
             <groupId>com.zaxxer</groupId>
             <artifactId>HikariCP</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.flywaydb.flyway-test-extensions</groupId>
             <artifactId>flyway-spring-test</artifactId>

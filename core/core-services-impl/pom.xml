@@ -53,19 +53,7 @@
 
         <dependency>
             <groupId>com.sflpro.notifier</groupId>
-            <artifactId>infra-integrations-email</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.sflpro.notifier</groupId>
             <artifactId>infra-integrations-push</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.sflpro.notifier</groupId>
-            <artifactId>infra-integrations-sms</artifactId>
             <version>${project.version}</version>
         </dependency>
 
@@ -81,11 +69,6 @@
         </dependency>
 
         <dependency>
-            <groupId>com.sun.mail</groupId>
-            <artifactId>javax.mail</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>org.apache.velocity</groupId>
             <artifactId>velocity</artifactId>
         </dependency>
@@ -98,6 +81,13 @@
         <dependency>
             <groupId>bouncycastle</groupId>
             <artifactId>bcprov-jdk16</artifactId>
+        </dependency>
+
+ 		<!-- provider API -->
+        <dependency>
+            <groupId>com.sflpro.notifier</groupId>
+            <artifactId>notification-provider-spi</artifactId>
+            <version>${project.version}</version>
         </dependency>
 
         <!-- test dependencies -->

@@ -6,6 +6,7 @@ import com.sflpro.notifier.db.repositories.repositories.notification.AbstractNot
 import com.sflpro.notifier.services.notification.exception.NotificationNotFoundForIdException;
 import com.sflpro.notifier.services.test.AbstractServicesUnitTest;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.Date;
@@ -20,6 +21,7 @@ import static org.junit.Assert.*;
  * Date: 3/21/15
  * Time: 8:25 PM
  */
+@Ignore
 public abstract class AbstractNotificationServiceImplTest<T extends Notification> extends AbstractServicesUnitTest {
 
     /* Constructors */

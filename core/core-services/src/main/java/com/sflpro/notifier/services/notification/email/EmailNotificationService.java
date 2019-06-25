@@ -2,8 +2,8 @@ package com.sflpro.notifier.services.notification.email;
 
 import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
 import com.sflpro.notifier.services.notification.AbstractNotificationService;
+import com.sflpro.notifier.services.notification.dto.NotificationPropertyDto;
 import com.sflpro.notifier.services.notification.dto.email.EmailNotificationDto;
-import com.sflpro.notifier.services.notification.dto.email.EmailNotificationPropertyDto;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -23,5 +23,5 @@ public interface EmailNotificationService extends AbstractNotificationService<Em
      * @return emailNotification
      */
     @Nonnull
-    EmailNotification createAndSendEmailNotification(@Nonnull final EmailNotificationDto emailNotificationDto, @Nonnull final List<EmailNotificationPropertyDto> emailNotificationPropertyDtos);
+    EmailNotification createAndSendEmailNotification(@Nonnull final EmailNotificationDto emailNotificationDto, @Nonnull final List<NotificationPropertyDto> emailNotificationPropertyDtos);
 }

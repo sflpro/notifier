@@ -1,8 +1,8 @@
 package com.sflpro.notifier.services.notification.impl.push.sns;
 
 import com.sflpro.notifier.db.entities.device.mobile.DeviceOperatingSystemType;
+import com.sflpro.notifier.db.entities.notification.email.NotificationProperty;
 import com.sflpro.notifier.db.entities.notification.push.PushNotification;
-import com.sflpro.notifier.db.entities.notification.push.PushNotificationProperty;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationProviderType;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipient;
 import com.sflpro.notifier.externalclients.push.amazon.communicator.AmazonSnsApiCommunicator;
@@ -109,7 +109,7 @@ public class PushNotificationSnsProviderProcessorImplTest extends AbstractServic
         // Amazon SNS platform type
         final AmazonSNSPlatformType amazonSNSPlatformType = getAmazonSNSPlatformType(recipient.getDeviceOperatingSystemType());
         // Create list of push notification properties
-        final Set<PushNotificationProperty> pushNotificationProperties = createPushNotificationProperties(10);
+        final List<NotificationProperty> pushNotificationProperties = createPushNotificationProperties(10);
         notification.setProperties(pushNotificationProperties);
         // Create expected attributes map
         final Map<String, String> pushNotificationAttributes = createPushNotificationAttributes(notification);
@@ -142,10 +142,10 @@ public class PushNotificationSnsProviderProcessorImplTest extends AbstractServic
         }
     }
 
-    private Set<PushNotificationProperty> createPushNotificationProperties(final int count) {
-        final Set<PushNotificationProperty> pushNotificationProperties = new LinkedHashSet<>();
+    private List<NotificationProperty> createPushNotificationProperties(final int count) {
+        final List<NotificationProperty> pushNotificationProperties = new ArrayList<>();
         for (int i = 0; i < count; i++) {
-            final PushNotificationProperty pushNotificationProperty = getServicesImplTestHelper().createPushNotificationProperty();
+            final NotificationProperty pushNotificationProperty = getServicesImplTestHelper().createPushNotificationProperty();
             pushNotificationProperty.setPropertyKey(pushNotificationProperty.getPropertyKey() + "_" + i);
             pushNotificationProperty.setPropertyValue(pushNotificationProperty.getPropertyValue() + "_" + i);
         }

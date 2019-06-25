@@ -2,7 +2,6 @@ package com.sflpro.notifier.externalclients.common.http.rest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
@@ -27,12 +26,11 @@ public class RestClientImpl implements RestClient {
     private static final Logger LOGGER = LoggerFactory.getLogger(RestClientImpl.class);
 
     /* Dependencies */
-    @Autowired
-    private RestTemplate restTemplate;
+    private final RestTemplate restTemplate;
 
     /* Constructors */
-    public RestClientImpl() {
-        super();
+    public RestClientImpl(final RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
     }
 
     @PostConstruct

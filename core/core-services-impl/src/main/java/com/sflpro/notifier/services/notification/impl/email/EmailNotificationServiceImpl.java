@@ -2,14 +2,13 @@ package com.sflpro.notifier.services.notification.impl.email;
 
 import com.sflpro.notifier.db.entities.notification.UserNotification;
 import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
-import com.sflpro.notifier.db.entities.notification.email.EmailNotificationProperty;
 import com.sflpro.notifier.db.entities.user.User;
 import com.sflpro.notifier.db.repositories.repositories.notification.AbstractNotificationRepository;
 import com.sflpro.notifier.db.repositories.repositories.notification.email.EmailNotificationRepository;
 import com.sflpro.notifier.services.notification.UserNotificationService;
+import com.sflpro.notifier.services.notification.dto.NotificationPropertyDto;
 import com.sflpro.notifier.services.notification.dto.UserNotificationDto;
 import com.sflpro.notifier.services.notification.dto.email.EmailNotificationDto;
-import com.sflpro.notifier.services.notification.dto.email.EmailNotificationPropertyDto;
 import com.sflpro.notifier.services.notification.email.EmailNotificationService;
 import com.sflpro.notifier.services.notification.event.sms.StartSendingNotificationEvent;
 import com.sflpro.notifier.services.notification.impl.AbstractNotificationServiceImpl;
@@ -56,7 +55,7 @@ public class EmailNotificationServiceImpl extends AbstractNotificationServiceImp
     @Transactional
     @Nonnull
     @Override
-    public EmailNotification createAndSendEmailNotification(@Nonnull final EmailNotificationDto emailNotificationDto, @Nonnull final List<EmailNotificationPropertyDto> emailNotificationPropertyDtos) {
+    public EmailNotification createAndSendEmailNotification(@Nonnull final EmailNotificationDto emailNotificationDto, @Nonnull final List<NotificationPropertyDto> emailNotificationPropertyDtos) {
         assertEmailNotificationDto(emailNotificationDto);
         Assert.notNull(emailNotificationPropertyDtos, "emailNotificationPropertyDtos should not be null");
         LOGGER.debug("Creating email notification for DTO - {} and property dtos - {}", emailNotificationDto, emailNotificationPropertyDtos);
@@ -88,19 +87,6 @@ public class EmailNotificationServiceImpl extends AbstractNotificationServiceImp
         Assert.notNull(notificationDto.getRecipientEmail(), "Recipient email in notification DTO should not be null");
     }
 
-    private static void createAndAddEmailNotificationProperties(final EmailNotification emailNotification, final List<EmailNotificationPropertyDto> emailNotificationPropertyDtos) {
-        emailNotificationPropertyDtos.forEach(emailNotificationPropertyDto -> {
-            // Assert third party email notification property DTO
-            assertEmailNotificationPropertyDto(emailNotificationPropertyDto);
-            // Create third party email notification property and set values
-            final EmailNotificationProperty emailNotificationProperty = new EmailNotificationProperty();
-            // Update properties
-            emailNotificationPropertyDto.updateDomainEntityProperties(emailNotificationProperty);
-            // Build up relation between property and push notification
-            emailNotificationProperty.setEmailNotification(emailNotification);
-            emailNotification.getProperties().add(emailNotificationProperty);
-        });
-    }
 
     private void associateNotificationWithUser(@Nonnull final EmailNotificationDto emailNotificationDto, final EmailNotification emailNotification) {
         if (emailNotificationDto.getUserUuid() != null) {
@@ -108,11 +94,6 @@ public class EmailNotificationServiceImpl extends AbstractNotificationServiceImp
             final UserNotification userNotification = userNotificationService.createUserNotification(user.getId(), emailNotification.getId(), new UserNotificationDto());
             LOGGER.debug("Created user notification - {} for user - {} and notification - {}", userNotification, user, emailNotification);
         }
-    }
-
-    private static void assertEmailNotificationPropertyDto(final EmailNotificationPropertyDto propertyDto) {
-        Assert.notNull(propertyDto, "Third party email notification property DTO should not be null");
-        Assert.notNull(propertyDto.getPropertyKey(), "Property key in third party email notification property DTO should not be null");
     }
 
     /* Properties getters and setters */

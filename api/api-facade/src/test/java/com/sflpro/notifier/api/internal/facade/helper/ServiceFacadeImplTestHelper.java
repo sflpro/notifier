@@ -20,8 +20,8 @@ import com.sflpro.notifier.db.entities.notification.NotificationProviderType;
 import com.sflpro.notifier.db.entities.notification.NotificationState;
 import com.sflpro.notifier.db.entities.notification.UserNotification;
 import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
+import com.sflpro.notifier.db.entities.notification.email.NotificationProperty;
 import com.sflpro.notifier.db.entities.notification.push.PushNotification;
-import com.sflpro.notifier.db.entities.notification.push.PushNotificationProperty;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipient;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationSubscriptionRequest;
 import com.sflpro.notifier.db.entities.notification.push.sns.PushNotificationSnsRecipient;
@@ -29,10 +29,10 @@ import com.sflpro.notifier.db.entities.notification.sms.SmsNotification;
 import com.sflpro.notifier.db.entities.user.User;
 import com.sflpro.notifier.services.device.dto.UserDeviceDto;
 import com.sflpro.notifier.services.notification.dto.NotificationDto;
+import com.sflpro.notifier.services.notification.dto.NotificationPropertyDto;
 import com.sflpro.notifier.services.notification.dto.UserNotificationDto;
 import com.sflpro.notifier.services.notification.dto.email.EmailNotificationDto;
 import com.sflpro.notifier.services.notification.dto.push.PushNotificationDto;
-import com.sflpro.notifier.services.notification.dto.push.PushNotificationPropertyDto;
 import com.sflpro.notifier.services.notification.dto.push.PushNotificationSubscriptionRequestDto;
 import com.sflpro.notifier.services.notification.dto.push.sns.PushNotificationSnsRecipientDto;
 import com.sflpro.notifier.services.notification.dto.sms.SmsNotificationDto;
@@ -252,7 +252,7 @@ public class ServiceFacadeImplTestHelper {
         });
     }
 
-    public void assertPushNotificationPropertyModel(final PushNotificationProperty pushNotificationProperty, final PushNotificationPropertyModel pushNotificationPropertyModel) {
+    public void assertPushNotificationPropertyModel(final NotificationProperty pushNotificationProperty, final PushNotificationPropertyModel pushNotificationPropertyModel) {
         assertEquals(pushNotificationProperty.getPropertyKey(), pushNotificationPropertyModel.getPropertyKey());
         assertEquals(pushNotificationProperty.getPropertyValue(), pushNotificationPropertyModel.getPropertyValue());
     }
@@ -290,20 +290,20 @@ public class ServiceFacadeImplTestHelper {
     }
 
     /* Push notification property */
-    public PushNotificationPropertyDto createPushNotificationPropertyDto() {
-        final PushNotificationPropertyDto pushNotificationPropertyDto = new PushNotificationPropertyDto();
+    public NotificationPropertyDto createPushNotificationPropertyDto() {
+        final NotificationPropertyDto pushNotificationPropertyDto = new NotificationPropertyDto();
         pushNotificationPropertyDto.setPropertyKey("testPropertyKey");
         pushNotificationPropertyDto.setPropertyValue("testPropertyValue");
         return pushNotificationPropertyDto;
     }
 
-    public PushNotificationProperty createPushNotificationProperty(final PushNotificationPropertyDto notificationPropertyDto) {
-        final PushNotificationProperty pushNotificationProperty = new PushNotificationProperty();
+    public NotificationProperty createPushNotificationProperty(final NotificationPropertyDto notificationPropertyDto) {
+        final NotificationProperty pushNotificationProperty = new NotificationProperty();
         notificationPropertyDto.updateDomainEntityProperties(pushNotificationProperty);
         return pushNotificationProperty;
     }
 
-    public PushNotificationProperty createPushNotificationProperty() {
+    public NotificationProperty createPushNotificationProperty() {
         return createPushNotificationProperty(createPushNotificationPropertyDto());
     }
 

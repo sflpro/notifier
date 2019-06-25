@@ -7,7 +7,7 @@ import com.sflpro.notifier.db.entities.notification.NotificationProviderType;
 import com.sflpro.notifier.db.entities.notification.NotificationState;
 import com.sflpro.notifier.db.entities.notification.UserNotification;
 import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
-import com.sflpro.notifier.db.entities.notification.email.EmailNotificationProperty;
+import com.sflpro.notifier.db.entities.notification.email.NotificationProperty;
 import com.sflpro.notifier.db.entities.notification.push.*;
 import com.sflpro.notifier.db.entities.notification.push.sns.PushNotificationSnsRecipient;
 import com.sflpro.notifier.db.entities.notification.sms.SmsNotification;
@@ -16,10 +16,13 @@ import com.sflpro.notifier.services.device.UserDeviceService;
 import com.sflpro.notifier.services.device.dto.UserDeviceDto;
 import com.sflpro.notifier.services.notification.UserNotificationService;
 import com.sflpro.notifier.services.notification.dto.NotificationDto;
+import com.sflpro.notifier.services.notification.dto.NotificationPropertyDto;
 import com.sflpro.notifier.services.notification.dto.UserNotificationDto;
 import com.sflpro.notifier.services.notification.dto.email.EmailNotificationDto;
-import com.sflpro.notifier.services.notification.dto.email.EmailNotificationPropertyDto;
-import com.sflpro.notifier.services.notification.dto.push.*;
+import com.sflpro.notifier.services.notification.dto.push.PushNotificationDto;
+import com.sflpro.notifier.services.notification.dto.push.PushNotificationSubscriptionDto;
+import com.sflpro.notifier.services.notification.dto.push.PushNotificationSubscriptionProcessingParameters;
+import com.sflpro.notifier.services.notification.dto.push.PushNotificationSubscriptionRequestDto;
 import com.sflpro.notifier.services.notification.dto.push.sns.PushNotificationSnsRecipientDto;
 import com.sflpro.notifier.services.notification.dto.sms.SmsNotificationDto;
 import com.sflpro.notifier.services.notification.email.EmailNotificationService;
@@ -266,14 +269,14 @@ public class ServicesTestHelper {
     }
 
     public EmailNotification createEmailNotification() {
-        return createEmailNotification(createEmailNotificationDto(), createEmailNotificationPropertyDtos(5));
+        return createEmailNotification(createEmailNotificationDto(), createNotificationPropertyDtos(5));
     }
 
-    public EmailNotification createEmailNotification(final EmailNotificationDto notificationDto, final List<EmailNotificationPropertyDto> emailNotificationPropertyDtos) {
+    public EmailNotification createEmailNotification(final EmailNotificationDto notificationDto, final List<NotificationPropertyDto> emailNotificationPropertyDtos) {
         return emailNotificationService.createAndSendEmailNotification(notificationDto, emailNotificationPropertyDtos);
     }
 
-    public void assertEmailNotification(final EmailNotification notification, final EmailNotificationDto notificationDto, final List<EmailNotificationPropertyDto> emailNotificationPropertyDtos) {
+    public void assertEmailNotification(final EmailNotification notification, final EmailNotificationDto notificationDto, final List<NotificationPropertyDto> emailNotificationPropertyDtos) {
         assertNotification(notification, notificationDto);
         assertEquals(notificationDto.getRecipientEmail(), notification.getRecipientEmail());
         assertEquals(notificationDto.getSenderEmail(), notification.getSenderEmail());
@@ -281,20 +284,19 @@ public class ServicesTestHelper {
         Assert.assertEquals(notificationDto.getProviderType(), notification.getProviderType());
         assertEquals(emailNotificationPropertyDtos.size(), notification.getProperties().size());
         emailNotificationPropertyDtos.forEach(emailNotificationPropertyDto -> {
-            final Optional<EmailNotificationProperty> emailNotificationProperty = notification.getProperties()
+            final Optional<NotificationProperty> emailNotificationProperty = notification.getProperties()
                     .stream()
                     .filter(property -> property.getPropertyKey().equals(emailNotificationPropertyDto.getPropertyKey()))
                     .findFirst();
             assertTrue(emailNotificationProperty.isPresent());
             assertEquals(emailNotificationPropertyDto.getPropertyValue(), emailNotificationProperty.get().getPropertyValue());
-            assertEquals(notification.getId(), emailNotificationProperty.get().getEmailNotification().getId());
         });
     }
 
-    public List<EmailNotificationPropertyDto> createEmailNotificationPropertyDtos(final int count) {
-        final List<EmailNotificationPropertyDto> propertyDtos = new ArrayList<>();
+    public List<NotificationPropertyDto> createNotificationPropertyDtos(final int count) {
+        final List<NotificationPropertyDto> propertyDtos = new ArrayList<>();
         for (int i = 0; i < count; i++) {
-            propertyDtos.add(new EmailNotificationPropertyDto("key" + i, "value" + i));
+            propertyDtos.add(new NotificationPropertyDto("key" + i, "value" + i));
         }
         return propertyDtos;
     }
@@ -337,7 +339,7 @@ public class ServicesTestHelper {
         return createPushNotification(createPushNotificationSnsRecipient(), createPushNotificationDto(), createPushNotificationPropertyDTOs(PUSH_NOTIFICATION_PROPERTIES_COUNT));
     }
 
-    public PushNotification createPushNotification(final PushNotificationRecipient recipient, final PushNotificationDto notificationDto, final List<PushNotificationPropertyDto> pushNotificationPropertyDTos) {
+    public PushNotification createPushNotification(final PushNotificationRecipient recipient, final PushNotificationDto notificationDto, final List<NotificationPropertyDto> pushNotificationPropertyDTos) {
         return pushNotificationService.createNotification(recipient.getId(), notificationDto, pushNotificationPropertyDTos);
     }
 
@@ -356,28 +358,28 @@ public class ServicesTestHelper {
     }
 
     /* Push notifications properties */
-    public PushNotificationPropertyDto createPushNotificationPropertyDto() {
-        final PushNotificationPropertyDto pushNotificationPropertyDto = new PushNotificationPropertyDto();
+    public NotificationPropertyDto createPushNotificationPropertyDto() {
+        final NotificationPropertyDto pushNotificationPropertyDto = new NotificationPropertyDto();
         pushNotificationPropertyDto.setPropertyKey("testPropertyKey");
         pushNotificationPropertyDto.setPropertyValue("testPropertyValue");
         return pushNotificationPropertyDto;
     }
 
-    public PushNotificationProperty createPushNotificationProperty(final PushNotificationPropertyDto notificationPropertyDto) {
-        final PushNotificationProperty pushNotificationProperty = new PushNotificationProperty();
+    public NotificationProperty createPushNotificationProperty(final NotificationPropertyDto notificationPropertyDto) {
+        final NotificationProperty pushNotificationProperty = new NotificationProperty();
         notificationPropertyDto.updateDomainEntityProperties(pushNotificationProperty);
         return pushNotificationProperty;
     }
 
-    public void assertPushNotificationProperty(final PushNotificationProperty pushNotificationProperty, final PushNotificationPropertyDto pushNotificationPropertyDto) {
+    public void assertPushNotificationProperty(final NotificationProperty pushNotificationProperty, final NotificationPropertyDto pushNotificationPropertyDto) {
         assertEquals(pushNotificationPropertyDto.getPropertyKey(), pushNotificationProperty.getPropertyKey());
         assertEquals(pushNotificationPropertyDto.getPropertyValue(), pushNotificationProperty.getPropertyValue());
     }
 
-    public List<PushNotificationPropertyDto> createPushNotificationPropertyDTOs(final int count) {
-        final List<PushNotificationPropertyDto> pushNotificationPropertyDTOs = new ArrayList<>();
+    public List<NotificationPropertyDto> createPushNotificationPropertyDTOs(final int count) {
+        final List<NotificationPropertyDto> pushNotificationPropertyDTOs = new ArrayList<>();
         for (int i = 0; i < count; i++) {
-            final PushNotificationPropertyDto pushNotificationPropertyDto = createPushNotificationPropertyDto();
+            final NotificationPropertyDto pushNotificationPropertyDto = createPushNotificationPropertyDto();
             pushNotificationPropertyDto.setPropertyKey(pushNotificationPropertyDto.getPropertyKey() + "_" + i);
             pushNotificationPropertyDto.setPropertyValue(pushNotificationPropertyDto.getPropertyValue() + "_" + i);
             // Add to the list of notifications

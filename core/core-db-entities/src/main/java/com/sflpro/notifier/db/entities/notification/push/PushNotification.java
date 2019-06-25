@@ -9,8 +9,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.persistence.*;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 /**
  * User: Ruben Dilanyan
@@ -29,9 +27,6 @@ public class PushNotification extends Notification {
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "recipient_id", nullable = false, unique = false)
     private PushNotificationRecipient recipient;
-
-    @OneToMany(mappedBy = "pushNotification", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<PushNotificationProperty> properties;
 
     /* Constructors */
     public PushNotification() {
@@ -52,18 +47,9 @@ public class PushNotification extends Notification {
         this.recipient = subscription;
     }
 
-    public Set<PushNotificationProperty> getProperties() {
-        return properties;
-    }
-
-    public void setProperties(final Set<PushNotificationProperty> properties) {
-        this.properties = properties;
-    }
-
     /* Private utility methods */
     private void initializeDefaults() {
         setType(NotificationType.PUSH);
-        this.properties = new LinkedHashSet<>();
     }
 
     /* Equals, HashCode and ToString */

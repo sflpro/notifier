@@ -1,6 +1,7 @@
 package com.sflpro.notifier.externalclients.email.mandrill.communicator;
 
-import com.sflpro.notifier.externalclients.email.mandrill.model.request.SendEmailRequest;
+
+import com.sflpro.notifier.spi.email.TemplatedEmailMessage;
 
 /**
  * Company: SFL LLC
@@ -13,8 +14,8 @@ public interface MandrillApiCommunicator {
     /**
      * Send calendar reminder email
      *
-     * @param sendEmailRequest
+     * @param message
      * @return true/false
      */
-    boolean sendEmailTemplate(final SendEmailRequest sendEmailRequest);
+    void sendEmailTemplate(final TemplatedEmailMessage message);
 }

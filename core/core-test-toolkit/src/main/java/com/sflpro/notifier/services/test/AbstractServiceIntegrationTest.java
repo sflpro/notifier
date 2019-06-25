@@ -14,7 +14,7 @@ import javax.persistence.PersistenceContext;
 
 /**
  * @author Ruben Dilanyan
- *         Aug 25, 2013
+ * Aug 25, 2013
  */
 @ActiveProfiles("test")
 @Transactional

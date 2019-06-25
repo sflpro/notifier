@@ -9,15 +9,15 @@ import com.sflpro.notifier.api.model.push.response.CreatePushNotificationRespons
 import com.sflpro.notifier.api.model.push.response.UpdatePushNotificationSubscriptionResponse;
 import com.sflpro.notifier.db.entities.device.UserDevice;
 import com.sflpro.notifier.db.entities.device.mobile.DeviceOperatingSystemType;
+import com.sflpro.notifier.db.entities.notification.email.NotificationProperty;
 import com.sflpro.notifier.db.entities.notification.push.PushNotification;
-import com.sflpro.notifier.db.entities.notification.push.PushNotificationProperty;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipient;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationSubscriptionRequest;
 import com.sflpro.notifier.db.entities.user.User;
 import com.sflpro.notifier.services.device.UserDeviceService;
 import com.sflpro.notifier.services.device.dto.UserDeviceDto;
+import com.sflpro.notifier.services.notification.dto.NotificationPropertyDto;
 import com.sflpro.notifier.services.notification.dto.push.PushNotificationDto;
-import com.sflpro.notifier.services.notification.dto.push.PushNotificationPropertyDto;
 import com.sflpro.notifier.services.notification.dto.push.PushNotificationSubscriptionRequestDto;
 import com.sflpro.notifier.services.notification.event.push.StartPushNotificationSubscriptionRequestProcessingEvent;
 import com.sflpro.notifier.services.notification.event.sms.StartSendingNotificationEvent;
@@ -31,9 +31,7 @@ import org.easymock.TestSubject;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.easymock.EasyMock.*;
@@ -200,7 +198,7 @@ public class PushNotificationServiceFacadeImplTest extends AbstractFacadeUnitTes
         user.setId(userId);
         // Expected push notification DTO
         final PushNotificationDto pushNotificationDto = new PushNotificationDto(request.getBody(), request.getSubject(), request.getClientIpAddress());
-        final List<PushNotificationPropertyDto> propertyDTOs = request.getProperties().stream().map(propertyModel -> new PushNotificationPropertyDto(propertyModel.getPropertyKey(), propertyModel.getPropertyValue())).collect(Collectors.toCollection(ArrayList::new));
+        final List<NotificationPropertyDto> propertyDTOs = request.getProperties().stream().map(propertyModel -> new NotificationPropertyDto(propertyModel.getPropertyKey(), propertyModel.getPropertyValue())).collect(Collectors.toCollection(ArrayList::new));
         final List<PushNotification> pushNotifications = createPushNotifications(10);
         // Reset
         resetAll();
@@ -233,15 +231,15 @@ public class PushNotificationServiceFacadeImplTest extends AbstractFacadeUnitTes
         final List<PushNotification> pushNotifications = new ArrayList<>();
         for (int i = 0; i < count; i++) {
             final PushNotification pushNotification = getServiceFacadeImplTestHelper().createPushNotification();
-            pushNotification.setId(Long.valueOf(i));
+            pushNotification.setId((long) i);
             // Create recipient
             final PushNotificationRecipient recipient = getServiceFacadeImplTestHelper().createPushNotificationSnsRecipient();
-            recipient.setId(Long.valueOf((i + 1) * 2));
+            recipient.setId((long) ((i + 1) * 2));
             pushNotification.setRecipient(recipient);
             // Create properties
-            final Set<PushNotificationProperty> properties = new LinkedHashSet<>();
+            final List<NotificationProperty> properties = new ArrayList<>();
             for (int j = 0; j < i + 1; j++) {
-                final PushNotificationProperty pushNotificationProperty = getServiceFacadeImplTestHelper().createPushNotificationProperty();
+                final NotificationProperty pushNotificationProperty = getServiceFacadeImplTestHelper().createPushNotificationProperty();
                 pushNotificationProperty.setPropertyKey(pushNotificationProperty.getPropertyKey() + "_" + i + "_" + j);
                 pushNotificationProperty.setPropertyValue(pushNotificationProperty.getPropertyValue() + "_" + i + "_" + j);
                 properties.add(pushNotificationProperty);

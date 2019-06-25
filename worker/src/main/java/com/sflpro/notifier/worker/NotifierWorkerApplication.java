@@ -1,7 +1,6 @@
 package com.sflpro.notifier.worker;
 
 import com.sflpro.notifier.queue.consumer.ConsumerConfiguration;
-import com.sflpro.notifier.services.NotifierServicesConfiguration;
 import com.sflpro.notifier.worker.config.JerseyConfig;
 import org.glassfish.jersey.servlet.ServletContainer;
 import org.glassfish.jersey.servlet.ServletProperties;
@@ -18,7 +17,7 @@ import org.springframework.context.annotation.Import;
  * @author Davit Harutyunyan
  */
 @SpringBootApplication
-@Import({NotifierServicesConfiguration.class, ConsumerConfiguration.class})
+@Import(ConsumerConfiguration.class)
 public class NotifierWorkerApplication {
 
     public static void main(String[] args) {

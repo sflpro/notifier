@@ -1,0 +1,1 @@
+alter table notification_sms add column if not exists template_name varchar(255);

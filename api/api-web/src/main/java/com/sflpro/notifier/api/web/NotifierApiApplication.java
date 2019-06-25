@@ -3,7 +3,6 @@ package com.sflpro.notifier.api.web;
 import com.sflpro.notifier.api.facade.config.ApplicationExceptionHandlingFilter;
 import com.sflpro.notifier.api.facade.config.JerseyConfig;
 import com.sflpro.notifier.queue.producer.ProducerConfiguration;
-import com.sflpro.notifier.services.NotifierServicesConfiguration;
 import org.glassfish.jersey.servlet.ServletContainer;
 import org.glassfish.jersey.servlet.ServletProperties;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,7 +26,7 @@ import java.util.HashMap;
  * @author Davit Harutyunyan
  */
 @SpringBootApplication
-@Import({NotifierServicesConfiguration.class, ProducerConfiguration.class})
+@Import(ProducerConfiguration.class)
 public class NotifierApiApplication {
 
     @Value("${server.servlet.context-path}")

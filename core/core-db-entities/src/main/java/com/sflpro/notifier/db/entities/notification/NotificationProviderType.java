@@ -11,7 +11,8 @@ import java.util.List;
  * Time: 1:09 PM
  */
 public enum NotificationProviderType {
-    TWILLIO(NotificationType.SMS), SMTP_SERVER((NotificationType.EMAIL)), AMAZON_SNS(NotificationType.PUSH),
+    TWILLIO(NotificationType.SMS), MSG_AM(NotificationType.SMS), NIKITA_MOBILE(NotificationType.SMS),
+    SMTP_SERVER(NotificationType.EMAIL), AMAZON_SNS(NotificationType.PUSH),
     GOOGLE_GCM(NotificationType.PUSH), APPLE_APNS(NotificationType.PUSH), MANDRILL(NotificationType.EMAIL);
 
     /* Properties */

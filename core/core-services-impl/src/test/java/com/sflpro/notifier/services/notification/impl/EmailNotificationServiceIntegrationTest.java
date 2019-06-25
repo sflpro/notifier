@@ -3,8 +3,8 @@ package com.sflpro.notifier.services.notification.impl;
 import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
 import com.sflpro.notifier.services.notification.AbstractNotificationService;
 import com.sflpro.notifier.services.notification.AbstractNotificationServiceIntegrationTest;
+import com.sflpro.notifier.services.notification.dto.NotificationPropertyDto;
 import com.sflpro.notifier.services.notification.dto.email.EmailNotificationDto;
-import com.sflpro.notifier.services.notification.dto.email.EmailNotificationPropertyDto;
 import com.sflpro.notifier.services.notification.email.EmailNotificationService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,14 +32,14 @@ public class EmailNotificationServiceIntegrationTest extends AbstractNotificatio
     public void testCreateEmailNotification() {
         // Prepare data
         final EmailNotificationDto notificationDto = getServicesTestHelper().createEmailNotificationDto();
-        final List<EmailNotificationPropertyDto> emailNotificationPropertyDtos = getServicesTestHelper().createEmailNotificationPropertyDtos(3);
+        final List<NotificationPropertyDto> notificationPropertyDtos = getServicesTestHelper().createNotificationPropertyDtos(3);
         // Create notification
-        EmailNotification emailNotification = emailNotificationService.createAndSendEmailNotification(notificationDto, emailNotificationPropertyDtos);
-        getServicesTestHelper().assertEmailNotification(emailNotification, notificationDto, emailNotificationPropertyDtos);
+        EmailNotification emailNotification = emailNotificationService.createAndSendEmailNotification(notificationDto, notificationPropertyDtos);
+        getServicesTestHelper().assertEmailNotification(emailNotification, notificationDto, notificationPropertyDtos);
         // Flush, clear, reload and assert
         flushAndClear();
         emailNotification = emailNotificationService.getNotificationById(emailNotification.getId());
-        getServicesTestHelper().assertEmailNotification(emailNotification, notificationDto, emailNotificationPropertyDtos);
+        getServicesTestHelper().assertEmailNotification(emailNotification, notificationDto, notificationPropertyDtos);
     }
 
     /* Utility methods */

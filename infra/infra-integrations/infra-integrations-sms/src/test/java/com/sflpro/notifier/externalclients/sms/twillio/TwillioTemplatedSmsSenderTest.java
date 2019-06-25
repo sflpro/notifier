@@ -54,8 +54,8 @@ public class TwillioTemplatedSmsSenderTest extends AbstractSmsUnitTest {
         final SendMessageResponse response = new SendMessageResponse(
                 uuid(), message.recipientNumber(), msgBody
         );
-        when(smsTemplateContentResolver.resolve(message.templateId(), message.variables())).then(invocation -> msgBody);
-        when(twillioApiCommunicator.sendMessage(request)).then(invocation -> response);
+        when(smsTemplateContentResolver.resolve(message.templateId(), message.variables())).thenReturn(msgBody);
+        when(twillioApiCommunicator.sendMessage(request)).thenReturn(response);
         assertThat(twillioTemplatedSmsSender.send(message)).isEqualTo(SmsMessageSendingResult.of(response.getSid()));
         verify(twillioApiCommunicator).sendMessage(request);
         verify(smsTemplateContentResolver).resolve(message.templateId(), message.variables());

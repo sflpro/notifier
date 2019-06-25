@@ -7,7 +7,7 @@ import com.sflpro.notifier.externalclients.common.http.rest.RestClientImpl;
 import com.sflpro.notifier.externalclients.sms.msgam.client.MsgAmRestClient;
 import com.sflpro.notifier.externalclients.sms.msgam.client.MsgAmRestClientImpl;
 import com.sflpro.notifier.externalclients.sms.msgam.communicator.MsgAmApiCommunicator;
-import com.sflpro.notifier.externalclients.sms.msgam.communicator.MsgAmApiCommunicatorImpl;
+import com.sflpro.notifier.externalclients.sms.msgam.communicator.DefaultMsgAmApiCommunicator;
 import com.sflpro.notifier.spi.sms.*;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -58,7 +58,7 @@ class MsgAmConfiguration {
 
     @Bean("msgAmApiCommunicator")
     MsgAmApiCommunicator msgAmApiCommunicator(final MsgAmRestClient msgAmRestClient, final Environment environment) {
-        return new MsgAmApiCommunicatorImpl(
+        return new DefaultMsgAmApiCommunicator(
                 environment.getProperty(LOGIN_PROP_NAME),
                 environment.getProperty("msgam.account.pass"),
                 msgAmRestClient);

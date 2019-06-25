@@ -13,7 +13,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
-import java.math.BigInteger;
 import java.util.Collections;
 import java.util.Map;
 
@@ -60,12 +59,12 @@ public class MsgAmTeemplatedSmsSenderTest extends AbstractSmsUnitTest {
                 new Message(
                         request.getMessageId(),
                         uuid(),
-                        BigInteger.ONE,
+                        1L,
                         1
                 )
         );
-        when(smsTemplateContentResolver.resolve(message.templateId(), message.variables())).then(invocation -> msgBody);
-        when(msgAmApiCommunicator.sendMessage(request)).thenAnswer(invocation -> response);
+        when(smsTemplateContentResolver.resolve(message.templateId(), message.variables())).thenReturn(msgBody);
+        when(msgAmApiCommunicator.sendMessage(request)).thenReturn(response);
         assertThat(msgAmTemplatedSmsSender.send(message)).isEqualTo(SmsMessageSendingResult.of(response.getSid()));
         verify(smsTemplateContentResolver).resolve(message.templateId(), message.variables());
         verify(msgAmApiCommunicator).sendMessage(request);

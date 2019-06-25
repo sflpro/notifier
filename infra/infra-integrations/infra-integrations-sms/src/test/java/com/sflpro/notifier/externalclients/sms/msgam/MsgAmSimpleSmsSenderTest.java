@@ -14,8 +14,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.math.BigInteger;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -42,7 +40,10 @@ public class MsgAmSimpleSmsSenderTest extends AbstractSmsUnitTest {
 
     @Test
     public void testSend() {
-        final SimpleSmsMessage message = SimpleSmsMessage.of(1L, "sender_" + uuid(), "recipientNumber_" + uuid(), "messageBody_" + uuid());
+        final SimpleSmsMessage message = SimpleSmsMessage.of(1L,
+                "sender_" + uuid(),
+                "recipientNumber_" + uuid(),
+                "messageBody_" + uuid());
         final SendMessagesRequest request = new SendMessagesRequest(
                 message.internalId(), message.sender(), message.recipientNumber(), message.messageBody()
         );
@@ -53,11 +54,11 @@ public class MsgAmSimpleSmsSenderTest extends AbstractSmsUnitTest {
                 new Message(
                         request.getMessageId(),
                         uuid(),
-                        BigInteger.ONE,
+                        1L,
                         1
                 )
         );
-        when(msgAmApiCommunicator.sendMessage(request)).then(invocation -> response);
+        when(msgAmApiCommunicator.sendMessage(request)).thenReturn(response);
         assertThat(msgAmSimpleSmsSender.send(message)).isEqualTo(SmsMessageSendingResult.of(response.getSid()));
         verify(msgAmApiCommunicator).sendMessage(request);
     }

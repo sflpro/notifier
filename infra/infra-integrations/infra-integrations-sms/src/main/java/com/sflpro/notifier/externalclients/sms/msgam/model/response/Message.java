@@ -7,7 +7,6 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-import java.math.BigInteger;
 
 /**
  * User: Tigran Tserunyan
@@ -25,7 +24,7 @@ public class Message {
     private String phoneNumber;
 
     @XmlAttribute(name = "push_id")
-    private BigInteger sourceNumber;
+    private long sourceNumber;
 
     @XmlAttribute(name = "sms_count")
     private int count;
@@ -34,7 +33,7 @@ public class Message {
         super();
     }
 
-    public Message(final long id, final String phoneNumber, final BigInteger sourceNumber, final int count) {
+    public Message(final long id, final String phoneNumber, final long sourceNumber, final int count) {
         this.id = id;
         this.phoneNumber = phoneNumber;
         this.sourceNumber = sourceNumber;
@@ -57,11 +56,11 @@ public class Message {
         this.phoneNumber = phoneNumber;
     }
 
-    public BigInteger getSourceNumber() {
+    public long getSourceNumber() {
         return sourceNumber;
     }
 
-    public void setSourceNumber(BigInteger sourceNumber) {
+    public void setSourceNumber(long sourceNumber) {
         this.sourceNumber = sourceNumber;
     }
 

@@ -55,7 +55,6 @@ public class ClientSmsSendMessagesRequest {
         }
         final ClientSmsSendMessagesRequest that = (ClientSmsSendMessagesRequest) o;
         return new EqualsBuilder()
-                .appendSuper(super.equals(o))
                 .append(user, that.user)
                 .append(name, that.name)
                 .append(message, that.message)
@@ -65,7 +64,6 @@ public class ClientSmsSendMessagesRequest {
     @Override
     public int hashCode() {
         return new HashCodeBuilder(17, 37)
-                .appendSuper(super.hashCode())
                 .append(user)
                 .append(name)
                 .append(message)

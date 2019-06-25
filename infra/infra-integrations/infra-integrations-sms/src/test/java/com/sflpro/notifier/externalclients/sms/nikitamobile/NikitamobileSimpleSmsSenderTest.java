@@ -45,7 +45,10 @@ public class NikitamobileSimpleSmsSenderTest extends AbstractSmsUnitTest {
 
     @Test
     public void testSend() {
-        final SimpleSmsMessage message = SimpleSmsMessage.of(1L, "sender_" + uuid(), "recipientNumber_" + uuid(), "messageBody_" + uuid());
+        final SimpleSmsMessage message = SimpleSmsMessage.of(1L,
+                "sender_" + uuid(),
+                "recipientNumber_" + uuid(),
+                "messageBody_" + uuid());
         final Message requestMessage = new Message(
                 message.internalId(),
                 message.sender(),
@@ -64,17 +67,17 @@ public class NikitamobileSimpleSmsSenderTest extends AbstractSmsUnitTest {
         final SendMessageResponse response = new SendMessageResponse(
                 new com.sflpro.notifier.externalclients.sms.nikitamobile.model.response.Message(request.getMessage().getId())
         );
-        when(nikitamobileApiCommunicator.sendMessage(isA(SendMessageRequest.class))).then(invocation ->{
+        when(nikitamobileApiCommunicator.sendMessage(isA(SendMessageRequest.class))).then(invocation -> {
             final SendMessageRequest requestArgument = invocation.getArgument(0);
             assertThat(requestArgument.getMessage())
-                    .hasFieldOrPropertyWithValue("id",requestMessage.getId())
-                    .hasFieldOrPropertyWithValue("recipientNumber",requestMessage.getRecipientNumber())
-                    .hasFieldOrPropertyWithValue("senderNumber",requestMessage.getSenderNumber())
-                    .hasFieldOrPropertyWithValue("messageCount",requestMessage.getMessageCount())
-                    .hasFieldOrPropertyWithValue("content",requestMessage.getContent())
-                    .hasFieldOrPropertyWithValue("operatorId",requestMessage.getOperatorId())
-                    .hasFieldOrPropertyWithValue("operator",requestMessage.getOperator())
-                    .hasFieldOrPropertyWithValue("priority",requestMessage.getPriority());
+                    .hasFieldOrPropertyWithValue("id", requestMessage.getId())
+                    .hasFieldOrPropertyWithValue("recipientNumber", requestMessage.getRecipientNumber())
+                    .hasFieldOrPropertyWithValue("senderNumber", requestMessage.getSenderNumber())
+                    .hasFieldOrPropertyWithValue("messageCount", requestMessage.getMessageCount())
+                    .hasFieldOrPropertyWithValue("content", requestMessage.getContent())
+                    .hasFieldOrPropertyWithValue("operatorId", requestMessage.getOperatorId())
+                    .hasFieldOrPropertyWithValue("operator", requestMessage.getOperator())
+                    .hasFieldOrPropertyWithValue("priority", requestMessage.getPriority());
             return response;
         });
         assertThat(nikitamobileSimpleSmsSender.send(message)).isEqualTo(SmsMessageSendingResult.of(response.getMessage().getId().toString()));

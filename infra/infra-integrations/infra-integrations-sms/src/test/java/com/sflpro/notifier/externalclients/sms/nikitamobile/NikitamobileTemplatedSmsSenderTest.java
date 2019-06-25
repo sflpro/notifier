@@ -75,7 +75,7 @@ public class NikitamobileTemplatedSmsSenderTest extends AbstractSmsUnitTest {
         final SendMessageResponse response = new SendMessageResponse(
                 new com.sflpro.notifier.externalclients.sms.nikitamobile.model.response.Message(request.getMessage().getId())
         );
-        when(smsTemplateContentResolver.resolve(message.templateId(), message.variables())).then(invocation -> messageBody);
+        when(smsTemplateContentResolver.resolve(message.templateId(), message.variables())).thenReturn(messageBody);
         when(nikitamobileApiCommunicator.sendMessage(isA(SendMessageRequest.class))).then(invocation -> {
             final SendMessageRequest requestArgument = invocation.getArgument(0);
             assertThat(requestArgument.getMessage())

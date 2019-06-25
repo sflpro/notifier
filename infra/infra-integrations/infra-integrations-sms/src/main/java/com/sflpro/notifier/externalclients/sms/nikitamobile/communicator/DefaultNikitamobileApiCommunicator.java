@@ -43,6 +43,10 @@ public class DefaultNikitamobileApiCommunicator implements NikitamobileApiCommun
                     new HttpEntity<>(request, headers),
                     SendMessageResponse.class
             );
+            if (response.getStatusCode().isError()) {
+                logger.error("Failed to send sms - {}", response);
+                throw new NikitamobileClientRuntimeException(request.getMessage().getSenderNumber(), request.getMessage().getRecipientNumber());
+            }
             final SendMessageResponse sendMessageResponse = response.getBody();
             logger.debug("Created response model for send message request - {}", sendMessageResponse);
             return sendMessageResponse;

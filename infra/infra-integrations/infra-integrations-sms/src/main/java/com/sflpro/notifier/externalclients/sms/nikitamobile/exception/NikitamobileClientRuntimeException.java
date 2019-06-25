@@ -15,4 +15,8 @@ public class NikitamobileClientRuntimeException extends ExternalSmsClientRuntime
     public NikitamobileClientRuntimeException(final String senderNumber, final String recipientNumber,final Exception originalException) {
         super(senderNumber, recipientNumber, originalException);
     }
+
+    public NikitamobileClientRuntimeException(final String senderNumber, final String recipientNumber) {
+        super(senderNumber, recipientNumber);
+    }
 }

@@ -56,7 +56,6 @@ public class SendMessageResponse{
         }
         final SendMessageResponse that = (SendMessageResponse) o;
         final EqualsBuilder builder = new EqualsBuilder();
-        builder.appendSuper(super.equals(that));
         builder.append(getSid(), that.getSid());
         builder.append(getMessageBody(), that.getMessageBody());
         builder.append(getRecipientNumber(), that.getRecipientNumber());
@@ -66,7 +65,6 @@ public class SendMessageResponse{
     @Override
     public int hashCode() {
         final HashCodeBuilder builder = new HashCodeBuilder();
-        builder.appendSuper(super.hashCode());
         builder.append(getSid());
         builder.append(getMessageBody());
         builder.append(getRecipientNumber());

@@ -11,14 +11,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.Assert;
 
 /**
- * User: Tigran Tserunyan
  * Company: SFL LLC
  * Date: 18/05/2017
  * Time: 4:52 PM
  */
-public class MsgAmApiCommunicatorImpl implements MsgAmApiCommunicator {
+public class DefaultMsgAmApiCommunicator implements MsgAmApiCommunicator {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(MsgAmApiCommunicatorImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultMsgAmApiCommunicator.class);
 
     /* Properties */
     @Value("${msgam.account.user}")
@@ -30,9 +29,9 @@ public class MsgAmApiCommunicatorImpl implements MsgAmApiCommunicator {
     private final MsgAmRestClient msgAmRestClient;
 
     /* Constructors */
-    public MsgAmApiCommunicatorImpl(final String login,
-                                    final String pass,
-                                    final MsgAmRestClient msgAmRestClient) {
+    public DefaultMsgAmApiCommunicator(final String login,
+                                       final String pass,
+                                       final MsgAmRestClient msgAmRestClient) {
         this.login = login;
         this.pass = pass;
         this.msgAmRestClient = msgAmRestClient;
@@ -54,8 +53,8 @@ public class MsgAmApiCommunicatorImpl implements MsgAmApiCommunicator {
         if (!message.isSuccess()) {
             LOGGER.error("Error occurred while sending sms message by Msg.am e - {}", message.getDescription());
             throw new MsgAmClientRuntimeException(
-                    clientSmsSendMessagesRequest.getMessage().getSourceNumber(),
-                    clientSmsSendMessagesRequest.getMessage().getPhoneNumber()
+                    sendMessagesRequest.getSenderNumber(),
+                    sendMessagesRequest.getRecipientNumber()
             );
         }
         LOGGER.debug("Msg Am Communicator Successfully sent text message with request - {}, response message - {}", sendMessagesRequest, message);

@@ -1,15 +1,15 @@
 package com.sflpro.notifier.api.facade.security;
 
 import com.sflpro.notifier.services.notification.dto.NotificationDto;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
+import org.springframework.util.Assert;
 
-import java.util.Properties;
+import java.util.Optional;
 
 /**
  * Created by Hayk Mkrtchyan.
@@ -21,18 +21,17 @@ class DefaultNotificationCreationPermissionChecker implements NotificationCreati
     private final static Logger logger = LoggerFactory.getLogger(DefaultNotificationCreationPermissionChecker.class);
 
     private final PermissionChecker permissionChecker;
-    private final String nonTemplatedNotificationCreationPermission;
-    private final Properties permissionMappings;
+    private final PermissionNameResolver permissionNameResolver;
 
     DefaultNotificationCreationPermissionChecker(final PermissionChecker permissionChecker,
-                                                 final String nonTemplatedNotificationCreationPermission, final Properties permissionMappings) {
+                                                 final PermissionNameResolver permissionNameResolver) {
         this.permissionChecker = permissionChecker;
-        this.nonTemplatedNotificationCreationPermission = nonTemplatedNotificationCreationPermission;
-        this.permissionMappings = permissionMappings;
+        this.permissionNameResolver = permissionNameResolver;
     }
 
     @Override
     public <R extends NotificationDto<?>> boolean isNotificationCreationAllowed(final R creationRequest) {
+        Assert.notNull(creationRequest, "Null was passed as an argument for parameter 'creationRequest'.");
         final SecurityContext context = SecurityContextHolder.getContext();
         if (context == null) {
             return true;
@@ -43,16 +42,19 @@ class DefaultNotificationCreationPermissionChecker implements NotificationCreati
             return true;
         }
         if (authentication instanceof PreAuthenticatedAuthenticationToken) {
-            final String permissionName = permissionNameFor(creationRequest);
-            return permissionChecker.isPermitted(permissionName, authentication.getPrincipal().toString());
+            return isPermitted(creationRequest, authentication.getPrincipal().toString());
         }
         return true;
     }
 
-    private <R extends NotificationDto<?>> String permissionNameFor(final R creationRequest) {
-        if (StringUtils.isBlank(creationRequest.getTemplateName())) {
-            return nonTemplatedNotificationCreationPermission;
+    private <R extends NotificationDto<?>> boolean isPermitted(final R creationRequest, final String token) {
+        final Optional<String> permissionName = permissionNameResolver.resolve(creationRequest);
+        if (!permissionName.isPresent()) {
+            logger.debug("No permission name was resolved, request not permitted.");
+            return false;
         }
-        return permissionMappings.getProperty(creationRequest.getTemplateName());
+        return permissionName.filter(permission -> permissionChecker.isPermitted(permission, token))
+                .isPresent();
     }
+
 }

@@ -1,7 +1,6 @@
 package com.sflpro.notifier.api.facade.security;
 
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
@@ -70,19 +69,21 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new Properties();
     }
 
-    @Bean
-    NotificationCreationPermissionChecker notificationCreationPermissionChecker(
-            final PermissionChecker permissionChecker,
-            @Value("${permission.non.templated.notification}") final String nonTemplatedNotificationCreationPermission,
-            final Properties permissionMappings) {
-        return new DefaultNotificationCreationPermissionChecker(
-                permissionChecker,
-                nonTemplatedNotificationCreationPermission,
-                permissionMappings);
+    PermissionNameResolver permissionNameResolver() {
+        return new DefaultPermissionNameResolver(permissionMappings());
     }
 
     @Bean
-    NotificationCreationPermissionCheckerAspect notificationCreationPermissionCheckerAspect(final NotificationCreationPermissionChecker notificationCreationPermissionChecker) {
+    NotificationCreationPermissionChecker notificationCreationPermissionChecker(
+            final PermissionChecker permissionChecker) {
+        return new DefaultNotificationCreationPermissionChecker(
+                permissionChecker,
+                permissionNameResolver());
+    }
+
+    @Bean
+    NotificationCreationPermissionCheckerAspect notificationCreationPermissionCheckerAspect(
+            final NotificationCreationPermissionChecker notificationCreationPermissionChecker) {
         return new NotificationCreationPermissionCheckerAspect(notificationCreationPermissionChecker);
     }
 }

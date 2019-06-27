@@ -12,6 +12,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * User: Ruben Dilanyan
@@ -60,6 +61,10 @@ public abstract class AbstractCreateNotificationRequest extends AbstractRequestM
 
     public void setClientIpAddress(final String clientIpAddress) {
         this.clientIpAddress = clientIpAddress;
+    }
+
+    public Optional<String> templateName(){
+        return Optional.empty();
     }
 
     /* Validation methods */

@@ -33,7 +33,7 @@ public class PushNotificationSubscriptionRequestQueueProducerServiceImpl impleme
     @Autowired
     private ApplicationEventDistributionService applicationEventDistributionService;
 
-    @Autowired
+    @Autowired(required = false)
     private AmqpConnectorService amqpConnectorService;
 
     /* Constructors */

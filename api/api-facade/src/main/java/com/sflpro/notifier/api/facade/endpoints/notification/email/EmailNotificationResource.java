@@ -14,14 +14,13 @@ import com.sflpro.notifier.services.notification.dto.email.EmailNotificationDto;
 import com.sflpro.notifier.services.notification.email.EmailNotificationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.inject.Inject;
+import javax.inject.Singleton;
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
@@ -34,7 +33,7 @@ import java.util.stream.Collectors;
  * Date: 1/14/16
  * Time: 12:40 PM
  */
-@Component
+@Singleton
 @Path("notification/email")
 @Produces(MediaType.APPLICATION_JSON)
 public class EmailNotificationResource {
@@ -42,7 +41,7 @@ public class EmailNotificationResource {
     private static final Logger LOGGER = LoggerFactory.getLogger(EmailNotificationResource.class);
 
     /* Dependencies */
-    @Autowired
+    @Inject
     private EmailNotificationService emailNotificationService;
 
     /* Constructors */
@@ -53,7 +52,7 @@ public class EmailNotificationResource {
     @POST
     @Path("create")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createEmailNotification(final CreateEmailNotificationRequest request) {
+    public Response createEmailNotification(final CreateEmailNotificationRequest request, @Context final HttpServletRequest servletRequest) {
         LOGGER.debug("Processing create email notification request - {}", request);
         Assert.notNull(request, "Request model should not be null");
         LOGGER.debug("Creating email notification, request - {}", request);

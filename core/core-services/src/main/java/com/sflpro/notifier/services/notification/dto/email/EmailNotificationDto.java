@@ -24,8 +24,6 @@ public class EmailNotificationDto extends NotificationDto<EmailNotification> {
 
     private NotificationProviderType providerType;
 
-    private String templateName;
-
     private String userUuid;
 
     /* Constructors */
@@ -36,12 +34,13 @@ public class EmailNotificationDto extends NotificationDto<EmailNotification> {
                                 final String subject,
                                 final String clientIpAddress,
                                 final String templateName) {
-        super(NotificationType.EMAIL, content, subject, clientIpAddress);
+        super(NotificationType.EMAIL, content, subject, clientIpAddress,templateName);
         this.recipientEmail = recipientEmail;
         this.senderEmail = senderEmail;
         this.providerType = providerType;
-        this.templateName = templateName;
     }
+
+
 
     public EmailNotificationDto() {
         super(NotificationType.EMAIL);
@@ -70,14 +69,6 @@ public class EmailNotificationDto extends NotificationDto<EmailNotification> {
 
     public void setProviderType(final NotificationProviderType providerType) {
         this.providerType = providerType;
-    }
-
-    public String getTemplateName() {
-        return templateName;
-    }
-
-    public void setTemplateName(final String templateName) {
-        this.templateName = templateName;
     }
 
     public String getUserUuid() {

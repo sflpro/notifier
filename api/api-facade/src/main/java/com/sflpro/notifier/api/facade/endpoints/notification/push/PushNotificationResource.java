@@ -8,13 +8,15 @@ import com.sflpro.notifier.api.model.push.response.CreatePushNotificationRespons
 import com.sflpro.notifier.api.model.push.response.UpdatePushNotificationSubscriptionResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
 /**
@@ -23,7 +25,7 @@ import javax.ws.rs.core.Response;
  * Date: 1/14/16
  * Time: 12:40 PM
  */
-@Component
+@Singleton
 @Path("notification/push")
 @Produces("application/json")
 public class PushNotificationResource {
@@ -31,7 +33,7 @@ public class PushNotificationResource {
     private static final Logger LOGGER = LoggerFactory.getLogger(PushNotificationResource.class);
 
     /* Dependencies */
-    @Autowired
+    @Inject
     private PushNotificationServiceFacade pushNotificationServiceFacade;
 
     /* Constructors */
@@ -42,7 +44,7 @@ public class PushNotificationResource {
     @POST
     @Path("create")
     @Consumes("application/json")
-    public Response createPushNotification(final CreatePushNotificationRequest request) {
+    public Response createPushNotification(final CreatePushNotificationRequest request, @Context final HttpServletRequest servletRequest) {
         LOGGER.debug("Processing create push notification request - {}", request);
         final ResultResponseModel<CreatePushNotificationResponse> response = pushNotificationServiceFacade.createPushNotifications(request);
         LOGGER.debug("Processed create push notification request - {}, response - {}", request, response);

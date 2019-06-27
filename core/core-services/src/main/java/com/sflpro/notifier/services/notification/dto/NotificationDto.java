@@ -31,12 +31,23 @@ public abstract class NotificationDto<T extends Notification> extends AbstractDo
 
     private Map<String, String> secureProperties;
 
+    private String templateName;
+
     /* Constructors */
     public NotificationDto(final NotificationType type, final String content, final String subject, final String clientIpAddress) {
         this.type = type;
         this.content = content;
         this.clientIpAddress = clientIpAddress;
         this.subject = subject;
+    }
+
+    public NotificationDto(final NotificationType type, final String content, final String subject, final String clientIpAddress,  final String templateName) {
+        this.type = type;
+        this.content = content;
+        this.subject = subject;
+        this.clientIpAddress = clientIpAddress;
+        this.secureProperties = secureProperties;
+        this.templateName = templateName;
     }
 
     public NotificationDto(final NotificationType type) {
@@ -79,6 +90,14 @@ public abstract class NotificationDto<T extends Notification> extends AbstractDo
 
     public void setSecureProperties(final Map<String, String> secureProperties) {
         this.secureProperties = secureProperties;
+    }
+
+    public String getTemplateName() {
+        return templateName;
+    }
+
+    public void setTemplateName(final String templateName) {
+        this.templateName = templateName;
     }
 
     /* Public interface methods */

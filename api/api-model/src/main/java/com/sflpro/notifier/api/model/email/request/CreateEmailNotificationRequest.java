@@ -10,9 +10,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.annotation.Nonnull;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * User: Ruben Dilanyan
@@ -99,11 +97,18 @@ public class CreateEmailNotificationRequest extends AbstractCreateNotificationRe
         this.secureProperties = secureProperties;
     }
 
+    public Optional<String> templateName(){
+        return Optional.ofNullable(templateName);
+    }
+
     /* Validation methods */
     @Nonnull
     @Override
     public List<ErrorResponseModel> validateRequiredFields() {
-        final List<ErrorResponseModel> errors = super.validateRequiredFields();
+        final List<ErrorResponseModel> errors = new ArrayList<>();
+        if (StringUtils.isBlank(getBody()) && !templateName().isPresent()) {
+            errors.add(new ErrorResponseModel(ErrorType.NOTIFICATION_BODY_MISSING));
+        }
         if (StringUtils.isBlank(recipientEmail)) {
             errors.add(new ErrorResponseModel(ErrorType.NOTIFICATION_EMAIL_RECIPIENT_ADDRESS_MISSING));
         }

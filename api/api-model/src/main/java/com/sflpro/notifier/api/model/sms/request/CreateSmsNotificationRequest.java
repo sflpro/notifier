@@ -10,7 +10,9 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.annotation.Nonnull;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * User: Ruben Dilanyan
@@ -23,6 +25,9 @@ public class CreateSmsNotificationRequest extends AbstractCreateNotificationRequ
     /* Properties */
     @JsonProperty("recipientNumber")
     private String recipientNumber;
+
+    @JsonProperty("templateName")
+    private String templateName;
 
     /* Constructors */
     public CreateSmsNotificationRequest() {
@@ -38,11 +43,26 @@ public class CreateSmsNotificationRequest extends AbstractCreateNotificationRequ
         this.recipientNumber = recipientNumber;
     }
 
+    public String getTemplateName() {
+        return templateName;
+    }
+
+    public void setTemplateName(final String templateName) {
+        this.templateName = templateName;
+    }
+
+    public Optional<String> templateName(){
+        return Optional.ofNullable(templateName);
+    }
+
     /* Validation methods */
     @Nonnull
     @Override
     public List<ErrorResponseModel> validateRequiredFields() {
-        final List<ErrorResponseModel> errors = super.validateRequiredFields();
+        final List<ErrorResponseModel> errors = new ArrayList<>();
+        if (StringUtils.isBlank(getBody()) && !templateName().isPresent()) {
+            errors.add(new ErrorResponseModel(ErrorType.NOTIFICATION_BODY_MISSING));
+        }
         if (StringUtils.isBlank(recipientNumber)) {
             errors.add(new ErrorResponseModel(ErrorType.NOTIFICATION_SMS_RECIPIENT_MISSING));
         }

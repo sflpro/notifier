@@ -14,6 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -32,6 +33,7 @@ import static java.lang.String.format;
  * Time: 12:52 PM
  */
 @Service
+@ConditionalOnProperty("sms.account.sender.phone")
 class SmsNotificationProcessorImpl implements SmsNotificationProcessor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SmsNotificationProcessorImpl.class);

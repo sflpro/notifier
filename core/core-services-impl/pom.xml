@@ -83,6 +83,11 @@
             <artifactId>bcprov-jdk16</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>io.vavr</groupId>
+            <artifactId>vavr</artifactId>
+        </dependency>
+
  		<!-- provider API -->
         <dependency>
             <groupId>com.sflpro.notifier</groupId>

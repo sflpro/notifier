@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.1.5.RELEASE</version>
+        <version>2.1.6.RELEASE</version>
     </parent>
 
     <modules>
@@ -90,8 +90,9 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <javax.servlet.version>3.1.0</javax.servlet.version>
+        <javax.inject.version>1</javax.inject.version>
         <jackson.version>2.9.2</jackson.version>
-        <jersey.version>2.21</jersey.version>
+        <jersey.version>2.28</jersey.version>
 
         <!-- Database -->
         <postgresql.version>42.2.5</postgresql.version>
@@ -112,6 +113,7 @@
         <commons.codec.version>1.10</commons.codec.version>
         <http.client.version>4.5</http.client.version>
         <asm.version>5.0.3</asm.version>
+        <vavr.version>0.9.3</vavr.version>
 
         <amazon.sdk.version>1.10.13</amazon.sdk.version>
         <twillio.sdk.version>7.38.1</twillio.sdk.version>
@@ -518,6 +520,11 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
+                <groupId>org.springframework.security.oauth.boot</groupId>
+                <artifactId>spring-security-oauth2-autoconfigure</artifactId>
+                <version>RELEASE</version>
+            </dependency>
+            <dependency>
                 <groupId>net.logstash.logback</groupId>
                 <artifactId>logstash-logback-encoder</artifactId>
                 <version>${logback.logstash.encoder.version}</version>
@@ -566,11 +573,26 @@
                 <artifactId>jersey-client</artifactId>
                 <version>${jersey.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.glassfish.jersey.core</groupId>
+                <artifactId>jersey-common</artifactId>
+                <version>${jersey.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish.jersey.inject</groupId>
+                <artifactId>jersey-hk2</artifactId>
+                <version>${jersey.version}</version>
+            </dependency>
             <!-- Infrastructure third party libs -->
             <dependency>
                 <groupId>com.twilio.sdk</groupId>
                 <artifactId>twilio</artifactId>
                 <version>${twillio.sdk.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.inject</groupId>
+                <artifactId>javax.inject</artifactId>
+                <version>${javax.inject.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.mandrillapp.wrapper.lutung</groupId>
@@ -623,6 +645,11 @@
                 <groupId>com.github.usc</groupId>
                 <artifactId>jdbcdslog</artifactId>
                 <version>${com.github.usc.jdbcdslog.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.vavr</groupId>
+                <artifactId>vavr</artifactId>
+                <version>${vavr.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

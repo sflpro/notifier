@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
-import org.springframework.boot.autoconfigure.security.oauth2.resource.UserInfoTokenServices;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,6 +14,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.oauth2.provider.authentication.BearerTokenExtractor;
 import org.springframework.security.oauth2.provider.authentication.TokenExtractor;
+import org.springframework.security.oauth2.provider.token.RemoteTokenServices;
 import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
 import org.springframework.web.client.RestTemplate;
 
@@ -60,8 +60,8 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    PermissionChecker permissionChecker(final UserInfoTokenServices userInfoTokenServices) {
-        return new DefaultPermissionChecker(userInfoTokenServices);
+    PermissionChecker permissionChecker(final RemoteTokenServices remoteTokenServices) {
+        return new DefaultPermissionChecker(remoteTokenServices);
     }
 
     @Bean

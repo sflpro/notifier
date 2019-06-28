@@ -35,7 +35,7 @@ class DefaultPermissionNameResolver implements PermissionNameResolver {
             logger.warn("No permission was configured for {}", permissionNameKey);
             return Optional.empty();
         }
-        return Optional.ofNullable(permissionName);
+        return Optional.of(permissionName);
     }
 
     private static <R extends NotificationDto<?>> String permissionNameKey(final R creationRequest) {

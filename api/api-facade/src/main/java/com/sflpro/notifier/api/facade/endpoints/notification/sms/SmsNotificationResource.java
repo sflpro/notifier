@@ -9,12 +9,10 @@ import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
 /**
@@ -42,7 +40,7 @@ public class SmsNotificationResource {
     @POST
     @Path("create")
     @Consumes("application/json")
-    public Response createSmsNotification(final CreateSmsNotificationRequest request, @Context final HttpServletRequest servletRequest) {
+    public Response createSmsNotification(final CreateSmsNotificationRequest request) {
         LOGGER.debug("Processing create SMS notification request - {}", request);
         final ResultResponseModel<CreateSmsNotificationResponse> response = smsNotificationServiceFacade.createSmsNotification(request);
         LOGGER.debug("Processed create SMS notification request - {}, response - {}", request, response);

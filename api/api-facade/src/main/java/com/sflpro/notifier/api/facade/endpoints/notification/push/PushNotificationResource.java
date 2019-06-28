@@ -11,12 +11,10 @@ import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
 /**
@@ -44,7 +42,7 @@ public class PushNotificationResource {
     @POST
     @Path("create")
     @Consumes("application/json")
-    public Response createPushNotification(final CreatePushNotificationRequest request, @Context final HttpServletRequest servletRequest) {
+    public Response createPushNotification(final CreatePushNotificationRequest request) {
         LOGGER.debug("Processing create push notification request - {}", request);
         final ResultResponseModel<CreatePushNotificationResponse> response = pushNotificationServiceFacade.createPushNotifications(request);
         LOGGER.debug("Processed create push notification request - {}, response - {}", request, response);

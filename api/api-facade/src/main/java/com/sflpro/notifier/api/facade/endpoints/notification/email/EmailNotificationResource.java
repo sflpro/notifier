@@ -18,9 +18,10 @@ import org.springframework.util.Assert;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
@@ -52,7 +53,7 @@ public class EmailNotificationResource {
     @POST
     @Path("create")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createEmailNotification(final CreateEmailNotificationRequest request, @Context final HttpServletRequest servletRequest) {
+    public Response createEmailNotification(final CreateEmailNotificationRequest request) {
         LOGGER.debug("Processing create email notification request - {}", request);
         Assert.notNull(request, "Request model should not be null");
         LOGGER.debug("Creating email notification, request - {}", request);

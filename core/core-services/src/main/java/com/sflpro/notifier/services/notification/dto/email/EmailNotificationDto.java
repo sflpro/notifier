@@ -1,5 +1,6 @@
 package com.sflpro.notifier.services.notification.dto.email;
 
+import com.sflpro.notifier.db.entities.notification.NotificationProviderType;
 import com.sflpro.notifier.db.entities.notification.NotificationType;
 import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
 import com.sflpro.notifier.services.notification.dto.NotificationDto;
@@ -29,12 +30,12 @@ public class EmailNotificationDto extends NotificationDto<EmailNotification> {
                                 final String content,
                                 final String subject,
                                 final String clientIpAddress,
-                                final String templateName) {
-        super(NotificationType.EMAIL, content, subject, clientIpAddress,templateName);
+                                final String templateName,
+                                final NotificationProviderType providerType) {
+        super(NotificationType.EMAIL, content, subject, clientIpAddress, templateName, providerType);
         this.recipientEmail = recipientEmail;
         this.senderEmail = senderEmail;
     }
-
 
 
     public EmailNotificationDto() {
@@ -73,7 +74,7 @@ public class EmailNotificationDto extends NotificationDto<EmailNotification> {
         notification.setRecipientEmail(getRecipientEmail());
         notification.setSenderEmail(getSenderEmail());
         notification.setTemplateName(getTemplateName());
-        notification.setHasSecureProperties(!getSecureProperties().isEmpty());
+        notification.setHasSecureProperties(!getProperties().isEmpty());
     }
 
     /* Equals, HashCode and ToString */

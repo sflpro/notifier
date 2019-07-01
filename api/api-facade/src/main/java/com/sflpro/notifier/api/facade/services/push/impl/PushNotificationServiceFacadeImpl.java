@@ -13,13 +13,13 @@ import com.sflpro.notifier.api.model.push.response.CreatePushNotificationRespons
 import com.sflpro.notifier.api.model.push.response.UpdatePushNotificationSubscriptionResponse;
 import com.sflpro.notifier.db.entities.device.UserDevice;
 import com.sflpro.notifier.db.entities.device.mobile.DeviceOperatingSystemType;
+import com.sflpro.notifier.db.entities.notification.NotificationProviderType;
 import com.sflpro.notifier.db.entities.notification.push.PushNotification;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipient;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationSubscriptionRequest;
 import com.sflpro.notifier.db.entities.user.User;
 import com.sflpro.notifier.services.device.UserDeviceService;
 import com.sflpro.notifier.services.device.dto.UserDeviceDto;
-import com.sflpro.notifier.services.notification.dto.NotificationPropertyDto;
 import com.sflpro.notifier.services.notification.dto.push.PushNotificationDto;
 import com.sflpro.notifier.services.notification.dto.push.PushNotificationSubscriptionRequestDto;
 import com.sflpro.notifier.services.notification.event.push.StartPushNotificationSubscriptionRequestProcessingEvent;
@@ -30,6 +30,7 @@ import com.sflpro.notifier.services.system.event.ApplicationEventDistributionSer
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
@@ -62,6 +63,9 @@ public class PushNotificationServiceFacadeImpl extends AbstractNotificationServi
     @Autowired
     private PushNotificationSubscriptionRequestService pushNotificationSubscriptionRequestService;
 
+    @Value("${push.provider:AMAZON_SNS}")
+    private NotificationProviderType providerType;
+
     /* Constructors */
     public PushNotificationServiceFacadeImpl() {
         //default constructor
@@ -80,10 +84,12 @@ public class PushNotificationServiceFacadeImpl extends AbstractNotificationServi
         // Grab user
         final User user = getUserService().getOrCreateUserForUuId(request.getUserUuId());
         // Create push notification DTO
-        final PushNotificationDto pushNotificationDto = new PushNotificationDto(request.getBody(), request.getSubject(), request.getClientIpAddress());
-        final List<NotificationPropertyDto> propertyDTOs = request.getProperties().stream().map(propertyModel -> new NotificationPropertyDto(propertyModel.getPropertyKey(), propertyModel.getPropertyValue())).collect(Collectors.toCollection(ArrayList::new));
+        final PushNotificationDto pushNotificationDto = new PushNotificationDto(request.getBody(), request.getSubject(), request.getClientIpAddress(), providerType);
+        pushNotificationDto.setProperties(request.getProperties().stream()
+                .collect(Collectors.toMap(PushNotificationPropertyModel::getPropertyKey,
+                        PushNotificationPropertyModel::getPropertyValue)));
         // Create push notifications
-        final List<PushNotification> pushNotifications = pushNotificationService.createNotificationsForUserActiveRecipients(user.getId(), pushNotificationDto, propertyDTOs);
+        final List<PushNotification> pushNotifications = pushNotificationService.createNotificationsForUserActiveRecipients(user.getId(), pushNotificationDto);
         // Publish events
         pushNotifications.forEach(pushNotification -> applicationEventDistributionService.publishAsynchronousEvent(new StartSendingNotificationEvent(pushNotification.getId())));
         // Convert to notification models

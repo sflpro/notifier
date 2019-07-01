@@ -3,6 +3,7 @@ package com.sflpro.notifier.services.helper;
 import com.sflpro.notifier.db.entities.device.UserDevice;
 import com.sflpro.notifier.db.entities.device.mobile.DeviceOperatingSystemType;
 import com.sflpro.notifier.db.entities.notification.Notification;
+import com.sflpro.notifier.db.entities.notification.NotificationProviderType;
 import com.sflpro.notifier.db.entities.notification.NotificationState;
 import com.sflpro.notifier.db.entities.notification.UserNotification;
 import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
@@ -40,12 +41,11 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * User: Ruben Dilanyan
@@ -263,31 +263,37 @@ public class ServicesTestHelper {
         notificationDto.setContent(YO_YO + YO_YO);
         notificationDto.setSubject(YO_YO);
         notificationDto.setTemplateName(YO_YO + "_template");
+        notificationDto.setProviderType(NotificationProviderType.SMTP_SERVER);
         return notificationDto;
     }
 
     public EmailNotification createEmailNotification() {
-        return createEmailNotification(createEmailNotificationDto(), createNotificationPropertyDtos(5));
+        final EmailNotificationDto emailNotificationDto = createEmailNotificationDto();
+        emailNotificationDto.setProperties(properties(5));
+        return createEmailNotification(emailNotificationDto);
     }
 
-    public EmailNotification createEmailNotification(final EmailNotificationDto notificationDto, final List<NotificationPropertyDto> emailNotificationPropertyDtos) {
-        return emailNotificationService.createAndSendEmailNotification(notificationDto, emailNotificationPropertyDtos);
+    public EmailNotification createEmailNotification(final EmailNotificationDto notificationDto) {
+        return emailNotificationService.createEmailNotification(notificationDto);
     }
 
-    public void assertEmailNotification(final EmailNotification notification, final EmailNotificationDto notificationDto, final List<NotificationPropertyDto> emailNotificationPropertyDtos) {
+    public void assertEmailNotification(final EmailNotification notification, final EmailNotificationDto notificationDto) {
         assertNotification(notification, notificationDto);
         assertEquals(notificationDto.getRecipientEmail(), notification.getRecipientEmail());
         assertEquals(notificationDto.getSenderEmail(), notification.getSenderEmail());
         assertEquals(notificationDto.getTemplateName(), notification.getTemplateName());
-        assertEquals(emailNotificationPropertyDtos.size(), notification.getProperties().size());
-        emailNotificationPropertyDtos.forEach(emailNotificationPropertyDto -> {
-            final Optional<NotificationProperty> emailNotificationProperty = notification.getProperties()
-                    .stream()
-                    .filter(property -> property.getPropertyKey().equals(emailNotificationPropertyDto.getPropertyKey()))
-                    .findFirst();
-            assertTrue(emailNotificationProperty.isPresent());
-            assertEquals(emailNotificationPropertyDto.getPropertyValue(), emailNotificationProperty.get().getPropertyValue());
-        });
+        assertEquals(notification.getProperties().stream()
+                .collect(Collectors.toMap(
+                        NotificationProperty::getPropertyKey, NotificationProperty::getPropertyValue)
+                ), notificationDto.getProperties());
+    }
+
+    public Map<String, String> properties(final int count) {
+        final Map<String, String> properties = new HashMap<>();
+        for (int i = 0; i < count; i++) {
+            properties.put("key" + i, "value" + i);
+        }
+        return properties;
     }
 
     public List<NotificationPropertyDto> createNotificationPropertyDtos(final int count) {
@@ -305,6 +311,7 @@ public class ServicesTestHelper {
         notificationDto.setClientIpAddress(IP_ADDRESS);
         notificationDto.setContent(YO_YO + YO_YO);
         notificationDto.setSubject(YO_YO);
+        notificationDto.setProviderType(NotificationProviderType.TWILLIO);
         return notificationDto;
     }
 
@@ -335,7 +342,7 @@ public class ServicesTestHelper {
     }
 
     public PushNotification createPushNotification(final PushNotificationRecipient recipient, final PushNotificationDto notificationDto, final List<NotificationPropertyDto> pushNotificationPropertyDTos) {
-        return pushNotificationService.createNotification(recipient.getId(), notificationDto, pushNotificationPropertyDTos);
+        return pushNotificationService.createNotification(recipient.getId(), notificationDto);
     }
 
     public void assertPushNotification(final PushNotification notification, final PushNotificationDto notificationDto) {

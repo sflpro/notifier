@@ -41,8 +41,8 @@ class SmsNotificationServiceFacadeImpl extends AbstractNotificationServiceFacade
     @Autowired
     private ApplicationEventDistributionService applicationEventDistributionService;
 
-    @Value("${sms.provider}")
-    private NotificationProviderType providerType;
+    @Value("${sms.provider:MSG_AM}")
+    private NotificationProviderType providerType = NotificationProviderType.MSG_AM;
 
     /* Constructors */
     SmsNotificationServiceFacadeImpl() {
@@ -60,11 +60,13 @@ class SmsNotificationServiceFacadeImpl extends AbstractNotificationServiceFacade
             return new ResultResponseModel<>(errors);
         }
         // Create notification DTO
-        final SmsNotificationDto smsNotificationDto = new SmsNotificationDto(request.getRecipientNumber(), request.getBody(), request.getClientIpAddress());
+        final SmsNotificationDto smsNotificationDto = new SmsNotificationDto(request.getRecipientNumber(), request.getBody(), request.getClientIpAddress(), providerType);
+        smsNotificationDto.setTemplateName(request.getTemplateName());
+        smsNotificationDto.setProperties(request.getProperties());
         final SmsNotification smsNotification = smsNotificationService.createSmsNotification(smsNotificationDto);
         associateUserWithNotificationIfRequired(request.getUserUuId(), smsNotification);
         // Publish event
-        applicationEventDistributionService.publishAsynchronousEvent(new StartSendingNotificationEvent(smsNotification.getId()));
+        applicationEventDistributionService.publishAsynchronousEvent(new StartSendingNotificationEvent(smsNotification.getId(), request.getSecureProperties()));
         // Create response model
         final SmsNotificationModel smsNotificationModel = createSmsNotificationModel(smsNotification);
         final CreateSmsNotificationResponse response = new CreateSmsNotificationResponse(smsNotificationModel);

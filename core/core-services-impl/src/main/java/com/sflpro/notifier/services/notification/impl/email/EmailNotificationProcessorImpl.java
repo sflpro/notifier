@@ -63,7 +63,7 @@ class EmailNotificationProcessorImpl implements EmailNotificationProcessor {
         updateEmailNotificationState(emailNotification.getId(), NotificationState.PROCESSING);
         try {
             /* Start processing external email service operation */
-            processMessage(emailNotification);
+            processMessage(emailNotification, secureProperties);
         } catch (final Exception ex) {
             final String message = "Error occurred while sending email notification with id - " + emailNotification.getId();
             LOGGER.error(message, ex);
@@ -86,13 +86,13 @@ class EmailNotificationProcessorImpl implements EmailNotificationProcessor {
                 .orElseThrow(() -> new IllegalStateException(format("No any email sender was registered for provider '%s", providerTypeName)));
     }
 
-    private void processMessage(final EmailNotification emailNotification) {
+    private void processMessage(final EmailNotification emailNotification, final Map<String, String> secureProperties) {
         if (StringUtils.isNoneBlank(emailNotification.getTemplateName())) {
             getTemplatedEmailSender(emailNotification.getProviderType()).send(TemplatedEmailMessage.of(
                     emailNotification.getSenderEmail(),
                     emailNotification.getRecipientEmail(),
                     emailNotification.getTemplateName(),
-                    variablesFor(emailNotification)
+                    variablesFor(emailNotification, secureProperties)
             ));
         } else {
             Assert.hasText("Null or emty text was passed as an argument for parameter 'subject'.", emailNotification.getSubject());
@@ -108,15 +108,20 @@ class EmailNotificationProcessorImpl implements EmailNotificationProcessor {
         updateEmailNotificationState(emailNotification.getId(), NotificationState.SENT);
     }
 
-    private Map<String, Object> variablesFor(final EmailNotification emailNotification) {
-        return emailNotification.getProperties().stream()
+    private Map<String, String> variablesFor(final EmailNotification emailNotification, final Map<String, String> secureProperties) {
+        final Map<String, String> variables = emailNotification.getProperties().stream()
                 .collect(Collectors.toMap(
                         NotificationProperty::getPropertyKey, NotificationProperty::getPropertyValue)
                 );
+        variables.putAll(secureProperties);
+        return variables;
     }
 
     private static void assertNotificationStateIsCreated(final Notification notification) {
-        Assert.isTrue(notification.getState().equals(NotificationState.CREATED), "Notification state must be NotificationState.CREATED in order to proceed.");
+        Assert.isTrue(notification.getState().equals(
+                NotificationState.CREATED),
+                "Notification state must be NotificationState.CREATED in order to proceed."
+        );
     }
 
 

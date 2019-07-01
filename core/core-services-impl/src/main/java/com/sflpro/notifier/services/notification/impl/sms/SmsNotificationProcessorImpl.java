@@ -71,7 +71,7 @@ class SmsNotificationProcessorImpl implements SmsNotificationProcessor {
         updateSmsNotificationState(smsNotification.getId(), NotificationState.PROCESSING);
         /* Start processing external sms service operation */
         try {
-            processSending(smsNotification);
+            processSending(smsNotification, secureProperties);
         } catch (final Exception e) {
             final String message = "Error occurred while sending sms message to recipient - " + smsNotification.getRecipientMobileNumber();
             LOGGER.error(message, e);
@@ -95,8 +95,8 @@ class SmsNotificationProcessorImpl implements SmsNotificationProcessor {
         smsNotificationService.updateNotificationState(notificationId, notificationState);
     }
 
-    private void processSending(final SmsNotification smsNotification) {
-        final String smsMessageProviderExternalId = send(smsNotification);
+    private void processSending(final SmsNotification smsNotification, final Map<String, String> secureProperties) {
+        final String smsMessageProviderExternalId = send(smsNotification, secureProperties);
         LOGGER.debug("Successfully sent sms message to recipient - {}, with body - {}", smsNotification.getRecipientMobileNumber(), smsNotification.getContent());
         /* Update message external id if it is provided */
         if (StringUtils.isNotBlank(smsMessageProviderExternalId)) {
@@ -106,7 +106,7 @@ class SmsNotificationProcessorImpl implements SmsNotificationProcessor {
         updateSmsNotificationState(smsNotification.getId(), NotificationState.SENT);
     }
 
-    private String send(final SmsNotification smsNotification) {
+    private String send(final SmsNotification smsNotification, final Map<String, String> secureProperties) {
         if (StringUtils.isNoneBlank(smsNotification.getTemplateName())) {
             return getSmsSender(smsSenderProvider::lookupTemplatedSmsMessageSenderFor,
                     smsNotification.getProviderType()).sendMessage(
@@ -115,9 +115,7 @@ class SmsNotificationProcessorImpl implements SmsNotificationProcessor {
                             senderName,
                             smsNotification.getRecipientMobileNumber(),
                             smsNotification.getTemplateName(),
-                            smsNotification.getProperties().stream()
-                                    .collect(Collectors.toMap(NotificationProperty::getPropertyKey,
-                                            NotificationProperty::getPropertyValue))
+                            variables(smsNotification, secureProperties)
                     )
             );
         } else {
@@ -132,6 +130,14 @@ class SmsNotificationProcessorImpl implements SmsNotificationProcessor {
             );
         }
 
+    }
+
+    private Map<String, String> variables(final SmsNotification smsNotification, final Map<String, String> secureProperties) {
+        final Map<String, String> variables = smsNotification.getProperties().stream()
+                .collect(Collectors.toMap(NotificationProperty::getPropertyKey,
+                        NotificationProperty::getPropertyValue));
+        variables.putAll(secureProperties);
+        return variables;
     }
 
     private <M extends SmsMessage> MessageSender<M> getSmsSender(final Function<String, Optional<? extends SmsSender<M>>> senderProvider,

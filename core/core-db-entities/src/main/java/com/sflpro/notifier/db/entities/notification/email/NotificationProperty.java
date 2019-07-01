@@ -27,6 +27,15 @@ public class NotificationProperty extends AbstractDomainEntityModel {
     @Type(type = "text")
     private String propertyValue;
 
+    public NotificationProperty() {
+        super();
+    }
+
+    public NotificationProperty(final String propertyKey, final String propertyValue) {
+        this.propertyKey = propertyKey;
+        this.propertyValue = propertyValue;
+    }
+
     /* Properties getters and setters */
     public String getPropertyKey() {
         return propertyKey;

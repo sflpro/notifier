@@ -16,13 +16,13 @@ class MsgAmTemplatedSmsSender extends AbstractMsgAmSmsSender<TemplatedSmsMessage
     private final SmsTemplateContentResolver smsTemplateContentResolver;
 
     MsgAmTemplatedSmsSender(final MsgAmApiCommunicator msgAmApiCommunicator,
-                         final SmsTemplateContentResolver smsTemplateContentResolver) {
+                            final SmsTemplateContentResolver smsTemplateContentResolver) {
         super(msgAmApiCommunicator);
         this.smsTemplateContentResolver = smsTemplateContentResolver;
     }
 
     @Override
     String bodyFor(final TemplatedSmsMessage message) {
-        return smsTemplateContentResolver.resolve(message.templateId(),message.variables());
+        return smsTemplateContentResolver.resolve(message.templateId(), message.variables());
     }
 }

@@ -11,8 +11,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -23,6 +26,7 @@ import java.util.Map;
  */
 @Component
 public class TemplatingServiceImpl implements TemplatingService {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(TemplatingServiceImpl.class);
 
     private final Configuration configuration;
@@ -35,10 +39,21 @@ public class TemplatingServiceImpl implements TemplatingService {
 
     @Override
     public String getContentForTemplate(@Nonnull final String templateName, @Nonnull final Map<String, ?> parameters) {
+        return getContentForTemplateInternal(templateName, parameters, null);
+    }
+
+    @Override
+    public String getContentForTemplate(@Nonnull final String templateName, @Nonnull final Map<String, ?> parameters, final Locale locale) {
+        Assert.notNull(locale, "Parameters should not be null");
+        return getContentForTemplateInternal(templateName, parameters, locale);
+    }
+
+    private String getContentForTemplateInternal(@Nonnull final String templateName, @Nonnull final Map<String, ?> parameters,@Nullable final Locale locale) {
         Assert.notNull(templateName, "Template name should not be null");
         Assert.notNull(parameters, "Parameters should not be null");
         try {
-            final Template template = configuration.getTemplate(templateName);
+            final Template template = configuration.getTemplate(templateName, locale, StandardCharsets.UTF_8.name(), true, true);
+            Assert.notNull(template, "Template is missing.");
             final StringWriter resultWriter = new StringWriter();
             template.process(parameters, resultWriter);
             final String result = resultWriter.toString();

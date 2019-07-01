@@ -15,6 +15,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.Map;
 import java.util.UUID;
@@ -96,7 +97,7 @@ public class TemplatingServiceImplTest extends AbstractServicesUnitTest {
         // Reset
         resetAll();
         // Expectations
-        expect(freemarkerConfiguration.getTemplate(templateName)).andThrow(cause).once();
+        expect(freemarkerConfiguration.getTemplate(templateName, null, StandardCharsets.UTF_8.name(), true, true)).andThrow(cause).once();
         // Replay
         replayAll();
         // Run test scenario
@@ -119,7 +120,7 @@ public class TemplatingServiceImplTest extends AbstractServicesUnitTest {
         // Reset
         resetAll();
         // Expectations
-        expect(freemarkerConfiguration.getTemplate(templateName)).andReturn(template).once();
+        expect(freemarkerConfiguration.getTemplate(templateName, null, StandardCharsets.UTF_8.name(), true, true)).andReturn(template).once();
         template.process(eq(parameters), isA(StringWriter.class));
         expectLastCall().andThrow(cause).once();
         // Replay
@@ -144,10 +145,10 @@ public class TemplatingServiceImplTest extends AbstractServicesUnitTest {
         // Reset
         resetAll();
         // Expectations
-        expect(freemarkerConfiguration.getTemplate(templateName)).andReturn(template).once();
+        expect(freemarkerConfiguration.getTemplate(templateName, null, StandardCharsets.UTF_8.name(), true, true)).andReturn(template).once();
         template.process(eq(parameters), isA(StringWriter.class));
         expectLastCall().andAnswer(() -> {
-            StringWriter writer = (StringWriter)getCurrentArguments()[1];
+            StringWriter writer = (StringWriter) getCurrentArguments()[1];
             writer.write(expectedContent);
             return null;
         }).once();

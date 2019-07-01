@@ -19,10 +19,6 @@ public class SmsNotificationServiceIntegrationTest extends AbstractNotificationS
     @Autowired
     private SmsNotificationService smsNotificationService;
 
-    /* Constructors */
-    public SmsNotificationServiceIntegrationTest() {
-    }
-
     /* Test methods */
     @Test
     public void testCreateSmsNotification() {

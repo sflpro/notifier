@@ -1,30 +1,24 @@
 package com.sflpro.notifier.services.notification.impl.email;
 
-import com.sflpro.notifier.db.entities.notification.NotificationProviderType;
 import com.sflpro.notifier.db.entities.notification.UserNotification;
 import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
 import com.sflpro.notifier.db.entities.user.User;
 import com.sflpro.notifier.db.repositories.repositories.notification.AbstractNotificationRepository;
 import com.sflpro.notifier.db.repositories.repositories.notification.email.EmailNotificationRepository;
 import com.sflpro.notifier.services.notification.UserNotificationService;
-import com.sflpro.notifier.services.notification.dto.NotificationPropertyDto;
 import com.sflpro.notifier.services.notification.dto.UserNotificationDto;
 import com.sflpro.notifier.services.notification.dto.email.EmailNotificationDto;
 import com.sflpro.notifier.services.notification.email.EmailNotificationService;
-import com.sflpro.notifier.services.notification.event.sms.StartSendingNotificationEvent;
 import com.sflpro.notifier.services.notification.impl.AbstractNotificationServiceImpl;
-import com.sflpro.notifier.services.system.event.ApplicationEventDistributionService;
 import com.sflpro.notifier.services.user.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import javax.annotation.Nonnull;
-import java.util.List;
 
 /**
  * User: Ruben Dilanyan
@@ -41,16 +35,10 @@ class EmailNotificationServiceImpl extends AbstractNotificationServiceImpl<Email
     private EmailNotificationRepository emailNotificationRepository;
 
     @Autowired
-    private ApplicationEventDistributionService applicationEventDistributionService;
-
-    @Autowired
     private UserService userService;
 
     @Autowired
     private UserNotificationService userNotificationService;
-
-    @Value("${email.provider:SMTP_SERVER}")
-    private NotificationProviderType providerType = NotificationProviderType.SMTP_SERVER;
 
     /* Constructors */
     EmailNotificationServiceImpl() {
@@ -60,18 +48,14 @@ class EmailNotificationServiceImpl extends AbstractNotificationServiceImpl<Email
     @Transactional
     @Nonnull
     @Override
-    public EmailNotification createAndSendEmailNotification(@Nonnull final EmailNotificationDto emailNotificationDto, @Nonnull final List<NotificationPropertyDto> emailNotificationPropertyDtos) {
+    public EmailNotification createEmailNotification(@Nonnull final EmailNotificationDto emailNotificationDto) {
         assertEmailNotificationDto(emailNotificationDto);
-        Assert.notNull(emailNotificationPropertyDtos, "emailNotificationPropertyDtos should not be null");
-        LOGGER.debug("Creating email notification for DTO - {} and property dtos - {}", emailNotificationDto, emailNotificationPropertyDtos);
+        LOGGER.debug("Creating email notification for DTO - {} and property dtos - {}", emailNotificationDto, emailNotificationDto.getProperties());
         EmailNotification emailNotification = new EmailNotification(true);
         emailNotificationDto.updateDomainEntityProperties(emailNotification);
-        emailNotification.setProviderType(providerType);
-        createAndAddEmailNotificationProperties(emailNotification, emailNotificationPropertyDtos);
         // Persist notification
         emailNotification = emailNotificationRepository.save(emailNotification);
         associateNotificationWithUser(emailNotificationDto, emailNotification);
-        applicationEventDistributionService.publishAsynchronousEvent(new StartSendingNotificationEvent(emailNotification.getId(), emailNotificationDto.getSecureProperties()));
         LOGGER.debug("Successfully created email notification with id - {}, email notification - {}", emailNotification.getId(), emailNotification);
         return emailNotification;
     }
@@ -89,6 +73,7 @@ class EmailNotificationServiceImpl extends AbstractNotificationServiceImpl<Email
 
     private void assertEmailNotificationDto(final EmailNotificationDto notificationDto) {
         assertNotificationDto(notificationDto);
+        Assert.notNull(notificationDto.getProviderType(), "ProviderType in notification DTO should not be null");
         Assert.notNull(notificationDto.getRecipientEmail(), "Recipient email in notification DTO should not be null");
     }
 

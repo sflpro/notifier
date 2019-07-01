@@ -29,6 +29,7 @@ class SmsNotificationServiceImpl extends AbstractNotificationServiceImpl<SmsNoti
     @Autowired
     private SmsNotificationRepository smsNotificationRepository;
 
+
     /* Constructors */
     SmsNotificationServiceImpl() {
         LOGGER.debug("Initializing SMS notification service");
@@ -51,6 +52,7 @@ class SmsNotificationServiceImpl extends AbstractNotificationServiceImpl<SmsNoti
     /* Utility methods */
     private void assertSmsNotificationDto(final SmsNotificationDto notificationDto) {
         assertNotificationDto(notificationDto);
+        Assert.notNull(notificationDto.getProviderType(), "ProviderType in notification DTO should not be null");
         Assert.notNull(notificationDto.getRecipientMobileNumber(), "Recipient mobile number in notification DTO should not be null");
     }
 

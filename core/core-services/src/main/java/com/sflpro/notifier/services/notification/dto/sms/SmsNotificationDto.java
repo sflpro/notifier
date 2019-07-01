@@ -1,5 +1,6 @@
 package com.sflpro.notifier.services.notification.dto.sms;
 
+import com.sflpro.notifier.db.entities.notification.NotificationProviderType;
 import com.sflpro.notifier.db.entities.notification.NotificationType;
 import com.sflpro.notifier.db.entities.notification.sms.SmsNotification;
 import com.sflpro.notifier.services.notification.dto.NotificationDto;
@@ -20,8 +21,8 @@ public class SmsNotificationDto extends NotificationDto<SmsNotification> {
     private String recipientMobileNumber;
 
     /* Constructors */
-    public SmsNotificationDto(final String recipientMobileNumber, final String content, final String clientIpAddress) {
-        super(NotificationType.SMS, content, null, clientIpAddress);
+    public SmsNotificationDto(final String recipientMobileNumber, final String content, final String clientIpAddress,final NotificationProviderType providerType) {
+        super(NotificationType.SMS, content, null, clientIpAddress,providerType);
         this.recipientMobileNumber = recipientMobileNumber;
     }
 
@@ -42,6 +43,8 @@ public class SmsNotificationDto extends NotificationDto<SmsNotification> {
     public void updateDomainEntityProperties(final SmsNotification notification) {
         super.updateDomainEntityProperties(notification);
         notification.setRecipientMobileNumber(getRecipientMobileNumber());
+        notification.setTemplateName(getTemplateName());
+        notification.setHasSecureProperties(!getProperties().isEmpty());
     }
 
     /* Equals, HashCode and ToString */

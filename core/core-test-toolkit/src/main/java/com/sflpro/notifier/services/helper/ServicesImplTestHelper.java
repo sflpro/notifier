@@ -25,10 +25,7 @@ import com.sflpro.notifier.services.notification.dto.sms.SmsNotificationDto;
 import com.sflpro.notifier.services.user.dto.UserDto;
 import org.junit.Assert;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertNotNull;
@@ -100,7 +97,8 @@ public class ServicesImplTestHelper {
         notificationDto.setContent("YoYoYo");
         notificationDto.setSubject("YoYo");
         notificationDto.setTemplateName("YoTemplate");
-        notificationDto.setSecureProperties(Collections.singletonMap("token", UUID.randomUUID().toString()));
+        notificationDto.setProperties(Collections.singletonMap("token", UUID.randomUUID().toString()));
+        notificationDto.setProviderType(NotificationProviderType.SMTP_SERVER);
         return notificationDto;
     }
 
@@ -136,6 +134,14 @@ public class ServicesImplTestHelper {
         return propertyDtos;
     }
 
+    public Map<String,String> createNotificationProperties(final int count) {
+        final  Map<String,String> proiperties = new HashMap<>();
+        for (int i = 0; i < count; i++) {
+            proiperties.put("key" + i, "value" + i);
+        }
+        return proiperties;
+    }
+
     /* SMS notification */
     public SmsNotificationDto createSmsNotificationDto() {
         final SmsNotificationDto notificationDto = new SmsNotificationDto();
@@ -143,6 +149,7 @@ public class ServicesImplTestHelper {
         notificationDto.setClientIpAddress("127.0.0.1");
         notificationDto.setContent("YoYoYo");
         notificationDto.setSubject(null);
+        notificationDto.setProviderType(NotificationProviderType.TWILLIO);
         return notificationDto;
     }
 

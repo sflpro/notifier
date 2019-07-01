@@ -16,6 +16,7 @@ import com.sflpro.notifier.services.system.event.ApplicationEventDistributionSer
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
@@ -29,7 +30,7 @@ import java.util.List;
  * Time: 5:13 PM
  */
 @Component
-public class SmsNotificationServiceFacadeImpl extends AbstractNotificationServiceFacadeImpl implements SmsNotificationServiceFacade {
+class SmsNotificationServiceFacadeImpl extends AbstractNotificationServiceFacadeImpl implements SmsNotificationServiceFacade {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SmsNotificationServiceFacadeImpl.class);
 
@@ -40,8 +41,11 @@ public class SmsNotificationServiceFacadeImpl extends AbstractNotificationServic
     @Autowired
     private ApplicationEventDistributionService applicationEventDistributionService;
 
+    @Value("${sms.provider}")
+    private NotificationProviderType providerType;
+
     /* Constructors */
-    public SmsNotificationServiceFacadeImpl() {
+    SmsNotificationServiceFacadeImpl() {
         super();
     }
 
@@ -56,7 +60,7 @@ public class SmsNotificationServiceFacadeImpl extends AbstractNotificationServic
             return new ResultResponseModel<>(errors);
         }
         // Create notification DTO
-        final SmsNotificationDto smsNotificationDto = new SmsNotificationDto(request.getRecipientNumber(), NotificationProviderType.AMAZON_SNS, request.getBody(), request.getClientIpAddress());
+        final SmsNotificationDto smsNotificationDto = new SmsNotificationDto(request.getRecipientNumber(), providerType, request.getBody(), request.getClientIpAddress());
         final SmsNotification smsNotification = smsNotificationService.createSmsNotification(smsNotificationDto);
         associateUserWithNotificationIfRequired(request.getUserUuId(), smsNotification);
         // Publish event

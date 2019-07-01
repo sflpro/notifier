@@ -72,18 +72,11 @@ public class EmailNotificationServiceImplTest extends AbstractNotificationServic
             // Expected
         }
         try {
-            emailNotificationService.createAndSendEmailNotification(new EmailNotificationDto(null, emailNotificationDto.getSenderEmail(), emailNotificationDto.getProviderType(), emailNotificationDto.getContent(), emailNotificationDto.getSubject(), emailNotificationDto.getClientIpAddress(), emailNotificationDto.getTemplateName()), properties);
+            emailNotificationService.createAndSendEmailNotification(new EmailNotificationDto(null, emailNotificationDto.getSenderEmail(), emailNotificationDto.getContent(), emailNotificationDto.getSubject(), emailNotificationDto.getClientIpAddress(), emailNotificationDto.getTemplateName()), properties);
             fail("Exception should be thrown");
         } catch (final IllegalArgumentException ex) {
             // Expected
         }
-        try {
-            emailNotificationService.createAndSendEmailNotification(new EmailNotificationDto(emailNotificationDto.getRecipientEmail(), emailNotificationDto.getSenderEmail(), null, emailNotificationDto.getContent(), emailNotificationDto.getSubject(), emailNotificationDto.getClientIpAddress(), emailNotificationDto.getTemplateName()), properties);
-            fail("Exception should be thrown");
-        } catch (final IllegalArgumentException ex) {
-            // Expected
-        }
-
         try {
             emailNotificationService.createAndSendEmailNotification(emailNotificationDto, null);
             fail("Exception should be thrown");

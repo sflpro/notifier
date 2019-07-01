@@ -143,7 +143,6 @@ public class ServiceFacadeImplTestHelper {
         notificationDto.setClientIpAddress("127.0.0.1");
         notificationDto.setContent("YoYoYo");
         notificationDto.setSubject("YoYo");
-        notificationDto.setProviderType(NotificationProviderType.SMTP_SERVER);
         return notificationDto;
     }
 

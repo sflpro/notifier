@@ -1,6 +1,7 @@
 package com.sflpro.notifier.externalclients.email.mandrill.communicator;
 
 
+import com.sflpro.notifier.spi.email.SimpleEmailMessage;
 import com.sflpro.notifier.spi.email.TemplatedEmailMessage;
 
 /**
@@ -12,10 +13,17 @@ import com.sflpro.notifier.spi.email.TemplatedEmailMessage;
 public interface MandrillApiCommunicator {
 
     /**
-     * Send calendar reminder email
+     * Send templated email
      *
      * @param message
-     * @return true/false
      */
     void sendEmailTemplate(final TemplatedEmailMessage message);
+
+
+    /**
+     * Send simple email
+     *
+     * @param message
+     */
+    void sendEmail(final SimpleEmailMessage message);
 }

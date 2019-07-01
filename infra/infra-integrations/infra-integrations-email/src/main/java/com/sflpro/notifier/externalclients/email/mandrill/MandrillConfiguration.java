@@ -3,6 +3,8 @@ package com.sflpro.notifier.externalclients.email.mandrill;
 import com.microtripit.mandrillapp.lutung.controller.MandrillMessagesApi;
 import com.sflpro.notifier.externalclients.email.mandrill.communicator.MandrillApiCommunicator;
 import com.sflpro.notifier.externalclients.email.mandrill.communicator.MandrillApiCommunicatorImpl;
+import com.sflpro.notifier.spi.email.SimpleEmailSender;
+import com.sflpro.notifier.spi.email.SimpleEmailSenderRegistry;
 import com.sflpro.notifier.spi.email.TemplatedEmailSender;
 import com.sflpro.notifier.spi.email.TemplatedEmailSenderRegistry;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,12 +36,22 @@ class MandrillConfiguration {
     }
 
     @Bean("mandrillTemplatedEmailSender")
-    com.sflpro.notifier.externalclients.email.mandrill.MandrillTemplatedEmailSender mandrillTemplatedEmailSender(final MandrillApiCommunicator mandrillApiCommunicator) {
-        return new com.sflpro.notifier.externalclients.email.mandrill.MandrillTemplatedEmailSender(mandrillApiCommunicator);
+   TemplatedEmailSender mandrillTemplatedEmailSender(final MandrillApiCommunicator mandrillApiCommunicator) {
+        return new MandrillTemplatedEmailSender(mandrillApiCommunicator);
     }
 
     @Bean("templatedEmailSenderRegistry")
     TemplatedEmailSenderRegistry templatedEmailSenderRegistry(final TemplatedEmailSender mandrillTemplatedEmailSender) {
         return TemplatedEmailSenderRegistry.of("mandrill", mandrillTemplatedEmailSender);
+    }
+
+    @Bean("mandrillSimpleEmailSender")
+    SimpleEmailSender mandrillSimpleEmailSender(final MandrillApiCommunicator mandrillApiCommunicator) {
+        return new MandrillSimpleEmailSender(mandrillApiCommunicator);
+    }
+
+    @Bean("mandrillSimpleEmailSenderRegistry")
+    SimpleEmailSenderRegistry mandrillSimpleEmailSenderRegistry(final SimpleEmailSender mandrillSimpleEmailSender) {
+        return SimpleEmailSenderRegistry.of("mandrill", mandrillSimpleEmailSender);
     }
 }

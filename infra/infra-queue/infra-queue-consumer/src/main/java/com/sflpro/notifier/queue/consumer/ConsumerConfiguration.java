@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Import;
 
 @Configuration
 @Import({QueueConfigurationDefaults.class, KafkaConsumerConfiguration.class, RabbitConsumerConfiguration.class})
-@ComponentScan("com.sflpro.notifier.queue.consumer")
+@ComponentScan("com.sflpro.notifier")
 public class ConsumerConfiguration {
 
 }

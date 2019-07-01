@@ -1,5 +1,6 @@
 package com.sflpro.notifier.services.notification.impl.email;
 
+import com.sflpro.notifier.db.entities.notification.NotificationProviderType;
 import com.sflpro.notifier.db.entities.notification.UserNotification;
 import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
 import com.sflpro.notifier.db.entities.user.User;
@@ -17,6 +18,7 @@ import com.sflpro.notifier.services.user.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -31,7 +33,7 @@ import java.util.List;
  * Time: 8:07 PM
  */
 @Service
-public class EmailNotificationServiceImpl extends AbstractNotificationServiceImpl<EmailNotification> implements EmailNotificationService {
+class EmailNotificationServiceImpl extends AbstractNotificationServiceImpl<EmailNotification> implements EmailNotificationService {
     private static final Logger LOGGER = LoggerFactory.getLogger(EmailNotificationServiceImpl.class);
 
     /* Dependencies */
@@ -47,8 +49,11 @@ public class EmailNotificationServiceImpl extends AbstractNotificationServiceImp
     @Autowired
     private UserNotificationService userNotificationService;
 
+    @Value("${email.provider:SMTP_SERVER}")
+    private NotificationProviderType providerType = NotificationProviderType.SMTP_SERVER;
+
     /* Constructors */
-    public EmailNotificationServiceImpl() {
+    EmailNotificationServiceImpl() {
         LOGGER.debug("Initializing email notification service");
     }
 
@@ -61,6 +66,7 @@ public class EmailNotificationServiceImpl extends AbstractNotificationServiceImp
         LOGGER.debug("Creating email notification for DTO - {} and property dtos - {}", emailNotificationDto, emailNotificationPropertyDtos);
         EmailNotification emailNotification = new EmailNotification(true);
         emailNotificationDto.updateDomainEntityProperties(emailNotification);
+        emailNotification.setProviderType(providerType);
         createAndAddEmailNotificationProperties(emailNotification, emailNotificationPropertyDtos);
         // Persist notification
         emailNotification = emailNotificationRepository.save(emailNotification);
@@ -83,7 +89,6 @@ public class EmailNotificationServiceImpl extends AbstractNotificationServiceImp
 
     private void assertEmailNotificationDto(final EmailNotificationDto notificationDto) {
         assertNotificationDto(notificationDto);
-        Assert.notNull(notificationDto.getProviderType(), "ProviderType in notification DTO should not be null");
         Assert.notNull(notificationDto.getRecipientEmail(), "Recipient email in notification DTO should not be null");
     }
 
@@ -97,10 +102,6 @@ public class EmailNotificationServiceImpl extends AbstractNotificationServiceImp
     }
 
     /* Properties getters and setters */
-    public EmailNotificationRepository getEmailNotificationRepository() {
-        return emailNotificationRepository;
-    }
-
     public void setEmailNotificationRepository(final EmailNotificationRepository emailNotificationRepository) {
         this.emailNotificationRepository = emailNotificationRepository;
     }

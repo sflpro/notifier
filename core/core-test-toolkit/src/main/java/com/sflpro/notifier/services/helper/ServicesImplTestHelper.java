@@ -99,7 +99,6 @@ public class ServicesImplTestHelper {
         notificationDto.setClientIpAddress("127.0.0.1");
         notificationDto.setContent("YoYoYo");
         notificationDto.setSubject("YoYo");
-        notificationDto.setProviderType(NotificationProviderType.SMTP_SERVER);
         notificationDto.setTemplateName("YoTemplate");
         notificationDto.setSecureProperties(Collections.singletonMap("token", UUID.randomUUID().toString()));
         return notificationDto;
@@ -126,7 +125,6 @@ public class ServicesImplTestHelper {
         assertNotification(notification, notificationDto);
         Assert.assertEquals(notificationDto.getRecipientEmail(), notification.getRecipientEmail());
         Assert.assertEquals(notificationDto.getSenderEmail(), notification.getSenderEmail());
-        Assert.assertEquals(notificationDto.getProviderType(), notification.getProviderType());
     }
 
     public List<NotificationPropertyDto> createNotificationPropertyDtos(final int count) {

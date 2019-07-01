@@ -3,15 +3,19 @@ package com.sflpro.notifier.externalclients.email.mandrill.communicator;
 import com.microtripit.mandrillapp.lutung.controller.MandrillMessagesApi;
 import com.microtripit.mandrillapp.lutung.model.MandrillApiError;
 import com.microtripit.mandrillapp.lutung.view.MandrillMessage;
-import com.microtripit.mandrillapp.lutung.view.MandrillMessageStatus;import com.sflpro.notifier.externalclients.email.mandrill.exception.MandrillEmailClientRuntimeException;
+import com.microtripit.mandrillapp.lutung.view.MandrillMessageStatus;
+import com.sflpro.notifier.externalclients.email.mandrill.exception.MandrillEmailClientRuntimeException;
 import com.sflpro.notifier.externalclients.email.mandrill.exception.MandrillMessageInvalidException;
 import com.sflpro.notifier.externalclients.email.mandrill.exception.MandrillMessageRejectedException;
+import com.sflpro.notifier.spi.email.EmailMessage;
+import com.sflpro.notifier.spi.email.SimpleEmailMessage;
 import com.sflpro.notifier.spi.email.TemplatedEmailMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,14 +43,24 @@ public class MandrillApiCommunicatorImpl implements MandrillApiCommunicator {
         LOGGER.debug("Initializing Mandrill web service communicator");
     }
 
-    private MandrillMessage createMandrillMessage(final TemplatedEmailMessage message) {
+    private static MandrillMessage prepareMessage(final EmailMessage message) {
         // Recipients of the message
         final MandrillMessage.Recipient to = new MandrillMessage.Recipient();
         to.setEmail(message.to());
         to.setType(MandrillMessage.Recipient.Type.TO);
         List<MandrillMessage.Recipient> recipients = new ArrayList<>();
         recipients.add(to);
+        // Mandrill message
+        final MandrillMessage mandrillMessage = new MandrillMessage();
+        mandrillMessage.setTo(recipients);
+        mandrillMessage.setFromEmail(message.from());
+        mandrillMessage.setMergeLanguage(MERGE_LANGUAGE_MAILCHIMP);
+        return mandrillMessage;
+    }
 
+    private static MandrillMessage createMandrillMessage(final TemplatedEmailMessage message) {
+        // Recipients of the message
+        final MandrillMessage mandrillMessage = prepareMessage(message);
         // Merge vars of the message
         final MandrillMessage.MergeVarBucket mergeBucket = new MandrillMessage.MergeVarBucket();
         if (message.variables() != null) {
@@ -56,14 +70,15 @@ public class MandrillApiCommunicatorImpl implements MandrillApiCommunicator {
                     .toArray(MandrillMessage.MergeVar[]::new);
             mergeBucket.setVars(mergeValues);
         }
-
-        // Mandrill message
-        final MandrillMessage mandrillMessage = new MandrillMessage();
-        mandrillMessage.setTo(recipients);
-        mandrillMessage.setFromEmail(message.from());
-        mandrillMessage.setMergeLanguage(MERGE_LANGUAGE_MAILCHIMP);
         mandrillMessage.setMergeVars(Collections.singletonList(mergeBucket));
+        return mandrillMessage;
+    }
 
+    private static MandrillMessage createMandrillMessage(final SimpleEmailMessage message) {
+        // Recipients of the message
+        final MandrillMessage mandrillMessage = prepareMessage(message);
+        mandrillMessage.setSubject(message.subject());
+        mandrillMessage.setHtml(message.body());
         return mandrillMessage;
     }
 
@@ -87,11 +102,27 @@ public class MandrillApiCommunicatorImpl implements MandrillApiCommunicator {
         }
     }
 
-
+    @Override
+    public void sendEmail(final SimpleEmailMessage message) {
+        assertMandrillEmailModel(message);
+        LOGGER.debug("Requested to send email via mandrill, email model - {}", message);
+        // Create email send to customer request model
+        final MandrillMessage mandrillMessage = createMandrillMessage(message);
+        try {
+            LOGGER.debug("Performing send email request with parameters - {}", message);
+            // Execute request
+            final MandrillMessageStatus[] mandrillMessageStatuses = mandrillMessagesApi.send(mandrillMessage,false);
+            // Handle response
+            handleResult(mandrillMessageStatuses, null, message.to());
+        } catch (final MandrillApiError | IOException e) {
+            LOGGER.error("Error occurred while sending sms message", e);
+            throw new MandrillEmailClientRuntimeException("MandrillApiError", e);
+        }
+    }
 
     /* Utility methods */
     private static void handleResult(final MandrillMessageStatus[] mandrillMessageStatuses,
-                                     final String templateId, final String recipientEmail) {
+                                     @Nullable final String templateId, final String recipientEmail) {
         for (final MandrillMessageStatus mandrillMessageStatus : mandrillMessageStatuses) {
             switch (mandrillMessageStatus.getStatus()) {
                 case "rejected":
@@ -110,8 +141,14 @@ public class MandrillApiCommunicatorImpl implements MandrillApiCommunicator {
         }
     }
 
-    private static void assertMandrillEmailModel(final TemplatedEmailMessage sendEmailRequest) {
-        Assert.notNull(sendEmailRequest, "Mandrill email model should not be null");
-        Assert.notNull(sendEmailRequest.templateId(), "Mandrill email model template should not be null");
+    private static void assertMandrillEmailModel(final TemplatedEmailMessage message) {
+        Assert.notNull(message, "Mandrill email model should not be null");
+        Assert.hasText(message.templateId(), "Mandrill email model template should not be null");
+    }
+
+    private static void assertMandrillEmailModel(final SimpleEmailMessage message) {
+        Assert.notNull(message, "Mandrill email model should not be null");
+        Assert.hasText(message.body(), "Mandrill email body template should not be null");
+        Assert.hasText(message.subject(), "Mandrill email subject template should not be null");
     }
 }

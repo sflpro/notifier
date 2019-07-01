@@ -263,7 +263,6 @@ public class ServicesTestHelper {
         notificationDto.setClientIpAddress(IP_ADDRESS);
         notificationDto.setContent(YO_YO + YO_YO);
         notificationDto.setSubject(YO_YO);
-        notificationDto.setProviderType(NotificationProviderType.SMTP_SERVER);
         notificationDto.setTemplateName(YO_YO + "_template");
         return notificationDto;
     }
@@ -281,7 +280,6 @@ public class ServicesTestHelper {
         assertEquals(notificationDto.getRecipientEmail(), notification.getRecipientEmail());
         assertEquals(notificationDto.getSenderEmail(), notification.getSenderEmail());
         assertEquals(notificationDto.getTemplateName(), notification.getTemplateName());
-        Assert.assertEquals(notificationDto.getProviderType(), notification.getProviderType());
         assertEquals(emailNotificationPropertyDtos.size(), notification.getProperties().size());
         emailNotificationPropertyDtos.forEach(emailNotificationPropertyDto -> {
             final Optional<NotificationProperty> emailNotificationProperty = notification.getProperties()

@@ -11,8 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.annotation.Nonnull;
@@ -25,8 +23,6 @@ import java.util.concurrent.Executors;
  * Date: 12/13/14
  * Time: 11:44 PM
  */
-@Service(value = "rabbit")
-@ConditionalOnProperty(name = "notifier.queue.engine", havingValue = "rabbit")
 public class RabbitConnectorServiceImpl implements AmqpConnectorService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RabbitConnectorServiceImpl.class);
@@ -74,7 +70,7 @@ public class RabbitConnectorServiceImpl implements AmqpConnectorService {
         private final AmqpResponseHandler<T> responseHandler;
 
         /* Constructors */
-        public MessageSenderTask(final RPCCallType callType, final AbstractRPCTransferModel requestModel, final Class<T> responseModelClass, final AmqpResponseHandler<T> responseHandler) {
+        private MessageSenderTask(final RPCCallType callType, final AbstractRPCTransferModel requestModel, final Class<T> responseModelClass, final AmqpResponseHandler<T> responseHandler) {
             this.callType = callType;
             this.requestModel = requestModel;
             this.responseModelClass = responseModelClass;

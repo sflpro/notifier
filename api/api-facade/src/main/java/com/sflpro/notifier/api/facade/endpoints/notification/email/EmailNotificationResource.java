@@ -7,7 +7,6 @@ import com.sflpro.notifier.api.model.email.request.CreateEmailNotificationReques
 import com.sflpro.notifier.api.model.email.response.CreateEmailNotificationResponse;
 import com.sflpro.notifier.api.model.notification.NotificationClientType;
 import com.sflpro.notifier.api.model.notification.NotificationStateClientType;
-import com.sflpro.notifier.db.entities.notification.NotificationProviderType;
 import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
 import com.sflpro.notifier.services.notification.dto.NotificationPropertyDto;
 import com.sflpro.notifier.services.notification.dto.email.EmailNotificationDto;
@@ -75,7 +74,6 @@ public class EmailNotificationResource {
         final EmailNotificationDto emailNotificationDto = new EmailNotificationDto();
         emailNotificationDto.setRecipientEmail(request.getRecipientEmail());
         emailNotificationDto.setSenderEmail(request.getSenderEmail());
-        emailNotificationDto.setProviderType(NotificationProviderType.SMTP_SERVER);
         emailNotificationDto.setContent(request.getBody());
         emailNotificationDto.setSubject(request.getSubject());
         emailNotificationDto.setClientIpAddress(request.getClientIpAddress());

@@ -36,7 +36,7 @@ public class NotificationQueueConsumerServiceImpl implements NotificationQueueCo
     private ApplicationEventDistributionService applicationEventDistributionService;
 
     /* Constructors */
-    public NotificationQueueConsumerServiceImpl() {
+    NotificationQueueConsumerServiceImpl() {
         LOGGER.debug("Initializing sms notification queue consumer service");
     }
 
@@ -68,7 +68,7 @@ public class NotificationQueueConsumerServiceImpl implements NotificationQueueCo
     private class StartSendingNotificationEventListener extends StartSendingNotificationEventListenerAdapter {
 
         /* Constructors */
-        public StartSendingNotificationEventListener() {
+        StartSendingNotificationEventListener() {
             super();
         }
 

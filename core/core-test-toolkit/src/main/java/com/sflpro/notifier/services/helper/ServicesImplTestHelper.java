@@ -143,7 +143,6 @@ public class ServicesImplTestHelper {
         notificationDto.setClientIpAddress("127.0.0.1");
         notificationDto.setContent("YoYoYo");
         notificationDto.setSubject(null);
-        notificationDto.setProviderType(NotificationProviderType.TWILLIO);
         return notificationDto;
     }
 
@@ -154,13 +153,13 @@ public class ServicesImplTestHelper {
     public SmsNotification createSmsNotification(final SmsNotificationDto notificationDto) {
         final SmsNotification notification = new SmsNotification(true);
         notificationDto.updateDomainEntityProperties(notification);
+        notification.setProviderType(NotificationProviderType.TWILLIO);
         return notification;
     }
 
     public void assertSmsNotification(final SmsNotification notification, final SmsNotificationDto notificationDto) {
         assertNotification(notification, notificationDto);
         Assert.assertEquals(notificationDto.getRecipientMobileNumber(), notification.getRecipientMobileNumber());
-        Assert.assertEquals(notificationDto.getProviderType(), notification.getProviderType());
     }
 
     /* Push notification */

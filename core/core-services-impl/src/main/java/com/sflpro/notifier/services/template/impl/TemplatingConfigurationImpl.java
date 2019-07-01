@@ -24,7 +24,7 @@ public class TemplatingConfigurationImpl implements TemplatingConfiguration {
 
     private ResourceLoader resourceLoader = new DefaultResourceLoader();
 
-    public Configuration getFreemarkerConfiguration() {
+    public Configuration getFreemarkerConfiguration(final boolean localizedLookupEnabled) {
         final freemarker.template.Configuration cfg = new freemarker.template.Configuration(freemarker.template.Configuration.VERSION_2_3_28);
         cfg.setTemplateLoader(new URLTemplateLoader() {
             @Override
@@ -40,7 +40,7 @@ public class TemplatingConfigurationImpl implements TemplatingConfiguration {
                 }
             }
         });
-        cfg.setLocalizedLookup(false);
+        cfg.setLocalizedLookup(localizedLookupEnabled);
         cfg.setDefaultEncoding("UTF-8");
         cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
         cfg.setLogTemplateExceptions(false);

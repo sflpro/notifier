@@ -6,7 +6,6 @@ import com.sflpro.notifier.api.model.common.result.ResultResponseModel;
 import com.sflpro.notifier.api.model.sms.SmsNotificationModel;
 import com.sflpro.notifier.api.model.sms.request.CreateSmsNotificationRequest;
 import com.sflpro.notifier.api.model.sms.response.CreateSmsNotificationResponse;
-import com.sflpro.notifier.db.entities.notification.NotificationProviderType;
 import com.sflpro.notifier.db.entities.notification.UserNotification;
 import com.sflpro.notifier.db.entities.notification.sms.SmsNotification;
 import com.sflpro.notifier.db.entities.user.User;
@@ -48,10 +47,6 @@ public class SmsNotificationServiceFacadeImplTest extends AbstractFacadeUnitTest
 
     @Mock
     private ApplicationEventDistributionService applicationEventDistributionService;
-
-    /* Constructors */
-    public SmsNotificationServiceFacadeImplTest() {
-    }
 
 
     /* Test methods */
@@ -95,15 +90,15 @@ public class SmsNotificationServiceFacadeImplTest extends AbstractFacadeUnitTest
         // Test data
         final CreateSmsNotificationRequest request = getServiceFacadeImplTestHelper().createCreateSmsNotificationRequest();
         request.setUserUuId(null);
-        final SmsNotificationDto smsNotificationDto = new SmsNotificationDto(request.getRecipientNumber(), NotificationProviderType.AMAZON_SNS, request.getBody(), request.getClientIpAddress());
+        final SmsNotificationDto smsNotificationDto = new SmsNotificationDto(request.getRecipientNumber(), request.getBody(), request.getClientIpAddress());
         final Long notificationId = 1L;
         final SmsNotification smsNotification = getServiceFacadeImplTestHelper().createSmsNotification();
         smsNotification.setId(notificationId);
         // Reset
         resetAll();
         // Expectations
-        expect(smsNotificationService.createSmsNotification(eq(smsNotificationDto))).andReturn(smsNotification).once();
-        applicationEventDistributionService.publishAsynchronousEvent(eq(new StartSendingNotificationEvent(notificationId)));
+        expect(smsNotificationService.createSmsNotification(smsNotificationDto)).andReturn(smsNotification).once();
+        applicationEventDistributionService.publishAsynchronousEvent(new StartSendingNotificationEvent(notificationId));
         expectLastCall().once();
         // Replay
         replayAll();
@@ -123,7 +118,7 @@ public class SmsNotificationServiceFacadeImplTest extends AbstractFacadeUnitTest
     public void testCreateSmsNotificationWithUser() {
         // Test data
         final CreateSmsNotificationRequest request = getServiceFacadeImplTestHelper().createCreateSmsNotificationRequest();
-        final SmsNotificationDto smsNotificationDto = new SmsNotificationDto(request.getRecipientNumber(), NotificationProviderType.AMAZON_SNS, request.getBody(), request.getClientIpAddress());
+        final SmsNotificationDto smsNotificationDto = new SmsNotificationDto(request.getRecipientNumber(), request.getBody(), request.getClientIpAddress());
         final Long notificationId = 1L;
         final SmsNotification smsNotification = getServiceFacadeImplTestHelper().createSmsNotification();
         smsNotification.setId(notificationId);

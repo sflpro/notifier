@@ -85,7 +85,7 @@ public class MandrillApiCommunicatorImpl implements MandrillApiCommunicator {
     /* Interface public methods overrides */
     @Override
     public void sendEmailTemplate(@Nonnull final TemplatedEmailMessage message) {
-        assertMandrillEmailModel(message);
+        assertTemplatedEmailMessageIsValid(message);
         LOGGER.debug("Requested to send email via mandrill, email model - {}", message);
         // Create email send to customer request model
         final MandrillMessage mandrillMessage = createMandrillMessage(message);
@@ -104,7 +104,7 @@ public class MandrillApiCommunicatorImpl implements MandrillApiCommunicator {
 
     @Override
     public void sendEmail(final SimpleEmailMessage message) {
-        assertMandrillEmailModel(message);
+        assertSimpleEmailMessageIsValid(message);
         LOGGER.debug("Requested to send email via mandrill, email model - {}", message);
         // Create email send to customer request model
         final MandrillMessage mandrillMessage = createMandrillMessage(message);
@@ -141,14 +141,20 @@ public class MandrillApiCommunicatorImpl implements MandrillApiCommunicator {
         }
     }
 
-    private static void assertMandrillEmailModel(final TemplatedEmailMessage message) {
-        Assert.notNull(message, "Mandrill email model should not be null");
+    private static void assertTemplatedEmailMessageIsValid(final TemplatedEmailMessage message) {
+        assertEmailMessageIsValid(message);
         Assert.hasText(message.templateId(), "Mandrill email model template should not be null");
     }
 
-    private static void assertMandrillEmailModel(final SimpleEmailMessage message) {
+    private static void assertSimpleEmailMessageIsValid(final SimpleEmailMessage message) {
+        assertEmailMessageIsValid(message);
+        Assert.hasText(message.body(), "Mandrill message body template should not be null");
+        Assert.hasText(message.subject(), "Mandrill message subject template should not be null");
+    }
+
+    private static void assertEmailMessageIsValid(final EmailMessage message) {
         Assert.notNull(message, "Mandrill email model should not be null");
-        Assert.hasText(message.body(), "Mandrill email body template should not be null");
-        Assert.hasText(message.subject(), "Mandrill email subject template should not be null");
+        Assert.hasText(message.from(), "Mandrill message from should not be null");
+        Assert.hasText(message.to(), "Mandrill message to should not be null");
     }
 }

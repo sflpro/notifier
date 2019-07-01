@@ -49,13 +49,7 @@ public class SmsNotificationServiceImplTest extends AbstractNotificationServiceI
             // Expected
         }
         try {
-            smsNotificationService.createSmsNotification(new SmsNotificationDto(null, smsNotificationDto.getProviderType(), smsNotificationDto.getContent(), smsNotificationDto.getClientIpAddress()));
-            fail("Exception should be thrown");
-        } catch (final IllegalArgumentException ex) {
-            // Expected
-        }
-        try {
-            smsNotificationService.createSmsNotification(new SmsNotificationDto(smsNotificationDto.getRecipientMobileNumber(), null, smsNotificationDto.getContent(), smsNotificationDto.getClientIpAddress()));
+            smsNotificationService.createSmsNotification(new SmsNotificationDto(null, smsNotificationDto.getContent(), smsNotificationDto.getClientIpAddress()));
             fail("Exception should be thrown");
         } catch (final IllegalArgumentException ex) {
             // Expected

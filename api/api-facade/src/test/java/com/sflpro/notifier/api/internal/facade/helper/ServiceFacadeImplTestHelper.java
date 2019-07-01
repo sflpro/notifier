@@ -163,7 +163,6 @@ public class ServiceFacadeImplTestHelper {
         notificationDto.setClientIpAddress("127.0.0.1");
         notificationDto.setContent("YoYoYo");
         notificationDto.setSubject(null);
-        notificationDto.setProviderType(NotificationProviderType.TWILLIO);
         return notificationDto;
     }
 
@@ -174,6 +173,7 @@ public class ServiceFacadeImplTestHelper {
     public SmsNotification createSmsNotification(final SmsNotificationDto notificationDto) {
         final SmsNotification notification = new SmsNotification(true);
         notificationDto.updateDomainEntityProperties(notification);
+        notification.setProviderType(NotificationProviderType.TWILLIO);
         return notification;
     }
 

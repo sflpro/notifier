@@ -39,7 +39,7 @@ public class JerseyConfig extends ResourceConfig {
         register(SwaggerSerializers.class);
         register(CorsFilter.class);
 
-        property(ServerProperties.BV_SEND_ERROR_IN_RESPONSE, true);
+        property(ServerProperties.BV_SEND_ERROR_IN_RESPONSE, false);
         property(CommonProperties.FEATURE_AUTO_DISCOVERY_DISABLE, true);
 
         // Endpoints

@@ -3,7 +3,6 @@ package com.sflpro.notifier.services.helper;
 import com.sflpro.notifier.db.entities.device.UserDevice;
 import com.sflpro.notifier.db.entities.device.mobile.DeviceOperatingSystemType;
 import com.sflpro.notifier.db.entities.notification.Notification;
-import com.sflpro.notifier.db.entities.notification.NotificationProviderType;
 import com.sflpro.notifier.db.entities.notification.NotificationState;
 import com.sflpro.notifier.db.entities.notification.UserNotification;
 import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
@@ -306,7 +305,6 @@ public class ServicesTestHelper {
         notificationDto.setClientIpAddress(IP_ADDRESS);
         notificationDto.setContent(YO_YO + YO_YO);
         notificationDto.setSubject(YO_YO);
-        notificationDto.setProviderType(NotificationProviderType.TWILLIO);
         return notificationDto;
     }
 
@@ -321,7 +319,6 @@ public class ServicesTestHelper {
     public void assertSmsNotification(final SmsNotification notification, final SmsNotificationDto notificationDto) {
         assertNotification(notification, notificationDto);
         assertEquals(notificationDto.getRecipientMobileNumber(), notification.getRecipientMobileNumber());
-        Assert.assertEquals(notificationDto.getProviderType(), notification.getProviderType());
     }
 
     /* Push notification */

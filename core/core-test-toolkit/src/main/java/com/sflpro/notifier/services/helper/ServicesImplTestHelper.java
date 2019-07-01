@@ -118,6 +118,7 @@ public class ServicesImplTestHelper {
         }).collect(Collectors.toList());
         notificationDto.updateDomainEntityProperties(notification);
         notification.setProperties(properties);
+        notification.setProviderType(NotificationProviderType.SMTP_SERVER);
         return notification;
     }
 

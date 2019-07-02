@@ -30,10 +30,10 @@ class EmailConfiguration {
     EmailSenderProvider emailSenderProvider(final List<SimpleEmailSenderRegistry> simpleEmailSenderRegistries,
                                             final List<TemplatedEmailSenderRegistry> templatedEmailSenderRegistries) {
         if (simpleEmailSenderRegistries.isEmpty()) {
-            LOGGER.info("No any component was registered for sending simple email");
+            LOGGER.info("No any component was registered for sending simple email messages!");
         }
         if (templatedEmailSenderRegistries.isEmpty()) {
-            LOGGER.info("No any component was registered for sending templated email");
+            LOGGER.info("No any component was registered for sending templated email messages!");
         }
         return new DefaultEmailSenderProvider(simpleEmailSenderRegistries, templatedEmailSenderRegistries);
     }
@@ -45,7 +45,7 @@ class EmailConfiguration {
 
     @Bean
     EmailNotificationProcessor emailNotificationProcessor(final EmailNotificationService emailNotificationService,
-                                                          final EmailSenderProvider emailSenderProvider, final PersistenceUtilityService persistenceUtilityService){
-        return new EmailNotificationProcessorImpl(emailNotificationService,emailSenderProvider,persistenceUtilityService);
+                                                          final EmailSenderProvider emailSenderProvider, final PersistenceUtilityService persistenceUtilityService) {
+        return new EmailNotificationProcessorImpl(emailNotificationService, emailSenderProvider, persistenceUtilityService);
     }
 }

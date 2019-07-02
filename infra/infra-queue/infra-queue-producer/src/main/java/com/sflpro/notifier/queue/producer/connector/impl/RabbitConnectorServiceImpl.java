@@ -14,6 +14,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.util.Assert;
 
 import javax.annotation.Nonnull;
+import javax.annotation.PreDestroy;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -45,6 +46,11 @@ public class RabbitConnectorServiceImpl implements AmqpConnectorService {
 
         LOGGER.debug("Initializing AMQP connector service");
         this.executorService = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
+    }
+
+    @PreDestroy
+    private void destroy(){
+        this.executorService.shutdown();
     }
 
     @Override

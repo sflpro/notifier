@@ -19,8 +19,8 @@ public class NotifierServicesConfiguration {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
-    @Bean
-    public ExecutorService executorService(ExecutorBuilder executorBuilder) {
+    @Bean(destroyMethod = "shutdown")
+    public ExecutorService executorService(final ExecutorBuilder executorBuilder) {
         return executorBuilder.createExecutorService();
     }
 }

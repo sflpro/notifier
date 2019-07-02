@@ -75,8 +75,7 @@ public class MandrillApiCommunicatorTest extends AbstractEmailNotificationUnitTe
 
     @Test
     public void testSendEmailTemplateStatusRejected() throws IOException, MandrillApiError {
-        final String variableName = uuid();
-        final TemplatedEmailMessage templatedEmailMessage = TemplatedEmailMessage.of(uuid(), uuid(), uuid(), Collections.singletonMap(variableName, uuid()));
+        final TemplatedEmailMessage templatedEmailMessage = TemplatedEmailMessage.of(uuid(), uuid(), uuid(), Collections.singletonMap(uuid(), uuid()));
         when(mandrillMessageStatus.getStatus()).thenReturn("rejected");
         when(mandrillMessageStatus.getRejectReason()).thenReturn("Something went wrong.");
         when(mandrillMessagesApi.sendTemplate(
@@ -99,7 +98,6 @@ public class MandrillApiCommunicatorTest extends AbstractEmailNotificationUnitTe
 
     @Test
     public void testSendEmailTemplateStatusInvalid() throws IOException, MandrillApiError {
-        final String variableName = uuid();
         final TemplatedEmailMessage templatedEmailMessage = TemplatedEmailMessage.of(uuid(), uuid(), uuid(), Collections.singletonMap(uuid(), uuid()));
         when(mandrillMessageStatus.getStatus()).thenReturn("invalid");
         when(mandrillMessagesApi.sendTemplate(
@@ -212,7 +210,7 @@ public class MandrillApiCommunicatorTest extends AbstractEmailNotificationUnitTe
                     .anyMatch(message.to()::equals)
             ).isTrue();
             return new MandrillMessageStatus[]{mandrillMessageStatus};
-        });;
+        });
         when(mandrillMessageStatus.getStatus()).thenReturn(uuid());
         mandrillApiCommunicator.sendEmail(message);
         verify(mandrillMessageStatus).getStatus();

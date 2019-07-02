@@ -6,6 +6,7 @@ import freemarker.template.Configuration;
 import freemarker.template.TemplateExceptionHandler;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
 
@@ -17,12 +18,19 @@ import static java.lang.String.format;
 @Component
 public class TemplatingConfigurationImpl implements TemplatingConfiguration {
 
-    @Value("${notifier.templates.path}")
+
     private String templatesPath = "/";
-    @Value("${notifier.templates.extension:.ftl}")
     private String templateExtension = ".ftl";
 
-    private ResourceLoader resourceLoader = new DefaultResourceLoader();
+    private final ResourceLoader resourceLoader = new DefaultResourceLoader();
+
+    TemplatingConfigurationImpl(
+            @Value("${notifier.templates.path}") final String templatesPath,
+            @Value("${notifier.templates.extension:.ftl}") final String templateExtension) {
+        this.templatesPath = templatesPath;
+        this.templateExtension = templateExtension;
+    }
+
 
     public Configuration getFreemarkerConfiguration(final boolean localizedLookupEnabled) {
         final freemarker.template.Configuration cfg = new freemarker.template.Configuration(freemarker.template.Configuration.VERSION_2_3_28);
@@ -30,11 +38,8 @@ public class TemplatingConfigurationImpl implements TemplatingConfiguration {
             @Override
             protected URL getURL(final String resourceName) {
                 try {
-                    if (!resourceName.endsWith(templateExtension)) {
-                        return resourceLoader.getResource(templatesPath + "/" + resourceName +templateExtension).getURL();
-                    }else{
-                        return resourceLoader.getResource(templatesPath + "/" + resourceName).getURL();
-                    }
+                    final Resource resource = getResource(resourceName);
+                    return resource.exists() ? resource.getURL() : null;
                 } catch (final IOException ex) {
                     throw new TemplateLookupFailedException(resourceName, templatesPath, ex);
                 }
@@ -46,6 +51,14 @@ public class TemplatingConfigurationImpl implements TemplatingConfiguration {
         cfg.setLogTemplateExceptions(false);
         cfg.setWrapUncheckedExceptions(true);
         return cfg;
+    }
+
+    private Resource getResource(final String resourceName) throws IOException {
+        if (!resourceName.endsWith(templateExtension)) {
+            return resourceLoader.getResource(templatesPath + "/" + resourceName + templateExtension);
+        } else {
+            return resourceLoader.getResource(templatesPath + "/" + resourceName);
+        }
     }
 
 

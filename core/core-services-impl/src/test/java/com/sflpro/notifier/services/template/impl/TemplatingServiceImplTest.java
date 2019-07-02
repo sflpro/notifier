@@ -21,6 +21,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -41,7 +42,13 @@ public class TemplatingServiceImplTest extends AbstractServicesUnitTest {
     private Configuration freemarkerConfiguration;
 
     @Mock
+    private Configuration localizedLookupSupportedConfiguration;
+
+    @Mock
     private Template template;
+
+    @Mock
+    private Template localizedLookupSupportedTemplate;
 
     @Before
     public void init() {
@@ -90,7 +97,8 @@ public class TemplatingServiceImplTest extends AbstractServicesUnitTest {
         resetAll();
         // Expectations
         expect(templatingConfiguration.getFreemarkerConfiguration(false)).andReturn(freemarkerConfiguration);
-        expect(freemarkerConfiguration.getTemplate(templateName, null, StandardCharsets.UTF_8.name(), true, true)).andThrow(cause).once();
+        expect(freemarkerConfiguration.getTemplate(templateName, null, StandardCharsets.UTF_8.name(), true, true))
+                .andThrow(cause).once();
         // Replay
         replayAll();
         // Run test scenario
@@ -114,7 +122,8 @@ public class TemplatingServiceImplTest extends AbstractServicesUnitTest {
         resetAll();
         // Expectations
         expect(templatingConfiguration.getFreemarkerConfiguration(false)).andReturn(freemarkerConfiguration);
-        expect(freemarkerConfiguration.getTemplate(templateName, null, StandardCharsets.UTF_8.name(), true, true)).andReturn(template).once();
+        expect(freemarkerConfiguration.getTemplate(templateName, null, StandardCharsets.UTF_8.name(), true, true))
+                .andReturn(template).once();
         template.process(eq(parameters), isA(StringWriter.class));
         expectLastCall().andThrow(cause).once();
         // Replay
@@ -140,7 +149,8 @@ public class TemplatingServiceImplTest extends AbstractServicesUnitTest {
         resetAll();
         // Expectations
         expect(templatingConfiguration.getFreemarkerConfiguration(false)).andReturn(freemarkerConfiguration);
-        expect(freemarkerConfiguration.getTemplate(templateName, null, StandardCharsets.UTF_8.name(), true, true)).andReturn(template).once();
+        expect(freemarkerConfiguration.getTemplate(templateName, null, StandardCharsets.UTF_8.name(), true, true))
+                .andReturn(template).once();
         template.process(eq(parameters), isA(StringWriter.class));
         expectLastCall().andAnswer(() -> {
             StringWriter writer = (StringWriter) getCurrentArguments()[1];
@@ -157,6 +167,48 @@ public class TemplatingServiceImplTest extends AbstractServicesUnitTest {
     }
 
     @Test
+    public void testGetContentForTemplateIgnoringLocaleMissingTemplate() throws IOException {
+        // Test data
+        final String templateName = UUID.randomUUID().toString();
+        final Map<String, String> parameters = Collections.emptyMap();
+        final String expectedContent = UUID.randomUUID().toString();
+        // Reset
+        resetAll();
+        // Expectations
+        expect(templatingConfiguration.getFreemarkerConfiguration(false)).andReturn(freemarkerConfiguration);
+        expect(freemarkerConfiguration.getTemplate(templateName, null, StandardCharsets.UTF_8.name(), true, true))
+                .andReturn(null).once();
+        // Replay
+        replayAll();
+        // Run test scenario
+        assertThatThrownBy(() -> templatingService.getContentForTemplate(templateName, parameters))
+                .isInstanceOf(IllegalArgumentException.class);
+        // Verify
+        verifyAll();
+    }
+
+    @Test
+    public void testGetContentForTemplateProvidingLocaleMissingTemplate() throws TemplateException, IOException {
+        // Test data
+        final String templateName = UUID.randomUUID().toString();
+        final Map<String, String> parameters = Collections.emptyMap();
+        final String expectedContent = UUID.randomUUID().toString();
+        // Reset
+        resetAll();
+        // Expectations
+        expect(templatingConfiguration.getFreemarkerConfiguration(true)).andReturn(localizedLookupSupportedConfiguration);
+        expect(localizedLookupSupportedConfiguration.getTemplate(templateName, Locale.getDefault(), StandardCharsets.UTF_8.name(), true, true))
+                .andReturn(null).once();
+        // Replay
+        replayAll();
+        // Run test scenario
+        assertThatThrownBy(() -> templatingService.getContentForTemplate(templateName, parameters, Locale.getDefault()))
+                .isInstanceOf(IllegalArgumentException.class);
+        // Verify
+        verifyAll();
+    }
+
+    @Test
     public void testGetContentForTemplateProvidingLocale() throws TemplateException, IOException {
         // Test data
         final String templateName = UUID.randomUUID().toString();
@@ -165,9 +217,10 @@ public class TemplatingServiceImplTest extends AbstractServicesUnitTest {
         // Reset
         resetAll();
         // Expectations
-        expect(templatingConfiguration.getFreemarkerConfiguration(true)).andReturn(freemarkerConfiguration);
-        expect(freemarkerConfiguration.getTemplate(templateName, Locale.getDefault(), StandardCharsets.UTF_8.name(), true, true)).andReturn(template).once();
-        template.process(eq(parameters), isA(StringWriter.class));
+        expect(templatingConfiguration.getFreemarkerConfiguration(true)).andReturn(localizedLookupSupportedConfiguration);
+        expect(localizedLookupSupportedConfiguration.getTemplate(templateName, Locale.getDefault(), StandardCharsets.UTF_8.name(), true, true))
+                .andReturn(localizedLookupSupportedTemplate).once();
+        localizedLookupSupportedTemplate.process(eq(parameters), isA(StringWriter.class));
         expectLastCall().andAnswer(() -> {
             StringWriter writer = (StringWriter) getCurrentArguments()[1];
             writer.write(expectedContent);
@@ -176,7 +229,7 @@ public class TemplatingServiceImplTest extends AbstractServicesUnitTest {
         // Replay
         replayAll();
         // Run test scenario
-        final String content = templatingService.getContentForTemplate(templateName, parameters,Locale.getDefault());
+        final String content = templatingService.getContentForTemplate(templateName, parameters, Locale.getDefault());
         assertEquals(expectedContent, content);
         // Verify
         verifyAll();

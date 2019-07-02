@@ -134,7 +134,7 @@ public class MandrillApiCommunicatorImpl implements MandrillApiCommunicator {
                             recipientEmail);
                     throw new MandrillMessageInvalidException(mandrillMessageStatus);
                 default:
-                    LOGGER.info("Email '{}' was sent successfully to '{}' with '{}' reference number.", templateId,
+                    LOGGER.info("Email '{}' was sent successfully to '{}' with '{}' reference number.",recipientEmail, templateId,
                             mandrillMessageStatus.getEmail(), mandrillMessageStatus.getId());
                     break;
             }

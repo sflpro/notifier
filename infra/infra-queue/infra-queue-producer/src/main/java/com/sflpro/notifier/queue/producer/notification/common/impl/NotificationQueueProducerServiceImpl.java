@@ -63,7 +63,7 @@ class NotificationQueueProducerServiceImpl implements NotificationQueueProducerS
     private class StartSendingNotificationEventListener extends StartSendingNotificationEventListenerAdapter {
 
         /* Constructors */
-        public StartSendingNotificationEventListener() {
+        StartSendingNotificationEventListener() {
             super();
         }
 
@@ -87,7 +87,6 @@ class NotificationQueueProducerServiceImpl implements NotificationQueueProducerS
         public void handleResponse(@Nonnull final NotificationRPCTransferModel responseModel) {
             stopWatch.stop();
             LOGGER.debug("Finalized sending notification, response model - {}, duration - {}", responseModel, stopWatch.getTime());
-
         }
     }
 }

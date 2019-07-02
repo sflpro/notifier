@@ -15,6 +15,7 @@ import org.springframework.util.Assert;
 
 import javax.annotation.Nonnull;
 import javax.annotation.PreDestroy;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -49,7 +50,7 @@ public class RabbitConnectorServiceImpl implements AmqpConnectorService {
     }
 
     @PreDestroy
-    private void destroy(){
+    private void destroy() {
         this.executorService.shutdown();
     }
 
@@ -93,8 +94,12 @@ public class RabbitConnectorServiceImpl implements AmqpConnectorService {
                 rpcMessage.setPayload(objectMapper.writeValueAsString(requestModel));
                 // Serialize into JSON
                 final String jsonMessage = objectMapper.writeValueAsString(rpcMessage);
-                final Message amqpMessage = new Message(jsonMessage.getBytes("UTF8"), new MessageProperties());
+                final Message amqpMessage = new Message(jsonMessage.getBytes(StandardCharsets.UTF_8), new MessageProperties());
                 final Message responseMessage = rabbitTemplate.sendAndReceive(amqpMessage);
+                if (responseMessage == null) {
+                    LOGGER.warn("Seems nobody consumes the messages from queue '{}'.", callType.getCallIdentifier());
+                    return;
+                }
                 final T responseModel = objectMapper.readValue(responseMessage.getBody(), responseModelClass);
                 LOGGER.debug("Got AMQP response model - {} for request model - {}", responseModel, requestModel);
                 // Handle callback

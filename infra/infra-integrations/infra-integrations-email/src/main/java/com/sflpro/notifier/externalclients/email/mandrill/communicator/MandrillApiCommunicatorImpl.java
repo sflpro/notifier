@@ -66,7 +66,7 @@ public class MandrillApiCommunicatorImpl implements MandrillApiCommunicator {
         if (message.variables() != null) {
             mergeBucket.setRcpt(message.to());
             final MandrillMessage.MergeVar[] mergeValues = message.variables().entrySet().stream()
-                    .map(mapEntry -> new MandrillMessage.MergeVar(mapEntry.getKey().toUpperCase(), mapEntry.getValue()))
+                    .map(mapEntry -> new MandrillMessage.MergeVar(mapEntry.getKey(), mapEntry.getValue()))
                     .toArray(MandrillMessage.MergeVar[]::new);
             mergeBucket.setVars(mergeValues);
         }

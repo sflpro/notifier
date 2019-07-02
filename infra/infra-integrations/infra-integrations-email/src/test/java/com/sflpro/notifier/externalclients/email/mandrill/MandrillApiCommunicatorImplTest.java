@@ -32,7 +32,7 @@ import static org.mockito.Mockito.when;
  * Date: 7/1/19
  * Time: 12:31 PM
  */
-public class MandrillApiCommunicatorTest extends AbstractEmailNotificationUnitTest {
+public class MandrillApiCommunicatorImplTest extends AbstractEmailNotificationUnitTest {
 
     private MandrillApiCommunicator mandrillApiCommunicator;
 
@@ -144,7 +144,7 @@ public class MandrillApiCommunicatorTest extends AbstractEmailNotificationUnitTe
                     .map(MandrillMessage.MergeVarBucket::getVars)
                     .flatMap(Arrays::stream)
                     .collect(Collectors.toMap(MandrillMessage.MergeVar::getName, MandrillMessage.MergeVar::getContent))
-                    .get(variableName.toUpperCase())
+                    .get(variableName)
             ).isEqualTo(templatedEmailMessage.variables().get(variableName));
             return new MandrillMessageStatus[]{mandrillMessageStatus};
         });

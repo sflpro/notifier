@@ -1,7 +1,6 @@
-package com.sflpro.notifier.externalclients.email.mandrill;
+package com.sflpro.notifier.externalclients.email.mandrill.communicator;
 
 import com.microtripit.mandrillapp.lutung.model.MandrillApiError;
-import com.sflpro.notifier.externalclients.email.mandrill.communicator.MandrillApiCommunicator;
 import com.sflpro.notifier.externalclients.email.mandrill.exception.MandrillEmailClientRuntimeException;
 import com.sflpro.notifier.externalclients.email.test.AbstractEmailNotificationIntegrationTest;
 import com.sflpro.notifier.spi.email.TemplatedEmailMessage;

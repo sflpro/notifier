@@ -16,7 +16,7 @@ import java.util.Properties;
  */
 class DefaultPermissionNameResolver implements PermissionNameResolver {
 
-    private final static Logger logger = LoggerFactory.getLogger(DefaultNotificationCreationPermissionChecker.class);
+    private static final Logger logger = LoggerFactory.getLogger(DefaultPermissionNameResolver.class);
 
     private static final String NON_TEMPLATED_NOTIFICATION_CREATION_PERMISSION_KEY = "nontemplated";
 

@@ -1,7 +1,6 @@
 package com.sflpro.notifier.api.facade.security;
 
 
-import com.sflpro.notifier.api.model.notification.request.AbstractCreateNotificationRequest;
 import io.vavr.control.Try;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
@@ -22,7 +21,7 @@ class DefaultPermissionChecker implements PermissionChecker {
     }
 
     @Override
-    public <R extends AbstractCreateNotificationRequest> boolean isPermitted(final String permission, final String accessToken) {
+    public boolean isPermitted(final String permission, final String accessToken) {
         Assert.hasText(permission, "Null or empty text was passed as an argument for parameter 'permission'.");
         Assert.hasText(accessToken, "Null or empty text was passed as an argument for parameter 'accessToken'.");
         return Try.ofSupplier(() ->

@@ -74,7 +74,6 @@ public class EmailNotificationDto extends NotificationDto<EmailNotification> {
         notification.setRecipientEmail(getRecipientEmail());
         notification.setSenderEmail(getSenderEmail());
         notification.setTemplateName(getTemplateName());
-        notification.setHasSecureProperties(!getProperties().isEmpty());
     }
 
     /* Equals, HashCode and ToString */

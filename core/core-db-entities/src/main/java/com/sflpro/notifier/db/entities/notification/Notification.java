@@ -21,6 +21,7 @@ import java.util.List;
 @Table(name = "notification")
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
+@Access(AccessType.FIELD)
 public abstract class Notification extends AbstractDomainUuIdAwareEntityModel {
     private static final long serialVersionUID = -3642971556967427525L;
 

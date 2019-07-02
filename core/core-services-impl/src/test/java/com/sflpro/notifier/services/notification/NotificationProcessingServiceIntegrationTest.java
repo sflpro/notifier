@@ -46,7 +46,7 @@ public class NotificationProcessingServiceIntegrationTest extends AbstractServic
         final PushNotificationRecipient recipient = getServicesTestHelper().createPushNotificationRecipientForIOSDeviceAndRegisterWithAmazonSns(user, iOSDeviceToken);
         flushAndClear();
         // Create push notification
-        Notification notification = getServicesTestHelper().createPushNotification(recipient, getServicesTestHelper().createPushNotificationDto(), getServicesTestHelper().createPushNotificationPropertyDTOs(10));
+        Notification notification = getServicesTestHelper().createPushNotification(recipient, getServicesTestHelper().createPushNotificationDto());
         assertEquals(NotificationState.CREATED, notification.getState());
         // Process push notification
         notificationProcessingService.processNotification(notification.getId(), Collections.emptyMap());

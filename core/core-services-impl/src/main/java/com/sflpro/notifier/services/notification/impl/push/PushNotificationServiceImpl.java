@@ -9,7 +9,6 @@ import com.sflpro.notifier.db.entities.user.User;
 import com.sflpro.notifier.db.repositories.repositories.notification.AbstractNotificationRepository;
 import com.sflpro.notifier.db.repositories.repositories.notification.push.PushNotificationRepository;
 import com.sflpro.notifier.services.notification.UserNotificationService;
-import com.sflpro.notifier.services.notification.dto.NotificationPropertyDto;
 import com.sflpro.notifier.services.notification.dto.UserNotificationDto;
 import com.sflpro.notifier.services.notification.dto.push.PushNotificationDto;
 import com.sflpro.notifier.services.notification.impl.AbstractNotificationServiceImpl;
@@ -108,9 +107,6 @@ public class PushNotificationServiceImpl extends AbstractNotificationServiceImpl
     }
 
     /* Utility methods */
-    private void assertPushNotificationProperties(final List<NotificationPropertyDto> pushNotificationPropertyDTOs) {
-        Assert.notNull(pushNotificationPropertyDTOs, "Push notification properties should not be null");
-    }
 
     private List<PushNotification> createPushNotificationsForRecipients(final List<PushNotificationRecipient> recipients, final User user, final PushNotificationDto pushNotificationDto) {
         // Create push notification recipients
@@ -137,12 +133,6 @@ public class PushNotificationServiceImpl extends AbstractNotificationServiceImpl
 
     private void assertPushNotificationDto(final PushNotificationDto pushNotificationDto) {
         assertNotificationDto(pushNotificationDto);
-    }
-
-    private void assertPushNotificationPropertyDto(final NotificationPropertyDto propertyDto) {
-        Assert.notNull(propertyDto, "Push notification property DTO should not be null");
-        Assert.notNull(propertyDto.getPropertyKey(), "Property key in push notification property DTO should not be null");
-        Assert.notNull(propertyDto.getPropertyValue(), "Property key in push notification property DTO should not be null");
     }
 
     @Override

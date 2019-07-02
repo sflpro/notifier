@@ -127,6 +127,8 @@ public class MandrillApiCommunicatorImplTest extends AbstractEmailNotificationUn
                 Collections.singletonMap(variableName, uuid())
         );
         when(mandrillMessageStatus.getStatus()).thenReturn(uuid());
+        when(mandrillMessageStatus.getEmail()).thenReturn(templatedEmailMessage.to());
+        when(mandrillMessageStatus.getId()).thenReturn(uuid());
         when(mandrillMessagesApi.sendTemplate(
                 eq(templatedEmailMessage.templateId()),
                 isNull(),
@@ -150,6 +152,8 @@ public class MandrillApiCommunicatorImplTest extends AbstractEmailNotificationUn
         });
         mandrillApiCommunicator.sendEmailTemplate(templatedEmailMessage);
         verify(mandrillMessageStatus).getStatus();
+        verify(mandrillMessageStatus).getEmail();
+        verify(mandrillMessageStatus).getId();
         verify(mandrillMessagesApi).sendTemplate(
                 eq(templatedEmailMessage.templateId()),
                 isNull(),
@@ -212,8 +216,12 @@ public class MandrillApiCommunicatorImplTest extends AbstractEmailNotificationUn
             return new MandrillMessageStatus[]{mandrillMessageStatus};
         });
         when(mandrillMessageStatus.getStatus()).thenReturn(uuid());
+        when(mandrillMessageStatus.getEmail()).thenReturn(message.to());
+        when(mandrillMessageStatus.getId()).thenReturn(uuid());
         mandrillApiCommunicator.sendEmail(message);
         verify(mandrillMessageStatus).getStatus();
+        verify(mandrillMessageStatus).getEmail();
+        verify(mandrillMessageStatus).getId();
         verify(mandrillMessagesApi).send(
                 isA(MandrillMessage.class),
                 eq(Boolean.FALSE)

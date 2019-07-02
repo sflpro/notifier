@@ -14,7 +14,7 @@ import java.util.UUID;
  */
 @Ignore
 @RunWith(MockitoJUnitRunner.class)
-public class AbstractEmailNotificationUnitTest {
+public abstract class AbstractEmailNotificationUnitTest {
 
 
     public static String uuid(){

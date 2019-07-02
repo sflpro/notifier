@@ -63,6 +63,7 @@ class SmsNotificationServiceFacadeImpl extends AbstractNotificationServiceFacade
         final SmsNotificationDto smsNotificationDto = new SmsNotificationDto(request.getRecipientNumber(), request.getBody(), request.getClientIpAddress(), providerType);
         smsNotificationDto.setTemplateName(request.getTemplateName());
         smsNotificationDto.setProperties(request.getProperties());
+        smsNotificationDto.setHasSecureProperties(!request.getSecureProperties().isEmpty());
         final SmsNotification smsNotification = smsNotificationService.createSmsNotification(smsNotificationDto);
         associateUserWithNotificationIfRequired(request.getUserUuId(), smsNotification);
         // Publish event

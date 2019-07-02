@@ -61,6 +61,7 @@ class EmailNotificationServiceFacadeImpl implements EmailNotificationServiceFaca
         emailNotificationDto.setTemplateName(request.getTemplateName());
         emailNotificationDto.setProperties(request.getProperties());
         emailNotificationDto.setUserUuid(request.getUserUuId());
+        emailNotificationDto.setHasSecureProperties(!request.getSecureProperties().isEmpty());
         return emailNotificationDto;
     }
 

@@ -338,10 +338,10 @@ public class ServicesTestHelper {
     }
 
     public PushNotification createPushNotification() {
-        return createPushNotification(createPushNotificationSnsRecipient(), createPushNotificationDto(), createPushNotificationPropertyDTOs(PUSH_NOTIFICATION_PROPERTIES_COUNT));
+        return createPushNotification(createPushNotificationSnsRecipient(), createPushNotificationDto());
     }
 
-    public PushNotification createPushNotification(final PushNotificationRecipient recipient, final PushNotificationDto notificationDto, final List<NotificationPropertyDto> pushNotificationPropertyDTos) {
+    public PushNotification createPushNotification(final PushNotificationRecipient recipient, final PushNotificationDto notificationDto) {
         return pushNotificationService.createNotification(recipient.getId(), notificationDto);
     }
 

@@ -38,6 +38,8 @@ public abstract class NotificationDto<T extends Notification> extends AbstractDo
 
     private NotificationProviderType providerType;
 
+    private boolean hasSecureProperties;
+
     /* Constructors */
     public NotificationDto(final NotificationType type,
                            final String content,
@@ -52,7 +54,7 @@ public abstract class NotificationDto<T extends Notification> extends AbstractDo
         this.properties = new HashMap<>();
     }
 
-    public NotificationDto(final NotificationType type, final String content, final String subject, final String clientIpAddress,  final String templateName,final NotificationProviderType providerType) {
+    public NotificationDto(final NotificationType type, final String content, final String subject, final String clientIpAddress, final String templateName, final NotificationProviderType providerType) {
         this.type = type;
         this.content = content;
         this.subject = subject;
@@ -120,6 +122,14 @@ public abstract class NotificationDto<T extends Notification> extends AbstractDo
         this.providerType = providerType;
     }
 
+    public boolean isHasSecureProperties() {
+        return hasSecureProperties;
+    }
+
+    public void setHasSecureProperties(final boolean hasSecureProperties) {
+        this.hasSecureProperties = hasSecureProperties;
+    }
+
     /* Public interface methods */
     @Override
     public void updateDomainEntityProperties(final T notification) {
@@ -132,6 +142,7 @@ public abstract class NotificationDto<T extends Notification> extends AbstractDo
                 .stream()
                 .map(entry -> new NotificationProperty(entry.getKey(), entry.getValue()))
                 .collect(Collectors.toList()));
+        notification.setHasSecureProperties(isHasSecureProperties());
     }
 
     /* Equals, HashCode and ToString */
@@ -152,6 +163,7 @@ public abstract class NotificationDto<T extends Notification> extends AbstractDo
         builder.append(this.getSubject(), that.getSubject());
         builder.append(this.getProperties(), that.getProperties());
         builder.append(this.getProviderType(), that.getProviderType());
+        builder.append(this.isHasSecureProperties(), that.isHasSecureProperties());
         return builder.isEquals();
     }
 
@@ -165,6 +177,7 @@ public abstract class NotificationDto<T extends Notification> extends AbstractDo
         builder.append(this.getSubject());
         builder.append(this.getProperties());
         builder.append(this.getProviderType());
+        builder.append(this.isHasSecureProperties());
         return builder.build();
     }
 
@@ -179,6 +192,7 @@ public abstract class NotificationDto<T extends Notification> extends AbstractDo
         builder.append("subject", this.getSubject());
         builder.append("properties", this.getProperties());
         builder.append("providerType", this.getProviderType());
+        builder.append("hasSecureProperties",this.isHasSecureProperties());
         return builder.build();
     }
 }

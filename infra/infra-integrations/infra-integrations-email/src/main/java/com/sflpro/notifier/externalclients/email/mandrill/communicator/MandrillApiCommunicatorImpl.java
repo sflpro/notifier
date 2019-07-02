@@ -114,9 +114,9 @@ public class MandrillApiCommunicatorImpl implements MandrillApiCommunicator {
             final MandrillMessageStatus[] mandrillMessageStatuses = mandrillMessagesApi.send(mandrillMessage, false);
             // Handle response
             handleResult(mandrillMessageStatuses, null, message.to());
-        } catch (final MandrillApiError | IOException e) {
-            LOGGER.error("Error occurred while sending sms message", e);
-            throw new MandrillEmailClientRuntimeException("MandrillApiError", e);
+        } catch (final MandrillApiError | IOException ex) {
+            LOGGER.error("Error occurred while sending sms message.");
+            throw new MandrillEmailClientRuntimeException("MandrillApiError", ex);
         }
     }
 

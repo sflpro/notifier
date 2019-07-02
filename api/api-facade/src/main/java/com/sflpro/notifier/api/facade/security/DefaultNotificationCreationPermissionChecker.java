@@ -18,7 +18,7 @@ import java.util.Optional;
  */
 class DefaultNotificationCreationPermissionChecker implements NotificationCreationPermissionChecker {
 
-    private final static Logger logger = LoggerFactory.getLogger(DefaultNotificationCreationPermissionChecker.class);
+    private static final Logger logger = LoggerFactory.getLogger(DefaultNotificationCreationPermissionChecker.class);
 
     private final PermissionChecker permissionChecker;
     private final PermissionNameResolver permissionNameResolver;

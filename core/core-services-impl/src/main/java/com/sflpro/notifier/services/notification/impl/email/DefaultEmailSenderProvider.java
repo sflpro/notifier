@@ -5,6 +5,7 @@ import com.sflpro.notifier.spi.email.SimpleEmailSender;
 import com.sflpro.notifier.spi.email.SimpleEmailSenderRegistry;
 import com.sflpro.notifier.spi.email.TemplatedEmailSender;
 import com.sflpro.notifier.spi.email.TemplatedEmailSenderRegistry;
+import org.springframework.util.Assert;
 
 import java.util.List;
 import java.util.Map;
@@ -32,11 +33,17 @@ class DefaultEmailSenderProvider implements EmailSenderProvider {
 
     @Override
     public Optional<SimpleEmailSender> lookupSimpleEmailSenderFor(final String providerType) {
+        assertValidProviderTypeArgument(providerType);
         return Optional.ofNullable(registeredSimpleEmailSenders.get(providerType));
     }
 
     @Override
     public Optional<TemplatedEmailSender> lookupTemplatedEmailSenderFor(final String providerType) {
+        assertValidProviderTypeArgument(providerType);
         return Optional.ofNullable(registeredTemplatedEmailSenders.get(providerType));
+    }
+
+    private static void assertValidProviderTypeArgument(final String providerType) {
+        Assert.hasText(providerType, "Null or empty text was passed as ana rgument for parameter 'providerType'.");
     }
 }

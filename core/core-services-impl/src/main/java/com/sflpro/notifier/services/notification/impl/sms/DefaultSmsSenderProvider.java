@@ -38,13 +38,18 @@ class DefaultSmsSenderProvider implements SmsSenderProvider {
 
     @Override
     public Optional<SimpleSmsSender> lookupSimpleSmsMessageSenderFor(final String providerType) {
-        Assert.hasText(providerType, "Null or empty text was passed as an argument for parameter 'providerType'.");
+        assertValidProviderTypeArgument(providerType);
         return Optional.ofNullable(registeredSimpleSmsSenders.get(providerType));
     }
 
     @Override
     public Optional<TemplatedSmsSender> lookupTemplatedSmsMessageSenderFor(final String providerType) {
-        Assert.hasText(providerType, "Null or empty text was passed as an argument for parameter 'providerType'.");
+        assertValidProviderTypeArgument(providerType);
         return Optional.ofNullable(registeredTemplatedSmsSender.get(providerType));
     }
+
+    private static void assertValidProviderTypeArgument(final String providerType) {
+        Assert.hasText(providerType, "Null or empty text was passed as an argument for parameter 'providerType'.");
+    }
+
 }

@@ -297,10 +297,6 @@ public class MandrillApiCommunicatorTest extends AbstractEmailNotificationUnitTe
             return new InvalidTemplatedEmailMessage(uuid(), uuid(), null);
         }
 
-        static TemplatedEmailMessage withoutVariables() {
-            return new InvalidTemplatedEmailMessage(uuid(), uuid(), null);
-        }
-
         @Override
         public Map<String, ?> variables() {
             return Collections.emptyMap();

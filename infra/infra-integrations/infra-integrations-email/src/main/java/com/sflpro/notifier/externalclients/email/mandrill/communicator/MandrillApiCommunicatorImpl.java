@@ -111,7 +111,7 @@ public class MandrillApiCommunicatorImpl implements MandrillApiCommunicator {
         try {
             LOGGER.debug("Performing send email request with parameters - {}", message);
             // Execute request
-            final MandrillMessageStatus[] mandrillMessageStatuses = mandrillMessagesApi.send(mandrillMessage,false);
+            final MandrillMessageStatus[] mandrillMessageStatuses = mandrillMessagesApi.send(mandrillMessage, false);
             // Handle response
             handleResult(mandrillMessageStatuses, null, message.to());
         } catch (final MandrillApiError | IOException e) {
@@ -134,8 +134,8 @@ public class MandrillApiCommunicatorImpl implements MandrillApiCommunicator {
                             recipientEmail);
                     throw new MandrillMessageInvalidException(mandrillMessageStatus);
                 default:
-                    LOGGER.info("Email '{}' was sent successfully to '{}' with '{}' reference number.",recipientEmail, templateId,
-                            mandrillMessageStatus.getEmail(), mandrillMessageStatus.getId());
+                    LOGGER.info("Email '{}' was sent successfully to '{}' with '{}' reference number.", mandrillMessageStatus.getEmail(), templateId,
+                            mandrillMessageStatus.getId());
                     break;
             }
         }

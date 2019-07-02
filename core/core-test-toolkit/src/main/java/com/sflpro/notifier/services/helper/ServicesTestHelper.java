@@ -71,8 +71,6 @@ public class ServicesTestHelper {
 
     private static final String MOBILE_NUMBER = "+37455000000";
 
-    private static final int PUSH_NOTIFICATION_PROPERTIES_COUNT = 10;
-
     public static final String APPLICATION_TYPE = "customer";
 
     /* Dependencies */

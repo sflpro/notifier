@@ -58,7 +58,7 @@ public class PushNotificationSnsRecipientServiceImpl extends AbstractPushNotific
     }
 
     /* Utility methods */
-    protected void assertPushNotificationSnsRecipientDto(final PushNotificationSnsRecipientDto recipientDto) {
+    private void assertPushNotificationSnsRecipientDto(final PushNotificationSnsRecipientDto recipientDto) {
         assertPushNotificationRecipientDto(recipientDto);
         Assert.notNull(recipientDto.getPlatformApplicationArn(), "Platform application ARN should not be null in SNS recipient DTO");
     }

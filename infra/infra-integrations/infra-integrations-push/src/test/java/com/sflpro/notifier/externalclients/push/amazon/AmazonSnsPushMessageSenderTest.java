@@ -25,7 +25,7 @@ import static org.mockito.Mockito.when;
  * Date: 7/3/19
  * Time: 2:29 PM
  */
-public class AmazonPushMessageSenderTest extends AbstractPushNotificationUnitTest {
+public class AmazonSnsPushMessageSenderTest extends AbstractPushNotificationUnitTest {
 
     private PushMessageSender pushMessageSender;
 
@@ -34,7 +34,7 @@ public class AmazonPushMessageSenderTest extends AbstractPushNotificationUnitTes
 
     @Before
     public void prepare() {
-        pushMessageSender = new AmazonPushMessageSender(amazonSnsApiCommunicator);
+        pushMessageSender = new AmazonSnsPushMessageSender(amazonSnsApiCommunicator);
     }
 
     @Test

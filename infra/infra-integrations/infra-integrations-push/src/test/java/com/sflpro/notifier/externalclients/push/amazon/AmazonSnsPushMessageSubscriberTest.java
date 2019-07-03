@@ -19,7 +19,7 @@ import static org.mockito.Mockito.when;
  * Date: 7/3/19
  * Time: 3:44 PM
  */
-public class AmazonPushMessageSubscriberTest extends AbstractPushNotificationUnitTest {
+public class AmazonSnsPushMessageSubscriberTest extends AbstractPushNotificationUnitTest {
 
     private PushMessageSubscriber messageSubscriber;
 
@@ -28,7 +28,7 @@ public class AmazonPushMessageSubscriberTest extends AbstractPushNotificationUni
 
     @Before
     public void prepare() {
-        messageSubscriber = new AmazonPushMessageSubscriber(
+        messageSubscriber = new AmazonSnsPushMessageSubscriber(
                 amazonSnsApiCommunicator
         );
     }

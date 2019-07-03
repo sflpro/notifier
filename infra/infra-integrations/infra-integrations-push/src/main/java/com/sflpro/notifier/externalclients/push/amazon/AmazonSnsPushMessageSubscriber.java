@@ -17,13 +17,13 @@ import org.springframework.util.Assert;
  * Date: 7/3/19
  * Time: 11:09 AM
  */
-public class AmazonPushMessageSubscriber implements PushMessageSubscriber {
+public class AmazonSnsPushMessageSubscriber implements PushMessageSubscriber {
 
-    private static final Logger logger = LoggerFactory.getLogger(AmazonPushMessageSubscriber.class);
+    private static final Logger logger = LoggerFactory.getLogger(AmazonSnsPushMessageSubscriber.class);
 
     private final AmazonSnsApiCommunicator amazonSnsApiCommunicator;
 
-    AmazonPushMessageSubscriber(final AmazonSnsApiCommunicator amazonSnsApiCommunicator) {
+    AmazonSnsPushMessageSubscriber(final AmazonSnsApiCommunicator amazonSnsApiCommunicator) {
         this.amazonSnsApiCommunicator = amazonSnsApiCommunicator;
     }
 

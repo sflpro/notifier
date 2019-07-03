@@ -12,11 +12,11 @@ import org.springframework.util.Assert;
  * Date: 7/3/19
  * Time: 11:04 AM
  */
-public class AmazonPushMessageSender implements PushMessageSender {
+public class AmazonSnsPushMessageSender implements PushMessageSender {
 
     private final AmazonSnsApiCommunicator amazonSnsApiCommunicator;
 
-    AmazonPushMessageSender(final AmazonSnsApiCommunicator amazonSnsApiCommunicator) {
+    AmazonSnsPushMessageSender(final AmazonSnsApiCommunicator amazonSnsApiCommunicator) {
         this.amazonSnsApiCommunicator = amazonSnsApiCommunicator;
     }
 

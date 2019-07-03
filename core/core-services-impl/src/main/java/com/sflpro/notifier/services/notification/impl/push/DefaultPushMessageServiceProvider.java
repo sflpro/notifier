@@ -4,7 +4,6 @@ import com.sflpro.notifier.db.entities.notification.push.PushNotificationProvide
 import com.sflpro.notifier.spi.push.PushMessageSender;
 import com.sflpro.notifier.spi.push.PushMessageServiceRegistry;
 import com.sflpro.notifier.spi.push.PushMessageSubscriber;
-import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 import java.util.*;
@@ -16,27 +15,26 @@ import java.util.stream.Collectors;
  * Date: 7/3/19
  * Time: 4:00 PM
  */
-@Component
 class DefaultPushMessageServiceProvider implements PushMessageServiceProvider {
 
     private final Map<PushNotificationProviderType, PushMessageSender> pushMessageSenders;
     private final Map<PushNotificationProviderType, PushMessageSubscriber> pushMessageSubscribers;
 
-    @SuppressWarnings("unchecked")
+
     DefaultPushMessageServiceProvider(final List<PushMessageServiceRegistry> registries) {
         this.pushMessageSenders = Collections.unmodifiableMap(registries.stream()
                 .collect(Collectors.toMap(
                         DefaultPushMessageServiceProvider::providerType,
                         PushMessageServiceRegistry::sender,
                         takeLastFunction(),
-                        () -> new EnumMap(PushNotificationProviderType.class)))
+                        () -> new EnumMap<>(PushNotificationProviderType.class)))
         );
         this.pushMessageSubscribers = Collections.unmodifiableMap(registries.stream()
                 .collect(Collectors.toMap(
                         DefaultPushMessageServiceProvider::providerType,
                         PushMessageServiceRegistry::subscriber,
                         takeLastFunction(),
-                        () -> new EnumMap(PushNotificationProviderType.class)))
+                        () -> new EnumMap<>(PushNotificationProviderType.class)))
         );
     }
 

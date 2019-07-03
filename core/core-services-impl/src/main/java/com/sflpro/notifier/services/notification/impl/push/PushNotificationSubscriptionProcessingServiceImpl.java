@@ -83,12 +83,22 @@ public class PushNotificationSubscriptionProcessingServiceImpl implements PushNo
         // Retrieve push notification subscription for user
         final PushNotificationSubscription subscription = getOrCreateSubscriptionForUser(user);
         // Determine current token data to be used
-        final Pair<PushNotificationProviderType, String> currentTokenData = determineCurrentNotificationData(parameters.getCurrentPushNotificationProviderType(), parameters.getCurrentProviderToken(), activeProvider);
+        final Pair<PushNotificationProviderType, String> currentTokenData = determineCurrentNotificationData(
+                parameters.getCurrentPushNotificationProviderType(),
+                parameters.getCurrentProviderToken(),
+                activeProvider
+        );
         final String oldProviderToken = currentTokenData.getValue();
         // Get user device token processor for provider type
         final PushNotificationUserDeviceTokenProcessor deviceTokenProcessor = getPushNotificationUserDeviceTokenProcessorForProviderType(activeProvider);
         // Register user device token with provider
-        final String newlyRegisteredProviderToken = deviceTokenProcessor.registerUserDeviceToken(parameters.getDeviceToken(), operatingSystemType, applicationType, oldProviderToken,parameters.getCurrentPushNotificationProviderType());
+        final String newlyRegisteredProviderToken = deviceTokenProcessor.registerUserDeviceToken(
+                parameters.getDeviceToken(),
+                operatingSystemType,
+                applicationType,
+                oldProviderToken,
+                parameters.getCurrentPushNotificationProviderType()
+        );
         // Disable all push notification recipients with same token
         disableAllRecipientsWithProviderTokenExceptCurrentSubscriptionIfProvided(subscription, newlyRegisteredProviderToken, activeProvider, operatingSystemType, applicationType);
         // Enable or create push notification recipient

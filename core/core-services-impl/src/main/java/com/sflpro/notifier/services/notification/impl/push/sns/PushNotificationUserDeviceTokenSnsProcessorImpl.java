@@ -52,14 +52,15 @@ public class PushNotificationUserDeviceTokenSnsProcessorImpl implements PushNoti
             @Nonnull final DeviceOperatingSystemType operatingSystemType,
             @Nonnull final String applicationType,
             @Nullable final String currentProviderToken,
-            final PushNotificationProviderType providerType) {
+            @Nonnull final PushNotificationProviderType currentProviderType) {
         Assert.notNull(userDeviceToken, "User device token should not be null");
         Assert.notNull(operatingSystemType, "Operating system type should not be null");
         Assert.notNull(applicationType, "Push notification application type should not be null");
+        Assert.notNull(applicationType, "Push notification application type should not be null");
         LOGGER.debug("Registering user device token - {} , operating system type - {}", userDeviceToken, operatingSystemType);
         final String applicationArn = snsArnConfigurationService.getApplicationArnForMobilePlatform(operatingSystemType, applicationType);
-        final PushMessageSubscriber pushMessageSubscriber = pushMessageServiceProvider.lookupPushMessageSubscriber(providerType)
-                .orElseThrow(() -> new IllegalStateException(format("No subscriber was registered for type '%s'", providerType)));
+        final PushMessageSubscriber pushMessageSubscriber = pushMessageServiceProvider.lookupPushMessageSubscriber(currentProviderType)
+                .orElseThrow(() -> new IllegalStateException(format("No subscriber was registered for type '%s'", currentProviderType)));
         final String deviceEndpointArn = StringUtils.isEmpty(currentProviderToken) ? pushMessageSubscriber.registerDeviceEndpointArn(userDeviceToken, applicationArn) :
                 pushMessageSubscriber.refreshDeviceEndpointArn(currentProviderToken, userDeviceToken, applicationArn);
         LOGGER.debug("Successfully registered user device token - {}, result endpoint ARN is - {}, platform - {}", userDeviceToken, deviceEndpointArn, operatingSystemType);

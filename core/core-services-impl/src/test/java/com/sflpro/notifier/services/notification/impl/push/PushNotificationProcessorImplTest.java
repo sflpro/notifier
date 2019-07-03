@@ -3,7 +3,6 @@ package com.sflpro.notifier.services.notification.impl.push;
 import com.sflpro.notifier.db.entities.notification.NotificationState;
 import com.sflpro.notifier.db.entities.notification.push.PushNotification;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipient;
-import com.sflpro.notifier.db.repositories.utility.PersistenceUtilityService;
 import com.sflpro.notifier.services.notification.exception.NotificationInvalidStateException;
 import com.sflpro.notifier.services.notification.push.PushNotificationService;
 import com.sflpro.notifier.services.test.AbstractServicesUnitTest;
@@ -35,9 +34,6 @@ public class PushNotificationProcessorImplTest extends AbstractServicesUnitTest 
 
     @Mock
     private PushNotificationService pushNotificationService;
-
-    @Mock
-    private PersistenceUtilityService persistenceUtilityService;
 
     @Mock
     private PushMessageServiceProvider pushMessageServiceProvider;
@@ -116,12 +112,6 @@ public class PushNotificationProcessorImplTest extends AbstractServicesUnitTest 
         resetAll();
         // Expectations
         expect(pushNotificationService.getNotificationById(eq(notificationId))).andReturn(notification).once();
-        persistenceUtilityService.runInNewTransaction(isA(Runnable.class));
-        expectLastCall().andAnswer(() -> {
-            final Runnable runnable = (Runnable) getCurrentArguments()[0];
-            runnable.run();
-            return null;
-        }).anyTimes();
         expect(pushNotificationService.updateNotificationState(eq(notificationId), eq(NotificationState.PROCESSING))).andReturn(notification).once();
         expect(pushMessageServiceProvider.lookupPushMessageSender(notification.getRecipient().getType()))
                 .andReturn(Optional.of(pushMessageSender));
@@ -152,12 +142,6 @@ public class PushNotificationProcessorImplTest extends AbstractServicesUnitTest 
         resetAll();
         // Expectations
         expect(pushNotificationService.getNotificationById(eq(notificationId))).andReturn(notification).once();
-        persistenceUtilityService.runInNewTransaction(isA(Runnable.class));
-        expectLastCall().andAnswer(() -> {
-            final Runnable runnable = (Runnable) getCurrentArguments()[0];
-            runnable.run();
-            return null;
-        }).anyTimes();
         expect(pushNotificationService.updateNotificationState(eq(notificationId), eq(NotificationState.PROCESSING))).andReturn(notification).once();
         expect(pushMessageServiceProvider.lookupPushMessageSender(notification.getRecipient().getType()))
                 .andReturn(Optional.of(pushMessageSender));

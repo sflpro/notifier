@@ -5,7 +5,6 @@ import com.sflpro.notifier.db.entities.notification.NotificationState;
 import com.sflpro.notifier.db.entities.notification.push.PushNotification;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationProviderType;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipient;
-import com.sflpro.notifier.db.repositories.utility.PersistenceUtilityService;
 import com.sflpro.notifier.services.common.exception.ServicesRuntimeException;
 import com.sflpro.notifier.services.notification.exception.NotificationInvalidStateException;
 import com.sflpro.notifier.services.notification.push.PushNotificationProcessor;
@@ -44,9 +43,6 @@ public class PushNotificationProcessorImpl implements PushNotificationProcessor 
     /* Dependencies */
     @Autowired
     private PushNotificationService pushNotificationService;
-
-    @Autowired
-    private PersistenceUtilityService persistenceUtilityService;
 
     @Autowired
     private PushMessageServiceProvider pushMessageServiceProvider;
@@ -129,11 +125,11 @@ public class PushNotificationProcessorImpl implements PushNotificationProcessor 
 
 
     private void updatePushNotificationState(final Long notificationId, final NotificationState notificationState) {
-        persistenceUtilityService.runInNewTransaction(() -> pushNotificationService.updateNotificationState(notificationId, notificationState));
+        pushNotificationService.updateNotificationState(notificationId, notificationState);
     }
 
     private void updatePushNotificationExternalUuId(final Long notificationId, final String providerUuId) {
-        persistenceUtilityService.runInNewTransaction(() -> pushNotificationService.updateProviderExternalUuid(notificationId, providerUuId));
+        pushNotificationService.updateProviderExternalUuid(notificationId, providerUuId);
     }
 
     private void assertPushNotificationState(final PushNotification pushNotification) {
@@ -142,14 +138,5 @@ public class PushNotificationProcessorImpl implements PushNotificationProcessor 
             LOGGER.error("Push notification with id - {} has invalid state - {}", pushNotification.getId(), notificationState);
             throw new NotificationInvalidStateException(pushNotification.getId(), notificationState, new HashSet<>(Arrays.asList(NotificationState.CREATED, NotificationState.FAILED)));
         }
-    }
-
-    /* Properties getters and setters */
-    public PersistenceUtilityService getPersistenceUtilityService() {
-        return persistenceUtilityService;
-    }
-
-    public void setPersistenceUtilityService(final PersistenceUtilityService persistenceUtilityService) {
-        this.persistenceUtilityService = persistenceUtilityService;
     }
 }

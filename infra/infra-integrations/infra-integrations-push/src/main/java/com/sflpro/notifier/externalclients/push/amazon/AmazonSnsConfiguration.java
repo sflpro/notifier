@@ -20,8 +20,8 @@ import org.springframework.context.annotation.Configuration;
  * Time: 11:20 AM
  */
 @Configuration
-@ConditionalOnProperty(value = "amazon.push.enabled", havingValue = "true")
-class AmazonPushMessageConfiguration {
+@ConditionalOnProperty(value = "amazon.sns.enabled", havingValue = "true")
+class AmazonSnsConfiguration {
 
     @Bean
     AmazonSNSClient amazonSNSClient(@Value("${amazon.account.sns.accesskey}") final String accessKey,

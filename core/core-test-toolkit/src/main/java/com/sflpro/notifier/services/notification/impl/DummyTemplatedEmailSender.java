@@ -13,10 +13,10 @@ import org.slf4j.LoggerFactory;
  */
 public class DummyTemplatedEmailSender implements TemplatedEmailSender {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(DummyTemplatedEmailSender.class);
+    private static final Logger logger = LoggerFactory.getLogger(DummyTemplatedEmailSender.class);
 
     @Override
     public void send(final TemplatedEmailMessage message) {
-        LOGGER.debug("Simulating templayed email sending for {}", message);
+        logger.debug("Simulating templayed email sending for {}", message);
     }
 }

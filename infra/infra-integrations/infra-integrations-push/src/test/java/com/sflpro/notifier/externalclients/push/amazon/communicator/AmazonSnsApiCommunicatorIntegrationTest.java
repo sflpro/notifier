@@ -28,7 +28,7 @@ import static org.junit.Assert.*;
  * Time: 11:03 AM
  */
 @Ignore
-@TestPropertySource(properties = "amazon.push.enabled=true")
+@TestPropertySource(properties = "amazon.sns.enabled=true")
 public class AmazonSnsApiCommunicatorIntegrationTest extends AbstractPushNotificationIntegrationTest {
 
     /* Constants */

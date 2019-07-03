@@ -66,9 +66,6 @@ public class PushNotificationProcessorImpl implements PushNotificationProcessor 
         // Update state to processing
         updatePushNotificationState(notificationId, NotificationState.PROCESSING);
         try {
-            // Grab push notification recipient
-            final PushNotificationRecipient recipient = pushNotification.getRecipient();
-
             // Process push notification
             final String pushNotificationProviderExternalUuid = send(pushNotification);
             // Check if provider uuid is provided

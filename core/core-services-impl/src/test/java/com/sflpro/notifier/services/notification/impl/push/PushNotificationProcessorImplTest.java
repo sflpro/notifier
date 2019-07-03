@@ -4,20 +4,20 @@ import com.sflpro.notifier.db.entities.notification.NotificationState;
 import com.sflpro.notifier.db.entities.notification.push.PushNotification;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipient;
 import com.sflpro.notifier.db.repositories.utility.PersistenceUtilityService;
-import com.sflpro.notifier.services.common.exception.ServicesRuntimeException;
 import com.sflpro.notifier.services.notification.exception.NotificationInvalidStateException;
 import com.sflpro.notifier.services.notification.push.PushNotificationService;
 import com.sflpro.notifier.services.test.AbstractServicesUnitTest;
+import com.sflpro.notifier.spi.push.PushMessage;
+import com.sflpro.notifier.spi.push.PushMessageSender;
+import com.sflpro.notifier.spi.push.PushMessageSendingResult;
 import org.easymock.Mock;
 import org.easymock.TestSubject;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.*;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.*;
 
@@ -38,6 +38,12 @@ public class PushNotificationProcessorImplTest extends AbstractServicesUnitTest 
 
     @Mock
     private PersistenceUtilityService persistenceUtilityService;
+
+    @Mock
+    private PushMessageServiceProvider pushMessageServiceProvider;
+
+    @Mock
+    private PushMessageSender pushMessageSender;
 
 
     /* Constructors */
@@ -105,7 +111,7 @@ public class PushNotificationProcessorImplTest extends AbstractServicesUnitTest 
         final PushNotificationRecipient recipient = getServicesImplTestHelper().createPushNotificationSnsRecipient();
         recipient.setId(recipientId);
         notification.setRecipient(recipient);
-        final String exceptionMessage = "Exception for testing error flow";
+        final Exception exceptionDuringSending = new RuntimeException("Exception for testing error flow");
         // Reset
         resetAll();
         // Expectations
@@ -117,18 +123,15 @@ public class PushNotificationProcessorImplTest extends AbstractServicesUnitTest 
             return null;
         }).anyTimes();
         expect(pushNotificationService.updateNotificationState(eq(notificationId), eq(NotificationState.PROCESSING))).andReturn(notification).once();
-        //pushNotificationSnsProcessor.processPushNotification(eq(notification));
-        expectLastCall().andThrow(new ServicesRuntimeException("Exception for testing error flow")).once();
+        expect(pushMessageServiceProvider.lookupPushMessageSender(notification.getRecipient().getType()))
+                .andReturn(Optional.of(pushMessageSender));
+        expect(pushMessageSender.send(isA(PushMessage.class))).andThrow(exceptionDuringSending);
         expect(pushNotificationService.updateNotificationState(eq(notificationId), eq(NotificationState.FAILED))).andReturn(notification).once();
         // Replay
         replayAll();
         // Run test scenario
-        try {
-            pushNotificationProcessingService.processNotification(notificationId, Collections.emptyMap());
-        } catch (final ServicesRuntimeException ex) {
-            // Expected
-            ex.getCause().getMessage().equals(exceptionMessage);
-        }
+        assertThatThrownBy(() -> pushNotificationProcessingService.processNotification(notificationId, Collections.emptyMap()))
+                .hasFieldOrPropertyWithValue("cause", exceptionDuringSending);
         // Verify
         verifyAll();
     }
@@ -156,7 +159,9 @@ public class PushNotificationProcessorImplTest extends AbstractServicesUnitTest 
             return null;
         }).anyTimes();
         expect(pushNotificationService.updateNotificationState(eq(notificationId), eq(NotificationState.PROCESSING))).andReturn(notification).once();
-    //    expect(pushNotificationSnsProcessor.processPushNotification(eq(notification))).andReturn(pushNotificationExternalUuId).once();
+        expect(pushMessageServiceProvider.lookupPushMessageSender(notification.getRecipient().getType()))
+                .andReturn(Optional.of(pushMessageSender));
+        expect(pushMessageSender.send(isA(PushMessage.class))).andReturn(PushMessageSendingResult.of(pushNotificationExternalUuId));
         expect(pushNotificationService.updateProviderExternalUuid(eq(notificationId), eq(pushNotificationExternalUuId))).andReturn(notification).once();
         expect(pushNotificationService.updateNotificationState(eq(notificationId), eq(NotificationState.SENT))).andReturn(notification).once();
         // Replay

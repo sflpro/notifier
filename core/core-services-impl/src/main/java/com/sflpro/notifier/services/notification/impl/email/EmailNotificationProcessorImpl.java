@@ -88,12 +88,7 @@ class EmailNotificationProcessorImpl implements EmailNotificationProcessor {
 
     private void processMessage(final EmailNotification emailNotification, final Map<String, String> secureProperties) {
         if (StringUtils.isNoneBlank(emailNotification.getTemplateName())) {
-            getTemplatedEmailSender(emailNotification.getProviderType()).send(TemplatedEmailMessage.of(
-                    emailNotification.getSenderEmail(),
-                    emailNotification.getRecipientEmail(),
-                    emailNotification.getTemplateName(),
-                    variablesFor(emailNotification, secureProperties)
-            ));
+            getTemplatedEmailSender(emailNotification.getProviderType()).send(templatedMessageFor(emailNotification, secureProperties));
         } else {
             Assert.hasText("Null or emty text was passed as an argument for parameter 'subject'.", emailNotification.getSubject());
             Assert.hasText("Null or emty text was passed as an argument for parameter 'content'.", emailNotification.getContent());
@@ -106,6 +101,25 @@ class EmailNotificationProcessorImpl implements EmailNotificationProcessor {
         }
         LOGGER.debug("Successfully sent email message for notification with id - {}", emailNotification.getId());
         updateEmailNotificationState(emailNotification.getId(), NotificationState.SENT);
+    }
+
+    private TemplatedEmailMessage templatedMessageFor(final EmailNotification emailNotification, final Map<String, String> secureProperties) {
+        final Map<String, String> variables = variablesFor(emailNotification, secureProperties);
+        if (StringUtils.isNoneBlank(emailNotification.getSubject())) {
+            return TemplatedEmailMessage.of(
+                    emailNotification.getSenderEmail(),
+                    emailNotification.getRecipientEmail(),
+                    emailNotification.getTemplateName(),
+                    emailNotification.getSubject(),
+                    variables
+            );
+        }
+        return TemplatedEmailMessage.of(
+                emailNotification.getSenderEmail(),
+                emailNotification.getRecipientEmail(),
+                emailNotification.getTemplateName(),
+                variables
+        );
     }
 
     private Map<String, String> variablesFor(final EmailNotification emailNotification, final Map<String, String> secureProperties) {

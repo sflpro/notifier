@@ -70,6 +70,7 @@ public class MandrillApiCommunicatorImpl implements MandrillApiCommunicator {
                     .toArray(MandrillMessage.MergeVar[]::new);
             mergeBucket.setVars(mergeValues);
         }
+        message.subject().ifPresent(mandrillMessage::setSubject);
         mandrillMessage.setMergeVars(Collections.singletonList(mergeBucket));
         return mandrillMessage;
     }

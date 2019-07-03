@@ -9,13 +9,10 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
  * Time: 10:31 AM
  */
 final class ImmutableSimpleEmailMessage extends AbstractEmailMessage implements SimpleEmailMessage {
-
-    private final String subject;
     private final String body;
 
     ImmutableSimpleEmailMessage(final String from, final String to, final String subject, final String body) {
-        super(from, to);
-        this.subject = subject;
+        super(from, to, subject);
         this.body = body;
     }
 
@@ -30,7 +27,6 @@ final class ImmutableSimpleEmailMessage extends AbstractEmailMessage implements 
         final SimpleEmailMessage that = (SimpleEmailMessage) o;
         return new EqualsBuilder()
                 .appendSuper(super.equals(o))
-                .append(subject, that.subject())
                 .append(body, that.body())
                 .isEquals();
     }
@@ -39,7 +35,6 @@ final class ImmutableSimpleEmailMessage extends AbstractEmailMessage implements 
     public int hashCode() {
         return new HashCodeBuilder(17, 37)
                 .appendSuper(super.hashCode())
-                .append(subject)
                 .append(body)
                 .toHashCode();
     }
@@ -51,6 +46,6 @@ final class ImmutableSimpleEmailMessage extends AbstractEmailMessage implements 
 
     @Override
     public String subject() {
-        return subject;
+        return super.getSubject();
     }
 }

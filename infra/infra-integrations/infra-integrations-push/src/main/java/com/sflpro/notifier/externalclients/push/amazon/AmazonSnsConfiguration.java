@@ -49,7 +49,8 @@ class AmazonSnsConfiguration {
     }
 
     @Bean
-    PushMessageServiceRegistry amazonSnsPushMessageServiceRegistry(final PushMessageSender amazonPushMessageSender, final PushMessageSubscriber amazonPushMessageSubscriber) {
+    PushMessageServiceRegistry amazonSnsPushMessageServiceRegistry(final PushMessageSender amazonPushMessageSender,
+                                                                   final PushMessageSubscriber amazonPushMessageSubscriber) {
         return PushMessageServiceRegistry.of("sns", amazonPushMessageSender, amazonPushMessageSubscriber);
     }
 }

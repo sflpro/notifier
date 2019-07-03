@@ -232,7 +232,7 @@ public class PushNotificationSubscriptionProcessingServiceImplTest extends Abstr
         } else {
             expect(pushNotificationSubscriptionService.createPushNotificationSubscription(eq(userId), eq(new PushNotificationSubscriptionDto()))).andReturn(subscription).once();
         }
-        expect(pushNotificationUserDeviceTokenSnsProcessor.registerUserDeviceToken(eq(parameters.getDeviceToken()), eq(userMobileDevice.getOsType()), eq(parameters.getApplicationType()), eq(currentProviderTokenToBeUsed))).andReturn(newlyRegisteredPushNotificationProviderToken).once();
+        expect(pushNotificationUserDeviceTokenSnsProcessor.registerUserDeviceToken(eq(parameters.getDeviceToken()), eq(userMobileDevice.getOsType()), eq(parameters.getApplicationType()), eq(currentProviderTokenToBeUsed), parameters.getCurrentPushNotificationProviderType())).andReturn(newlyRegisteredPushNotificationProviderToken).once();
         expect(pushNotificationRecipientService.getPushNotificationRecipientsForSearchParameters(eq(searchParametersForSearchingRecipientsToBeDisabledWithNewProviderToken), eq(Long.valueOf(0L)), eq(Integer.MAX_VALUE))).andReturn(recipientsWithSameNewlyRegisteredToken).once();
         recipientsWithSameNewlyRegisteredToken.forEach(currentRecipient -> {
             if (!currentRecipient.getSubscription().getId().equals(subscriptionId)) {

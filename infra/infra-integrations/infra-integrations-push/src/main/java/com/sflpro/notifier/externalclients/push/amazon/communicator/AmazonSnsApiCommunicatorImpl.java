@@ -1,14 +1,10 @@
 package com.sflpro.notifier.externalclients.push.amazon.communicator;
 
-import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.regions.Region;
-import com.amazonaws.regions.Regions;
 import com.amazonaws.services.sns.AmazonSNSClient;
 import com.amazonaws.services.sns.model.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sflpro.notifier.externalclients.push.amazon.exception.AmazonSnsClientRuntimeException;
-import com.sflpro.notifier.externalclients.push.amazon.model.AmazonSNSPlatformType;
 import com.sflpro.notifier.externalclients.push.amazon.model.request.GetDeviceEndpointAttributesRequest;
 import com.sflpro.notifier.externalclients.push.amazon.model.request.RegisterUserDeviceTokenRequest;
 import com.sflpro.notifier.externalclients.push.amazon.model.request.SendPushNotificationRequestMessageInformation;
@@ -16,12 +12,10 @@ import com.sflpro.notifier.externalclients.push.amazon.model.request.UpdateDevic
 import com.sflpro.notifier.externalclients.push.amazon.model.response.GetDeviceEndpointAttributesResponse;
 import com.sflpro.notifier.externalclients.push.amazon.model.response.RegisterUserDeviceTokenResponse;
 import com.sflpro.notifier.externalclients.push.amazon.model.response.SendPushNotificationResponse;
+import com.sflpro.notifier.spi.push.PlatformType;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 import javax.annotation.Nonnull;
@@ -36,13 +30,12 @@ import java.util.regex.Pattern;
  * Date: 4/9/15
  * Time: 3:26 PM
  */
-@Component
-public class AmazonSnsApiCommunicatorImpl implements AmazonSnsApiCommunicator, InitializingBean {
+public class AmazonSnsApiCommunicatorImpl implements AmazonSnsApiCommunicator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AmazonSnsApiCommunicatorImpl.class);
 
     /* Constants */
-    private static final String ENDPOINT_EXISTS_EXCEPTION_PATTERN = ".*Endpoint (arn:aws:sns[^ ]+) already exists with the same Token.*";
+    private final Pattern ENDPOINT_EXISTS_EXCEPTION_PATTERN = Pattern.compile(".*Endpoint (arn:aws:sns[^ ]+) already exists with the same Token.*");
 
     private static final String ENDPOINT_ATTRIBUTE_NAME_TOKEN = "Token";
 
@@ -50,30 +43,15 @@ public class AmazonSnsApiCommunicatorImpl implements AmazonSnsApiCommunicator, I
 
     private static final String MESSAGE_STRUCTURE_JSON = "json";
 
-    /* Properties */
-    @Value("${amazon.account.sns.accesskey}")
-    private String accessKey;
+    private final AmazonSNSClient amazonSNSClient;
 
-    @Value("${amazon.account.sns.secretkey}")
-    private String secretKey;
-
-    @Value("${amazon.account.sns.region}")
-    private String awsRegion;
-
-    private AmazonSNSClient amazonSNSClient;
+    private final boolean amazonSnsDevelopmentMode;
 
     /* Constructors */
-    public AmazonSnsApiCommunicatorImpl() {
+    public AmazonSnsApiCommunicatorImpl(final AmazonSNSClient amazonSNSClient, final boolean amazonSnsDevelopmentMode) {
+        this.amazonSNSClient = amazonSNSClient;
+        this.amazonSnsDevelopmentMode = amazonSnsDevelopmentMode;
         LOGGER.debug("Initializing Amazon SNS API communicator");
-    }
-
-    @Override
-    public void afterPropertiesSet() {
-        /* Create instance of twillio rest client */
-        LOGGER.debug("Creating Amazon SNS client client instance with access key - {} and secret key - {}, AWS region - {}", accessKey, secretKey, awsRegion);
-        final BasicAWSCredentials basicAWSCredentials = new BasicAWSCredentials(accessKey, secretKey);
-        this.amazonSNSClient = new AmazonSNSClient(basicAWSCredentials);
-        this.amazonSNSClient.setRegion(Region.getRegion(Regions.valueOf(awsRegion)));
     }
 
     /* Public methods */
@@ -122,11 +100,10 @@ public class AmazonSnsApiCommunicatorImpl implements AmazonSnsApiCommunicator, I
             final CreatePlatformEndpointResult createPlatformEndpointResult = amazonSNSClient.createPlatformEndpoint(createEndpointRequest);
             // Grab parameters
             deviceEndpointArn = createPlatformEndpointResult.getEndpointArn();
-        } catch (InvalidParameterException ex) {
+        } catch (final InvalidParameterException ex) {
             // Check if message contains information about existing user device token
             final String message = ex.getErrorMessage();
-            final Pattern p = Pattern.compile(ENDPOINT_EXISTS_EXCEPTION_PATTERN);
-            final Matcher m = p.matcher(message);
+            final Matcher m = ENDPOINT_EXISTS_EXCEPTION_PATTERN.matcher(message);
             if (m.matches()) {
                 // Extract existing endpoint from error message
                 deviceEndpointArn = m.group(1);
@@ -189,65 +166,28 @@ public class AmazonSnsApiCommunicatorImpl implements AmazonSnsApiCommunicator, I
     }
 
     /* Utility methods */
-    private String generateNotificationContent(final String message, final Map<String, String> propertiesMap, final AmazonSNSPlatformType amazonSNSPlatformType) {
+    private String generateNotificationContent(final String message, final Map<String, String> propertiesMap, final PlatformType platformType) {
         final AbstractMessageBuilder messageBuilder;
-        switch (amazonSNSPlatformType) {
+        switch (platformType) {
             case APNS: {
-                messageBuilder = new APNSMessageBuilder(propertiesMap, message, amazonSNSPlatformType);
-                break;
-            }
-            case APNS_SANDBOX: {
-                messageBuilder = new APNSMessageBuilder(propertiesMap, message, amazonSNSPlatformType);
+                messageBuilder = new APNSMessageBuilder(propertiesMap, message, amazonSnsDevelopmentMode ? "APNS_SANDBOX" : "APNS");
                 break;
             }
             case GCM: {
-                messageBuilder = new GCMMessageBuilder(propertiesMap, message, amazonSNSPlatformType);
+                messageBuilder = new GCMMessageBuilder(propertiesMap, message, "GCM");
                 break;
             }
             default: {
-                final String errorMessage = "Unknown Amazon SNS platform type - " + amazonSNSPlatformType;
+                final String errorMessage = "Unknown Amazon SNS platform type - " + platformType;
                 LOGGER.error(errorMessage);
                 throw new AmazonSnsClientRuntimeException(errorMessage);
             }
         }
         // Generate message and return
         final String notificationContent = messageBuilder.generateJsonContent();
-        LOGGER.debug("Successfully generated notification body for properties map - {}, platform type - {}, message - {}, generated body - {}", propertiesMap, amazonSNSPlatformType, message, notificationContent);
+        LOGGER.debug("Successfully generated notification body for properties map - {}, platform type - {}, message - {}, generated body - {}", propertiesMap,
+                platformType, message, notificationContent);
         return notificationContent;
-    }
-
-
-    /* Getters and setters */
-    public String getAccessKey() {
-        return accessKey;
-    }
-
-    public void setAccessKey(final String accessKey) {
-        this.accessKey = accessKey;
-    }
-
-    public String getSecretKey() {
-        return secretKey;
-    }
-
-    public void setSecretKey(final String secretKey) {
-        this.secretKey = secretKey;
-    }
-
-    public String getAwsRegion() {
-        return awsRegion;
-    }
-
-    public void setAwsRegion(String awsRegion) {
-        this.awsRegion = awsRegion;
-    }
-
-    public AmazonSNSClient getAmazonSNSClient() {
-        return amazonSNSClient;
-    }
-
-    public void setAmazonSNSClient(final AmazonSNSClient amazonSNSClient) {
-        this.amazonSNSClient = amazonSNSClient;
     }
 
     /* Inner classes */
@@ -258,29 +198,29 @@ public class AmazonSnsApiCommunicatorImpl implements AmazonSnsApiCommunicator, I
 
         private final String message;
 
-        private final AmazonSNSPlatformType amazonSNSPlatformType;
+        private final String amazonSNSPlatformTypeKey;
 
         /* Constructors */
-        public AbstractMessageBuilder(final Map<String, String> attributesMap, final String message, final AmazonSNSPlatformType amazonSNSPlatformType) {
+        AbstractMessageBuilder(final Map<String, String> attributesMap, final String message, final String amazonSNSPlatformTypeKey) {
             this.attributesMap = attributesMap;
             this.message = message;
-            this.amazonSNSPlatformType = amazonSNSPlatformType;
+            this.amazonSNSPlatformTypeKey = amazonSNSPlatformTypeKey;
         }
 
         /* Properties getters and setters */
-        public Map<String, String> getAttributesMap() {
+        Map<String, String> getAttributesMap() {
             return attributesMap;
         }
 
-        public String getMessage() {
+        String getMessage() {
             return message;
         }
 
-        public AmazonSNSPlatformType getAmazonSNSPlatformType() {
-            return amazonSNSPlatformType;
+        String getAmazonSNSPlatformTypeKey() {
+            return amazonSNSPlatformTypeKey;
         }
 
-        protected String convertMapToJson(final Map<String, Object> propertiesMap) {
+        String convertMapToJson(final Map<String, Object> propertiesMap) {
             final String content;
             try {
                 final ObjectMapper objectMapper = new ObjectMapper();
@@ -303,8 +243,8 @@ public class AmazonSnsApiCommunicatorImpl implements AmazonSnsApiCommunicator, I
         private static final String BADGE_PROPERTY = "badge";
 
         /* Constructors */
-        public APNSMessageBuilder(final Map<String, String> attributesMap, final String message, final AmazonSNSPlatformType amazonSNSPlatformType) {
-            super(attributesMap, message, amazonSNSPlatformType);
+        APNSMessageBuilder(final Map<String, String> attributesMap, final String message, final String amazonSNSPlatformTypeKey) {
+            super(attributesMap, message, amazonSNSPlatformTypeKey);
         }
 
         @Override
@@ -318,7 +258,7 @@ public class AmazonSnsApiCommunicatorImpl implements AmazonSnsApiCommunicator, I
             apsProperties.put("aps", dataProperties);
             // Create all properties
             final Map<String, Object> allProperties = new HashMap<>();
-            allProperties.put(getAmazonSNSPlatformType().getJsonKey(), convertMapToJson(apsProperties));
+            allProperties.put(getAmazonSNSPlatformTypeKey(), convertMapToJson(apsProperties));
             return convertMapToJson(allProperties);
         }
 
@@ -336,8 +276,8 @@ public class AmazonSnsApiCommunicatorImpl implements AmazonSnsApiCommunicator, I
 
     private static class GCMMessageBuilder extends AbstractMessageBuilder {
 
-        public GCMMessageBuilder(final Map<String, String> attributesMap, final String message, final AmazonSNSPlatformType amazonSNSPlatformType) {
-            super(attributesMap, message, amazonSNSPlatformType);
+        GCMMessageBuilder(final Map<String, String> attributesMap, final String message, final String amazonSNSPlatformTypeKey) {
+            super(attributesMap, message, amazonSNSPlatformTypeKey);
         }
 
         @Override
@@ -351,7 +291,7 @@ public class AmazonSnsApiCommunicatorImpl implements AmazonSnsApiCommunicator, I
             gcmProperties.put("data", dataProperties);
             // Create all properties
             final Map<String, Object> allProperties = new HashMap<>();
-            allProperties.put(getAmazonSNSPlatformType().getJsonKey(), convertMapToJson(gcmProperties));
+            allProperties.put(getAmazonSNSPlatformTypeKey(), convertMapToJson(gcmProperties));
             return convertMapToJson(allProperties);
         }
     }

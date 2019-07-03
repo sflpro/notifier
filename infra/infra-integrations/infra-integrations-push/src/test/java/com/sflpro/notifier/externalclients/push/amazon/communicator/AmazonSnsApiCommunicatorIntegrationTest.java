@@ -1,7 +1,5 @@
-package com.sflpro.notifier.externalclients.push.amazon;
+package com.sflpro.notifier.externalclients.push.amazon.communicator;
 
-import com.sflpro.notifier.externalclients.push.amazon.communicator.AmazonSnsApiCommunicator;
-import com.sflpro.notifier.externalclients.push.amazon.model.AmazonSNSPlatformType;
 import com.sflpro.notifier.externalclients.push.amazon.model.request.GetDeviceEndpointAttributesRequest;
 import com.sflpro.notifier.externalclients.push.amazon.model.request.RegisterUserDeviceTokenRequest;
 import com.sflpro.notifier.externalclients.push.amazon.model.request.SendPushNotificationRequestMessageInformation;
@@ -10,11 +8,13 @@ import com.sflpro.notifier.externalclients.push.amazon.model.response.GetDeviceE
 import com.sflpro.notifier.externalclients.push.amazon.model.response.RegisterUserDeviceTokenResponse;
 import com.sflpro.notifier.externalclients.push.amazon.model.response.SendPushNotificationResponse;
 import com.sflpro.notifier.externalclients.push.test.AbstractPushNotificationIntegrationTest;
+import com.sflpro.notifier.spi.push.PlatformType;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.test.context.TestPropertySource;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,6 +28,7 @@ import static org.junit.Assert.*;
  * Time: 11:03 AM
  */
 @Ignore
+@TestPropertySource(properties = "amazon.push.enabled=true")
 public class AmazonSnsApiCommunicatorIntegrationTest extends AbstractPushNotificationIntegrationTest {
 
     /* Constants */
@@ -62,7 +63,7 @@ public class AmazonSnsApiCommunicatorIntegrationTest extends AbstractPushNotific
         final String deviceEndpointArn = registerIOSDeviceEndpoint();
         final Map<String, String> messageAttributes = new HashMap<>();
         messageAttributes.put("testKey", "testValue");
-        final SendPushNotificationRequestMessageInformation messageInformation = new SendPushNotificationRequestMessageInformation(MESSAGE_SUBJECT, MESSAGE_BODY, messageAttributes, AmazonSNSPlatformType.APNS);
+        final SendPushNotificationRequestMessageInformation messageInformation = new SendPushNotificationRequestMessageInformation(MESSAGE_SUBJECT, MESSAGE_BODY, messageAttributes, PlatformType.APNS);
         // Execute send request
         final SendPushNotificationResponse response = amazonSnsApiCommunicator.sendPushNotification(messageInformation, deviceEndpointArn);
         assertNotNull(response);

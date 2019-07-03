@@ -6,7 +6,6 @@ import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipie
 import com.sflpro.notifier.db.repositories.utility.PersistenceUtilityService;
 import com.sflpro.notifier.services.common.exception.ServicesRuntimeException;
 import com.sflpro.notifier.services.notification.exception.NotificationInvalidStateException;
-import com.sflpro.notifier.services.notification.impl.push.sns.PushNotificationSnsProviderProcessorImpl;
 import com.sflpro.notifier.services.notification.push.PushNotificationService;
 import com.sflpro.notifier.services.test.AbstractServicesUnitTest;
 import org.easymock.Mock;
@@ -40,8 +39,6 @@ public class PushNotificationProcessorImplTest extends AbstractServicesUnitTest 
     @Mock
     private PersistenceUtilityService persistenceUtilityService;
 
-    @Mock
-    private PushNotificationSnsProviderProcessorImpl pushNotificationSnsProcessor;
 
     /* Constructors */
     public PushNotificationProcessorImplTest() {
@@ -120,7 +117,7 @@ public class PushNotificationProcessorImplTest extends AbstractServicesUnitTest 
             return null;
         }).anyTimes();
         expect(pushNotificationService.updateNotificationState(eq(notificationId), eq(NotificationState.PROCESSING))).andReturn(notification).once();
-        pushNotificationSnsProcessor.processPushNotification(eq(notification));
+        //pushNotificationSnsProcessor.processPushNotification(eq(notification));
         expectLastCall().andThrow(new ServicesRuntimeException("Exception for testing error flow")).once();
         expect(pushNotificationService.updateNotificationState(eq(notificationId), eq(NotificationState.FAILED))).andReturn(notification).once();
         // Replay
@@ -159,7 +156,7 @@ public class PushNotificationProcessorImplTest extends AbstractServicesUnitTest 
             return null;
         }).anyTimes();
         expect(pushNotificationService.updateNotificationState(eq(notificationId), eq(NotificationState.PROCESSING))).andReturn(notification).once();
-        expect(pushNotificationSnsProcessor.processPushNotification(eq(notification))).andReturn(pushNotificationExternalUuId).once();
+    //    expect(pushNotificationSnsProcessor.processPushNotification(eq(notification))).andReturn(pushNotificationExternalUuId).once();
         expect(pushNotificationService.updateProviderExternalUuid(eq(notificationId), eq(pushNotificationExternalUuId))).andReturn(notification).once();
         expect(pushNotificationService.updateNotificationState(eq(notificationId), eq(NotificationState.SENT))).andReturn(notification).once();
         // Replay

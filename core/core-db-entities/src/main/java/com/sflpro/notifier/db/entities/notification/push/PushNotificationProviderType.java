@@ -15,7 +15,7 @@ public enum PushNotificationProviderType {
     private final NotificationProviderType notificationProviderType;
 
     /* Constructors */
-    private PushNotificationProviderType(final NotificationProviderType notificationProviderType) {
+    PushNotificationProviderType(final NotificationProviderType notificationProviderType) {
         this.notificationProviderType = notificationProviderType;
     }
 

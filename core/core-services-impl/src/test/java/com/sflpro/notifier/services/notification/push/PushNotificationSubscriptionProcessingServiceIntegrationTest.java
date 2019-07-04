@@ -11,7 +11,6 @@ import com.sflpro.notifier.services.device.dto.UserDeviceDto;
 import com.sflpro.notifier.services.helper.ServicesTestHelper;
 import com.sflpro.notifier.services.notification.dto.push.PushNotificationSubscriptionProcessingParameters;
 import com.sflpro.notifier.services.test.AbstractServiceIntegrationTest;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -24,7 +23,6 @@ import static org.junit.Assert.assertNotNull;
  * Date: 8/22/15
  * Time: 11:12 PM
  */
-@Ignore
 public class PushNotificationSubscriptionProcessingServiceIntegrationTest extends AbstractServiceIntegrationTest {
 
     /* Dependencies */

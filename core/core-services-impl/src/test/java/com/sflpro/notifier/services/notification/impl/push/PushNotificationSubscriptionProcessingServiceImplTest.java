@@ -232,7 +232,7 @@ public class PushNotificationSubscriptionProcessingServiceImplTest extends Abstr
                         userMobileDevice.getOsType(),
                         parameters.getApplicationType(),
                         currentProviderTokenToBeUsed,
-                        parameters.getCurrentPushNotificationProviderType()
+                        parameters.getPushNotificationProviderType()
                 )).andReturn(newlyRegisteredPushNotificationProviderToken).once();
         expect(pushNotificationRecipientService.getPushNotificationRecipientsForSearchParameters(eq(searchParametersForSearchingRecipientsToBeDisabledWithNewProviderToken), eq(Long.valueOf(0L)), eq(Integer.MAX_VALUE))).andReturn(recipientsWithSameNewlyRegisteredToken).once();
         recipientsWithSameNewlyRegisteredToken.forEach(currentRecipient -> {

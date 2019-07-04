@@ -4,8 +4,6 @@ import com.sflpro.notifier.spi.push.PushMessageSubscriber;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.UUID;
-
 /**
  * Created by Hayk Mkrtchyan.
  * Date: 7/3/19
@@ -25,6 +23,6 @@ public class DummyPushMessageSubscriber implements PushMessageSubscriber {
     @Override
     public String registerDeviceEndpointArn(final String userDeviceToken, final String applicationArn) {
         logger.debug("Simulating deviceEndpointArn refresh - userDeviceToken = {}, applicationArn = {}", userDeviceToken, applicationArn);
-        return UUID.randomUUID().toString();
+        return userDeviceToken + "_" + applicationArn;
     }
 }

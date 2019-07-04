@@ -13,6 +13,8 @@ public class DummyPushMessageSubscriber implements PushMessageSubscriber {
 
     private static final Logger logger = LoggerFactory.getLogger(DummySimpleSmsSender.class);
 
+    private static final int MAX_LENGTH_DEVICE_ENDPOINT_ARN = 36;
+
     @Override
     public String refreshDeviceEndpointArn(final String existingDeviceEndpointArn, final String userDeviceToken, final String applicationArn) {
         logger.debug("Simulating deviceEndpointArn refresh - existingDeviceEndpointArn = {}, userDeviceToken = {}, applicationArn = {}",
@@ -23,6 +25,9 @@ public class DummyPushMessageSubscriber implements PushMessageSubscriber {
     @Override
     public String registerDeviceEndpointArn(final String userDeviceToken, final String applicationArn) {
         logger.debug("Simulating deviceEndpointArn refresh - userDeviceToken = {}, applicationArn = {}", userDeviceToken, applicationArn);
-        return userDeviceToken + "_" + applicationArn;
+        if (userDeviceToken.length() > MAX_LENGTH_DEVICE_ENDPOINT_ARN) {
+            return userDeviceToken.substring(0, MAX_LENGTH_DEVICE_ENDPOINT_ARN);
+        }
+        return userDeviceToken;
     }
 }

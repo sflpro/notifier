@@ -216,7 +216,7 @@ public class ServicesTestHelper {
         parameters.setCurrentPushNotificationProviderType(null);
         parameters.setCurrentProviderToken(null);
         parameters.setApplicationType(APPLICATION_TYPE);
-        parameters.setCurrentPushNotificationProviderType(PushNotificationProviderType.SNS);
+        parameters.setPushNotificationProviderType(PushNotificationProviderType.SNS);
         // Process subscription
         final PushNotificationRecipient recipient = pushNotificationSubscriptionProcessingService.processPushNotificationSubscriptionChange(parameters);
         flush();

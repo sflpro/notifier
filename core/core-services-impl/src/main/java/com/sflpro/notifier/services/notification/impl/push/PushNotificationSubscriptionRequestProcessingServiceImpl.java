@@ -114,6 +114,7 @@ public class PushNotificationSubscriptionRequestProcessingServiceImpl implements
         parameters.setUserMobileDeviceId(request.getUserMobileDevice().getId());
         parameters.setUserId(request.getUser().getId());
         parameters.setApplicationType(request.getApplicationType());
+        parameters.setPushNotificationProviderType(PushNotificationProviderType.SNS);
         // Return parameters
         return parameters;
     }

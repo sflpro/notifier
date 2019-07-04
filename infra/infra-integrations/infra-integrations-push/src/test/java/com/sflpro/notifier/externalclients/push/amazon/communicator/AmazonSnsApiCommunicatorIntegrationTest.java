@@ -10,7 +10,7 @@ import com.sflpro.notifier.externalclients.push.amazon.model.response.SendPushNo
 import com.sflpro.notifier.externalclients.push.test.AbstractPushNotificationIntegrationTest;
 import com.sflpro.notifier.spi.push.PlatformType;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.junit.Ignore;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,8 +27,7 @@ import static org.junit.Assert.*;
  * Date: 3/15/15
  * Time: 11:03 AM
  */
-@Ignore
-@TestPropertySource(properties = "amazon.sns.enabled=true")
+@TestPropertySource(properties = {"amazon.sns.enabled=true"})
 public class AmazonSnsApiCommunicatorIntegrationTest extends AbstractPushNotificationIntegrationTest {
 
     /* Constants */
@@ -50,15 +49,23 @@ public class AmazonSnsApiCommunicatorIntegrationTest extends AbstractPushNotific
     @Value("${amazon.account.sns.application.arn.android}")
     private String androidPlatformApplicationArn;
 
-    /* Properties */
+    @Value("#{ T(org.apache.commons.lang3.StringUtils).isNotBlank(\"${amazon.account.sns.accesskey:''}\") " +
+            "&& T(org.apache.commons.lang3.StringUtils).isNotBlank(\"${amazon.account.sns.secretkey:''}\")}")
+    private boolean enabled;
 
-    /* Constructors */
-    public AmazonSnsApiCommunicatorIntegrationTest() {
+    @Before
+    public void prepare(){
+        if(!enabled){
+            logger.warn("Amazon sns client wasn't properly configured(accesskey,secretkey). The tests are being just ignored.");
+        }
     }
 
     /* Test methods */
     @Test
     public void testSendPushNotification() {
+        if(!enabled){
+            return;
+        }
         // Prepare data
         final String deviceEndpointArn = registerIOSDeviceEndpoint();
         final Map<String, String> messageAttributes = new HashMap<>();
@@ -72,6 +79,9 @@ public class AmazonSnsApiCommunicatorIntegrationTest extends AbstractPushNotific
 
     @Test
     public void testRegisterUserDeviceToken() {
+        if(!enabled){
+            return;
+        }
         // Prepare data
         final String platformApplicationArn = iosPlatformApplicationArn;
         final String userDeviceToken = generateIOSToken();
@@ -90,6 +100,9 @@ public class AmazonSnsApiCommunicatorIntegrationTest extends AbstractPushNotific
 
     @Test
     public void testGetDeviceEndpointAttributes() {
+        if(!enabled){
+            return;
+        }
         // Prepare data
         final String deviceToken = generateIOSToken();
         final String deviceEndpointArn = registerIOSDeviceEndpoint(deviceToken);
@@ -110,6 +123,9 @@ public class AmazonSnsApiCommunicatorIntegrationTest extends AbstractPushNotific
 
     @Test
     public void testUpdateDeviceEndpointAttributes() {
+        if(!enabled){
+            return;
+        }
         // Prepare data
         final String deviceToken = generateIOSToken();
         final String deviceEndpointArn = registerIOSDeviceEndpoint(deviceToken);

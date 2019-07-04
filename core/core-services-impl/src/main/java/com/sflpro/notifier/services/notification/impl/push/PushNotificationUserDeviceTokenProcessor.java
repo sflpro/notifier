@@ -22,10 +22,10 @@ public interface PushNotificationUserDeviceTokenProcessor {
      * @param operatingSystemType
      * @param applicationType
      * @param currentProviderToken
-     * @param currentPushNotificationProviderType
+     * @param pushNotificationProviderType
      * @return providerSpecificToken
      */
-    String registerUserDeviceToken(@Nonnull final String userDeviceToken, @Nonnull final DeviceOperatingSystemType operatingSystemType, @Nonnull final String applicationType, @Nullable final String currentProviderToken, final PushNotificationProviderType currentPushNotificationProviderType);
+    String registerUserDeviceToken(@Nonnull final String userDeviceToken, @Nonnull final DeviceOperatingSystemType operatingSystemType, @Nonnull final String applicationType, @Nullable final String currentProviderToken, final PushNotificationProviderType pushNotificationProviderType);
 
     /**
      * Creates push notification recipient for provider

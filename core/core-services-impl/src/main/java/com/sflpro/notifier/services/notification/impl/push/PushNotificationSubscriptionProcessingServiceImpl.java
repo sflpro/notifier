@@ -7,12 +7,10 @@ import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipie
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipientStatus;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationSubscription;
 import com.sflpro.notifier.db.entities.user.User;
-import com.sflpro.notifier.services.common.exception.ServicesRuntimeException;
 import com.sflpro.notifier.services.device.UserDeviceService;
 import com.sflpro.notifier.services.notification.dto.push.PushNotificationSubscriptionDto;
 import com.sflpro.notifier.services.notification.dto.push.PushNotificationSubscriptionProcessingParameters;
 import com.sflpro.notifier.services.notification.exception.push.PushNotificationSubscriptionInvalidDeviceUserException;
-import com.sflpro.notifier.services.notification.impl.push.sns.PushNotificationUserDeviceTokenSnsProcessor;
 import com.sflpro.notifier.services.notification.push.PushNotificationRecipientSearchParameters;
 import com.sflpro.notifier.services.notification.push.PushNotificationRecipientService;
 import com.sflpro.notifier.services.notification.push.PushNotificationSubscriptionProcessingService;
@@ -40,9 +38,6 @@ public class PushNotificationSubscriptionProcessingServiceImpl implements PushNo
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PushNotificationSubscriptionProcessingServiceImpl.class);
 
-    /* Constants */
-    private static final PushNotificationProviderType ACTIVE_PUSH_NOTIFICATION_PROVIDER = PushNotificationProviderType.SNS;
-
     /* Dependencies */
     @Autowired
     private UserDeviceService userMobileDeviceService;
@@ -54,17 +49,14 @@ public class PushNotificationSubscriptionProcessingServiceImpl implements PushNo
     private PushNotificationSubscriptionService pushNotificationSubscriptionService;
 
     @Autowired
-    private PushNotificationUserDeviceTokenSnsProcessor pushNotificationUserDeviceTokenSnsProcessor;
+    private PushNotificationUserDeviceTokenProcessor pushNotificationUserDeviceTokenProcessor;
 
     @Autowired
     private PushNotificationRecipientService pushNotificationRecipientService;
 
-    private PushNotificationProviderType activeProvider;
-
     /* Constructors */
     PushNotificationSubscriptionProcessingServiceImpl() {
         LOGGER.debug("Initializing push notification subscription processor service");
-        this.activeProvider = ACTIVE_PUSH_NOTIFICATION_PROVIDER;
     }
 
     @Override
@@ -74,6 +66,7 @@ public class PushNotificationSubscriptionProcessingServiceImpl implements PushNo
         Assert.notNull(parameters.getUserMobileDeviceId(), "User device id should not be null");
         Assert.notNull(parameters.getDeviceToken(), "Device token should not be null");
         Assert.notNull(parameters.getApplicationType(), "Application type should not be null");
+        Assert.notNull(parameters.getPushNotificationProviderType(), "PushNotificationProviderType should not be null");
         LOGGER.debug("Processing push notification subscription for parameters - {}", parameters);
         final User user = userService.getUserById(parameters.getUserId());
         final UserDevice userDevice = userMobileDeviceService.getUserDeviceById(parameters.getUserMobileDeviceId());
@@ -86,29 +79,28 @@ public class PushNotificationSubscriptionProcessingServiceImpl implements PushNo
         final Pair<PushNotificationProviderType, String> currentTokenData = determineCurrentNotificationData(
                 parameters.getCurrentPushNotificationProviderType(),
                 parameters.getCurrentProviderToken(),
-                activeProvider
+                parameters.getPushNotificationProviderType()
         );
         final String oldProviderToken = currentTokenData.getValue();
         // Get user device token processor for provider type
-        final PushNotificationUserDeviceTokenProcessor deviceTokenProcessor = getPushNotificationUserDeviceTokenProcessorForProviderType(activeProvider);
         // Register user device token with provider
-        final String newlyRegisteredProviderToken = deviceTokenProcessor.registerUserDeviceToken(
+        final String newlyRegisteredProviderToken = pushNotificationUserDeviceTokenProcessor.registerUserDeviceToken(
                 parameters.getDeviceToken(),
                 operatingSystemType,
                 applicationType,
                 oldProviderToken,
-                parameters.getCurrentPushNotificationProviderType()
+                parameters.getPushNotificationProviderType()
         );
         // Disable all push notification recipients with same token
-        disableAllRecipientsWithProviderTokenExceptCurrentSubscriptionIfProvided(subscription, newlyRegisteredProviderToken, activeProvider, operatingSystemType, applicationType);
+        disableAllRecipientsWithProviderTokenExceptCurrentSubscriptionIfProvided(subscription, newlyRegisteredProviderToken, parameters.getPushNotificationProviderType(), operatingSystemType, applicationType);
         // Enable or create push notification recipient
-        PushNotificationRecipient recipient = getOrCreateRecipientForProviderToken(subscription, newlyRegisteredProviderToken, activeProvider, operatingSystemType, applicationType);
+        PushNotificationRecipient recipient = getOrCreateRecipientForProviderToken(subscription, newlyRegisteredProviderToken, parameters.getPushNotificationProviderType(), operatingSystemType, applicationType);
         // Update push notification status
         recipient = updatePushNotificationRecipientStatus(recipient, parameters.isSubscribe());
         // Update user device for recipient
         recipient = pushNotificationRecipientService.updatePushNotificationRecipientUserDevice(recipient.getId(), userDevice.getId());
         // Verify and if required disable olf provider token
-        verifyAndDisableOldProviderTokenIfRequired(oldProviderToken, newlyRegisteredProviderToken, activeProvider, operatingSystemType, applicationType);
+        verifyAndDisableOldProviderTokenIfRequired(oldProviderToken, newlyRegisteredProviderToken, parameters.getPushNotificationProviderType(), operatingSystemType, applicationType);
         LOGGER.debug("Successfully finalized push notification subscription processing for parameters - {}, processing result recipient - {}", parameters, recipient);
         return recipient;
     }
@@ -168,8 +160,7 @@ public class PushNotificationSubscriptionProcessingServiceImpl implements PushNo
         } else {
             LOGGER.debug("No push notification recipient exists for subscription with id - {}, push notification provider token - {}, mobile device operating system type - {}. Creating new one", currentSubscription.getId(), pushNotificationProviderToken, operatingSystemType);
             // Create new push notification recipient
-            final PushNotificationUserDeviceTokenProcessor deviceTokenProcessor = getPushNotificationUserDeviceTokenProcessorForProviderType(activeProvider);
-            recipient = deviceTokenProcessor.createPushNotificationRecipient(currentSubscription.getId(), pushNotificationProviderToken, operatingSystemType, applicationType);
+            recipient = pushNotificationUserDeviceTokenProcessor.createPushNotificationRecipient(currentSubscription.getId(), pushNotificationProviderToken, operatingSystemType, applicationType);
         }
         LOGGER.debug("Successfully retrieved/created push notification recipient with id - {} for subscription with id - {}, push notification provider token - {}, mobile device operating system type - {}. Recipient - {}", recipient.getId(), currentSubscription.getId(), pushNotificationProviderToken, operatingSystemType, recipient);
         return recipient;
@@ -190,15 +181,6 @@ public class PushNotificationSubscriptionProcessingServiceImpl implements PushNo
                 pushNotificationRecipientService.updatePushNotificationRecipientStatus(recipient.getId(), PushNotificationRecipientStatus.DISABLED);
             }
         });
-    }
-
-    private PushNotificationUserDeviceTokenProcessor getPushNotificationUserDeviceTokenProcessorForProviderType(final PushNotificationProviderType providerType) {
-        if (providerType == PushNotificationProviderType.SNS) {
-            return pushNotificationUserDeviceTokenSnsProcessor;
-        }
-        final String message = "Unsupported push notification provider type - " + providerType;
-        LOGGER.error(message);
-        throw new ServicesRuntimeException(message);
     }
 
     private Pair<PushNotificationProviderType, String> determineCurrentNotificationData(final PushNotificationProviderType currentProviderType, final String currentProviderToken, final PushNotificationProviderType activeProvider) {
@@ -258,12 +240,8 @@ public class PushNotificationSubscriptionProcessingServiceImpl implements PushNo
         this.pushNotificationSubscriptionService = pushNotificationSubscriptionService;
     }
 
-    public PushNotificationUserDeviceTokenSnsProcessor getPushNotificationUserDeviceTokenSnsProcessor() {
-        return pushNotificationUserDeviceTokenSnsProcessor;
-    }
-
-    public void setPushNotificationUserDeviceTokenSnsProcessor(final PushNotificationUserDeviceTokenSnsProcessor pushNotificationUserDeviceTokenSnsProcessor) {
-        this.pushNotificationUserDeviceTokenSnsProcessor = pushNotificationUserDeviceTokenSnsProcessor;
+    public void setPushNotificationUserDeviceTokenProcessor(final PushNotificationUserDeviceTokenProcessor pushNotificationUserDeviceTokenProcessor) {
+        this.pushNotificationUserDeviceTokenProcessor = pushNotificationUserDeviceTokenProcessor;
     }
 
     public PushNotificationRecipientService getPushNotificationRecipientService() {
@@ -272,13 +250,5 @@ public class PushNotificationSubscriptionProcessingServiceImpl implements PushNo
 
     public void setPushNotificationRecipientService(final PushNotificationRecipientService pushNotificationRecipientService) {
         this.pushNotificationRecipientService = pushNotificationRecipientService;
-    }
-
-    public PushNotificationProviderType getActiveProvider() {
-        return activeProvider;
-    }
-
-    public void setActiveProvider(final PushNotificationProviderType activeProvider) {
-        this.activeProvider = activeProvider;
     }
 }

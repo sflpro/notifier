@@ -1,4 +1,4 @@
-package com.sflpro.notifier.services.notification.impl.push.sns;
+package com.sflpro.notifier.services.notification.impl.push;
 
 import com.sflpro.notifier.db.entities.device.mobile.DeviceOperatingSystemType;
 
@@ -8,7 +8,7 @@ import com.sflpro.notifier.db.entities.device.mobile.DeviceOperatingSystemType;
  * Date: 1/11/16
  * Time: 5:10 PM
  */
-public interface SnsArnConfigurationService {
+public interface ArnConfigurationService {
 
     /**
      * Retrieves SNS ARN for provided mobile application

@@ -141,7 +141,7 @@ public class PushNotificationSubscriptionProcessingServiceIntegrationTest extend
         parameters.setCurrentPushNotificationProviderType(null);
         parameters.setCurrentProviderToken(null);
         parameters.setApplicationType(ServicesTestHelper.APPLICATION_TYPE);
-        parameters.setCurrentPushNotificationProviderType(PushNotificationProviderType.SNS);
+        parameters.setPushNotificationProviderType(PushNotificationProviderType.SNS);
         return parameters;
     }
 

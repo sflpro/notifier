@@ -26,6 +26,8 @@ public class PushNotificationSubscriptionProcessingParameters implements Seriali
 
     private PushNotificationProviderType currentPushNotificationProviderType;
 
+    private PushNotificationProviderType pushNotificationProviderType;
+
     private String currentProviderToken;
 
     private boolean subscribe;
@@ -109,6 +111,14 @@ public class PushNotificationSubscriptionProcessingParameters implements Seriali
         this.applicationType = applicationType;
     }
 
+    public PushNotificationProviderType getPushNotificationProviderType() {
+        return pushNotificationProviderType;
+    }
+
+    public void setPushNotificationProviderType(final PushNotificationProviderType pushNotificationProviderType) {
+        this.pushNotificationProviderType = pushNotificationProviderType;
+    }
+
     /* Equals, HashCode and ToString */
     @Override
     public boolean equals(final Object o) {
@@ -125,6 +135,7 @@ public class PushNotificationSubscriptionProcessingParameters implements Seriali
         builder.append(this.getUserId(), that.getUserId());
         builder.append(this.getCurrentProviderToken(), that.getCurrentProviderToken());
         builder.append(this.getCurrentPushNotificationProviderType(), that.getCurrentPushNotificationProviderType());
+        builder.append(this.getPushNotificationProviderType(), that.getPushNotificationProviderType());
         builder.append(this.isSubscribe(), that.isSubscribe());
         builder.append(this.getApplicationType(), that.getApplicationType());
         return builder.isEquals();
@@ -138,6 +149,7 @@ public class PushNotificationSubscriptionProcessingParameters implements Seriali
         builder.append(this.getUserId());
         builder.append(this.getCurrentProviderToken());
         builder.append(this.getCurrentPushNotificationProviderType());
+        builder.append(this.getPushNotificationProviderType());
         builder.append(this.isSubscribe());
         builder.append(this.getApplicationType());
         return builder.build();
@@ -152,6 +164,7 @@ public class PushNotificationSubscriptionProcessingParameters implements Seriali
         builder.append("userId", this.getUserId());
         builder.append("currentProviderToken", this.getCurrentProviderToken());
         builder.append("currentPushNotificationProviderType", this.getCurrentPushNotificationProviderType());
+        builder.append("pushNotificationProviderType", this.getPushNotificationProviderType());
         builder.append("subscribe", this.isSubscribe());
         builder.append("applicationType", this.getApplicationType());
         return builder.build();

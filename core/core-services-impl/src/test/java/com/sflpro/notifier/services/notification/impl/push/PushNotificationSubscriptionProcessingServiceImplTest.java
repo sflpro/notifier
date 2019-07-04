@@ -11,7 +11,6 @@ import com.sflpro.notifier.services.device.UserDeviceService;
 import com.sflpro.notifier.services.notification.dto.push.PushNotificationSubscriptionDto;
 import com.sflpro.notifier.services.notification.dto.push.PushNotificationSubscriptionProcessingParameters;
 import com.sflpro.notifier.services.notification.exception.push.PushNotificationSubscriptionInvalidDeviceUserException;
-import com.sflpro.notifier.services.notification.impl.push.sns.PushNotificationUserDeviceTokenSnsProcessor;
 import com.sflpro.notifier.services.notification.push.PushNotificationRecipientSearchParameters;
 import com.sflpro.notifier.services.notification.push.PushNotificationRecipientService;
 import com.sflpro.notifier.services.notification.push.PushNotificationSubscriptionService;
@@ -54,19 +53,14 @@ public class PushNotificationSubscriptionProcessingServiceImplTest extends Abstr
     private PushNotificationSubscriptionService pushNotificationSubscriptionService;
 
     @Mock
-    private PushNotificationUserDeviceTokenSnsProcessor pushNotificationUserDeviceTokenSnsProcessor;
+    private PushNotificationUserDeviceTokenProcessor pushNotificationUserDeviceTokenProcessor;
 
     @Mock
     private PushNotificationRecipientService pushNotificationRecipientService;
 
-    private PushNotificationProviderType activeProvider = PushNotificationProviderType.SNS;
 
     /* Constructors */
     public PushNotificationSubscriptionProcessingServiceImplTest() {
-    }
-
-    public void prepare() {
-        pushNotificationSubscriptionProcessingService.setActiveProvider(activeProvider);
     }
 
     /* Test methods */
@@ -187,7 +181,7 @@ public class PushNotificationSubscriptionProcessingServiceImplTest extends Abstr
         if (currentTokenProviderIsDifferent) {
             parameters.setCurrentPushNotificationProviderType(PushNotificationProviderType.GCM);
         } else {
-            parameters.setCurrentPushNotificationProviderType(activeProvider);
+            parameters.setCurrentPushNotificationProviderType(PushNotificationProviderType.SNS);
         }
         final String applicationType = parameters.getApplicationType();
         final Long userId = parameters.getUserId();
@@ -232,7 +226,7 @@ public class PushNotificationSubscriptionProcessingServiceImplTest extends Abstr
         } else {
             expect(pushNotificationSubscriptionService.createPushNotificationSubscription(eq(userId), eq(new PushNotificationSubscriptionDto()))).andReturn(subscription).once();
         }
-        expect(pushNotificationUserDeviceTokenSnsProcessor
+        expect(pushNotificationUserDeviceTokenProcessor
                 .registerUserDeviceToken(
                         parameters.getDeviceToken(),
                         userMobileDevice.getOsType(),
@@ -250,7 +244,7 @@ public class PushNotificationSubscriptionProcessingServiceImplTest extends Abstr
             expect(pushNotificationRecipientService.getPushNotificationRecipientsForSearchParameters(eq(searchParametersForSearchingRecipientWithNewProviderToken), eq(Long.valueOf(0L)), eq(Integer.valueOf(1)))).andReturn(Arrays.asList(recipient)).once();
         } else {
             expect(pushNotificationRecipientService.getPushNotificationRecipientsForSearchParameters(eq(searchParametersForSearchingRecipientWithNewProviderToken), eq(Long.valueOf(0L)), eq(Integer.valueOf(1)))).andReturn(Collections.emptyList()).once();
-            expect(pushNotificationUserDeviceTokenSnsProcessor.createPushNotificationRecipient(eq(subscriptionId), eq(newlyRegisteredPushNotificationProviderToken), eq(userMobileDevice.getOsType()), eq(applicationType))).andReturn(recipient).once();
+            expect(pushNotificationUserDeviceTokenProcessor.createPushNotificationRecipient(eq(subscriptionId), eq(newlyRegisteredPushNotificationProviderToken), eq(userMobileDevice.getOsType()), eq(applicationType))).andReturn(recipient).once();
         }
         if (currentProviderTokenToBeUsed != null && oldProviderTokenIsDifferentThenNewOne) {
             expect(pushNotificationRecipientService.getPushNotificationRecipientsForSearchParameters(eq(searchParametersForSearchingRecipientsToBeDisabledWithOldProviderToken), eq(Long.valueOf(0L)), eq(Integer.MAX_VALUE))).andReturn(recipientsWithSameOldRegisteredToken).once();
@@ -271,7 +265,7 @@ public class PushNotificationSubscriptionProcessingServiceImplTest extends Abstr
 
     private PushNotificationRecipientSearchParameters createSearchParametersForSearchingRecipientsToBeDisabled(final DeviceOperatingSystemType operatingSystemType, final String pushNotificationProviderToken, final String applicationType) {
         final PushNotificationRecipientSearchParameters parameters = new PushNotificationRecipientSearchParameters();
-        parameters.setProviderType(activeProvider);
+        parameters.setProviderType(PushNotificationProviderType.SNS);
         parameters.setDeviceOperatingSystemType(operatingSystemType);
         parameters.setStatus(PushNotificationRecipientStatus.ENABLED);
         parameters.setDestinationRouteToken(pushNotificationProviderToken);
@@ -281,7 +275,7 @@ public class PushNotificationSubscriptionProcessingServiceImplTest extends Abstr
 
     private PushNotificationRecipientSearchParameters createSearchParametersForSearchingRecipientWithNewProviderToken(final DeviceOperatingSystemType operatingSystemType, final String pushNotificationProviderToken, final Long subscriptionId, final String applicationType) {
         final PushNotificationRecipientSearchParameters parameters = new PushNotificationRecipientSearchParameters();
-        parameters.setProviderType(activeProvider);
+        parameters.setProviderType(PushNotificationProviderType.SNS);
         parameters.setDeviceOperatingSystemType(operatingSystemType);
         parameters.setSubscriptionId(subscriptionId);
         parameters.setDestinationRouteToken(pushNotificationProviderToken);
@@ -292,10 +286,10 @@ public class PushNotificationSubscriptionProcessingServiceImplTest extends Abstr
     private List<PushNotificationRecipient> createPushNotificationRecipients(final int count, final int idAddition) {
         final List<PushNotificationRecipient> recipients = new ArrayList<>();
         for (int i = 0; i < count; i++) {
-            final Long subscriptionId = Long.valueOf(idAddition * count + i);
+            final Long subscriptionId = (long) (idAddition * count + i);
             final PushNotificationSubscription subscription = getServicesImplTestHelper().createPushNotificationSubscription();
             subscription.setId(subscriptionId);
-            final Long recipientId = Long.valueOf(idAddition + i);
+            final Long recipientId = (long) (idAddition + i);
             final PushNotificationRecipient recipient = getServicesImplTestHelper().createPushNotificationSnsRecipient();
             recipient.setId(recipientId);
             recipient.setSubscription(subscription);
@@ -312,7 +306,8 @@ public class PushNotificationSubscriptionProcessingServiceImplTest extends Abstr
     private PushNotificationSubscriptionProcessingParameters createPushNotificationSubscriptionProcessingParameters() {
         final PushNotificationSubscriptionProcessingParameters parameters = new PushNotificationSubscriptionProcessingParameters();
         parameters.setCurrentProviderToken("HYTIDRDLGYFTIFVMCJFJJT");
-        parameters.setCurrentPushNotificationProviderType(activeProvider);
+        parameters.setCurrentPushNotificationProviderType(PushNotificationProviderType.SNS);
+        parameters.setPushNotificationProviderType(PushNotificationProviderType.SNS);
         parameters.setDeviceToken("*^&T)TF%*D$DRU$S$OFKTDRDU*%RIDR%TIFTD%**I");
         parameters.setSubscribe(true);
         parameters.setUserId(1L);

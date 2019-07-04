@@ -1,11 +1,10 @@
-package com.sflpro.notifier.services.notification.impl.push.sns;
+package com.sflpro.notifier.services.notification.impl.push;
 
 import com.sflpro.notifier.db.entities.device.mobile.DeviceOperatingSystemType;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationProviderType;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipient;
 import com.sflpro.notifier.db.entities.notification.push.sns.PushNotificationSnsRecipient;
 import com.sflpro.notifier.services.notification.dto.push.sns.PushNotificationSnsRecipientDto;
-import com.sflpro.notifier.services.notification.impl.push.PushMessageServiceProvider;
 import com.sflpro.notifier.services.notification.push.sns.PushNotificationSnsRecipientService;
 import com.sflpro.notifier.spi.push.PushMessageSubscriber;
 import org.slf4j.Logger;
@@ -27,9 +26,9 @@ import static java.lang.String.format;
  * Time: 10:10 AM
  */
 @Component
-public class PushNotificationUserDeviceTokenSnsProcessorImpl implements PushNotificationUserDeviceTokenSnsProcessor {
+class PushNotificationUserDeviceTokenProcessorImpl implements PushNotificationUserDeviceTokenProcessor {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(PushNotificationUserDeviceTokenSnsProcessorImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(PushNotificationUserDeviceTokenProcessorImpl.class);
 
     /* Dependencies */
     @Autowired
@@ -39,10 +38,10 @@ public class PushNotificationUserDeviceTokenSnsProcessorImpl implements PushNoti
     private PushMessageServiceProvider pushMessageServiceProvider;
 
     @Autowired
-    private SnsArnConfigurationService snsArnConfigurationService;
+    private ArnConfigurationService arnConfigurationService;
 
     /* Constructors */
-    PushNotificationUserDeviceTokenSnsProcessorImpl() {
+    PushNotificationUserDeviceTokenProcessorImpl() {
         LOGGER.debug("Initializing push notification user device token SNS processor");
     }
 
@@ -52,15 +51,15 @@ public class PushNotificationUserDeviceTokenSnsProcessorImpl implements PushNoti
             @Nonnull final DeviceOperatingSystemType operatingSystemType,
             @Nonnull final String applicationType,
             @Nullable final String currentProviderToken,
-            @Nonnull final PushNotificationProviderType currentProviderType) {
+            @Nonnull final PushNotificationProviderType pushNotificationProviderType) {
         Assert.notNull(userDeviceToken, "User device token should not be null");
         Assert.notNull(operatingSystemType, "Operating system type should not be null");
         Assert.notNull(applicationType, "Push notification application type should not be null");
-        Assert.notNull(applicationType, "Push notification application type should not be null");
+        Assert.notNull(pushNotificationProviderType, "Push notification provider type should not be null");
         LOGGER.debug("Registering user device token - {} , operating system type - {}", userDeviceToken, operatingSystemType);
-        final String applicationArn = snsArnConfigurationService.getApplicationArnForMobilePlatform(operatingSystemType, applicationType);
-        final PushMessageSubscriber pushMessageSubscriber = pushMessageServiceProvider.lookupPushMessageSubscriber(currentProviderType)
-                .orElseThrow(() -> new IllegalStateException(format("No subscriber was registered for type '%s'", currentProviderType)));
+        final String applicationArn = arnConfigurationService.getApplicationArnForMobilePlatform(operatingSystemType, applicationType);
+        final PushMessageSubscriber pushMessageSubscriber = pushMessageServiceProvider.lookupPushMessageSubscriber(pushNotificationProviderType)
+                .orElseThrow(() -> new IllegalStateException(format("No subscriber was registered for type '%s'", pushNotificationProviderType)));
         final String deviceEndpointArn = StringUtils.isEmpty(currentProviderToken) ? pushMessageSubscriber.registerDeviceEndpointArn(userDeviceToken, applicationArn) :
                 pushMessageSubscriber.refreshDeviceEndpointArn(currentProviderToken, userDeviceToken, applicationArn);
         LOGGER.debug("Successfully registered user device token - {}, result endpoint ARN is - {}, platform - {}", userDeviceToken, deviceEndpointArn, operatingSystemType);
@@ -75,7 +74,7 @@ public class PushNotificationUserDeviceTokenSnsProcessorImpl implements PushNoti
         Assert.notNull(applicationType, "Application type should not be null");
         LOGGER.debug("Creating push notification SNS recipient for subscription with id - {}, recipient route token - {}, operating system type - {}", subscriptionId, recipientRouteToken, operatingSystemType);
         // Create push notification SNS recipient DTO
-        final String platformApplicationArn = snsArnConfigurationService.getApplicationArnForMobilePlatform(operatingSystemType, applicationType);
+        final String platformApplicationArn = arnConfigurationService.getApplicationArnForMobilePlatform(operatingSystemType, applicationType);
         final PushNotificationSnsRecipientDto snsRecipientDto = new PushNotificationSnsRecipientDto();
         snsRecipientDto.setPlatformApplicationArn(platformApplicationArn);
         snsRecipientDto.setDestinationRouteToken(recipientRouteToken);
@@ -97,11 +96,11 @@ public class PushNotificationUserDeviceTokenSnsProcessorImpl implements PushNoti
         this.pushNotificationSnsRecipientService = pushNotificationSnsRecipientService;
     }
 
-    public SnsArnConfigurationService getSnsArnConfigurationService() {
-        return snsArnConfigurationService;
+    public ArnConfigurationService getArnConfigurationService() {
+        return arnConfigurationService;
     }
 
-    public void setSnsArnConfigurationService(final SnsArnConfigurationService snsArnConfigurationService) {
-        this.snsArnConfigurationService = snsArnConfigurationService;
+    public void setArnConfigurationService(final ArnConfigurationService arnConfigurationService) {
+        this.arnConfigurationService = arnConfigurationService;
     }
 }

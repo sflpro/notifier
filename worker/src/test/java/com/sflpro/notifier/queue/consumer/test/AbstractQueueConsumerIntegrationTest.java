@@ -2,9 +2,13 @@ package com.sflpro.notifier.queue.consumer.test;
 
 import com.sflpro.notifier.services.helper.ServicesTestHelper;
 import org.junit.Ignore;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -16,7 +20,10 @@ import javax.persistence.PersistenceContext;
  * Time: 1:33 PM
  */
 @Ignore
-@ContextConfiguration(value = {"src/test/resources/applicationContext-queue-consumer-services-integrationtest.xml", "classpath:applicationContext-services-integrationtest.xml"})
+@ActiveProfiles("test")
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = ConsumerTestConfiguration.class)
+@TestPropertySource(properties = "notifier.queue.engine=")
 public class AbstractQueueConsumerIntegrationTest extends AbstractTransactionalJUnit4SpringContextTests {
 
     /* Dependencies */

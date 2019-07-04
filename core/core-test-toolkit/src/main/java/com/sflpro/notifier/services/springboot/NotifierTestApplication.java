@@ -18,11 +18,13 @@ import com.sflpro.notifier.spi.sms.TemplatedSmsSenderRegistry;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.annotation.PropertySource;
 
 @SpringBootApplication
 @ComponentScan("com.sflpro.notifier")
 @PropertySource(value = "classpath:/com/sflpro/notifier/test/services-integration-test.properties", ignoreResourceNotFound = true)
+@ImportResource("classpath:/com/sflpro/notifier/test/applicationContext-mocks-integrationtest.xml")
 public class NotifierTestApplication {
 
     @Bean

@@ -62,7 +62,7 @@ public class PushNotificationSubscriptionProcessingServiceImpl implements PushNo
     private PushNotificationProviderType activeProvider;
 
     /* Constructors */
-    public PushNotificationSubscriptionProcessingServiceImpl() {
+    PushNotificationSubscriptionProcessingServiceImpl() {
         LOGGER.debug("Initializing push notification subscription processor service");
         this.activeProvider = ACTIVE_PUSH_NOTIFICATION_PROVIDER;
     }
@@ -160,7 +160,7 @@ public class PushNotificationSubscriptionProcessingServiceImpl implements PushNo
         parameters.setSubscriptionId(currentSubscription.getId());
         parameters.setApplicationType(applicationType);
         // Execute search, there might be only one recipient with type,token,subscription combination
-        final List<PushNotificationRecipient> recipients = pushNotificationRecipientService.getPushNotificationRecipientsForSearchParameters(parameters, Long.valueOf(0), Integer.valueOf(1));
+        final List<PushNotificationRecipient> recipients = pushNotificationRecipientService.getPushNotificationRecipientsForSearchParameters(parameters, 0L, 1);
         if (!recipients.isEmpty()) {
             // Retrieve recipient and update state if required
             recipient = recipients.get(0);
@@ -184,7 +184,7 @@ public class PushNotificationSubscriptionProcessingServiceImpl implements PushNo
         parameters.setDestinationRouteToken(pushNotificationProviderToken);
         parameters.setApplicationType(applicationType);
         // Execute search
-        final List<PushNotificationRecipient> recipients = pushNotificationRecipientService.getPushNotificationRecipientsForSearchParameters(parameters, Long.valueOf(0), Integer.MAX_VALUE);
+        final List<PushNotificationRecipient> recipients = pushNotificationRecipientService.getPushNotificationRecipientsForSearchParameters(parameters, 0L, Integer.MAX_VALUE);
         recipients.forEach(recipient -> {
             if (currentSubscription == null || !currentSubscription.getId().equals(recipient.getSubscription().getId())) {
                 pushNotificationRecipientService.updatePushNotificationRecipientStatus(recipient.getId(), PushNotificationRecipientStatus.DISABLED);
@@ -215,7 +215,7 @@ public class PushNotificationSubscriptionProcessingServiceImpl implements PushNo
     }
 
     private PushNotificationSubscription getOrCreateSubscriptionForUser(final User user) {
-        PushNotificationSubscription subscription = null;
+        PushNotificationSubscription subscription;
         final boolean subscriptionExists = pushNotificationSubscriptionService.checkIfPushNotificationSubscriptionExistsForUser(user.getId());
         if (subscriptionExists) {
             LOGGER.debug("Push notification subscription already exists for user with id - {}, retrieving it", user.getId());
@@ -238,10 +238,6 @@ public class PushNotificationSubscriptionProcessingServiceImpl implements PushNo
     }
 
     /* Properties getters and setters */
-    public UserDeviceService getUserMobileDeviceService() {
-        return userMobileDeviceService;
-    }
-
     public void setUserMobileDeviceService(final UserDeviceService userMobileDeviceService) {
         this.userMobileDeviceService = userMobileDeviceService;
     }

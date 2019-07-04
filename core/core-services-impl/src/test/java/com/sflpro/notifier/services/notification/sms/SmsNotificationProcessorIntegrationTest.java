@@ -4,7 +4,6 @@ import com.sflpro.notifier.db.entities.notification.NotificationState;
 import com.sflpro.notifier.db.entities.notification.sms.SmsNotification;
 import com.sflpro.notifier.services.test.AbstractServiceIntegrationTest;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -18,7 +17,6 @@ import static org.junit.Assert.assertNotNull;
  * Date: 4/10/15
  * Time: 5:34 PM
  */
-@Ignore
 public class SmsNotificationProcessorIntegrationTest extends AbstractServiceIntegrationTest {
 
     /* Dependencies */

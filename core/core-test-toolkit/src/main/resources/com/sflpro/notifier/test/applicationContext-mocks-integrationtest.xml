@@ -4,6 +4,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
            http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <import resource="classpath:applicationContext-queue-consumer-services.xml"/>
+    <bean name="persistenceUtilityService"
+          class="com.sflpro.notifier.db.repositories.utility.impl.DummyTransactionAwarePersistenceUtilityService" lazy-init="false"/>
 
 </beans>

@@ -14,6 +14,7 @@ import com.sflpro.notifier.services.notification.push.PushNotificationSubscripti
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -54,8 +55,11 @@ public class PushNotificationSubscriptionRequestProcessingServiceImpl implements
     @Autowired
     private PersistenceUtilityService persistenceUtilityService;
 
+    @Value("${push.notification.provider:SNS}")
+    private PushNotificationProviderType defaultProviderType;
+
     /* Constructors */
-    public PushNotificationSubscriptionRequestProcessingServiceImpl() {
+    PushNotificationSubscriptionRequestProcessingServiceImpl() {
         LOGGER.debug("Initializing push notification subscription request processing service");
     }
 
@@ -117,7 +121,7 @@ public class PushNotificationSubscriptionRequestProcessingServiceImpl implements
     private LastProviderTokenInformation extractLastUsedTokenInformationIfAvailable(final PushNotificationSubscriptionRequest request) {
         // Data to be used
         String lastProviderToken = null;
-        PushNotificationProviderType lastProviderType = null;
+        PushNotificationProviderType lastProviderType = defaultProviderType;
         final String previouslyUsedSubscriptionRequestUuId = request.getPreviousSubscriptionRequestUuId();
         if (previouslyUsedSubscriptionRequestUuId != null) {
             // Check if subscription request exists
@@ -137,20 +141,20 @@ public class PushNotificationSubscriptionRequestProcessingServiceImpl implements
     }
 
     /* Properties getters and setters */
-    public PushNotificationSubscriptionRequestService getPushNotificationSubscriptionRequestService() {
-        return pushNotificationSubscriptionRequestService;
-    }
-
     public void setPushNotificationSubscriptionRequestService(final PushNotificationSubscriptionRequestService pushNotificationSubscriptionRequestService) {
         this.pushNotificationSubscriptionRequestService = pushNotificationSubscriptionRequestService;
     }
 
-    public PushNotificationSubscriptionProcessingService getPushNotificationSubscriptionProcessingService() {
-        return pushNotificationSubscriptionProcessingService;
-    }
-
     public void setPushNotificationSubscriptionProcessingService(final PushNotificationSubscriptionProcessingService pushNotificationSubscriptionProcessingService) {
         this.pushNotificationSubscriptionProcessingService = pushNotificationSubscriptionProcessingService;
+    }
+
+    public void setPersistenceUtilityService(final PersistenceUtilityService persistenceUtilityService) {
+        this.persistenceUtilityService = persistenceUtilityService;
+    }
+
+    public void setDefaultProviderType(final PushNotificationProviderType defaultProviderType) {
+        this.defaultProviderType = defaultProviderType;
     }
 
     /* Inner classes */
@@ -162,17 +166,17 @@ public class PushNotificationSubscriptionRequestProcessingServiceImpl implements
         private final PushNotificationProviderType lastProviderType;
 
         /* Constructors */
-        public LastProviderTokenInformation(final String lastProviderToken, final PushNotificationProviderType lastProviderType) {
+        LastProviderTokenInformation(final String lastProviderToken, final PushNotificationProviderType lastProviderType) {
             this.lastProviderToken = lastProviderToken;
             this.lastProviderType = lastProviderType;
         }
 
         /* Properties getters and setters */
-        public String getLastProviderToken() {
+        String getLastProviderToken() {
             return lastProviderToken;
         }
 
-        public PushNotificationProviderType getLastProviderType() {
+        PushNotificationProviderType getLastProviderType() {
             return lastProviderType;
         }
     }

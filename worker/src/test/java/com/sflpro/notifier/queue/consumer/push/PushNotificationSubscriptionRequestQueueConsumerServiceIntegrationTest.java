@@ -9,7 +9,6 @@ import com.sflpro.notifier.queue.consumer.test.AbstractQueueConsumerIntegrationT
 import com.sflpro.notifier.services.device.dto.UserDeviceDto;
 import com.sflpro.notifier.services.notification.dto.push.PushNotificationSubscriptionRequestDto;
 import com.sflpro.notifier.services.notification.push.PushNotificationSubscriptionRequestService;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -21,7 +20,6 @@ import static org.junit.Assert.assertEquals;
  * Date: 8/23/15
  * Time: 12:33 AM
  */
-@Ignore
 public class PushNotificationSubscriptionRequestQueueConsumerServiceIntegrationTest extends AbstractQueueConsumerIntegrationTest {
 
     /* Dependencies */

@@ -3,6 +3,7 @@ package com.sflpro.notifier.services.notification.push;
 
 import com.sflpro.notifier.db.entities.device.UserDevice;
 import com.sflpro.notifier.db.entities.device.mobile.DeviceOperatingSystemType;
+import com.sflpro.notifier.db.entities.notification.push.PushNotificationProviderType;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipient;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipientStatus;
 import com.sflpro.notifier.db.entities.user.User;
@@ -140,6 +141,7 @@ public class PushNotificationSubscriptionProcessingServiceIntegrationTest extend
         parameters.setCurrentPushNotificationProviderType(null);
         parameters.setCurrentProviderToken(null);
         parameters.setApplicationType(ServicesTestHelper.APPLICATION_TYPE);
+        parameters.setCurrentPushNotificationProviderType(PushNotificationProviderType.SNS);
         return parameters;
     }
 

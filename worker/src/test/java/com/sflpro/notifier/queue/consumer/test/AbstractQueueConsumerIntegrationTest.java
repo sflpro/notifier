@@ -24,7 +24,7 @@ import javax.persistence.PersistenceContext;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ConsumerTestConfiguration.class)
 @TestPropertySource(properties = "notifier.queue.engine=")
-public class AbstractQueueConsumerIntegrationTest extends AbstractTransactionalJUnit4SpringContextTests {
+public abstract class AbstractQueueConsumerIntegrationTest extends AbstractTransactionalJUnit4SpringContextTests {
 
     /* Dependencies */
     @Autowired
@@ -32,10 +32,6 @@ public class AbstractQueueConsumerIntegrationTest extends AbstractTransactionalJ
 
     @PersistenceContext
     private EntityManager entityManager;
-
-    /* Constructors */
-    public AbstractQueueConsumerIntegrationTest() {
-    }
 
     /* Utility methods */
     protected void flush() {

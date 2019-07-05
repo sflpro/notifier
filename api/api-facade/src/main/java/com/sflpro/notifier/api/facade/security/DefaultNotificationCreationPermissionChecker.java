@@ -34,17 +34,16 @@ class DefaultNotificationCreationPermissionChecker implements NotificationCreati
         Assert.notNull(creationRequest, "Null was passed as an argument for parameter 'creationRequest'.");
         final SecurityContext context = SecurityContextHolder.getContext();
         if (context == null) {
-            return true;
+            throw new IllegalStateException("SecurityContext is missing.");
         }
         final Authentication authentication = context.getAuthentication();
         if (authentication == null) {
-            logger.warn("No access token was found associated with notification creation request.");
-            return true;
+            throw new IllegalStateException("SecurityContext should have Authentication assigned.");
         }
         if (authentication instanceof PreAuthenticatedAuthenticationToken) {
             return isPermitted(creationRequest, authentication.getPrincipal().toString());
         }
-        return true;
+        throw new IllegalStateException("No access token was found associated with notification creation request.");
     }
 
     private <R extends NotificationDto<?>> boolean isPermitted(final R creationRequest, final String token) {

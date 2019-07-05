@@ -58,8 +58,8 @@ public class DefaultNotificationCreationPermissionCheckerTest extends AbstractFa
     public void isNotificationCreationAllowedMissingSecurityContext() {
         final EmailNotificationDto notificationDto = new EmailNotificationDto();
         notificationDto.setTemplateName(uuid());
-        assertThat(notificationCreationPermissionChecker.isNotificationCreationAllowed(notificationDto))
-                .isTrue();
+        assertThatThrownBy(() -> notificationCreationPermissionChecker.isNotificationCreationAllowed(notificationDto))
+                .isInstanceOf(IllegalStateException.class);
     }
 
     @Test
@@ -70,8 +70,8 @@ public class DefaultNotificationCreationPermissionCheckerTest extends AbstractFa
         context.setAuthentication(new AnonymousAuthenticationToken(uuid(), uuid(), Collections.singleton(new SimpleGrantedAuthority("USER"))));
         SecurityContextHolder.setContext(context);
         replayAll();
-        assertThat(notificationCreationPermissionChecker.isNotificationCreationAllowed(notificationDto))
-                .isTrue();
+        assertThatThrownBy(() -> notificationCreationPermissionChecker.isNotificationCreationAllowed(notificationDto))
+                .isInstanceOf(IllegalStateException.class);
         verifyAll();
     }
 

@@ -4,6 +4,7 @@ import com.sflpro.notifier.api.facade.services.email.EmailNotificationServiceFac
 import com.sflpro.notifier.api.internal.facade.test.AbstractFacadeUnitTest;
 import com.sflpro.notifier.api.model.email.request.CreateEmailNotificationRequest;
 import com.sflpro.notifier.api.model.notification.NotificationClientType;
+import com.sflpro.notifier.api.model.notification.NotificationStateClientType;
 import com.sflpro.notifier.db.entities.notification.NotificationProviderType;
 import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
 import com.sflpro.notifier.services.notification.dto.email.EmailNotificationDto;
@@ -71,9 +72,11 @@ public class EmailNotificationServiceFacadeImpleTest extends AbstractFacadeUnitT
         assertThat(emailNotificationServiceFacade.createEmailNotification(request).getResponse().getNotification())
                 .hasFieldOrPropertyWithValue("senderEmail", request.getSenderEmail())
                 .hasFieldOrPropertyWithValue("recipientEmail", request.getRecipientEmail())
+                .hasFieldOrPropertyWithValue("subject", request.getSubject())
+                .hasFieldOrPropertyWithValue("body", request.getBody())
+                .hasFieldOrPropertyWithValue("state", NotificationStateClientType.CREATED)
                 .hasFieldOrPropertyWithValue("type", NotificationClientType.EMAIL);
         verifyAll();
-
     }
 
 }

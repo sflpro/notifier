@@ -137,7 +137,7 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
             final String authoritiesKey = "authorities";
             final Collection<String> existingAuthorities = (Collection<String>) map.get(authoritiesKey);
             if (!CollectionUtils.isEmpty(existingAuthorities)) {
-                originalConverter.extractAuthentication(map);
+                return originalConverter.extractAuthentication(map);
             }
             return Optional.ofNullable(map.get("realm_access"))
                     .filter(Map.class::isInstance)

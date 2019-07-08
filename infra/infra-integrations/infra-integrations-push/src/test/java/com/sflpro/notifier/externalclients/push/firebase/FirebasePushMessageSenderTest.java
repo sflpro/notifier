@@ -68,7 +68,7 @@ public class FirebasePushMessageSenderTest extends AbstractPushNotificationUnitT
         when(defaultAndroidConfig.getProperty(collapseKey)).thenReturn(uuid());
         when(defaultAndroidConfig.getProperty(restrictedPackageNameKey)).thenReturn(uuid());
         when(firebaseMessaging.send(isA(Message.class))).thenAnswer(invocation -> {
-            checkProperties(message, (Message) invocation.getArgument(0));
+            checkProperties(message, invocation.getArgument(0));
             return messageId;
         });
         assertThat(pushMessageSender.send(message).messageId()).isEqualTo(messageId);

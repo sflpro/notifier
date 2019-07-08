@@ -3,9 +3,8 @@ package com.sflpro.notifier.services.notification.impl.push;
 import com.sflpro.notifier.db.entities.device.mobile.DeviceOperatingSystemType;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationProviderType;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipient;
-import com.sflpro.notifier.db.entities.notification.push.sns.PushNotificationSnsRecipient;
-import com.sflpro.notifier.services.notification.dto.push.sns.PushNotificationSnsRecipientDto;
-import com.sflpro.notifier.services.notification.push.sns.PushNotificationSnsRecipientService;
+import com.sflpro.notifier.services.notification.dto.push.PushNotificationRecipientDto;
+import com.sflpro.notifier.services.notification.push.PushNotificationRecipientService;
 import com.sflpro.notifier.spi.push.PushMessageSubscriber;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +31,7 @@ class PushNotificationUserDeviceTokenProcessorImpl implements PushNotificationUs
 
     /* Dependencies */
     @Autowired
-    private PushNotificationSnsRecipientService pushNotificationSnsRecipientService;
+    private PushNotificationRecipientService pushNotificationRecipientService;
 
     @Autowired
     private PushMessageServiceProvider pushMessageServiceProvider;
@@ -67,7 +66,7 @@ class PushNotificationUserDeviceTokenProcessorImpl implements PushNotificationUs
     }
 
     @Override
-    public PushNotificationRecipient createPushNotificationRecipient(@Nonnull final Long subscriptionId, @Nonnull final String recipientRouteToken, @Nonnull final DeviceOperatingSystemType operatingSystemType, @Nonnull final String applicationType) {
+    public PushNotificationRecipient createPushNotificationRecipient(@Nonnull final Long subscriptionId, @Nonnull final String recipientRouteToken, @Nonnull final DeviceOperatingSystemType operatingSystemType, @Nonnull final String applicationType, final PushNotificationProviderType providerType) {
         Assert.notNull(subscriptionId, "Push notification subscription should not be null");
         Assert.notNull(recipientRouteToken, "Recipient route token should not be null");
         Assert.notNull(operatingSystemType, "Mobile device operating system type should not be null");
@@ -75,32 +74,14 @@ class PushNotificationUserDeviceTokenProcessorImpl implements PushNotificationUs
         LOGGER.debug("Creating push notification SNS recipient for subscription with id - {}, recipient route token - {}, operating system type - {}", subscriptionId, recipientRouteToken, operatingSystemType);
         // Create push notification SNS recipient DTO
         final String platformApplicationArn = arnConfigurationService.getApplicationArnForMobilePlatform(operatingSystemType, applicationType);
-        final PushNotificationSnsRecipientDto snsRecipientDto = new PushNotificationSnsRecipientDto();
-        snsRecipientDto.setPlatformApplicationArn(platformApplicationArn);
-        snsRecipientDto.setDestinationRouteToken(recipientRouteToken);
-        snsRecipientDto.setDeviceOperatingSystemType(operatingSystemType);
-        snsRecipientDto.setApplicationType(applicationType);
+        final PushNotificationRecipientDto recipientDto = new PushNotificationRecipientDto(providerType);
+        recipientDto.setPlatformApplicationArn(platformApplicationArn);
+        recipientDto.setDestinationRouteToken(recipientRouteToken);
+        recipientDto.setDeviceOperatingSystemType(operatingSystemType);
+        recipientDto.setApplicationType(applicationType);
         // Create recipient
-        final PushNotificationSnsRecipient recipient = pushNotificationSnsRecipientService.createPushNotificationRecipient(subscriptionId, snsRecipientDto);
+        final PushNotificationRecipient recipient = pushNotificationRecipientService.createPushNotificationRecipient(subscriptionId, recipientDto);
         LOGGER.debug("Successfully created push notification SNS recipient for subscription with id - {}, recipient route token - {}, operating system type - {}. Recipient - {}", subscriptionId, recipientRouteToken, operatingSystemType, recipient);
         return recipient;
-    }
-
-    /* Utility methods */
-    /* Properties getters and setters */
-    public PushNotificationSnsRecipientService getPushNotificationSnsRecipientService() {
-        return pushNotificationSnsRecipientService;
-    }
-
-    public void setPushNotificationSnsRecipientService(final PushNotificationSnsRecipientService pushNotificationSnsRecipientService) {
-        this.pushNotificationSnsRecipientService = pushNotificationSnsRecipientService;
-    }
-
-    public ArnConfigurationService getArnConfigurationService() {
-        return arnConfigurationService;
-    }
-
-    public void setArnConfigurationService(final ArnConfigurationService arnConfigurationService) {
-        this.arnConfigurationService = arnConfigurationService;
     }
 }

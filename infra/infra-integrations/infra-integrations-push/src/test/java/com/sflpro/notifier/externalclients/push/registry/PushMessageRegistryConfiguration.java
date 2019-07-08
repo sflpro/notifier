@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ComponentScan(basePackages = {
         "com.sflpro.notifier.externalclients.push.amazon",
+        "com.sflpro.notifier.externalclients.push.firebase",
         "com.sflpro.notifier.externalclients.push.autoconfiguration"
 })
 class PushMessageRegistryConfiguration {

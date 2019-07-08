@@ -244,7 +244,7 @@ public class PushNotificationSubscriptionProcessingServiceImplTest extends Abstr
             expect(pushNotificationRecipientService.getPushNotificationRecipientsForSearchParameters(eq(searchParametersForSearchingRecipientWithNewProviderToken), eq(Long.valueOf(0L)), eq(Integer.valueOf(1)))).andReturn(Arrays.asList(recipient)).once();
         } else {
             expect(pushNotificationRecipientService.getPushNotificationRecipientsForSearchParameters(eq(searchParametersForSearchingRecipientWithNewProviderToken), eq(Long.valueOf(0L)), eq(Integer.valueOf(1)))).andReturn(Collections.emptyList()).once();
-            expect(pushNotificationUserDeviceTokenProcessor.createPushNotificationRecipient(eq(subscriptionId), eq(newlyRegisteredPushNotificationProviderToken), eq(userMobileDevice.getOsType()), eq(applicationType))).andReturn(recipient).once();
+            expect(pushNotificationUserDeviceTokenProcessor.createPushNotificationRecipient(eq(subscriptionId), eq(newlyRegisteredPushNotificationProviderToken), eq(userMobileDevice.getOsType()), eq(applicationType),eq(PushNotificationProviderType.SNS) )).andReturn(recipient).once();
         }
         if (currentProviderTokenToBeUsed != null && oldProviderTokenIsDifferentThenNewOne) {
             expect(pushNotificationRecipientService.getPushNotificationRecipientsForSearchParameters(eq(searchParametersForSearchingRecipientsToBeDisabledWithOldProviderToken), eq(Long.valueOf(0L)), eq(Integer.MAX_VALUE))).andReturn(recipientsWithSameOldRegisteredToken).once();

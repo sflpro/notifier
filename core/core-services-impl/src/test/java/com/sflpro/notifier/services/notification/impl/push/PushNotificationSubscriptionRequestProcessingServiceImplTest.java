@@ -1,6 +1,7 @@
 package com.sflpro.notifier.services.notification.impl.push;
 
 import com.sflpro.notifier.db.entities.device.UserDevice;
+import com.sflpro.notifier.db.entities.notification.NotificationProviderType;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationProviderType;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipient;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationSubscriptionRequest;
@@ -33,7 +34,7 @@ public class PushNotificationSubscriptionRequestProcessingServiceImplTest extend
 
     /* Dependencies */
     @TestSubject
-    private PushNotificationSubscriptionRequestProcessingServiceImpl pushNotificationSubscriptionRequestProcessingService = new PushNotificationSubscriptionRequestProcessingServiceImpl();
+    private PushNotificationSubscriptionRequestProcessingServiceImpl pushNotificationSubscriptionRequestProcessingService = new PushNotificationSubscriptionRequestProcessingServiceImpl(NotificationProviderType.AMAZON_SNS);
 
     @Mock
     private PushNotificationSubscriptionRequestService pushNotificationSubscriptionRequestService;

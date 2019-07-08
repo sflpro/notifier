@@ -28,7 +28,7 @@ public class AmazonSnsPushMessageSender implements PushMessageSender {
         );
         return PushMessageSendingResult.of(amazonSnsApiCommunicator
                 .sendPushNotification(messageInformation,
-                        message.deviceEndpointArn()
+                        message.destinationRouteToken()
                 )
                 .getMessageId()
         );

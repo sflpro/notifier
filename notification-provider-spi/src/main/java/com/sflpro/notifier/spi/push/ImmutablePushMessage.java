@@ -14,18 +14,18 @@ import java.util.Map;
 final class ImmutablePushMessage implements PushMessage {
 
 
-    private String deviceEndpointArn;
+    private String destinationRouteToken;
     private String subject;
     private String body;
     private PlatformType platformType;
     private final Map<String, String> properties;
 
-    ImmutablePushMessage(final String deviceEndpointArn,
+    ImmutablePushMessage(final String destinationRouteToken,
                          final String subject,
                          final String body,
                          final PlatformType platformType,
                          final Map<String, String> properties) {
-        this.deviceEndpointArn = deviceEndpointArn;
+        this.destinationRouteToken = destinationRouteToken;
         this.subject = subject;
         this.body = body;
         this.platformType = platformType;
@@ -42,7 +42,7 @@ final class ImmutablePushMessage implements PushMessage {
         }
         final ImmutablePushMessage that = (ImmutablePushMessage) o;
         return new EqualsBuilder()
-                .append(deviceEndpointArn, that.deviceEndpointArn)
+                .append(destinationRouteToken, that.destinationRouteToken)
                 .append(subject, that.subject)
                 .append(body, that.body)
                 .append(platformType, that.platformType)
@@ -53,7 +53,7 @@ final class ImmutablePushMessage implements PushMessage {
     @Override
     public int hashCode() {
         return new HashCodeBuilder(17, 37)
-                .append(deviceEndpointArn)
+                .append(destinationRouteToken)
                 .append(subject)
                 .append(body)
                 .append(platformType)
@@ -64,7 +64,7 @@ final class ImmutablePushMessage implements PushMessage {
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .append("deviceEndpointArn", deviceEndpointArn)
+                .append("deviceEndpointArn", destinationRouteToken)
                 .append("subject", subject)
                 .append("body", body)
                 .append("platformType", platformType)
@@ -73,8 +73,8 @@ final class ImmutablePushMessage implements PushMessage {
     }
 
     @Override
-    public String deviceEndpointArn() {
-        return deviceEndpointArn;
+    public String destinationRouteToken() {
+        return destinationRouteToken;
     }
 
     @Override

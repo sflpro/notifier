@@ -34,7 +34,8 @@ public interface PushNotificationUserDeviceTokenProcessor {
      * @param recipientRouteToken
      * @param operatingSystemType
      * @param applicationType
+     * @param providerType
      * @return pushNotificationRecipient
      */
-    PushNotificationRecipient createPushNotificationRecipient(@Nonnull final Long subscriptionId, @Nonnull final String recipientRouteToken, @Nonnull final DeviceOperatingSystemType operatingSystemType, @Nonnull final String applicationType);
+    PushNotificationRecipient createPushNotificationRecipient(@Nonnull final Long subscriptionId, @Nonnull final String recipientRouteToken, @Nonnull final DeviceOperatingSystemType operatingSystemType, @Nonnull final String applicationType, final PushNotificationProviderType providerType);
 }

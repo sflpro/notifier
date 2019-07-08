@@ -18,6 +18,6 @@ public class DummyPushMessageSender implements PushMessageSender {
     @Override
     public PushMessageSendingResult send(final PushMessage message) {
         logger.debug("Simulating simple push notification sending for {}", message);
-        return PushMessageSendingResult.of(message.deviceEndpointArn());
+        return PushMessageSendingResult.of(message.destinationRouteToken());
     }
 }

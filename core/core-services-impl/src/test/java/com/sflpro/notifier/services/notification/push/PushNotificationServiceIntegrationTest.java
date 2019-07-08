@@ -11,8 +11,8 @@ import com.sflpro.notifier.services.notification.AbstractNotificationServiceInte
 import com.sflpro.notifier.services.notification.UserNotificationService;
 import com.sflpro.notifier.services.notification.dto.NotificationPropertyDto;
 import com.sflpro.notifier.services.notification.dto.push.PushNotificationDto;
+import com.sflpro.notifier.services.notification.dto.push.PushNotificationRecipientDto;
 import com.sflpro.notifier.services.notification.dto.push.PushNotificationSubscriptionDto;
-import com.sflpro.notifier.services.notification.dto.push.sns.PushNotificationSnsRecipientDto;
 import org.apache.commons.lang3.mutable.MutableBoolean;
 import org.apache.commons.lang3.mutable.MutableInt;
 import org.junit.Assert;
@@ -111,7 +111,7 @@ public class PushNotificationServiceIntegrationTest extends AbstractNotification
         final List<PushNotificationRecipient> recipients = new ArrayList<>();
         for (int i = 0; i < count; i++) {
             // Create recipient DTO
-            final PushNotificationSnsRecipientDto snsRecipientDto = getServicesTestHelper().createPushNotificationSnsRecipientDto();
+            final PushNotificationRecipientDto snsRecipientDto = getServicesTestHelper().createPushNotificationSnsRecipientDto();
             snsRecipientDto.setDestinationRouteToken(UUID.randomUUID().toString());
             // Create recipient
             final PushNotificationRecipient recipient = getServicesTestHelper().createPushNotificationSnsRecipient(subscription, snsRecipientDto);

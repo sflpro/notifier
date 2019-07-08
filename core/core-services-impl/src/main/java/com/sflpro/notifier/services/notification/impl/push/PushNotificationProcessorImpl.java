@@ -84,7 +84,6 @@ public class PushNotificationProcessorImpl implements PushNotificationProcessor 
         Assert.notNull(pushNotification, "Push notification should not be null");
         final PushNotificationRecipient recipient = pushNotification.getRecipient();
         final PushMessageSender pushMessageSender = getPushMessageSender(recipient.getType());
-        Assert.isTrue(PushNotificationProviderType.SNS.equals(recipient.getType()), "Push notification provider should be type of SNS");
         final PushMessageSendingResult pushMessageSendingResult = pushMessageSender.send(PushMessage.of(
                 recipient.getDestinationRouteToken(),
                 pushNotification.getSubject(),

@@ -63,7 +63,7 @@ public class PushNotificationServiceFacadeImpl extends AbstractNotificationServi
     @Autowired
     private PushNotificationSubscriptionRequestService pushNotificationSubscriptionRequestService;
 
-    @Value("${push.provider:AMAZON_SNS}")
+    @Value("${push.notification.provider:AMAZON_SNS}")
     private NotificationProviderType providerType;
 
     /* Constructors */

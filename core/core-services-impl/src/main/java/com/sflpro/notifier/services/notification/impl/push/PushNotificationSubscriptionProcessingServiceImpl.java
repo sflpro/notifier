@@ -160,7 +160,7 @@ public class PushNotificationSubscriptionProcessingServiceImpl implements PushNo
         } else {
             LOGGER.debug("No push notification recipient exists for subscription with id - {}, push notification provider token - {}, mobile device operating system type - {}. Creating new one", currentSubscription.getId(), pushNotificationProviderToken, operatingSystemType);
             // Create new push notification recipient
-            recipient = pushNotificationUserDeviceTokenProcessor.createPushNotificationRecipient(currentSubscription.getId(), pushNotificationProviderToken, operatingSystemType, applicationType);
+            recipient = pushNotificationUserDeviceTokenProcessor.createPushNotificationRecipient(currentSubscription.getId(), pushNotificationProviderToken, operatingSystemType, applicationType, activeProvider);
         }
         LOGGER.debug("Successfully retrieved/created push notification recipient with id - {} for subscription with id - {}, push notification provider token - {}, mobile device operating system type - {}. Recipient - {}", recipient.getId(), currentSubscription.getId(), pushNotificationProviderToken, operatingSystemType, recipient);
         return recipient;

@@ -1,8 +1,7 @@
-package com.sflpro.notifier.services.notification.impl.push.sns;
+package com.sflpro.notifier.services.notification.impl.push;
 
 import com.sflpro.notifier.db.entities.device.mobile.DeviceOperatingSystemType;
 import com.sflpro.notifier.services.common.exception.ServicesRuntimeException;
-import com.sflpro.notifier.services.notification.impl.push.ArnConfigurationService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,16 +16,16 @@ import org.springframework.stereotype.Component;
  * Time: 5:10 PM
  */
 @Component
-class SnsArnConfigurationServiceImpl implements ArnConfigurationService {
+class ArnConfigurationServiceImpl implements ArnConfigurationService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SnsArnConfigurationServiceImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ArnConfigurationServiceImpl.class);
 
     /* Dependencies */
     @Autowired
     private Environment env;
 
     /* Constructors */
-    public SnsArnConfigurationServiceImpl() {
+    public ArnConfigurationServiceImpl() {
         super();
     }
 

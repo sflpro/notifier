@@ -1,5 +1,6 @@
 package com.sflpro.notifier.services.notification.impl.push;
 
+import com.sflpro.notifier.db.entities.notification.NotificationProviderType;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationProviderType;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipient;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationSubscriptionRequest;
@@ -55,11 +56,12 @@ public class PushNotificationSubscriptionRequestProcessingServiceImpl implements
     @Autowired
     private PersistenceUtilityService persistenceUtilityService;
 
-    @Value("${push.notification.provider:SNS}")
-    private PushNotificationProviderType defaultProviderType;
+    private PushNotificationProviderType pushNotificationProviderType;
 
     /* Constructors */
-    PushNotificationSubscriptionRequestProcessingServiceImpl() {
+    PushNotificationSubscriptionRequestProcessingServiceImpl(@Value("${push.notification.provider:AMAZON_SNS}") final NotificationProviderType notificationProviderType) {
+        this.pushNotificationProviderType = PushNotificationProviderType.providerTypeFor(notificationProviderType)
+                .orElseThrow(() -> new IllegalStateException("Incorrect notificationProviderType was configured (push.notification.provider) for sending push notifications."));
         LOGGER.debug("Initializing push notification subscription request processing service");
     }
 
@@ -114,7 +116,7 @@ public class PushNotificationSubscriptionRequestProcessingServiceImpl implements
         parameters.setUserMobileDeviceId(request.getUserMobileDevice().getId());
         parameters.setUserId(request.getUser().getId());
         parameters.setApplicationType(request.getApplicationType());
-        parameters.setPushNotificationProviderType(PushNotificationProviderType.SNS);
+        parameters.setPushNotificationProviderType(pushNotificationProviderType);
         // Return parameters
         return parameters;
     }
@@ -122,7 +124,7 @@ public class PushNotificationSubscriptionRequestProcessingServiceImpl implements
     private LastProviderTokenInformation extractLastUsedTokenInformationIfAvailable(final PushNotificationSubscriptionRequest request) {
         // Data to be used
         String lastProviderToken = null;
-        PushNotificationProviderType lastProviderType = defaultProviderType;
+        PushNotificationProviderType lastProviderType = null;
         final String previouslyUsedSubscriptionRequestUuId = request.getPreviousSubscriptionRequestUuId();
         if (previouslyUsedSubscriptionRequestUuId != null) {
             // Check if subscription request exists
@@ -152,10 +154,6 @@ public class PushNotificationSubscriptionRequestProcessingServiceImpl implements
 
     public void setPersistenceUtilityService(final PersistenceUtilityService persistenceUtilityService) {
         this.persistenceUtilityService = persistenceUtilityService;
-    }
-
-    public void setDefaultProviderType(final PushNotificationProviderType defaultProviderType) {
-        this.defaultProviderType = defaultProviderType;
     }
 
     /* Inner classes */

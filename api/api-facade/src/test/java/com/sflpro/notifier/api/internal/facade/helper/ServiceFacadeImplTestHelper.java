@@ -22,9 +22,9 @@ import com.sflpro.notifier.db.entities.notification.UserNotification;
 import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
 import com.sflpro.notifier.db.entities.notification.email.NotificationProperty;
 import com.sflpro.notifier.db.entities.notification.push.PushNotification;
+import com.sflpro.notifier.db.entities.notification.push.PushNotificationProviderType;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipient;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationSubscriptionRequest;
-import com.sflpro.notifier.db.entities.notification.push.sns.PushNotificationSnsRecipient;
 import com.sflpro.notifier.db.entities.notification.sms.SmsNotification;
 import com.sflpro.notifier.db.entities.user.User;
 import com.sflpro.notifier.services.device.dto.UserDeviceDto;
@@ -33,8 +33,8 @@ import com.sflpro.notifier.services.notification.dto.NotificationPropertyDto;
 import com.sflpro.notifier.services.notification.dto.UserNotificationDto;
 import com.sflpro.notifier.services.notification.dto.email.EmailNotificationDto;
 import com.sflpro.notifier.services.notification.dto.push.PushNotificationDto;
+import com.sflpro.notifier.services.notification.dto.push.PushNotificationRecipientDto;
 import com.sflpro.notifier.services.notification.dto.push.PushNotificationSubscriptionRequestDto;
-import com.sflpro.notifier.services.notification.dto.push.sns.PushNotificationSnsRecipientDto;
 import com.sflpro.notifier.services.notification.dto.sms.SmsNotificationDto;
 import com.sflpro.notifier.services.user.dto.UserDto;
 import org.apache.commons.lang3.mutable.MutableInt;
@@ -269,8 +269,8 @@ public class ServiceFacadeImplTestHelper {
     }
 
     /* Push notification recipient */
-    public PushNotificationSnsRecipientDto createPushNotificationSnsRecipientDto() {
-        final PushNotificationSnsRecipientDto recipientDto = new PushNotificationSnsRecipientDto();
+    public PushNotificationRecipientDto createPushNotificationSnsRecipientDto() {
+        final PushNotificationRecipientDto recipientDto = new PushNotificationRecipientDto(PushNotificationProviderType.SNS);
         recipientDto.setDestinationRouteToken("JHYFTTDRSDESYRSESRDYESESESRTDESHDSSDD");
         recipientDto.setDeviceOperatingSystemType(DeviceOperatingSystemType.IOS);
         recipientDto.setApplicationType("application");
@@ -278,13 +278,13 @@ public class ServiceFacadeImplTestHelper {
         return recipientDto;
     }
 
-    public PushNotificationSnsRecipient createPushNotificationSnsRecipient(final PushNotificationSnsRecipientDto recipientDto) {
-        final PushNotificationSnsRecipient recipient = new PushNotificationSnsRecipient(true);
+    public PushNotificationRecipient createPushNotificationSnsRecipient(final PushNotificationRecipientDto recipientDto) {
+        final PushNotificationRecipient recipient = new PushNotificationRecipient(PushNotificationProviderType.SNS,true);
         recipientDto.updateDomainEntityProperties(recipient);
         return recipient;
     }
 
-    public PushNotificationSnsRecipient createPushNotificationSnsRecipient() {
+    public PushNotificationRecipient createPushNotificationSnsRecipient() {
         return createPushNotificationSnsRecipient(createPushNotificationSnsRecipientDto());
     }
 

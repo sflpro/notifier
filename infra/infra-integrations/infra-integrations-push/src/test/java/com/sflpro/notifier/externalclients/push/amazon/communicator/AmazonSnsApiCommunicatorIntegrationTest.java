@@ -43,10 +43,10 @@ public class AmazonSnsApiCommunicatorIntegrationTest extends AbstractPushNotific
     @Autowired
     private AmazonSnsApiCommunicator amazonSnsApiCommunicator;
 
-    @Value("${amazon.account.sns.application.arn.ios}")
+    @Value("${notification.push.application.arn.ios}")
     private String iosPlatformApplicationArn;
 
-    @Value("${amazon.account.sns.application.arn.android}")
+    @Value("${notification.push.application.arn.android}")
     private String androidPlatformApplicationArn;
 
     @Value("#{ T(org.apache.commons.lang3.StringUtils).isNotBlank(\"${amazon.account.sns.accesskey:''}\") " +

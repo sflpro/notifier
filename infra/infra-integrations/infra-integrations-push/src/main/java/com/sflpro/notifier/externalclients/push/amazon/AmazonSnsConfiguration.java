@@ -26,7 +26,7 @@ class AmazonSnsConfiguration {
     @Bean
     AmazonSNSClient amazonSNSClient(@Value("${amazon.account.sns.accesskey}") final String accessKey,
                                     @Value("${amazon.account.sns.secretkey}") final String secretKey,
-                                    @Value("${amazon.account.sns.region}") final String awsRegion) {
+                                    @Value("${amazon.account.sns.region:EU_CENTRAL_1}") final String awsRegion) {
         final AmazonSNSClient amazonSNSClient = new AmazonSNSClient(new BasicAWSCredentials(accessKey, secretKey));
         amazonSNSClient.setRegion(Region.getRegion(Regions.valueOf(awsRegion)));
         return amazonSNSClient;

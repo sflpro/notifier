@@ -32,7 +32,7 @@ class ArnConfigurationServiceImpl implements ArnConfigurationService {
     @Override
     public String getApplicationArnForMobilePlatform(final DeviceOperatingSystemType operatingSystemType, final String applicationType) {
         // Build application key
-        final String arnPropertyKey = "amazon.account.sns.application.arn." + applicationType + "." + operatingSystemType.name().toLowerCase();
+        final String arnPropertyKey = "notification.push.application.arn." + applicationType + "." + operatingSystemType.name().toLowerCase();
         // Grab application ARN
         String applicationArn = null;
         try {

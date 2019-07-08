@@ -12,16 +12,19 @@ Currently microservice supports :
 
 The microservice supports sending regular emails. The supported transports are :
 * SMTP
+* Mandrill
 
 ### SMS Notifications
 
 The microservice supports sending SMS notifications. The supported transports are :
 * [Twilio](https://www.twilio.com/) 
+* [MsgAm](https://www.msg.am/) 
 
 ### Push Notifications
 
 The microservice supports sendong push notifications. The supported transposrts are :
 * [Amazon SNS](https://aws.amazon.com/sns/)
+* [Firebase Cloud Messaging FCM](https://firebase.google.com/docs/cloud-messaging)
 
 ## Microservice API
 

@@ -11,11 +11,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.annotation.Nonnull;
+import javax.annotation.PreDestroy;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -25,8 +25,6 @@ import java.util.concurrent.Executors;
  * Date: 12/13/14
  * Time: 11:44 PM
  */
-@Service(value = "rabbit")
-@ConditionalOnProperty(name = "notifier.queue.engine", havingValue = "rabbit")
 public class RabbitConnectorServiceImpl implements AmqpConnectorService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RabbitConnectorServiceImpl.class);
@@ -49,6 +47,11 @@ public class RabbitConnectorServiceImpl implements AmqpConnectorService {
 
         LOGGER.debug("Initializing AMQP connector service");
         this.executorService = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
+    }
+
+    @PreDestroy
+    private void destroy() {
+        this.executorService.shutdown();
     }
 
     @Override
@@ -74,7 +77,7 @@ public class RabbitConnectorServiceImpl implements AmqpConnectorService {
         private final AmqpResponseHandler<T> responseHandler;
 
         /* Constructors */
-        public MessageSenderTask(final RPCCallType callType, final AbstractRPCTransferModel requestModel, final Class<T> responseModelClass, final AmqpResponseHandler<T> responseHandler) {
+        private MessageSenderTask(final RPCCallType callType, final AbstractRPCTransferModel requestModel, final Class<T> responseModelClass, final AmqpResponseHandler<T> responseHandler) {
             this.callType = callType;
             this.requestModel = requestModel;
             this.responseModelClass = responseModelClass;
@@ -91,8 +94,12 @@ public class RabbitConnectorServiceImpl implements AmqpConnectorService {
                 rpcMessage.setPayload(objectMapper.writeValueAsString(requestModel));
                 // Serialize into JSON
                 final String jsonMessage = objectMapper.writeValueAsString(rpcMessage);
-                final Message amqpMessage = new Message(jsonMessage.getBytes("UTF8"), new MessageProperties());
+                final Message amqpMessage = new Message(jsonMessage.getBytes(StandardCharsets.UTF_8), new MessageProperties());
                 final Message responseMessage = rabbitTemplate.sendAndReceive(amqpMessage);
+                if (responseMessage == null) {
+                    LOGGER.warn("Seems nobody consumes the messages from queue '{}'.", callType.getCallIdentifier());
+                    return;
+                }
                 final T responseModel = objectMapper.readValue(responseMessage.getBody(), responseModelClass);
                 LOGGER.debug("Got AMQP response model - {} for request model - {}", responseModel, requestModel);
                 // Handle callback

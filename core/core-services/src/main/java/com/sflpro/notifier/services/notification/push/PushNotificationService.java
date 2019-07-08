@@ -2,7 +2,6 @@ package com.sflpro.notifier.services.notification.push;
 
 import com.sflpro.notifier.db.entities.notification.push.PushNotification;
 import com.sflpro.notifier.services.notification.AbstractNotificationService;
-import com.sflpro.notifier.services.notification.dto.NotificationPropertyDto;
 import com.sflpro.notifier.services.notification.dto.push.PushNotificationDto;
 
 import javax.annotation.Nonnull;
@@ -21,11 +20,10 @@ public interface PushNotificationService extends AbstractNotificationService<Pus
      *
      * @param pushNotificationRecipientId
      * @param pushNotificationDto
-     * @param pushNotificationPropertyDTOs
      * @return pushNotification
      */
     @Nonnull
-    PushNotification createNotification(@Nonnull final Long pushNotificationRecipientId, @Nonnull final PushNotificationDto pushNotificationDto, @Nonnull final List<NotificationPropertyDto> pushNotificationPropertyDTOs);
+    PushNotification createNotification(@Nonnull final Long pushNotificationRecipientId, @Nonnull final PushNotificationDto pushNotificationDto);
 
 
     /**
@@ -36,5 +34,5 @@ public interface PushNotificationService extends AbstractNotificationService<Pus
      * @return pushNotifications
      */
     @Nonnull
-    List<PushNotification> createNotificationsForUserActiveRecipients(@Nonnull final Long userId, @Nonnull final PushNotificationDto pushNotificationDto, @Nonnull final List<NotificationPropertyDto> pushNotificationPropertyDTOs);
+    List<PushNotification> createNotificationsForUserActiveRecipients(@Nonnull final Long userId, @Nonnull final PushNotificationDto pushNotificationDto);
 }

@@ -13,7 +13,8 @@ import java.util.List;
 public enum NotificationProviderType {
     TWILLIO(NotificationType.SMS), MSG_AM(NotificationType.SMS), NIKITA_MOBILE(NotificationType.SMS),
     SMTP_SERVER(NotificationType.EMAIL), AMAZON_SNS(NotificationType.PUSH),
-    GOOGLE_GCM(NotificationType.PUSH), APPLE_APNS(NotificationType.PUSH), MANDRILL(NotificationType.EMAIL);
+    GOOGLE_GCM(NotificationType.PUSH), APPLE_APNS(NotificationType.PUSH), MANDRILL(NotificationType.EMAIL),
+    FIREBASE_CLOUD_MESSAGING(NotificationType.PUSH);
 
     /* Properties */
     private final List<NotificationType> supportedNotificationTypes;

@@ -10,6 +10,7 @@ import org.junit.Ignore;
 import org.junit.runner.RunWith;
 
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.Assert.assertTrue;
 
@@ -40,6 +41,10 @@ public abstract class AbstractFacadeUnitTest extends EasyMockSupport {
             }
         });
         assertTrue(mutableBoolean.booleanValue());
+    }
+
+    public static String uuid(){
+       return UUID.randomUUID().toString();
     }
 
     /* Getters and setters */

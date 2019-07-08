@@ -5,7 +5,6 @@ import com.sflpro.notifier.db.entities.notification.sms.SmsNotification;
 import com.sflpro.notifier.queue.consumer.common.NotificationQueueConsumerService;
 import com.sflpro.notifier.queue.consumer.test.AbstractQueueConsumerIntegrationTest;
 import com.sflpro.notifier.services.notification.sms.SmsNotificationService;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -20,7 +19,6 @@ import static org.junit.Assert.assertNotNull;
  * Date: 4/10/15
  * Time: 7:17 PM
  */
-@Ignore
 public class NotificationQueueConsumerServiceIntegrationTest extends AbstractQueueConsumerIntegrationTest {
 
     /* Dependencies */

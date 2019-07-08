@@ -6,8 +6,8 @@ import com.sflpro.notifier.externalclients.common.http.rest.RestClient;
 import com.sflpro.notifier.externalclients.common.http.rest.RestClientImpl;
 import com.sflpro.notifier.externalclients.sms.msgam.client.MsgAmRestClient;
 import com.sflpro.notifier.externalclients.sms.msgam.client.MsgAmRestClientImpl;
-import com.sflpro.notifier.externalclients.sms.msgam.communicator.MsgAmApiCommunicator;
 import com.sflpro.notifier.externalclients.sms.msgam.communicator.DefaultMsgAmApiCommunicator;
+import com.sflpro.notifier.externalclients.sms.msgam.communicator.MsgAmApiCommunicator;
 import com.sflpro.notifier.spi.sms.*;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -27,14 +27,11 @@ import org.springframework.web.client.RestTemplate;
  * Time: 5:39 PM
  */
 @Configuration
-@ConditionalOnProperty(name = MsgAmConfiguration.LOGIN_PROP_NAME)
+@ConditionalOnProperty(name = "msgam.enabled", havingValue = "true")
 @SuppressWarnings("unused")
 class MsgAmConfiguration {
 
     private static final String MSGAM_PROVIDER_REGISTRY_NAME = "msg_am";
-
-    static final String LOGIN_PROP_NAME = "msgam.account.login";
-
 
     @Bean("restClient_msgAmRestClient")
     RestClient restClientForMsgAm() {
@@ -59,11 +56,10 @@ class MsgAmConfiguration {
     @Bean("msgAmApiCommunicator")
     MsgAmApiCommunicator msgAmApiCommunicator(final MsgAmRestClient msgAmRestClient, final Environment environment) {
         return new DefaultMsgAmApiCommunicator(
-                environment.getProperty(LOGIN_PROP_NAME),
+                environment.getProperty("msgam.account.login"),
                 environment.getProperty("msgam.account.pass"),
                 msgAmRestClient);
     }
-
 
     @Bean("msgAmSimpleSmsSender")
     SimpleSmsSender msgAmSimpleSmsSender(final MsgAmApiCommunicator msgAmApiCommunicator) {
@@ -81,12 +77,11 @@ class MsgAmConfiguration {
         return new MsgAmTemplatedSmsSender(msgAmApiCommunicator, smsTemplateContentResolver);
     }
 
-    @Bean("msgAmSimpleSmsSenderRegistry")
+    @Bean("msgAmTemplatedSmsSenderRegistry")
     @ConditionalOnBean(name = "msgAmTemplatedSmsSender")
-    TemplatedSmsSenderRegistry msgAmSimpleSmsSenderRegistry(final TemplatedSmsSender msgAmTemplatedSmsSender) {
+    TemplatedSmsSenderRegistry msgAmTemplatedSmsSenderRegistry(final TemplatedSmsSender msgAmTemplatedSmsSender) {
         return TemplatedSmsSenderRegistry.of(MSGAM_PROVIDER_REGISTRY_NAME, msgAmTemplatedSmsSender);
     }
-
 
     private static class HtmlToXmlHttpMessageConverter extends AbstractJackson2HttpMessageConverter {
 

@@ -1,15 +1,19 @@
 package com.sflpro.notifier.services.notification.impl.push;
 
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipient;
+import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipientStatus;
+import com.sflpro.notifier.db.entities.notification.push.PushNotificationSubscription;
 import com.sflpro.notifier.db.repositories.repositories.notification.push.AbstractPushNotificationRecipientRepository;
 import com.sflpro.notifier.db.repositories.repositories.notification.push.PushNotificationRecipientRepository;
 import com.sflpro.notifier.db.repositories.repositories.notification.push.PushNotificationRecipientSearchFilter;
+import com.sflpro.notifier.services.notification.dto.push.PushNotificationRecipientDto;
 import com.sflpro.notifier.services.notification.push.PushNotificationRecipientSearchParameters;
 import com.sflpro.notifier.services.notification.push.PushNotificationRecipientService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import javax.annotation.Nonnull;
@@ -62,6 +66,26 @@ public class PushNotificationRecipientServiceImpl extends AbstractPushNotificati
     @Override
     protected AbstractPushNotificationRecipientRepository<PushNotificationRecipient> getRepository() {
         return pushNotificationRecipientRepository;
+    }
+
+    @Transactional
+    @Nonnull
+    @Override
+    public PushNotificationRecipient createPushNotificationRecipient(@Nonnull final Long subscriptionId, @Nonnull final PushNotificationRecipientDto recipientDto) {
+        assertPushNotificationSubscriptionIdNotNull(subscriptionId);
+        assertPushNotificationRecipientDto(recipientDto);
+        LOGGER.debug("Creating push notification recipient DTO for subscription with id - {}, DTO - {}", subscriptionId, recipientDto);
+        final PushNotificationSubscription subscription = getPushNotificationSubscriptionService().getPushNotificationSubscriptionById(subscriptionId);
+        assertNoRecipientExists(recipientDto.getType(), subscription, recipientDto.getDestinationRouteToken(), recipientDto.getApplicationType());
+        // Create new push notification recipient
+        PushNotificationRecipient recipient = new PushNotificationRecipient(recipientDto.getType(),true);
+        recipientDto.updateDomainEntityProperties(recipient);
+        recipient.setStatus(PushNotificationRecipientStatus.ENABLED);
+        recipient.setSubscription(subscription);
+        // Persist recipient
+        recipient = pushNotificationRecipientRepository.save(recipient);
+        LOGGER.debug("Successfully created push notification recipient for id - {}, recipient - {}", recipient.getId(), recipient);
+        return recipient;
     }
 
     @Override

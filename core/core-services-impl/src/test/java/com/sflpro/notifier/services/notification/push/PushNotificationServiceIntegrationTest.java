@@ -11,8 +11,8 @@ import com.sflpro.notifier.services.notification.AbstractNotificationServiceInte
 import com.sflpro.notifier.services.notification.UserNotificationService;
 import com.sflpro.notifier.services.notification.dto.NotificationPropertyDto;
 import com.sflpro.notifier.services.notification.dto.push.PushNotificationDto;
+import com.sflpro.notifier.services.notification.dto.push.PushNotificationRecipientDto;
 import com.sflpro.notifier.services.notification.dto.push.PushNotificationSubscriptionDto;
-import com.sflpro.notifier.services.notification.dto.push.sns.PushNotificationSnsRecipientDto;
 import org.apache.commons.lang3.mutable.MutableBoolean;
 import org.apache.commons.lang3.mutable.MutableInt;
 import org.junit.Assert;
@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.*;
 
@@ -55,7 +56,7 @@ public class PushNotificationServiceIntegrationTest extends AbstractNotification
         final List<NotificationPropertyDto> notificationPropertyDtos = getServicesTestHelper().createNotificationPropertyDtos(10);
         flushAndClear();
         // Create push notifications
-        final List<PushNotification> notifications = pushNotificationService.createNotificationsForUserActiveRecipients(customer.getId(), notificationDto, notificationPropertyDtos);
+        final List<PushNotification> notifications = pushNotificationService.createNotificationsForUserActiveRecipients(customer.getId(), notificationDto);
         assertNotNull(notifications);
         assertEquals(recipients.size(), notifications.size());
         // Load user notifications for customer
@@ -64,7 +65,7 @@ public class PushNotificationServiceIntegrationTest extends AbstractNotification
         final MutableInt counter = new MutableInt(0);
         notifications.forEach(notification -> {
             final PushNotificationRecipient recipient = recipients.get(counter.intValue());
-            assertPushNotification(notification, notificationDto, recipient, notificationPropertyDtos);
+            assertPushNotification(notification, notificationDto, recipient);
             assertUserNotificationExists(userNotifications, notification.getId());
             counter.increment();
         });
@@ -78,12 +79,12 @@ public class PushNotificationServiceIntegrationTest extends AbstractNotification
         final List<NotificationPropertyDto> notificationPropertyDtos = getServicesTestHelper().createNotificationPropertyDtos(10);
         flushAndClear();
         // Create push notification
-        PushNotification result = pushNotificationService.createNotification(recipient.getId(), notificationDto, notificationPropertyDtos);
-        assertPushNotification(result, notificationDto, recipient, notificationPropertyDtos);
+        PushNotification result = pushNotificationService.createNotification(recipient.getId(), notificationDto);
+        assertPushNotification(result, notificationDto, recipient);
         // Flush, clear, reload and assert
         flushAndClear();
         result = pushNotificationService.getNotificationById(result.getId());
-        assertPushNotification(result, notificationDto, recipient, notificationPropertyDtos);
+        assertPushNotification(result, notificationDto, recipient);
     }
 
     /* Utility methods */
@@ -97,19 +98,20 @@ public class PushNotificationServiceIntegrationTest extends AbstractNotification
         assertTrue(found.getValue());
     }
 
-    private void assertPushNotification(final PushNotification result, final PushNotificationDto notificationDto, final PushNotificationRecipient recipient, final List<NotificationPropertyDto> notificationPropertyDtos) {
+    private void assertPushNotification(final PushNotification result, final PushNotificationDto notificationDto, final PushNotificationRecipient recipient) {
         getServicesTestHelper().assertPushNotification(result, notificationDto);
         assertNotNull(result.getRecipient());
         Assert.assertEquals(recipient.getId(), result.getRecipient().getId());
         Assert.assertEquals(recipient.getType().getNotificationProviderType(), result.getProviderType());
-        assertPushNotificationProperties(notificationPropertyDtos, result.getProperties(), result);
+        assertEquals(notificationDto.getProperties(),
+                result.getProperties().stream().collect(Collectors.toMap(NotificationProperty::getPropertyKey, NotificationProperty::getPropertyValue)));
     }
 
     private List<PushNotificationRecipient> createPushNotificationRecipients(final PushNotificationSubscription subscription, final int count) {
         final List<PushNotificationRecipient> recipients = new ArrayList<>();
         for (int i = 0; i < count; i++) {
             // Create recipient DTO
-            final PushNotificationSnsRecipientDto snsRecipientDto = getServicesTestHelper().createPushNotificationSnsRecipientDto();
+            final PushNotificationRecipientDto snsRecipientDto = getServicesTestHelper().createPushNotificationSnsRecipientDto();
             snsRecipientDto.setDestinationRouteToken(UUID.randomUUID().toString());
             // Create recipient
             final PushNotificationRecipient recipient = getServicesTestHelper().createPushNotificationSnsRecipient(subscription, snsRecipientDto);

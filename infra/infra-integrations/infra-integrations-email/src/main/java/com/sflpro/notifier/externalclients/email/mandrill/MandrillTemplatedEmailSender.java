@@ -4,6 +4,7 @@ package com.sflpro.notifier.externalclients.email.mandrill;
 import com.sflpro.notifier.externalclients.email.mandrill.communicator.MandrillApiCommunicator;
 import com.sflpro.notifier.spi.email.TemplatedEmailMessage;
 import com.sflpro.notifier.spi.email.TemplatedEmailSender;
+import org.springframework.util.Assert;
 
 /**
  * Created by Hayk Mkrtchyan.
@@ -20,6 +21,7 @@ class MandrillTemplatedEmailSender implements TemplatedEmailSender {
 
     @Override
     public void send(final TemplatedEmailMessage message) {
+        Assert.notNull(message,"Null was passed as an argument for parameter 'message'.");
         mandrillApiCommunicator.sendEmailTemplate(message);
     }
 }

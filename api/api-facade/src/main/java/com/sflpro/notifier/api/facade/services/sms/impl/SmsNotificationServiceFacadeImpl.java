@@ -16,6 +16,7 @@ import com.sflpro.notifier.services.system.event.ApplicationEventDistributionSer
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
@@ -29,7 +30,7 @@ import java.util.List;
  * Time: 5:13 PM
  */
 @Component
-public class SmsNotificationServiceFacadeImpl extends AbstractNotificationServiceFacadeImpl implements SmsNotificationServiceFacade {
+class SmsNotificationServiceFacadeImpl extends AbstractNotificationServiceFacadeImpl implements SmsNotificationServiceFacade {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SmsNotificationServiceFacadeImpl.class);
 
@@ -40,8 +41,11 @@ public class SmsNotificationServiceFacadeImpl extends AbstractNotificationServic
     @Autowired
     private ApplicationEventDistributionService applicationEventDistributionService;
 
+    @Value("${sms.provider:MSG_AM}")
+    private NotificationProviderType providerType = NotificationProviderType.MSG_AM;
+
     /* Constructors */
-    public SmsNotificationServiceFacadeImpl() {
+    SmsNotificationServiceFacadeImpl() {
         super();
     }
 
@@ -56,11 +60,14 @@ public class SmsNotificationServiceFacadeImpl extends AbstractNotificationServic
             return new ResultResponseModel<>(errors);
         }
         // Create notification DTO
-        final SmsNotificationDto smsNotificationDto = new SmsNotificationDto(request.getRecipientNumber(), NotificationProviderType.AMAZON_SNS, request.getBody(), request.getClientIpAddress());
+        final SmsNotificationDto smsNotificationDto = new SmsNotificationDto(request.getRecipientNumber(), request.getBody(), request.getClientIpAddress(), providerType);
+        smsNotificationDto.setTemplateName(request.getTemplateName());
+        smsNotificationDto.setProperties(request.getProperties());
+        smsNotificationDto.setHasSecureProperties(!request.getSecureProperties().isEmpty());
         final SmsNotification smsNotification = smsNotificationService.createSmsNotification(smsNotificationDto);
         associateUserWithNotificationIfRequired(request.getUserUuId(), smsNotification);
         // Publish event
-        applicationEventDistributionService.publishAsynchronousEvent(new StartSendingNotificationEvent(smsNotification.getId()));
+        applicationEventDistributionService.publishAsynchronousEvent(new StartSendingNotificationEvent(smsNotification.getId(), request.getSecureProperties()));
         // Create response model
         final SmsNotificationModel smsNotificationModel = createSmsNotificationModel(smsNotification);
         final CreateSmsNotificationResponse response = new CreateSmsNotificationResponse(smsNotificationModel);

@@ -13,10 +13,17 @@ abstract class AbstractEmailMessage implements EmailMessage {
 
     private final String from;
     private final String to;
+    private final String subject;
 
     AbstractEmailMessage(final String from, final String to) {
+       this(from,to,null);
+    }
+
+
+    AbstractEmailMessage(final String from, final String to, final String subject) {
         this.from = from;
         this.to = to;
+        this.subject = subject;
     }
 
 
@@ -32,6 +39,7 @@ abstract class AbstractEmailMessage implements EmailMessage {
         return new EqualsBuilder()
                 .append(from, that.from)
                 .append(to, that.to)
+                .append(subject, that.subject)
                 .isEquals();
     }
 
@@ -48,6 +56,7 @@ abstract class AbstractEmailMessage implements EmailMessage {
         return new ToStringBuilder(this)
                 .append("from", from)
                 .append("to", to)
+                .append("subject", subject)
                 .toString();
     }
 
@@ -59,5 +68,9 @@ abstract class AbstractEmailMessage implements EmailMessage {
     @Override
     public String to() {
         return to;
+    }
+
+    public String getSubject() {
+        return subject;
     }
 }

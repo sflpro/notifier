@@ -20,15 +20,13 @@ import java.util.Set;
 @Entity
 @Table(name = "notification_push_recipient", indexes = {@Index(name = "IDX_push_notification_recipient_device_operating_system_type", columnList = "device_operating_system_type"), @Index(name = "IDX_push_notification_recipient_status", columnList = "status"), @Index(name = "IDX_push_notification_recipient_type", columnList = "type"), @Index(name = "IDX_push_notification_recipient_destination_route_token", columnList = "destination_route_token"), @Index(name = "IDX_push_notification_application_type", columnList = "application_type")}, uniqueConstraints = {
         @UniqueConstraint(name = "UK_push_notification_recipient_type_tkn_subs_id_app_type", columnNames = {"type", "destination_route_token", "subscription_id", "application_type"})})
-@Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
-public abstract class PushNotificationRecipient extends AbstractDomainUuIdAwareEntityModel {
+public class PushNotificationRecipient extends AbstractDomainUuIdAwareEntityModel {
 
     private static final long serialVersionUID = 4607098397294722795L;
 
     /* Properties */
     @Enumerated(EnumType.STRING)
-    @Column(name = "type", nullable = false, insertable = false, updatable = false)
+    @Column(name = "type", nullable = false, updatable = false)
     private PushNotificationProviderType type;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
@@ -50,20 +48,24 @@ public abstract class PushNotificationRecipient extends AbstractDomainUuIdAwareE
     private String applicationType;
 
     @ManyToOne(optional = true, fetch = FetchType.LAZY)
-    @JoinColumn(name = "last_device_id", nullable = true)
+    @JoinColumn(name = "last_device_id")
     private UserDevice lastDevice;
 
-    @OneToMany(mappedBy = "recipient", fetch = FetchType.LAZY, orphanRemoval = false)
+    @OneToMany(mappedBy = "recipient", fetch = FetchType.LAZY)
     private Set<PushNotificationRecipientDevice> devices;
+
+    @Column(name = "platform_application_arn", nullable = false, length = 500)
+    private String platformApplicationArn;
 
     /* Constructors */
     public PushNotificationRecipient() {
         initializeDefaults();
     }
 
-    public PushNotificationRecipient(final boolean generateUuId) {
+    public PushNotificationRecipient(final PushNotificationProviderType type, final boolean generateUuId) {
         super(generateUuId);
         initializeDefaults();
+        this.type = type;
     }
 
     /* Properties getters and setters */
@@ -131,6 +133,14 @@ public abstract class PushNotificationRecipient extends AbstractDomainUuIdAwareE
         this.devices = devices;
     }
 
+    public String getPlatformApplicationArn() {
+        return platformApplicationArn;
+    }
+
+    public void setPlatformApplicationArn(final String platformApplicationArn) {
+        this.platformApplicationArn = platformApplicationArn;
+    }
+
     /* Private utility methods */
     private void initializeDefaults() {
         this.devices = new LinkedHashSet<>();
@@ -153,6 +163,7 @@ public abstract class PushNotificationRecipient extends AbstractDomainUuIdAwareE
         builder.append(this.getDeviceOperatingSystemType(), that.getDeviceOperatingSystemType());
         builder.append(this.getApplicationType(), that.getApplicationType());
         builder.append(this.getStatus(), that.getStatus());
+        builder.append(this.getPlatformApplicationArn(), that.getPlatformApplicationArn());
         builder.append(getIdOrNull(this.getSubscription()), getIdOrNull(that.getSubscription()));
         builder.append(getIdOrNull(this.getLastDevice()), getIdOrNull(that.getLastDevice()));
         return builder.isEquals();
@@ -169,6 +180,7 @@ public abstract class PushNotificationRecipient extends AbstractDomainUuIdAwareE
         builder.append(this.getStatus());
         builder.append(getIdOrNull(this.getSubscription()));
         builder.append(getIdOrNull(this.getLastDevice()));
+        builder.append(this.getPlatformApplicationArn());
         return builder.build();
     }
 
@@ -184,6 +196,7 @@ public abstract class PushNotificationRecipient extends AbstractDomainUuIdAwareE
         builder.append("status", this.getStatus());
         builder.append("subscription", getIdOrNull(this.getSubscription()));
         builder.append("lastDevice", this.getLastDevice());
+        builder.append("platformApplicationArn", this.getPlatformApplicationArn());
         return builder.build();
     }
 }

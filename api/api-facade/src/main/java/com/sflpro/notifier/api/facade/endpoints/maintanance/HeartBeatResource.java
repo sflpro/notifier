@@ -4,8 +4,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.SwaggerDefinition;
 import io.swagger.annotations.Tag;
-import org.springframework.stereotype.Component;
 
+import javax.inject.Singleton;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
@@ -18,14 +18,14 @@ import javax.ws.rs.core.Response;
  */
 @SwaggerDefinition(tags = {@Tag(name = "heartbeat", description = "The status of the notification service")})
 @Api(tags = {"heartbeat"})
-@Component
+@Singleton
 @Path("heartbeat")
 public class HeartBeatResource {
-
     /* Constructors */
     public HeartBeatResource() {
         //default constructor
     }
+
 
     @ApiOperation("Returns notification service's status")
     @GET

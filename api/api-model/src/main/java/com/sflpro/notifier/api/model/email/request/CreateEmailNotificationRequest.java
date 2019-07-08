@@ -3,16 +3,14 @@ package com.sflpro.notifier.api.model.email.request;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sflpro.notifier.api.model.common.result.ErrorResponseModel;
 import com.sflpro.notifier.api.model.common.result.ErrorType;
-import com.sflpro.notifier.api.model.notification.request.AbstractCreateNotificationRequest;
+import com.sflpro.notifier.api.model.notification.request.AbstractTemplatableCreateNotificationRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.annotation.Nonnull;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * User: Ruben Dilanyan
@@ -20,7 +18,7 @@ import java.util.Map;
  * Date: 1/12/16
  * Time: 7:36 PM
  */
-public class CreateEmailNotificationRequest extends AbstractCreateNotificationRequest {
+public class CreateEmailNotificationRequest extends AbstractTemplatableCreateNotificationRequest {
 
     private static final long serialVersionUID = 8423183227450211673L;
 
@@ -34,20 +32,9 @@ public class CreateEmailNotificationRequest extends AbstractCreateNotificationRe
     @JsonProperty("subject")
     private String subject;
 
-    @JsonProperty("templateName")
-    private String templateName;
-
-    @JsonProperty("properties")
-    private Map<String, String> properties;
-
-    @JsonProperty("secureProperties")
-    private Map<String, String> secureProperties;
-
     /* Constructors */
     public CreateEmailNotificationRequest() {
         super();
-        properties = new HashMap<>();
-        secureProperties = new HashMap<>();
     }
 
     /* Properties getters and setters */
@@ -73,30 +60,6 @@ public class CreateEmailNotificationRequest extends AbstractCreateNotificationRe
 
     public void setSubject(final String subject) {
         this.subject = subject;
-    }
-
-    public String getTemplateName() {
-        return templateName;
-    }
-
-    public void setTemplateName(final String templateName) {
-        this.templateName = templateName;
-    }
-
-    public Map<String, String> getProperties() {
-        return properties;
-    }
-
-    public void setProperties(final Map<String, String> properties) {
-        this.properties = properties;
-    }
-
-    public Map<String, String> getSecureProperties() {
-        return secureProperties;
-    }
-
-    public void setSecureProperties(final Map<String, String> secureProperties) {
-        this.secureProperties = secureProperties;
     }
 
     /* Validation methods */
@@ -129,7 +92,7 @@ public class CreateEmailNotificationRequest extends AbstractCreateNotificationRe
         builder.append(this.getRecipientEmail(), that.getRecipientEmail());
         builder.append(this.getSubject(), that.getSubject());
         builder.append(this.getTemplateName(), that.getTemplateName());
-        builder.append(this.getSecureProperties(), that.getSecureProperties());
+        builder.append(this.getProperties(), that.getProperties());
         builder.append(this.getSecureProperties(), that.getSecureProperties());
         return builder.isEquals();
     }

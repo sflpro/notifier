@@ -1,6 +1,7 @@
 package com.sflpro.notifier.services.notification.impl.push;
 
 import com.sflpro.notifier.db.entities.notification.UserNotification;
+import com.sflpro.notifier.db.entities.notification.email.NotificationProperty;
 import com.sflpro.notifier.db.entities.notification.push.PushNotification;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipient;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipientStatus;
@@ -27,6 +28,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.*;
@@ -75,19 +77,13 @@ public class PushNotificationServiceImplTest extends AbstractNotificationService
         replayAll();
         // Run test scenario
         try {
-            pushNotificationService.createNotificationsForUserActiveRecipients(null, pushNotificationDto, notificationPropertyDtos);
+            pushNotificationService.createNotificationsForUserActiveRecipients(null, pushNotificationDto);
             fail("Exception should be thrown");
         } catch (final IllegalArgumentException ex) {
             // Expected
         }
         try {
-            pushNotificationService.createNotificationsForUserActiveRecipients(userId, null, notificationPropertyDtos);
-            fail("Exception should be thrown");
-        } catch (final IllegalArgumentException ex) {
-            // Expected
-        }
-        try {
-            pushNotificationService.createNotificationsForUserActiveRecipients(userId, pushNotificationDto, null);
+            pushNotificationService.createNotificationsForUserActiveRecipients(userId, null);
             fail("Exception should be thrown");
         } catch (final IllegalArgumentException ex) {
             // Expected
@@ -112,7 +108,7 @@ public class PushNotificationServiceImplTest extends AbstractNotificationService
         // Replay
         replayAll();
         // Run test scenario
-        final List<PushNotification> pushNotifications = pushNotificationService.createNotificationsForUserActiveRecipients(userId, pushNotificationDto, notificationPropertyDtos);
+        final List<PushNotification> pushNotifications = pushNotificationService.createNotificationsForUserActiveRecipients(userId, pushNotificationDto);
         assertNotNull(pushNotifications);
         assertEquals(0, pushNotifications.size());
         // Verify
@@ -138,8 +134,6 @@ public class PushNotificationServiceImplTest extends AbstractNotificationService
         searchParameters.setSubscriptionId(subscriptionId);
         // Expected list of recipients
         final List<PushNotificationRecipient> recipients = createPushNotificationsRecipients(10);
-        // Create list of push notifications
-        final List<NotificationPropertyDto> notificationPropertyDtos = createNotificationPropertyDtos(10);
         // Reset
         resetAll();
         // Expectations
@@ -164,7 +158,7 @@ public class PushNotificationServiceImplTest extends AbstractNotificationService
         // Replay
         replayAll();
         // Run test scenario
-        final List<PushNotification> pushNotifications = pushNotificationService.createNotificationsForUserActiveRecipients(userId, pushNotificationDto, notificationPropertyDtos);
+        final List<PushNotification> pushNotifications = pushNotificationService.createNotificationsForUserActiveRecipients(userId, pushNotificationDto);
         assertNotNull(pushNotifications);
         assertEquals(recipients.size(), pushNotifications.size());
         // Create counter
@@ -174,16 +168,13 @@ public class PushNotificationServiceImplTest extends AbstractNotificationService
             final PushNotificationRecipient recipient = recipients.get(counter.intValue());
             getServicesImplTestHelper().assertPushNotification(pushNotification, pushNotificationDto);
             assertEquals(recipient, pushNotification.getRecipient());
-            assertEquals(notificationPropertyDtos.size(), pushNotification.getProperties().size());
-            // Create counter
-            final MutableInt pushNotificationCounter = new MutableInt(0);
-            pushNotification.getProperties().forEach(pushNotificationProperty -> {
-                // Assert property
-                final NotificationPropertyDto notificationPropertyDto = notificationPropertyDtos.get(pushNotificationCounter.getValue());
-                getServicesImplTestHelper().assertPushNotificationProperty(pushNotificationProperty, notificationPropertyDto);
-                // Increment counter
-                pushNotificationCounter.increment();
-            });
+            assertEquals(pushNotificationDto.getProperties().size(), pushNotification.getProperties().size());
+           assertEquals(pushNotificationDto.getProperties(),
+                   pushNotification.getProperties().stream().collect(Collectors.toMap(
+                           NotificationProperty::getPropertyKey,
+                           NotificationProperty::getPropertyValue
+                   ))
+                   );
             // Increment counter
             counter.increment();
         });
@@ -203,19 +194,13 @@ public class PushNotificationServiceImplTest extends AbstractNotificationService
         replayAll();
         // Run test scenario
         try {
-            pushNotificationService.createNotification(null, notificationDto, notificationPropertyDtos);
+            pushNotificationService.createNotification(null, notificationDto);
             fail("Exception should be thrown");
         } catch (final IllegalArgumentException ex) {
             // Expected
         }
         try {
-            pushNotificationService.createNotification(recipientId, null, notificationPropertyDtos);
-            fail("Exception should be thrown");
-        } catch (final IllegalArgumentException ex) {
-            // Expected
-        }
-        try {
-            pushNotificationService.createNotification(recipientId, notificationDto, null);
+            pushNotificationService.createNotification(recipientId, null);
             fail("Exception should be thrown");
         } catch (final IllegalArgumentException ex) {
             // Expected
@@ -231,7 +216,7 @@ public class PushNotificationServiceImplTest extends AbstractNotificationService
         final PushNotificationRecipient recipient = getServicesImplTestHelper().createPushNotificationSnsRecipient();
         recipient.setId(recipientId);
         final PushNotificationDto notificationDto = getServicesImplTestHelper().createPushNotificationDto();
-        final List<NotificationPropertyDto> notificationPropertyDtos = createNotificationPropertyDtos(10);
+        notificationDto.setProperties(getServicesImplTestHelper().createNotificationProperties(10));
         // Reset
         resetAll();
         // Expectations
@@ -240,19 +225,15 @@ public class PushNotificationServiceImplTest extends AbstractNotificationService
         // Replay
         replayAll();
         // Run test scenario
-        final PushNotification result = pushNotificationService.createNotification(recipientId, notificationDto, notificationPropertyDtos);
+        final PushNotification result = pushNotificationService.createNotification(recipientId, notificationDto);
         getServicesImplTestHelper().assertPushNotification(result, notificationDto);
         assertEquals(recipient, result.getRecipient());
-        assertEquals(notificationPropertyDtos.size(), result.getProperties().size());
+        assertEquals(notificationDto.getProperties().size(), result.getProperties().size());
         // Create counter
         final MutableInt counter = new MutableInt(0);
-        result.getProperties().forEach(pushNotificationProperty -> {
-            // Assert property
-            final NotificationPropertyDto notificationPropertyDto = notificationPropertyDtos.get(counter.getValue());
-            getServicesImplTestHelper().assertPushNotificationProperty(pushNotificationProperty, notificationPropertyDto);
-            // Increment counter
-            counter.increment();
-        });
+        assertEquals(result.getProperties().stream()
+                        .collect(Collectors.toMap(NotificationProperty::getPropertyKey, NotificationProperty::getPropertyValue)),
+                notificationDto.getProperties());
         // Verify
         verifyAll();
     }
@@ -287,18 +268,5 @@ public class PushNotificationServiceImplTest extends AbstractNotificationService
         }
         return recipients;
     }
-
-    private List<NotificationPropertyDto> createNotificationPropertyDtos(final int count) {
-        final List<NotificationPropertyDto> notificationPropertyDtos = new ArrayList<>();
-        for (int i = 0; i < count; i++) {
-            final NotificationPropertyDto notificationPropertyDto = getServicesImplTestHelper().createNotificationPropertyDto();
-            notificationPropertyDto.setPropertyKey(notificationPropertyDto.getPropertyKey() + "_" + i);
-            notificationPropertyDto.setPropertyValue(notificationPropertyDto.getPropertyValue() + "_" + i);
-            // Add to the list of notifications
-            notificationPropertyDtos.add(notificationPropertyDto);
-        }
-        return notificationPropertyDtos;
-    }
-
 
 }

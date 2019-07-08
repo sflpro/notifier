@@ -6,6 +6,8 @@ import org.easymock.EasyMockSupport;
 import org.junit.Ignore;
 import org.junit.runner.RunWith;
 
+import java.util.UUID;
+
 /**
  * User: Ruben Dilanyan
  * Company: SFL LLC
@@ -31,5 +33,9 @@ public abstract class AbstractServicesUnitTest extends EasyMockSupport {
     /* Getters and setters */
     protected ServicesImplTestHelper getServicesImplTestHelper() {
         return servicesImplTestHelper;
+    }
+
+    public static String uuid(){
+        return UUID.randomUUID().toString();
     }
 }

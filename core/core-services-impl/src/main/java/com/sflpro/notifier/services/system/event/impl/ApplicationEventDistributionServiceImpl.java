@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.annotation.Nonnull;
+import javax.annotation.PreDestroy;
 import java.util.Collection;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
@@ -83,6 +84,11 @@ public class ApplicationEventDistributionServiceImpl implements ApplicationEvent
         threadPoolExecutor.setMaximumPoolSize(MAX_THREAD_POOL_SIZE);
         // Publish executor service
         this.executorService = threadPoolExecutor;
+    }
+
+    @PreDestroy
+    private void destroy(){
+        this.executorService.shutdown();
     }
 
     /* Properties getters and setters */

@@ -29,6 +29,7 @@ class SmsNotificationServiceImpl extends AbstractNotificationServiceImpl<SmsNoti
     @Autowired
     private SmsNotificationRepository smsNotificationRepository;
 
+
     /* Constructors */
     SmsNotificationServiceImpl() {
         LOGGER.debug("Initializing SMS notification service");

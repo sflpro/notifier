@@ -5,6 +5,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Created by Hayk Mkrtchyan.
@@ -18,6 +19,12 @@ final class ImmutableTemplatedEmailMessage extends AbstractEmailMessage implemen
 
     ImmutableTemplatedEmailMessage(final String from, final String to, final String templateId, final Map<String, ?> variables) {
         super(from, to);
+        this.templateId = templateId;
+        this.variables = variables;
+    }
+
+    ImmutableTemplatedEmailMessage(final String from, final String to, final String templateId, final String subject, final Map<String, ?> variables) {
+        super(from, to, subject);
         this.templateId = templateId;
         this.variables = variables;
     }
@@ -62,5 +69,10 @@ final class ImmutableTemplatedEmailMessage extends AbstractEmailMessage implemen
     @Override
     public Map<String, ?> variables() {
         return variables;
+    }
+
+    @Override
+    public Optional<String> subject() {
+        return Optional.ofNullable(getSubject());
     }
 }

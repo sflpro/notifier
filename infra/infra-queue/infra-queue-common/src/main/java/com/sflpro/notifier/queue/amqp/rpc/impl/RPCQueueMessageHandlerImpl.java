@@ -10,10 +10,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.StopWatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.core.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Nonnull;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 /**
  * User: Ruben Dilanyan
@@ -22,7 +25,7 @@ import java.io.IOException;
  * Time: 1:34 PM
  */
 @Service
-public class RPCQueueMessageHandlerImpl implements RPCQueueMessageHandler {
+public class RPCQueueMessageHandlerImpl implements RPCQueueMessageHandler<Message> {
     private static final Logger LOGGER = LoggerFactory.getLogger(RPCQueueMessageHandlerImpl.class);
 
     /* Dependencies */
@@ -37,14 +40,15 @@ public class RPCQueueMessageHandlerImpl implements RPCQueueMessageHandler {
     }
 
     @Override
-    public String handleMessage(final Object message) {
+    @Nonnull
+    public String handleMessage(final Message message) {
         LOGGER.debug("Message arrived in message handler");
         try {
             // Trace execution time
             final StopWatch stopWatch = new StopWatch();
             stopWatch.start();
             // Process request
-            final String messageBody = new String((byte[]) message, "UTF8");
+            final String messageBody = new String(message.getBody(), StandardCharsets.UTF_8);
             LOGGER.debug("Value of the message - {}", messageBody);
             final RPCMessage rpcMessage = convertToRpcMessage(messageBody);
             final String result = processRpcMessage(rpcMessage);

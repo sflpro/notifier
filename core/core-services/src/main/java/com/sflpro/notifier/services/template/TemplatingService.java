@@ -1,6 +1,7 @@
 package com.sflpro.notifier.services.template;
 
 import javax.annotation.Nonnull;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -13,10 +14,21 @@ public interface TemplatingService {
 
     /**
      * Generates content according to the given template name with the given parameters
+     *
      * @param templateName templateName
-     * @param parameters parameters
+     * @param parameters   parameters
      * @return Generated content
      */
     String getContentForTemplate(@Nonnull final String templateName, @Nonnull final Map<String, ?> parameters);
+
+    /**
+     * Generates content according to the given template name with the given parameters
+     *
+     * @param templateName templateName
+     * @param parameters   parameters
+     * @param locale
+     * @return Generated content
+     */
+    String getContentForTemplate(@Nonnull final String templateName, @Nonnull final Map<String, ?> parameters, final Locale locale);
 
 }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sflpro.notifier.api.model.common.result.ErrorResponseModel;
 import com.sflpro.notifier.api.model.common.result.ErrorType;
 import com.sflpro.notifier.api.model.notification.request.AbstractCreateNotificationRequest;
+import com.sflpro.notifier.api.model.notification.request.AbstractTemplatableCreateNotificationRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -18,7 +19,7 @@ import java.util.List;
  * Date: 1/13/16
  * Time: 2:57 PM
  */
-public class CreateSmsNotificationRequest extends AbstractCreateNotificationRequest {
+public class CreateSmsNotificationRequest extends AbstractTemplatableCreateNotificationRequest {
 
     /* Properties */
     @JsonProperty("recipientNumber")

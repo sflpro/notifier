@@ -1,6 +1,7 @@
 package com.sflpro.notifier.services.notification.impl.push;
 
 import com.sflpro.notifier.db.entities.device.mobile.DeviceOperatingSystemType;
+import com.sflpro.notifier.db.entities.notification.push.PushNotificationProviderType;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipient;
 
 import javax.annotation.Nonnull;
@@ -21,9 +22,10 @@ public interface PushNotificationUserDeviceTokenProcessor {
      * @param operatingSystemType
      * @param applicationType
      * @param currentProviderToken
+     * @param pushNotificationProviderType
      * @return providerSpecificToken
      */
-    String registerUserDeviceToken(@Nonnull final String userDeviceToken, @Nonnull final DeviceOperatingSystemType operatingSystemType, @Nonnull final String applicationType, @Nullable final String currentProviderToken);
+    String registerUserDeviceToken(@Nonnull final String userDeviceToken, @Nonnull final DeviceOperatingSystemType operatingSystemType, @Nonnull final String applicationType, @Nullable final String currentProviderToken, final PushNotificationProviderType pushNotificationProviderType);
 
     /**
      * Creates push notification recipient for provider
@@ -32,7 +34,8 @@ public interface PushNotificationUserDeviceTokenProcessor {
      * @param recipientRouteToken
      * @param operatingSystemType
      * @param applicationType
+     * @param providerType
      * @return pushNotificationRecipient
      */
-    PushNotificationRecipient createPushNotificationRecipient(@Nonnull final Long subscriptionId, @Nonnull final String recipientRouteToken, @Nonnull final DeviceOperatingSystemType operatingSystemType, @Nonnull final String applicationType);
+    PushNotificationRecipient createPushNotificationRecipient(@Nonnull final Long subscriptionId, @Nonnull final String recipientRouteToken, @Nonnull final DeviceOperatingSystemType operatingSystemType, @Nonnull final String applicationType, final PushNotificationProviderType providerType);
 }

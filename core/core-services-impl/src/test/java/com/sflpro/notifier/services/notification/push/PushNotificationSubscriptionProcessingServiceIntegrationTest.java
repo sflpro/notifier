@@ -3,6 +3,7 @@ package com.sflpro.notifier.services.notification.push;
 
 import com.sflpro.notifier.db.entities.device.UserDevice;
 import com.sflpro.notifier.db.entities.device.mobile.DeviceOperatingSystemType;
+import com.sflpro.notifier.db.entities.notification.push.PushNotificationProviderType;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipient;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipientStatus;
 import com.sflpro.notifier.db.entities.user.User;
@@ -10,7 +11,6 @@ import com.sflpro.notifier.services.device.dto.UserDeviceDto;
 import com.sflpro.notifier.services.helper.ServicesTestHelper;
 import com.sflpro.notifier.services.notification.dto.push.PushNotificationSubscriptionProcessingParameters;
 import com.sflpro.notifier.services.test.AbstractServiceIntegrationTest;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -23,7 +23,6 @@ import static org.junit.Assert.assertNotNull;
  * Date: 8/22/15
  * Time: 11:12 PM
  */
-@Ignore
 public class PushNotificationSubscriptionProcessingServiceIntegrationTest extends AbstractServiceIntegrationTest {
 
     /* Dependencies */
@@ -140,6 +139,7 @@ public class PushNotificationSubscriptionProcessingServiceIntegrationTest extend
         parameters.setCurrentPushNotificationProviderType(null);
         parameters.setCurrentProviderToken(null);
         parameters.setApplicationType(ServicesTestHelper.APPLICATION_TYPE);
+        parameters.setPushNotificationProviderType(PushNotificationProviderType.SNS);
         return parameters;
     }
 

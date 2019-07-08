@@ -22,26 +22,21 @@ public class EmailNotificationDto extends NotificationDto<EmailNotification> {
 
     private String senderEmail;
 
-    private NotificationProviderType providerType;
-
-    private String templateName;
-
     private String userUuid;
 
     /* Constructors */
     public EmailNotificationDto(final String recipientEmail,
                                 final String senderEmail,
-                                final NotificationProviderType providerType,
                                 final String content,
                                 final String subject,
                                 final String clientIpAddress,
-                                final String templateName) {
-        super(NotificationType.EMAIL, content, subject, clientIpAddress);
+                                final String templateName,
+                                final NotificationProviderType providerType) {
+        super(NotificationType.EMAIL, content, subject, clientIpAddress, templateName, providerType);
         this.recipientEmail = recipientEmail;
         this.senderEmail = senderEmail;
-        this.providerType = providerType;
-        this.templateName = templateName;
     }
+
 
     public EmailNotificationDto() {
         super(NotificationType.EMAIL);
@@ -64,22 +59,6 @@ public class EmailNotificationDto extends NotificationDto<EmailNotification> {
         this.senderEmail = senderEmail;
     }
 
-    public NotificationProviderType getProviderType() {
-        return providerType;
-    }
-
-    public void setProviderType(final NotificationProviderType providerType) {
-        this.providerType = providerType;
-    }
-
-    public String getTemplateName() {
-        return templateName;
-    }
-
-    public void setTemplateName(final String templateName) {
-        this.templateName = templateName;
-    }
-
     public String getUserUuid() {
         return userUuid;
     }
@@ -93,10 +72,8 @@ public class EmailNotificationDto extends NotificationDto<EmailNotification> {
     public void updateDomainEntityProperties(final EmailNotification notification) {
         super.updateDomainEntityProperties(notification);
         notification.setRecipientEmail(getRecipientEmail());
-        notification.setProviderType(getProviderType());
         notification.setSenderEmail(getSenderEmail());
         notification.setTemplateName(getTemplateName());
-        notification.setHasSecureProperties(!getSecureProperties().isEmpty());
     }
 
     /* Equals, HashCode and ToString */
@@ -113,7 +90,6 @@ public class EmailNotificationDto extends NotificationDto<EmailNotification> {
         builder.appendSuper(super.equals(that));
         builder.append(this.getRecipientEmail(), that.getRecipientEmail());
         builder.append(this.getSenderEmail(), that.getSenderEmail());
-        builder.append(this.getProviderType(), that.getProviderType());
         builder.append(this.getTemplateName(), that.getTemplateName());
         return builder.isEquals();
     }
@@ -124,7 +100,6 @@ public class EmailNotificationDto extends NotificationDto<EmailNotification> {
         builder.appendSuper(super.hashCode());
         builder.append(this.getRecipientEmail());
         builder.append(this.getSenderEmail());
-        builder.append(this.getProviderType());
         builder.append(this.getTemplateName());
         return builder.build();
     }
@@ -135,7 +110,6 @@ public class EmailNotificationDto extends NotificationDto<EmailNotification> {
         builder.appendSuper(super.toString());
         builder.append("recipientEmail", this.getRecipientEmail());
         builder.append("senderEmail", this.getSenderEmail());
-        builder.append("providerType", this.getProviderType());
         builder.append("templateName", this.getTemplateName());
         return builder.build();
     }

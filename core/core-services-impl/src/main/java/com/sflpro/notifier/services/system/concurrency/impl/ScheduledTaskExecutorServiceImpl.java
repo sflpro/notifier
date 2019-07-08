@@ -4,6 +4,7 @@ import com.sflpro.notifier.db.repositories.utility.PersistenceUtilityService;
 import com.sflpro.notifier.services.system.concurrency.ScheduledTaskExecutorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,7 @@ import java.util.concurrent.TimeUnit;
  * Time: 12:24 PM
  */
 @Service
-public class ScheduledTaskExecutorServiceImpl implements ScheduledTaskExecutorService, InitializingBean {
+public class ScheduledTaskExecutorServiceImpl implements ScheduledTaskExecutorService, InitializingBean, DisposableBean {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ScheduledTaskExecutorServiceImpl.class);
 
@@ -46,6 +47,11 @@ public class ScheduledTaskExecutorServiceImpl implements ScheduledTaskExecutorSe
     }
 
     @Override
+    public void destroy() {
+        destroyScheduledExecutorService();
+    }
+
+    @Override
     public void scheduleTaskForExecution(@Nonnull final Runnable runnable, @Nonnull final int delay, @Nonnull final TimeUnit timeUnit, @Nonnull final boolean runInPersistenceContext) {
         Assert.notNull(runnable, "Runnable task should not be null");
         Assert.isTrue(delay > 0, "Delay should be positive integer");
@@ -58,6 +64,10 @@ public class ScheduledTaskExecutorServiceImpl implements ScheduledTaskExecutorSe
     /* Utility methods */
     private void initializeScheduledExecutorService() {
         this.scheduledExecutorService = Executors.newScheduledThreadPool(MAX_THREADS_COUNT);
+    }
+
+    private void destroyScheduledExecutorService() {
+        this.scheduledExecutorService.shutdown();
     }
 
     /* Properties getters and setters */

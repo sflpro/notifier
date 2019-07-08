@@ -10,8 +10,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * User: Ruben Dilanyan
@@ -33,9 +32,6 @@ public abstract class AbstractCreateNotificationRequest extends AbstractRequestM
     @JsonProperty("clientIpAddress")
     private String clientIpAddress;
 
-    /* Constructors */
-    public AbstractCreateNotificationRequest() {
-    }
 
     /* Properties getters and setters */
     public String getUserUuId() {
@@ -67,7 +63,7 @@ public abstract class AbstractCreateNotificationRequest extends AbstractRequestM
     @Override
     public List<ErrorResponseModel> validateRequiredFields() {
         final List<ErrorResponseModel> errors = new ArrayList<>();
-        if (StringUtils.isBlank(body)) {
+        if (StringUtils.isBlank(getBody())) {
             errors.add(new ErrorResponseModel(ErrorType.NOTIFICATION_BODY_MISSING));
         }
         return errors;

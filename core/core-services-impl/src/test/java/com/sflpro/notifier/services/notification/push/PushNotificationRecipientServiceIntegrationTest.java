@@ -6,7 +6,7 @@ import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipie
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipientStatus;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationSubscription;
 import com.sflpro.notifier.db.entities.user.User;
-import com.sflpro.notifier.services.notification.dto.push.sns.PushNotificationSnsRecipientDto;
+import com.sflpro.notifier.services.notification.dto.push.PushNotificationRecipientDto;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -24,7 +24,7 @@ import static org.junit.Assert.assertTrue;
  * Date: 8/13/15
  * Time: 1:38 PM
  */
-public class PushNotificationRecipientServiceIntegrationTest extends AbstractPushNotificationRecipientServiceIntegrationTest<PushNotificationRecipient, PushNotificationSnsRecipientDto> {
+public class PushNotificationRecipientServiceIntegrationTest extends AbstractPushNotificationRecipientServiceIntegrationTest<PushNotificationRecipient, PushNotificationRecipientDto> {
 
     /* Dependencies */
     @Autowired
@@ -38,8 +38,8 @@ public class PushNotificationRecipientServiceIntegrationTest extends AbstractPus
     @Test
     public void testGetPushNotificationRecipientsForSearchParametersWithProviderType() {
         // Prepare data
-        final PushNotificationSnsRecipientDto firstSnsRecipientDto = getServicesTestHelper().createPushNotificationSnsRecipientDto();
-        final PushNotificationSnsRecipientDto secondSnsRecipientDto = getServicesTestHelper().createPushNotificationSnsRecipientDto();
+        final PushNotificationRecipientDto firstSnsRecipientDto = getServicesTestHelper().createPushNotificationSnsRecipientDto();
+        final PushNotificationRecipientDto secondSnsRecipientDto = getServicesTestHelper().createPushNotificationSnsRecipientDto();
         secondSnsRecipientDto.setDestinationRouteToken(firstSnsRecipientDto.getDestinationRouteToken() + "_second");
         final PushNotificationSubscription subscription = getServicesTestHelper().createPushNotificationSubscription();
         final PushNotificationRecipient firstRecipient = getServicesTestHelper().createPushNotificationSnsRecipient(subscription, firstSnsRecipientDto);
@@ -65,8 +65,8 @@ public class PushNotificationRecipientServiceIntegrationTest extends AbstractPus
     @Test
     public void testGetPushNotificationRecipientsCountForSearchParametersWithProviderType() {
         // Prepare data
-        final PushNotificationSnsRecipientDto firstSnsRecipientDto = getServicesTestHelper().createPushNotificationSnsRecipientDto();
-        final PushNotificationSnsRecipientDto secondSnsRecipientDto = getServicesTestHelper().createPushNotificationSnsRecipientDto();
+        final PushNotificationRecipientDto firstSnsRecipientDto = getServicesTestHelper().createPushNotificationSnsRecipientDto();
+        final PushNotificationRecipientDto secondSnsRecipientDto = getServicesTestHelper().createPushNotificationSnsRecipientDto();
         secondSnsRecipientDto.setDestinationRouteToken(firstSnsRecipientDto.getDestinationRouteToken() + "_second");
         final PushNotificationSubscription subscription = getServicesTestHelper().createPushNotificationSubscription();
         final PushNotificationRecipient firstRecipient = getServicesTestHelper().createPushNotificationSnsRecipient(subscription, firstSnsRecipientDto);
@@ -92,9 +92,9 @@ public class PushNotificationRecipientServiceIntegrationTest extends AbstractPus
     @Test
     public void testGetPushNotificationRecipientsForSearchParametersWithApplicationType() {
         // Prepare data
-        final PushNotificationSnsRecipientDto firstSnsRecipientDto = getServicesTestHelper().createPushNotificationSnsRecipientDto();
+        final PushNotificationRecipientDto firstSnsRecipientDto = getServicesTestHelper().createPushNotificationSnsRecipientDto();
         firstSnsRecipientDto.setApplicationType("customer");
-        final PushNotificationSnsRecipientDto secondSnsRecipientDto = getServicesTestHelper().createPushNotificationSnsRecipientDto();
+        final PushNotificationRecipientDto secondSnsRecipientDto = getServicesTestHelper().createPushNotificationSnsRecipientDto();
         secondSnsRecipientDto.setDestinationRouteToken(firstSnsRecipientDto.getDestinationRouteToken() + "_second");
         secondSnsRecipientDto.setApplicationType("operator");
         final PushNotificationSubscription subscription = getServicesTestHelper().createPushNotificationSubscription();
@@ -121,9 +121,9 @@ public class PushNotificationRecipientServiceIntegrationTest extends AbstractPus
     @Test
     public void testGetPushNotificationRecipientsForSearchParametersWithOperatingSystem() {
         // Prepare data
-        final PushNotificationSnsRecipientDto firstSnsRecipientDto = getServicesTestHelper().createPushNotificationSnsRecipientDto();
+        final PushNotificationRecipientDto firstSnsRecipientDto = getServicesTestHelper().createPushNotificationSnsRecipientDto();
         firstSnsRecipientDto.setDeviceOperatingSystemType(DeviceOperatingSystemType.IOS);
-        final PushNotificationSnsRecipientDto secondSnsRecipientDto = getServicesTestHelper().createPushNotificationSnsRecipientDto();
+        final PushNotificationRecipientDto secondSnsRecipientDto = getServicesTestHelper().createPushNotificationSnsRecipientDto();
         secondSnsRecipientDto.setDestinationRouteToken(firstSnsRecipientDto.getDestinationRouteToken() + "_second");
         secondSnsRecipientDto.setDeviceOperatingSystemType(DeviceOperatingSystemType.ANDROID);
         final PushNotificationSubscription subscription = getServicesTestHelper().createPushNotificationSubscription();
@@ -150,9 +150,9 @@ public class PushNotificationRecipientServiceIntegrationTest extends AbstractPus
     @Test
     public void testGetPushNotificationRecipientsCountForSearchParametersWithOperatingSystem() {
         // Prepare data
-        final PushNotificationSnsRecipientDto firstSnsRecipientDto = getServicesTestHelper().createPushNotificationSnsRecipientDto();
+        final PushNotificationRecipientDto firstSnsRecipientDto = getServicesTestHelper().createPushNotificationSnsRecipientDto();
         firstSnsRecipientDto.setDeviceOperatingSystemType(DeviceOperatingSystemType.IOS);
-        final PushNotificationSnsRecipientDto secondSnsRecipientDto = getServicesTestHelper().createPushNotificationSnsRecipientDto();
+        final PushNotificationRecipientDto secondSnsRecipientDto = getServicesTestHelper().createPushNotificationSnsRecipientDto();
         secondSnsRecipientDto.setDestinationRouteToken(firstSnsRecipientDto.getDestinationRouteToken() + "_second");
         secondSnsRecipientDto.setDeviceOperatingSystemType(DeviceOperatingSystemType.ANDROID);
         final PushNotificationSubscription subscription = getServicesTestHelper().createPushNotificationSubscription();
@@ -179,8 +179,8 @@ public class PushNotificationRecipientServiceIntegrationTest extends AbstractPus
     @Test
     public void testGetPushNotificationRecipientsForSearchParametersWithStatus() {
         // Prepare data
-        final PushNotificationSnsRecipientDto firstSnsRecipientDto = getServicesTestHelper().createPushNotificationSnsRecipientDto();
-        final PushNotificationSnsRecipientDto secondSnsRecipientDto = getServicesTestHelper().createPushNotificationSnsRecipientDto();
+        final PushNotificationRecipientDto firstSnsRecipientDto = getServicesTestHelper().createPushNotificationSnsRecipientDto();
+        final PushNotificationRecipientDto secondSnsRecipientDto = getServicesTestHelper().createPushNotificationSnsRecipientDto();
         secondSnsRecipientDto.setDestinationRouteToken(firstSnsRecipientDto.getDestinationRouteToken() + "_second");
         final PushNotificationSubscription subscription = getServicesTestHelper().createPushNotificationSubscription();
         final PushNotificationRecipient firstRecipient = getServicesTestHelper().createPushNotificationSnsRecipient(subscription, firstSnsRecipientDto);
@@ -209,8 +209,8 @@ public class PushNotificationRecipientServiceIntegrationTest extends AbstractPus
     @Test
     public void testGetPushNotificationRecipientsCountForSearchParametersWithStatus() {
         // Prepare data
-        final PushNotificationSnsRecipientDto firstSnsRecipientDto = getServicesTestHelper().createPushNotificationSnsRecipientDto();
-        final PushNotificationSnsRecipientDto secondSnsRecipientDto = getServicesTestHelper().createPushNotificationSnsRecipientDto();
+        final PushNotificationRecipientDto firstSnsRecipientDto = getServicesTestHelper().createPushNotificationSnsRecipientDto();
+        final PushNotificationRecipientDto secondSnsRecipientDto = getServicesTestHelper().createPushNotificationSnsRecipientDto();
         secondSnsRecipientDto.setDestinationRouteToken(firstSnsRecipientDto.getDestinationRouteToken() + "_second");
         final PushNotificationSubscription subscription = getServicesTestHelper().createPushNotificationSubscription();
         final PushNotificationRecipient firstRecipient = getServicesTestHelper().createPushNotificationSnsRecipient(subscription, firstSnsRecipientDto);
@@ -239,8 +239,8 @@ public class PushNotificationRecipientServiceIntegrationTest extends AbstractPus
     @Test
     public void testGetPushNotificationRecipientsForSearchParametersWithSubscription() {
         // Prepare data
-        final PushNotificationSnsRecipientDto firstSnsRecipientDto = getServicesTestHelper().createPushNotificationSnsRecipientDto();
-        final PushNotificationSnsRecipientDto secondSnsRecipientDto = getServicesTestHelper().createPushNotificationSnsRecipientDto();
+        final PushNotificationRecipientDto firstSnsRecipientDto = getServicesTestHelper().createPushNotificationSnsRecipientDto();
+        final PushNotificationRecipientDto secondSnsRecipientDto = getServicesTestHelper().createPushNotificationSnsRecipientDto();
         secondSnsRecipientDto.setDestinationRouteToken(firstSnsRecipientDto.getDestinationRouteToken() + "_second");
         final User firstCustomer = getServicesTestHelper().createUser();
         final User secondCustomer = getServicesTestHelper().createUser();
@@ -269,8 +269,8 @@ public class PushNotificationRecipientServiceIntegrationTest extends AbstractPus
     @Test
     public void testGetPushNotificationRecipientsCountForSearchParametersWithSubscription() {
         // Prepare data
-        final PushNotificationSnsRecipientDto firstSnsRecipientDto = getServicesTestHelper().createPushNotificationSnsRecipientDto();
-        final PushNotificationSnsRecipientDto secondSnsRecipientDto = getServicesTestHelper().createPushNotificationSnsRecipientDto();
+        final PushNotificationRecipientDto firstSnsRecipientDto = getServicesTestHelper().createPushNotificationSnsRecipientDto();
+        final PushNotificationRecipientDto secondSnsRecipientDto = getServicesTestHelper().createPushNotificationSnsRecipientDto();
         secondSnsRecipientDto.setDestinationRouteToken(firstSnsRecipientDto.getDestinationRouteToken() + "_second");
         final User firstCustomer = getServicesTestHelper().createUser();
         final User secondCustomer = getServicesTestHelper().createUser();
@@ -299,8 +299,8 @@ public class PushNotificationRecipientServiceIntegrationTest extends AbstractPus
     @Test
     public void testGetPushNotificationRecipientsForSearchParametersWithDestinationRouteToken() {
         // Prepare data
-        final PushNotificationSnsRecipientDto firstSnsRecipientDto = getServicesTestHelper().createPushNotificationSnsRecipientDto();
-        final PushNotificationSnsRecipientDto secondSnsRecipientDto = getServicesTestHelper().createPushNotificationSnsRecipientDto();
+        final PushNotificationRecipientDto firstSnsRecipientDto = getServicesTestHelper().createPushNotificationSnsRecipientDto();
+        final PushNotificationRecipientDto secondSnsRecipientDto = getServicesTestHelper().createPushNotificationSnsRecipientDto();
         secondSnsRecipientDto.setDestinationRouteToken(firstSnsRecipientDto.getDestinationRouteToken() + "_second");
         final PushNotificationSubscription subscription = getServicesTestHelper().createPushNotificationSubscription();
         final PushNotificationRecipient firstRecipient = getServicesTestHelper().createPushNotificationSnsRecipient(subscription, firstSnsRecipientDto);
@@ -326,8 +326,8 @@ public class PushNotificationRecipientServiceIntegrationTest extends AbstractPus
     @Test
     public void testGetPushNotificationRecipientsCountForSearchParametersWithDestinationRouteToken() {
         // Prepare data
-        final PushNotificationSnsRecipientDto firstSnsRecipientDto = getServicesTestHelper().createPushNotificationSnsRecipientDto();
-        final PushNotificationSnsRecipientDto secondSnsRecipientDto = getServicesTestHelper().createPushNotificationSnsRecipientDto();
+        final PushNotificationRecipientDto firstSnsRecipientDto = getServicesTestHelper().createPushNotificationSnsRecipientDto();
+        final PushNotificationRecipientDto secondSnsRecipientDto = getServicesTestHelper().createPushNotificationSnsRecipientDto();
         secondSnsRecipientDto.setDestinationRouteToken(firstSnsRecipientDto.getDestinationRouteToken() + "_second");
         final PushNotificationSubscription subscription = getServicesTestHelper().createPushNotificationSubscription();
         final PushNotificationRecipient firstRecipient = getServicesTestHelper().createPushNotificationSnsRecipient(subscription, firstSnsRecipientDto);
@@ -373,12 +373,12 @@ public class PushNotificationRecipientServiceIntegrationTest extends AbstractPus
     }
 
     @Override
-    protected PushNotificationRecipient getInstance(final PushNotificationSubscription subscription, final PushNotificationSnsRecipientDto recipientDto) {
+    protected PushNotificationRecipient getInstance(final PushNotificationSubscription subscription, final PushNotificationRecipientDto recipientDto) {
         return getServicesTestHelper().createPushNotificationSnsRecipient(subscription, recipientDto);
     }
 
     @Override
-    protected PushNotificationSnsRecipientDto getInstanceDto() {
+    protected PushNotificationRecipientDto getInstanceDto() {
         return getServicesTestHelper().createPushNotificationSnsRecipientDto();
     }
 

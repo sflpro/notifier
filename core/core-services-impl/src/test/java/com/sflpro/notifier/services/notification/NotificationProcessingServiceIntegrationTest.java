@@ -5,7 +5,6 @@ import com.sflpro.notifier.db.entities.notification.NotificationState;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipient;
 import com.sflpro.notifier.db.entities.user.User;
 import com.sflpro.notifier.services.test.AbstractServiceIntegrationTest;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -36,7 +35,6 @@ public class NotificationProcessingServiceIntegrationTest extends AbstractServic
     }
 
     /* Test methods */
-    @Ignore
     @Test
     public void testProcessNotificationWithPushNotification() {
         // Prepare data
@@ -46,7 +44,7 @@ public class NotificationProcessingServiceIntegrationTest extends AbstractServic
         final PushNotificationRecipient recipient = getServicesTestHelper().createPushNotificationRecipientForIOSDeviceAndRegisterWithAmazonSns(user, iOSDeviceToken);
         flushAndClear();
         // Create push notification
-        Notification notification = getServicesTestHelper().createPushNotification(recipient, getServicesTestHelper().createPushNotificationDto(), getServicesTestHelper().createPushNotificationPropertyDTOs(10));
+        Notification notification = getServicesTestHelper().createPushNotification(recipient, getServicesTestHelper().createPushNotificationDto());
         assertEquals(NotificationState.CREATED, notification.getState());
         // Process push notification
         notificationProcessingService.processNotification(notification.getId(), Collections.emptyMap());

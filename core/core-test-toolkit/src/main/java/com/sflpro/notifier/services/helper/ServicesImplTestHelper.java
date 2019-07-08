@@ -9,7 +9,6 @@ import com.sflpro.notifier.db.entities.notification.UserNotification;
 import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
 import com.sflpro.notifier.db.entities.notification.email.NotificationProperty;
 import com.sflpro.notifier.db.entities.notification.push.*;
-import com.sflpro.notifier.db.entities.notification.push.sns.PushNotificationSnsRecipient;
 import com.sflpro.notifier.db.entities.notification.sms.SmsNotification;
 import com.sflpro.notifier.db.entities.user.User;
 import com.sflpro.notifier.services.device.dto.UserDeviceDto;
@@ -18,17 +17,14 @@ import com.sflpro.notifier.services.notification.dto.NotificationPropertyDto;
 import com.sflpro.notifier.services.notification.dto.UserNotificationDto;
 import com.sflpro.notifier.services.notification.dto.email.EmailNotificationDto;
 import com.sflpro.notifier.services.notification.dto.push.PushNotificationDto;
+import com.sflpro.notifier.services.notification.dto.push.PushNotificationRecipientDto;
 import com.sflpro.notifier.services.notification.dto.push.PushNotificationSubscriptionDto;
 import com.sflpro.notifier.services.notification.dto.push.PushNotificationSubscriptionRequestDto;
-import com.sflpro.notifier.services.notification.dto.push.sns.PushNotificationSnsRecipientDto;
 import com.sflpro.notifier.services.notification.dto.sms.SmsNotificationDto;
 import com.sflpro.notifier.services.user.dto.UserDto;
 import org.junit.Assert;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertNotNull;
@@ -99,9 +95,9 @@ public class ServicesImplTestHelper {
         notificationDto.setClientIpAddress("127.0.0.1");
         notificationDto.setContent("YoYoYo");
         notificationDto.setSubject("YoYo");
-        notificationDto.setProviderType(NotificationProviderType.SMTP_SERVER);
         notificationDto.setTemplateName("YoTemplate");
-        notificationDto.setSecureProperties(Collections.singletonMap("token", UUID.randomUUID().toString()));
+        notificationDto.setProperties(Collections.singletonMap("token", UUID.randomUUID().toString()));
+        notificationDto.setProviderType(NotificationProviderType.SMTP_SERVER);
         return notificationDto;
     }
 
@@ -119,6 +115,7 @@ public class ServicesImplTestHelper {
         }).collect(Collectors.toList());
         notificationDto.updateDomainEntityProperties(notification);
         notification.setProperties(properties);
+        notification.setProviderType(NotificationProviderType.SMTP_SERVER);
         return notification;
     }
 
@@ -126,7 +123,6 @@ public class ServicesImplTestHelper {
         assertNotification(notification, notificationDto);
         Assert.assertEquals(notificationDto.getRecipientEmail(), notification.getRecipientEmail());
         Assert.assertEquals(notificationDto.getSenderEmail(), notification.getSenderEmail());
-        Assert.assertEquals(notificationDto.getProviderType(), notification.getProviderType());
     }
 
     public List<NotificationPropertyDto> createNotificationPropertyDtos(final int count) {
@@ -135,6 +131,14 @@ public class ServicesImplTestHelper {
             propertyDtos.add(new NotificationPropertyDto("key" + i, "value" + i));
         }
         return propertyDtos;
+    }
+
+    public Map<String, String> createNotificationProperties(final int count) {
+        final Map<String, String> proiperties = new HashMap<>();
+        for (int i = 0; i < count; i++) {
+            proiperties.put("key" + i, "value" + i);
+        }
+        return proiperties;
     }
 
     /* SMS notification */
@@ -155,13 +159,13 @@ public class ServicesImplTestHelper {
     public SmsNotification createSmsNotification(final SmsNotificationDto notificationDto) {
         final SmsNotification notification = new SmsNotification(true);
         notificationDto.updateDomainEntityProperties(notification);
+        notification.setProviderType(NotificationProviderType.TWILLIO);
         return notification;
     }
 
     public void assertSmsNotification(final SmsNotification notification, final SmsNotificationDto notificationDto) {
         assertNotification(notification, notificationDto);
         Assert.assertEquals(notificationDto.getRecipientMobileNumber(), notification.getRecipientMobileNumber());
-        Assert.assertEquals(notificationDto.getProviderType(), notification.getProviderType());
     }
 
     /* Push notification */
@@ -259,8 +263,8 @@ public class ServicesImplTestHelper {
     }
 
     /* Push notification recipient */
-    public PushNotificationSnsRecipientDto createPushNotificationSnsRecipientDto() {
-        final PushNotificationSnsRecipientDto recipientDto = new PushNotificationSnsRecipientDto();
+    public PushNotificationRecipientDto createPushNotificationSnsRecipientDto() {
+        final PushNotificationRecipientDto recipientDto = new PushNotificationRecipientDto(PushNotificationProviderType.SNS);
         recipientDto.setDestinationRouteToken("JHYFTTDRSDESYRSESRDYESESESRTDESHDSSDD");
         recipientDto.setDeviceOperatingSystemType(DeviceOperatingSystemType.IOS);
         recipientDto.setApplicationType("application");
@@ -268,17 +272,17 @@ public class ServicesImplTestHelper {
         return recipientDto;
     }
 
-    public PushNotificationSnsRecipient createPushNotificationSnsRecipient(final PushNotificationSnsRecipientDto recipientDto) {
-        final PushNotificationSnsRecipient recipient = new PushNotificationSnsRecipient(true);
+    public PushNotificationRecipient createPushNotificationSnsRecipient(final PushNotificationRecipientDto recipientDto) {
+        final PushNotificationRecipient recipient = new PushNotificationRecipient(recipientDto.getType(), true);
         recipientDto.updateDomainEntityProperties(recipient);
         return recipient;
     }
 
-    public PushNotificationSnsRecipient createPushNotificationSnsRecipient() {
+    public PushNotificationRecipient createPushNotificationSnsRecipient() {
         return createPushNotificationSnsRecipient(createPushNotificationSnsRecipientDto());
     }
 
-    public void assertPushNotificationSnsRecipient(final PushNotificationSnsRecipient recipient, final PushNotificationSnsRecipientDto recipientDto) {
+    public void assertPushNotificationSnsRecipient(final PushNotificationRecipient recipient, final PushNotificationRecipientDto recipientDto) {
         assertNotNull(recipient);
         Assert.assertEquals(recipient.getType(), recipientDto.getType());
         Assert.assertEquals(recipient.getDestinationRouteToken(), recipientDto.getDestinationRouteToken());

@@ -13,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -29,7 +28,7 @@ import java.util.Map;
  */
 @Service
 @Lazy(false)
-public class NotificationQueueProducerServiceImpl implements NotificationQueueProducerService, InitializingBean {
+class NotificationQueueProducerServiceImpl implements NotificationQueueProducerService, InitializingBean {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(NotificationQueueProducerServiceImpl.class);
 
@@ -37,12 +36,11 @@ public class NotificationQueueProducerServiceImpl implements NotificationQueuePr
     @Autowired
     private ApplicationEventDistributionService applicationEventDistributionService;
 
-    @Autowired(required = false)
-    @Qualifier("QueueConnectorService")
+    @Autowired
     private AmqpConnectorService amqpConnectorService;
 
     /* Constructors */
-    public NotificationQueueProducerServiceImpl() {
+    NotificationQueueProducerServiceImpl() {
         LOGGER.debug("Initializing sms notification queue producer service");
     }
 
@@ -65,7 +63,7 @@ public class NotificationQueueProducerServiceImpl implements NotificationQueuePr
     private class StartSendingNotificationEventListener extends StartSendingNotificationEventListenerAdapter {
 
         /* Constructors */
-        public StartSendingNotificationEventListener() {
+        StartSendingNotificationEventListener() {
             super();
         }
 
@@ -80,7 +78,7 @@ public class NotificationQueueProducerServiceImpl implements NotificationQueuePr
         private final StopWatch stopWatch;
 
         /* Constructors */
-        public NotificationMessageSendingEventListenerRPCResponseHandler() {
+        NotificationMessageSendingEventListenerRPCResponseHandler() {
             this.stopWatch = new StopWatch();
             stopWatch.start();
         }
@@ -89,7 +87,6 @@ public class NotificationQueueProducerServiceImpl implements NotificationQueuePr
         public void handleResponse(@Nonnull final NotificationRPCTransferModel responseModel) {
             stopWatch.stop();
             LOGGER.debug("Finalized sending notification, response model - {}, duration - {}", responseModel, stopWatch.getTime());
-
         }
     }
 }

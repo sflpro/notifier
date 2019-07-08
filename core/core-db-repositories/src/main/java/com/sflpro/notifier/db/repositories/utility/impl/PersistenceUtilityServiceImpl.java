@@ -15,6 +15,7 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 import org.springframework.util.Assert;
 
 import javax.annotation.Nonnull;
+import javax.annotation.PreDestroy;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceException;
@@ -99,6 +100,11 @@ public class PersistenceUtilityServiceImpl implements PersistenceUtilityService 
     private void initExecutorService() {
         LOGGER.debug("Initializing executor service using thread pool size - {}", MAX_THREADS_COUNT);
         this.executorService = Executors.newFixedThreadPool(MAX_THREADS_COUNT);
+    }
+
+    @PreDestroy
+    private void destroy(){
+        this.executorService.shutdown();
     }
 
     private void assertRunnable(final Runnable runnable) {

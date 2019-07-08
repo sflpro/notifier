@@ -15,7 +15,7 @@ class DummyTransactionAwarePersistenceUtilityService implements PersistenceUtili
 
 
     /* Constructors */
-    public DummyTransactionAwarePersistenceUtilityService() {
+    DummyTransactionAwarePersistenceUtilityService() {
         super();
     }
 

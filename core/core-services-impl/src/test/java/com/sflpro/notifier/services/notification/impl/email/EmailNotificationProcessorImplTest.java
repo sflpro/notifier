@@ -189,7 +189,7 @@ public class EmailNotificationProcessorImplTest extends AbstractServicesUnitTest
             assertTemplatedEmailMessage(message, notification);
             throw new RuntimeException("Failed to send email");
         });
-        expect(emailNotificationService.updateNotificationState(eq(notificationId), eq(NotificationState.FAILED))).andReturn(notification).once();
+        expect(emailNotificationService.updateNotificationState(notificationId, NotificationState.FAILED)).andReturn(notification).once();
         // Replay
         replayAll();
         try {

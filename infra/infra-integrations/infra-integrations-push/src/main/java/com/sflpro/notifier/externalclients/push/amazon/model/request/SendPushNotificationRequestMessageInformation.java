@@ -1,7 +1,7 @@
 package com.sflpro.notifier.externalclients.push.amazon.model.request;
 
 import com.sflpro.notifier.externalclients.push.amazon.model.AbstractAmazonSnsApiCommunicatorModel;
-import com.sflpro.notifier.externalclients.push.amazon.model.AmazonSNSPlatformType;
+import com.sflpro.notifier.spi.push.PlatformType;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -26,10 +26,11 @@ public class SendPushNotificationRequestMessageInformation extends AbstractAmazo
 
     private final Map<String, String> messageProperties;
 
-    private final AmazonSNSPlatformType amazonSNSPlatformType;
+    private final PlatformType amazonSNSPlatformType;
 
     /* Constructors */
-    public SendPushNotificationRequestMessageInformation(final String messageSubject, final String messageBody, final Map<String, String> messageProperties, final AmazonSNSPlatformType amazonSNSPlatformType) {
+    public SendPushNotificationRequestMessageInformation(final String messageSubject, final String messageBody, final Map<String, String> messageProperties,
+                                                         final PlatformType amazonSNSPlatformType) {
         Assert.hasText(messageBody, "Message body should not be empty");
         this.messageSubject = messageSubject;
         this.messageBody = messageBody;
@@ -50,7 +51,7 @@ public class SendPushNotificationRequestMessageInformation extends AbstractAmazo
         return messageProperties;
     }
 
-    public AmazonSNSPlatformType getAmazonSNSPlatformType() {
+    public PlatformType getAmazonSNSPlatformType() {
         return amazonSNSPlatformType;
     }
 

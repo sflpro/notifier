@@ -1,15 +1,18 @@
 package com.sflpro.notifier.services.notification.impl.push;
 
+import com.sflpro.notifier.db.entities.device.mobile.DeviceOperatingSystemType;
 import com.sflpro.notifier.db.entities.notification.NotificationState;
 import com.sflpro.notifier.db.entities.notification.push.PushNotification;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationProviderType;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipient;
-import com.sflpro.notifier.db.repositories.utility.PersistenceUtilityService;
 import com.sflpro.notifier.services.common.exception.ServicesRuntimeException;
 import com.sflpro.notifier.services.notification.exception.NotificationInvalidStateException;
-import com.sflpro.notifier.services.notification.impl.push.sns.PushNotificationSnsProviderProcessor;
 import com.sflpro.notifier.services.notification.push.PushNotificationProcessor;
 import com.sflpro.notifier.services.notification.push.PushNotificationService;
+import com.sflpro.notifier.spi.push.PlatformType;
+import com.sflpro.notifier.spi.push.PushMessage;
+import com.sflpro.notifier.spi.push.PushMessageSender;
+import com.sflpro.notifier.spi.push.PushMessageSendingResult;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +23,10 @@ import org.springframework.util.Assert;
 import javax.annotation.Nonnull;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.Map;
+
+import static java.lang.String.format;
 
 /**
  * User: Ruben Dilanyan
@@ -39,13 +45,10 @@ public class PushNotificationProcessorImpl implements PushNotificationProcessor 
     private PushNotificationService pushNotificationService;
 
     @Autowired
-    private PushNotificationSnsProviderProcessor pushNotificationSnsProcessor;
-
-    @Autowired
-    private PersistenceUtilityService persistenceUtilityService;
+    private PushMessageServiceProvider pushMessageServiceProvider;
 
     /* Constructors */
-    public PushNotificationProcessorImpl() {
+    PushNotificationProcessorImpl() {
         LOGGER.debug("Initializing push notification processing service");
     }
 
@@ -59,12 +62,8 @@ public class PushNotificationProcessorImpl implements PushNotificationProcessor 
         // Update state to processing
         updatePushNotificationState(notificationId, NotificationState.PROCESSING);
         try {
-            // Grab push notification recipient
-            final PushNotificationRecipient recipient = pushNotification.getRecipient();
-            final PushNotificationProviderType providerType = recipient.getType();
-            final PushNotificationProviderProcessor pushNotificationProcessor = getPushNotificationProcessor(providerType);
             // Process push notification
-            final String pushNotificationProviderExternalUuid = pushNotificationProcessor.processPushNotification(pushNotification);
+            final String pushNotificationProviderExternalUuid = send(pushNotification);
             // Check if provider uuid is provided
             if (StringUtils.isNotBlank(pushNotificationProviderExternalUuid)) {
                 LOGGER.debug("Updating provider uuid for push notification with id - {}, uuid - {}", pushNotification.getId(), pushNotificationProviderExternalUuid);
@@ -81,12 +80,55 @@ public class PushNotificationProcessorImpl implements PushNotificationProcessor 
     }
 
     /* Utility methods */
+    private String send(final PushNotification pushNotification) {
+        Assert.notNull(pushNotification, "Push notification should not be null");
+        final PushNotificationRecipient recipient = pushNotification.getRecipient();
+        final PushMessageSender pushMessageSender = getPushMessageSender(recipient.getType());
+        final PushMessageSendingResult pushMessageSendingResult = pushMessageSender.send(PushMessage.of(
+                recipient.getDestinationRouteToken(),
+                pushNotification.getSubject(),
+                pushNotification.getContent(),
+                platformType(recipient.getDeviceOperatingSystemType()),
+                createPushNotificationAttributes(pushNotification)
+        ));
+        LOGGER.debug("Sending SNS push notification - {} , recipient - {}", pushNotification, recipient);
+        return pushMessageSendingResult.messageId();
+    }
+
+    private PushMessageSender getPushMessageSender(final PushNotificationProviderType providerType) {
+        return pushMessageServiceProvider.lookupPushMessageSender(providerType)
+                .orElseThrow(() -> new IllegalStateException(format("No push message sender was registered for type '%s'.", providerType)));
+    }
+
+    private Map<String, String> createPushNotificationAttributes(final PushNotification pushNotification) {
+        final Map<String, String> attributes = new LinkedHashMap<>();
+        pushNotification.getProperties().forEach(pushNotificationProperty -> {
+            // Add to the map of attributes
+            attributes.put(pushNotificationProperty.getPropertyKey(), pushNotificationProperty.getPropertyValue());
+        });
+        return attributes;
+    }
+
+    private PlatformType platformType(final DeviceOperatingSystemType operatingSystemType) {
+        switch (operatingSystemType) {
+            case IOS:
+                return PlatformType.APNS;
+            case ANDROID:
+                return PlatformType.GCM;
+            default: {
+                final String message = "Unsupported operating system type - " + operatingSystemType;
+                throw new ServicesRuntimeException(message);
+            }
+        }
+    }
+
+
     private void updatePushNotificationState(final Long notificationId, final NotificationState notificationState) {
-        persistenceUtilityService.runInNewTransaction(() -> pushNotificationService.updateNotificationState(notificationId, notificationState));
+        pushNotificationService.updateNotificationState(notificationId, notificationState);
     }
 
     private void updatePushNotificationExternalUuId(final Long notificationId, final String providerUuId) {
-        persistenceUtilityService.runInNewTransaction(() -> pushNotificationService.updateProviderExternalUuid(notificationId, providerUuId));
+        pushNotificationService.updateProviderExternalUuid(notificationId, providerUuId);
     }
 
     private void assertPushNotificationState(final PushNotification pushNotification) {
@@ -95,23 +137,5 @@ public class PushNotificationProcessorImpl implements PushNotificationProcessor 
             LOGGER.error("Push notification with id - {} has invalid state - {}", pushNotification.getId(), notificationState);
             throw new NotificationInvalidStateException(pushNotification.getId(), notificationState, new HashSet<>(Arrays.asList(NotificationState.CREATED, NotificationState.FAILED)));
         }
-    }
-
-    private PushNotificationProviderProcessor getPushNotificationProcessor(final PushNotificationProviderType providerType) {
-        if (providerType == PushNotificationProviderType.SNS) {
-            return pushNotificationSnsProcessor;
-        }
-        final String message = "Unsupported push notification provider type - " + providerType;
-        LOGGER.error(message);
-        throw new ServicesRuntimeException(message);
-    }
-
-    /* Properties getters and setters */
-    public PersistenceUtilityService getPersistenceUtilityService() {
-        return persistenceUtilityService;
-    }
-
-    public void setPersistenceUtilityService(final PersistenceUtilityService persistenceUtilityService) {
-        this.persistenceUtilityService = persistenceUtilityService;
     }
 }

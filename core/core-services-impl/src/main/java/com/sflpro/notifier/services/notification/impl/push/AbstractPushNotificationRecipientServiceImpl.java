@@ -116,7 +116,7 @@ public abstract class AbstractPushNotificationRecipientServiceImpl<T extends Pus
     protected abstract Class<T> getInstanceClass();
 
     /* Utility methods */
-    protected void assertPushNotificationRecipientAndDeviceBelongToSameUser(final T recipient, final UserDevice userDevice) {
+    private void assertPushNotificationRecipientAndDeviceBelongToSameUser(final T recipient, final UserDevice userDevice) {
         final Long recipientUserId = recipient.getSubscription().getUser().getId();
         final Long deviceUserId = userDevice.getUser().getId();
         if (!recipientUserId.equals(deviceUserId)) {
@@ -148,11 +148,12 @@ public abstract class AbstractPushNotificationRecipientServiceImpl<T extends Pus
         Assert.notNull(subscriptionId, "Push notification subscription ID should not be null");
     }
 
-    protected void assertPushNotificationRecipientDto(final PushNotificationRecipientDto<? extends PushNotificationRecipient> recipientDto) {
+    protected void assertPushNotificationRecipientDto(final PushNotificationRecipientDto recipientDto) {
         Assert.notNull(recipientDto, "Push notification recipient DTO should not be null");
         Assert.notNull(recipientDto.getDestinationRouteToken(), "Destination route token in push notification recipient DTO should not be null");
         Assert.notNull(recipientDto.getDeviceOperatingSystemType(), "Device operating system type in push notification recipient DTO should not be null");
         Assert.notNull(recipientDto.getApplicationType(), "Application type in push notification recipient DTO should not be null");
+        Assert.notNull(recipientDto.getPlatformApplicationArn(), "Platform application ARN should not be null in SNS recipient DTO");
     }
 
     protected void assertNoRecipientExists(final PushNotificationProviderType type, final PushNotificationSubscription subscription, final String destinationRouteToken, final String applicationType) {

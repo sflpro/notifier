@@ -13,10 +13,10 @@ import org.slf4j.LoggerFactory;
  */
 public class DummySimpleEmailSender implements SimpleEmailSender {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(DummySimpleEmailSender.class);
+    private static final Logger logger = LoggerFactory.getLogger(DummySimpleEmailSender.class);
 
     @Override
     public void send(final SimpleEmailMessage message) {
-        LOGGER.debug("Simulating simple email sending for {}", message);
+        logger.debug("Simulating simple email sending for {}", message);
     }
 }

@@ -13,11 +13,11 @@ import org.slf4j.LoggerFactory;
  */
 public class DummyTemplatedSmsSender implements TemplatedSmsSender {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(DummyTemplatedSmsSender.class);
+    private static final Logger logger = LoggerFactory.getLogger(DummyTemplatedSmsSender.class);
 
     @Override
     public SmsMessageSendingResult send(final TemplatedSmsMessage simpleSmsMessage) {
-        LOGGER.debug("Simulating sms sending for {}", simpleSmsMessage);
+        logger.debug("Simulating sms sending for {}", simpleSmsMessage);
         return SmsMessageSendingResult.of(simpleSmsMessage.recipientNumber());
     }
 }

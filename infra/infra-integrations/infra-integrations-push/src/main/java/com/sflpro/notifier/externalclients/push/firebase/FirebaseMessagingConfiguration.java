@@ -3,9 +3,6 @@ package com.sflpro.notifier.externalclients.push.firebase;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
-import com.google.firebase.messaging.AndroidConfig;
-import com.google.firebase.messaging.ApnsConfig;
-import com.google.firebase.messaging.Aps;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.sflpro.notifier.spi.push.PushMessageSender;
 import com.sflpro.notifier.spi.push.PushMessageServiceRegistry;
@@ -13,12 +10,15 @@ import com.sflpro.notifier.spi.push.PushMessageSubscriber;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.core.io.DefaultResourceLoader;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Properties;
 
 /**
  * Created by Hayk Mkrtchyan.
@@ -47,19 +47,21 @@ class FirebaseMessagingConfiguration {
     }
 
     @Bean
-    AndroidConfig defaultAndroidConfig() {
-        return AndroidConfig.builder().build();
+    @ConfigurationProperties(prefix = "push.android.default")
+    Properties defaultAndroidConfig(final Environment environment) {
+        return new Properties();
     }
 
     @Bean
-    ApnsConfig defaultApnsConfig() {
-        return ApnsConfig.builder().setAps(Aps.builder().build()).build();
+    @ConfigurationProperties(prefix = "push.apns.default")
+    Properties defaultApnsConfig(final Environment environment) {
+        return new Properties();
     }
 
     @Bean
     PushMessageSender firebasePushMessageSender(final FirebaseMessaging firebaseMessaging,
-                                                final AndroidConfig defaultAndroidConfig,
-                                                final ApnsConfig defaultApnsConfig) {
+                                                final Properties defaultAndroidConfig,
+                                                final Properties defaultApnsConfig) {
         return new FirebasePushMessageSender(firebaseMessaging, defaultAndroidConfig, defaultApnsConfig);
     }
 

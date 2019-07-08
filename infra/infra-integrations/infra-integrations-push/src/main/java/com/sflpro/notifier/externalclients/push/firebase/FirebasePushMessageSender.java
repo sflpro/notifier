@@ -12,7 +12,9 @@ import org.springframework.util.Assert;
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.Properties;
 import java.util.function.BiConsumer;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -29,19 +31,19 @@ class FirebasePushMessageSender implements PushMessageSender {
 
     private final Map<PlatformType, BiConsumer<PushMessage, Message.Builder>> platformConfigurationHandlers;
 
-    FirebasePushMessageSender(final FirebaseMessaging firebaseMessaging, final AndroidConfig defaultAndroidConfig, final ApnsConfig defaultApnsConfig) {
+    FirebasePushMessageSender(final FirebaseMessaging firebaseMessaging, final Properties defaultAndroidConfig, final Properties defaultApnsConfig) {
         this.firebaseMessaging = firebaseMessaging;
         this.platformConfigurationHandlers = Stream.of(
                 platformConfigurationHandlerMapping(
                         PlatformType.GCM,
                         (message, builder) -> builder.setAndroidConfig(
-                                configForMessage(message,
+                                configForAndroidMessage(message,
                                         defaultAndroidConfig))
                 ),
                 platformConfigurationHandlerMapping(
                         PlatformType.APNS,
                         (message, builder) -> builder.setApnsConfig(
-                                configForMessage(message,
+                                configForApnsMessage(message,
                                         defaultApnsConfig)
                         )
                 )
@@ -69,14 +71,47 @@ class FirebasePushMessageSender implements PushMessageSender {
         return Optional.ofNullable(platformConfigurationHandlers.get(platformType));
     }
 
-    private static AndroidConfig configForMessage(final PushMessage message, final AndroidConfig defaultAndroidConfig) {
+    private static AndroidConfig configForAndroidMessage(final PushMessage message, final Properties defaultAndroidConfig) {
         logger.debug("Using default android config fro message with subject {}", message.subject());
-        return defaultAndroidConfig;
+        final AndroidConfig.Builder builder = AndroidConfig.builder();
+        final Function<String, String> propertyValueFnc = message.properties()::get;
+        final Function<String, String> propertyValueFncDefault = defaultAndroidConfig::getProperty;
+        valueFor(propertyValueFnc, propertyValueFncDefault, "ttl")
+                .map(Long::valueOf)
+                .ifPresent(builder::setTtl);
+        valueFor(propertyValueFnc, propertyValueFncDefault, "priority")
+                .map(AndroidConfig.Priority::valueOf)
+                .ifPresent(builder::setPriority);
+        valueFor(propertyValueFnc, propertyValueFncDefault, "collapseKey")
+                .ifPresent(builder::setCollapseKey);
+        valueFor(propertyValueFnc, propertyValueFncDefault, "restrictedPackageName")
+                .ifPresent(builder::setRestrictedPackageName);
+        return builder.build();
     }
 
-    private static ApnsConfig configForMessage(final PushMessage message, final ApnsConfig defaultApnsConfig) {
+    private static ApnsConfig configForApnsMessage(final PushMessage message, final Properties defaultApnsConfig) {
         logger.debug("Using default apns config fro message with subject {}", message.subject());
-        return defaultApnsConfig;
+        final Function<String, String> propertyValueFnc = message.properties()::get;
+        final Function<String, String> propertyValueFncDefault = defaultApnsConfig::getProperty;
+        final Aps.Builder apsBuilder = Aps.builder();
+        valueFor(propertyValueFnc, propertyValueFncDefault, "badge")
+                .map(Integer::valueOf)
+                .ifPresent(apsBuilder::setBadge);
+        valueFor(propertyValueFnc, propertyValueFncDefault, "category")
+                .ifPresent(apsBuilder::setCategory);
+        valueFor(propertyValueFnc, propertyValueFncDefault, "sound")
+                .ifPresent(apsBuilder::setSound);
+        valueFor(propertyValueFnc, propertyValueFncDefault, "alert")
+                .ifPresent(apsBuilder::setAlert);
+        return ApnsConfig.builder().setAps(apsBuilder.build()).build();
+    }
+
+    private static Optional<String> valueFor(final Function<String, String> propertyValueFnc, final Function<String, String> propertyValueFncDefault, final String key) {
+        final String value = propertyValueFnc.apply(key);
+        if (value == null) {
+            return Optional.ofNullable(propertyValueFncDefault.apply(key));
+        }
+        return Optional.of(value);
     }
 
     private static Pair<PlatformType, BiConsumer<PushMessage, Message.Builder>> platformConfigurationHandlerMapping(final PlatformType platformType, BiConsumer<PushMessage, Message.Builder> platformConfigurationHandler) {

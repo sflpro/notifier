@@ -4,6 +4,7 @@ import com.sflpro.notifier.queue.QueueConfigurationDefaults;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.amqp.RabbitAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,8 +19,8 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
  */
 @Configuration
 @ConditionalOnProperty(name = "notifier.queue.engine", havingValue = "rabbit")
-@EnableRabbit
-@Import({QueueConfigurationDefaults.class})
+@EnableRabbit()
+@Import({RabbitAutoConfiguration.class, QueueConfigurationDefaults.class})
 public class RabbitConfiguration {
 
     @Value("${spring.rabbitmq.host}")

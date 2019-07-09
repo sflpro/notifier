@@ -81,7 +81,7 @@ public class PushNotificationProcessorImplTest extends AbstractServicesUnitTest 
         // Reset
         resetAll();
         // Expectations
-        expect(pushNotificationService.getNotificationById(eq(notificationId))).andReturn(notification).once();
+        expect(pushNotificationService.getPushNotificationForProcessing(notificationId)).andReturn(notification).once();
         // Replay
         replayAll();
         // Run test scenario
@@ -111,12 +111,12 @@ public class PushNotificationProcessorImplTest extends AbstractServicesUnitTest 
         // Reset
         resetAll();
         // Expectations
-        expect(pushNotificationService.getNotificationById(eq(notificationId))).andReturn(notification).once();
-        expect(pushNotificationService.updateNotificationState(eq(notificationId), eq(NotificationState.PROCESSING))).andReturn(notification).once();
+        expect(pushNotificationService.getPushNotificationForProcessing(eq(notificationId))).andReturn(notification).once();
+        expect(pushNotificationService.updateNotificationState(notificationId, NotificationState.PROCESSING)).andReturn(notification).once();
         expect(pushMessageServiceProvider.lookupPushMessageSender(notification.getRecipient().getType()))
                 .andReturn(Optional.of(pushMessageSender));
         expect(pushMessageSender.send(isA(PushMessage.class))).andThrow(exceptionDuringSending);
-        expect(pushNotificationService.updateNotificationState(eq(notificationId), eq(NotificationState.FAILED))).andReturn(notification).once();
+        expect(pushNotificationService.updateNotificationState(notificationId, NotificationState.FAILED)).andReturn(notification).once();
         // Replay
         replayAll();
         // Run test scenario
@@ -141,13 +141,13 @@ public class PushNotificationProcessorImplTest extends AbstractServicesUnitTest 
         // Reset
         resetAll();
         // Expectations
-        expect(pushNotificationService.getNotificationById(eq(notificationId))).andReturn(notification).once();
-        expect(pushNotificationService.updateNotificationState(eq(notificationId), eq(NotificationState.PROCESSING))).andReturn(notification).once();
+        expect(pushNotificationService.getPushNotificationForProcessing(eq(notificationId))).andReturn(notification).once();
+        expect(pushNotificationService.updateNotificationState(notificationId, NotificationState.PROCESSING)).andReturn(notification).once();
         expect(pushMessageServiceProvider.lookupPushMessageSender(notification.getRecipient().getType()))
                 .andReturn(Optional.of(pushMessageSender));
         expect(pushMessageSender.send(isA(PushMessage.class))).andReturn(PushMessageSendingResult.of(pushNotificationExternalUuId));
-        expect(pushNotificationService.updateProviderExternalUuid(eq(notificationId), eq(pushNotificationExternalUuId))).andReturn(notification).once();
-        expect(pushNotificationService.updateNotificationState(eq(notificationId), eq(NotificationState.SENT))).andReturn(notification).once();
+        expect(pushNotificationService.updateProviderExternalUuid(notificationId, pushNotificationExternalUuId)).andReturn(notification).once();
+        expect(pushNotificationService.updateNotificationState(notificationId, NotificationState.SENT)).andReturn(notification).once();
         // Replay
         replayAll();
         // Run test scenario

@@ -57,7 +57,7 @@ public class PushNotificationProcessorImpl implements PushNotificationProcessor 
         Assert.notNull(notificationId, "Push notification id should not be null");
         Assert.notNull(secureProperties, "Secure properties map should not be null");
         LOGGER.debug("Processing push notification for id - {}", notificationId);
-        final PushNotification pushNotification = pushNotificationService.getNotificationById(notificationId);
+        final PushNotification pushNotification = pushNotificationService.getPushNotificationForProcessing(notificationId);
         assertPushNotificationState(pushNotification);
         // Update state to processing
         updatePushNotificationState(notificationId, NotificationState.PROCESSING);
@@ -66,8 +66,8 @@ public class PushNotificationProcessorImpl implements PushNotificationProcessor 
             final String pushNotificationProviderExternalUuid = send(pushNotification);
             // Check if provider uuid is provided
             if (StringUtils.isNotBlank(pushNotificationProviderExternalUuid)) {
-                LOGGER.debug("Updating provider uuid for push notification with id - {}, uuid - {}", pushNotification.getId(), pushNotificationProviderExternalUuid);
-                updatePushNotificationExternalUuId(pushNotification.getId(), pushNotificationProviderExternalUuid);
+                LOGGER.debug("Updating provider uuid for push notification with id - {}, uuid - {}", notificationId, pushNotificationProviderExternalUuid);
+                updatePushNotificationExternalUuId(notificationId, pushNotificationProviderExternalUuid);
             }
             // Mark push notification as processed
             updatePushNotificationState(notificationId, NotificationState.SENT);

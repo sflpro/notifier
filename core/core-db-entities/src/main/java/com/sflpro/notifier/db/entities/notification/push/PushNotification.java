@@ -19,6 +19,12 @@ import javax.persistence.*;
 @Entity
 @DiscriminatorValue(value = "PUSH")
 @Table(name = "notification_push")
+@NamedEntityGraph(name = "PushNotification.ProcessingFlow", attributeNodes = {
+        @NamedAttributeNode(value = "recipient", subgraph = "recipient.properties"),
+        @NamedAttributeNode("properties")},
+        subgraphs = @NamedSubgraph(name = "recipient.devices",
+                attributeNodes = {@NamedAttributeNode("devices"), @NamedAttributeNode("lastDevice")})
+)
 public class PushNotification extends Notification {
 
     private static final long serialVersionUID = -803404819866716200L;

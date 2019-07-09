@@ -11,13 +11,17 @@ import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+
+import javax.annotation.PostConstruct;
 
 /**
  * Company: SFL LLC
@@ -44,19 +48,25 @@ public class RabbitProducerConfiguration {
     @Value("${amqp.maxConcurrentConsumers}")
     private int maxConcurrentConsumers;
 
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
+
+    @PostConstruct
+    void init(){
+        rabbitTemplate.setRoutingKey(queueName);
+        rabbitTemplate.setReplyAddress(responseQueue().getName());
+        rabbitTemplate.setReplyTimeout(replyTimeout);
+    }
+
     @Bean
     public Queue responseQueue() {
         return new UniquelyNamedConfigurableQueue(AMQP_RESPONSE_QUEUE_NAME, false, false, true);
     }
 
     @Bean
-    public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
-        RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
-        rabbitTemplate.setRoutingKey(queueName);
-        rabbitTemplate.setReplyAddress(responseQueue().getName());
-        rabbitTemplate.setReplyTimeout(replyTimeout);
-
-        return rabbitTemplate;
+    @ConditionalOnMissingBean
+    public RabbitTemplate rabbitTemplate(final ConnectionFactory connectionFactory) {
+        return new RabbitTemplate(connectionFactory);
     }
 
     @Bean

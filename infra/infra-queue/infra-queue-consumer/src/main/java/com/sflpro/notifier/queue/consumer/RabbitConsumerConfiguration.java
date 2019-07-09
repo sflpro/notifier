@@ -43,7 +43,7 @@ public class RabbitConsumerConfiguration {
                                                                    @Qualifier("amqpTaskExecutor") final ThreadPoolTaskExecutor taskExecutor,
                                                                    final RPCQueueMessageHandler messageHandler,
                                                                    @Qualifier("notificationQueue") final Queue notificationQueue) {
-        SimpleMessageListenerContainer messageListenerContainer = new SimpleMessageListenerContainer(connectionFactory);
+        final SimpleMessageListenerContainer messageListenerContainer = new SimpleMessageListenerContainer(connectionFactory);
         messageListenerContainer.setAmqpAdmin(amqpAdmin);
         messageListenerContainer.setMessageListener(messageHandler::handleMessage);
         messageListenerContainer.setQueues(notificationQueue);
@@ -51,7 +51,6 @@ public class RabbitConsumerConfiguration {
         messageListenerContainer.setConcurrentConsumers(concurrentConsumers);
         messageListenerContainer.setMaxConcurrentConsumers(maxConcurrentConsumers);
         messageListenerContainer.setPrefetchCount(prefetchCount);
-
         return messageListenerContainer;
     }
 }

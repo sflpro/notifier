@@ -14,11 +14,12 @@
         <module>api</module>
         <module>report</module>
 		<module>notification-provider-spi</module>
+        <module>direct-sender</module>
     </modules>
 
     <groupId>com.sflpro.notifier</groupId>
     <artifactId>notifier</artifactId>
-    <version>1.5.0-SNAPSHOT</version>
+    <version>1.6.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <!-- Information required by maven central -->

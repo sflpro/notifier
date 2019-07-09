@@ -1,6 +1,6 @@
 package com.sflpro.notifier.api.web;
 
-import com.sflpro.notifier.DirectSenderConfiguration;
+import com.sflpro.notifier.DirectNotificationProcessorConfiguration;
 import com.sflpro.notifier.queue.producer.ProducerConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Import;
  * @author Davit Harutyunyan
  */
 @SpringBootApplication
-@Import({ProducerConfiguration.class, DirectSenderConfiguration.class})
+@Import({ProducerConfiguration.class, DirectNotificationProcessorConfiguration.class})
 @ComponentScan(basePackages = "com.sflpro.notifier")
 public class NotifierApiApplication {
 

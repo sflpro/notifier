@@ -19,7 +19,7 @@ import java.util.concurrent.Executor;
  */
 @ConditionalOnProperty(value = "notifier.queue.engine", havingValue = "none", matchIfMissing = true)
 @Configuration
-public class DirectSenderConfiguration {
+public class DirectNotificationProcessorConfiguration {
 
     @Bean
     Executor directSenderExecutor(@Value("${directSenderExecutor.corePoolSize:4}") final int corePoolSize,

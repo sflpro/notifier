@@ -10,18 +10,7 @@ sleep 1
 
 echo "Proceeding to compilation/check"
 
-if [ "$TRAVIS_BRANCH" == "feature/snapshot-deploy-fix" ]
-then
-    echo "Running feature/snapshot-deploy-fix branch build and analysis. Snapshots will be published. All issues/stats will be saved to Sonar database."
-    mvn -P snapshot -P central -s settings.xml clean deploy sonar:sonar -B \
-    -Dsonar.host.url=https://sonarcloud.io \
-    -Dsonar.organization=sfl \
-    -Dsonar.login=$SONARCLOUD_KEY \
-    -Dgpg.passphrase=$TRAVIS_GPG_KEY_PASS \
-    -Dtwillio.account.sender.phone=$TWILLIO_TEST_PHONE_NR \
-    -Dtwillio.account.authToken=$TWILLIO_AUTH_TOKEN \
-    -Dtwillio.account.sid=$TWILLIO_ACCOUNT_SID
-elif [ "$TRAVIS_BRANCH" == "develop" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]
+if [ "$TRAVIS_BRANCH" == "develop" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]
 then
     echo "Running develop branch build and analysis. Snapshots will be published. All issues/stats will be saved to Sonar database."
     mvn -P snapshot -P central -s settings.xml clean deploy sonar:sonar -B \

@@ -14,6 +14,7 @@
         <module>api</module>
         <module>report</module>
 		<module>notification-provider-spi</module>
+        <module>direct-sender</module>
     </modules>
 
     <groupId>com.sflpro.notifier</groupId>

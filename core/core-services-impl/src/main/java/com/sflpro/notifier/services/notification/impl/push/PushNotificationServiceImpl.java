@@ -106,6 +106,13 @@ public class PushNotificationServiceImpl extends AbstractNotificationServiceImpl
         return pushNotifications;
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public PushNotification getPushNotificationForProcessing(final Long notificationId) {
+        Assert.notNull(notificationId, "notificationId id should not be null");
+        return pushNotificationRepository.findByIdForProcessingFlow(notificationId);
+    }
+
     /* Utility methods */
 
     private List<PushNotification> createPushNotificationsForRecipients(final List<PushNotificationRecipient> recipients, final User user, final PushNotificationDto pushNotificationDto) {

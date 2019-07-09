@@ -11,9 +11,9 @@
         <module>core</module>
         <module>infra</module>
         <module>worker</module>
-        <module>api</module>
         <module>report</module>
-		<module>notification-provider-spi</module>
+        <module>notification-provider-spi</module>
+        <module>api</module>
     </modules>
 
     <groupId>com.sflpro.notifier</groupId>

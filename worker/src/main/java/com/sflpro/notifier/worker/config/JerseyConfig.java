@@ -1,6 +1,7 @@
 package com.sflpro.notifier.worker.config;
 
 
+import com.sflpro.notifier.worker.resources.maintanance.HeartBeatResource;
 import org.glassfish.jersey.logging.LoggingFeature;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.springframework.stereotype.Component;
@@ -21,6 +22,7 @@ public class JerseyConfig extends ResourceConfig {
     public JerseyConfig() {
         register(RequestContextFilter.class);
         packages("com.sflpro.notifier.queue.consumer.notification");
+        register(HeartBeatResource.class);
         register(LoggingFeature.class);
     }
 }

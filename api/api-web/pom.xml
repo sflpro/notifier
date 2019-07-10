@@ -34,7 +34,7 @@
                         </executions>
                         <configuration>
                             <tag>snapshot</tag>
-                            <repository>sflpro/notifier</repository>
+                            <repository>sflpro/notifier-api</repository>
                             <buildArgs>
                                 <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
                             </buildArgs>

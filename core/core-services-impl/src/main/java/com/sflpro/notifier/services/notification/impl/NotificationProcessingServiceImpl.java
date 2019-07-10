@@ -43,7 +43,7 @@ public class NotificationProcessingServiceImpl implements NotificationProcessing
     private NotificationService notificationService;
 
     /* Constructors */
-    public NotificationProcessingServiceImpl() {
+    NotificationProcessingServiceImpl() {
         LOGGER.debug("Initializing notification processing service");
     }
 

@@ -1,10 +1,7 @@
 package com.sflpro.notifier.worker.resources.maintanance;
 
-import org.springframework.stereotype.Component;
-
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Company: SFL LLC
@@ -12,12 +9,11 @@ import javax.ws.rs.Produces;
  *
  * @author Davit Harutyunyan
  */
-@Path("heartbeat")
-@Component
+
+@RestController
 public class HeartBeatResource {
 
-    @GET
-    @Produces("text/plain")
+    @GetMapping(path = "heartbeat")
     public String checkHeartBeat() {
         return "ALIVE";
     }

@@ -3,7 +3,6 @@ package com.sflpro.notifier.api.facade.config;
 import io.swagger.jaxrs.config.BeanConfig;
 import io.swagger.models.Contact;
 import io.swagger.models.Info;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -15,17 +14,12 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class SwaggerConfig {
-
-    @Value("${server.servlet.context-path}")
-    private String mountPath;
-
+    
     @Bean
     public BeanConfig getSwaggerConfig() {
         final String version = getClass().getPackage().getImplementationVersion();
 
         final BeanConfig beanConfig = new BeanConfig();
-
-        //beanConfig.setBasePath(mountPath);
 
         beanConfig.setVersion(version);
 

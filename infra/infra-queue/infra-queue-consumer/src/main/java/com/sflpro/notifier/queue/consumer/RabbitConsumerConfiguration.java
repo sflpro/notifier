@@ -45,7 +45,7 @@ public class RabbitConsumerConfiguration {
                                                                    @Qualifier("notificationQueue") final Queue notificationQueue) {
         final SimpleMessageListenerContainer messageListenerContainer = new SimpleMessageListenerContainer(connectionFactory);
         messageListenerContainer.setAmqpAdmin(amqpAdmin);
-        messageListenerContainer.setMessageListener(messageHandler::handleMessage);
+        messageListenerContainer.setMessageListener(message -> messageHandler.handleMessage(message.getBody()));
         messageListenerContainer.setQueues(notificationQueue);
         messageListenerContainer.setTaskExecutor(taskExecutor);
         messageListenerContainer.setConcurrentConsumers(concurrentConsumers);

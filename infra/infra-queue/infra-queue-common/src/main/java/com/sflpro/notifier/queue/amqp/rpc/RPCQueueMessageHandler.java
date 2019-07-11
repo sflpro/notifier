@@ -8,15 +8,15 @@ import javax.annotation.Nonnull;
  * Date: 12/12/14
  * Time: 1:45 PM
  */
-public interface RPCQueueMessageHandler<M> {
+public interface RPCQueueMessageHandler {
 
     /**
      * Handles and returns RPC message
      *
-     * @param message
+     * @param messageBytes
      * @return handledMessageResult
      */
     @Nonnull
-    String handleMessage(@Nonnull final M message);
+    String handleMessage(@Nonnull final byte[] messageBytes);
 }
 

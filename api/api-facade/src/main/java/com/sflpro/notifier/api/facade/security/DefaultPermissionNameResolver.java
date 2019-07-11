@@ -32,7 +32,7 @@ class DefaultPermissionNameResolver implements PermissionNameResolver {
         final String permissionNameKey = permissionNameKey(creationRequest);
         final String permissionName = permissionMappings.getProperty(permissionNameKey(creationRequest));
         if (StringUtils.isBlank(permissionName)) {
-            logger.warn("No permission was configured for {}", permissionNameKey);
+            logger.warn("No permission was configured for '{}' notification.", permissionNameKey);
             return Optional.empty();
         }
         return Optional.of(permissionName);

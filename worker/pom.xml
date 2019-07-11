@@ -182,10 +182,6 @@
             <artifactId>spring-boot-starter-jetty</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.glassfish.jersey.containers</groupId>
-            <artifactId>jersey-container-servlet-core</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.sflpro.notifier</groupId>
             <artifactId>infra-queue-consumer</artifactId>
             <version>${project.version}</version>

@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.PropertySource;
 
 /**
  * Company: SFL LLC
@@ -14,6 +15,7 @@ import org.springframework.context.annotation.Import;
  * @author Davit Harutyunyan
  */
 @SpringBootApplication
+@PropertySource(value = "classpath:application.properties")
 @Import({ProducerConfiguration.class, DirectNotificationProcessorConfiguration.class})
 @ComponentScan(basePackages = "com.sflpro.notifier")
 public class NotifierApiApplication {

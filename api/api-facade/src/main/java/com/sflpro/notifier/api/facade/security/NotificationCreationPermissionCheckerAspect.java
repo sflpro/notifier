@@ -27,7 +27,7 @@ class NotificationCreationPermissionCheckerAspect {
 
     @Around("execution(* com.sflpro.notifier.services.notification..*.create* (..)) " +
             "&& args(notification,..)")
-    public <R extends NotificationDto<?>> Object around(final ProceedingJoinPoint point, final R notification) throws Throwable {
+    public <N extends NotificationDto<?>> Object aroundNotificationCreation(final ProceedingJoinPoint point, final N notification) throws Throwable {
         logger.debug("Checking permission for sending {} notification with subject {}", notification.getType(), notification.getSubject());
         return executeAuthorized(point, notification);
     }

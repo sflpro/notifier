@@ -9,6 +9,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -32,6 +33,7 @@ import java.util.*;
  * Time: 2:41 PM
  */
 @Configuration
+@PropertySource(value = "classpath:security.properties", ignoreResourceNotFound = true)
 @ConditionalOnProperty(value = "security.enabled", havingValue = "true")
 @EnableAspectJAutoProxy
 @EnableWebSecurity

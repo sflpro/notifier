@@ -3,8 +3,10 @@ package com.sflpro.notifier.api.facade.config;
 import io.swagger.jaxrs.config.BeanConfig;
 import io.swagger.models.Contact;
 import io.swagger.models.Info;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 
 /**
  * Company: SFL LLC
@@ -13,8 +15,10 @@ import org.springframework.context.annotation.Configuration;
  * @author Davit Harutyunyan
  */
 @Configuration
+@PropertySource(value = "classpath:swagger.properties", ignoreResourceNotFound = true)
+@ConditionalOnProperty(name = "notification.api.cors.allowSwagger", havingValue = "true")
 public class SwaggerConfig {
-    
+
     @Bean
     public BeanConfig getSwaggerConfig() {
         final String version = getClass().getPackage().getImplementationVersion();

@@ -4,6 +4,7 @@ import com.sflpro.notifier.queue.consumer.ConsumerConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.PropertySource;
 
 /**
  * Company: SFL LLC
@@ -12,6 +13,7 @@ import org.springframework.context.annotation.Import;
  * @author Davit Harutyunyan
  */
 @SpringBootApplication
+@PropertySource(value = "classpath:static.properties")
 @Import(ConsumerConfiguration.class)
 public class NotifierWorkerApplication {
 

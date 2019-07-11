@@ -18,6 +18,7 @@ import org.springframework.context.annotation.Import;
 @ComponentScan(basePackages = "com.sflpro.notifier")
 public class NotifierApiApplication {
 
+
     public static void main(String[] args) {
         new SpringApplicationBuilder(NotifierApiApplication.class).run(args);
     }

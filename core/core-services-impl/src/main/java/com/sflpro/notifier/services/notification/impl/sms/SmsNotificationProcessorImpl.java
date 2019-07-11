@@ -34,7 +34,7 @@ import static java.lang.String.format;
 @Service
 class SmsNotificationProcessorImpl implements SmsNotificationProcessor {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SmsNotificationProcessorImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(SmsNotificationProcessorImpl.class);
 
     /* Dependencies */
     private final SmsNotificationService smsNotificationService;
@@ -48,12 +48,15 @@ class SmsNotificationProcessorImpl implements SmsNotificationProcessor {
     SmsNotificationProcessorImpl(final SmsNotificationService smsNotificationService,
                                  final SmsSenderProvider smsSenderProvider,
                                  final PersistenceUtilityService persistenceUtilityService,
-                                 @Value("${sms.account.sender.phone}") final String senderName) {
+                                 @Value("${sms.account.sender.phone:}") final String senderName) {
         super();
         this.smsNotificationService = smsNotificationService;
         this.smsSenderProvider = smsSenderProvider;
         this.persistenceUtilityService = persistenceUtilityService;
         this.senderName = senderName;
+        if (StringUtils.isBlank(senderName)) {
+            logger.warn("Nothing was configured for sms sender name. If you are not going to send any sms, then this bean shouldn't be initialized at all.");
+        }
     }
 
     /* Public method overrides */
@@ -66,7 +69,7 @@ class SmsNotificationProcessorImpl implements SmsNotificationProcessor {
                 smsNotificationService.getNotificationById(notificationId)
         );
         assertNotificationStateIsCreated(smsNotification);
-        LOGGER.debug("Successfully retrieved sms notification - {}", smsNotification);
+        logger.debug("Successfully retrieved sms notification - {}", smsNotification);
         /* Update notification state to PROCESSING */
         updateSmsNotificationState(smsNotification.getId(), NotificationState.PROCESSING);
         /* Start processing external sms service operation */
@@ -74,7 +77,7 @@ class SmsNotificationProcessorImpl implements SmsNotificationProcessor {
             processSending(smsNotification, secureProperties);
         } catch (final Exception e) {
             final String message = "Error occurred while sending sms message to recipient - " + smsNotification.getRecipientMobileNumber();
-            LOGGER.error(message, e);
+            logger.error(message, e);
             /* Update state of notification to NotificationState.FAILED */
             updateSmsNotificationState(smsNotification.getId(), NotificationState.FAILED);
             throw new ServicesRuntimeException(message, e);
@@ -97,7 +100,7 @@ class SmsNotificationProcessorImpl implements SmsNotificationProcessor {
 
     private void processSending(final SmsNotification smsNotification, final Map<String, String> secureProperties) {
         final String smsMessageProviderExternalId = send(smsNotification, secureProperties);
-        LOGGER.debug("Successfully sent sms message to recipient - {}, with body - {}", smsNotification.getRecipientMobileNumber(), smsNotification.getContent());
+        logger.debug("Successfully sent sms message to recipient - {}, with body - {}", smsNotification.getRecipientMobileNumber(), smsNotification.getContent());
         /* Update message external id if it is provided */
         if (StringUtils.isNotBlank(smsMessageProviderExternalId)) {
             updateSmsNotificationExternalUuId(smsNotification.getId(), smsMessageProviderExternalId);
@@ -168,9 +171,9 @@ class SmsNotificationProcessorImpl implements SmsNotificationProcessor {
         @Override
         public String sendMessage(@Nonnull final M message) {
             /* Send message request model */
-            LOGGER.debug("Sending sms message - {}", message);
+            logger.debug("Sending sms message - {}", message);
             final SmsMessageSendingResult sendingResult = smsSender.send(message);
-            LOGGER.debug("Successfully sent sms message, response - {}", sendingResult);
+            logger.debug("Successfully sent sms message, response - {}", sendingResult);
             return sendingResult.sid();
         }
     }

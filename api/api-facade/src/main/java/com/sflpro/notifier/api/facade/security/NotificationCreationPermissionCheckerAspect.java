@@ -1,6 +1,7 @@
 package com.sflpro.notifier.api.facade.security;
 
 import com.sflpro.notifier.services.notification.dto.NotificationDto;
+import com.sflpro.notifier.services.notification.dto.push.PushNotificationDto;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -25,8 +26,20 @@ class NotificationCreationPermissionCheckerAspect {
     }
 
     @Around("execution(* com.sflpro.notifier.services.notification..*.create* (..)) " +
-            "&& args(request,..)")
-    public <R extends NotificationDto<?>> Object around(final ProceedingJoinPoint point, final R request) throws Throwable {
+            "&& args(notification,..)")
+    public <N extends NotificationDto<?>> Object aroundNotificationCreation(final ProceedingJoinPoint point, final N notification) throws Throwable {
+        logger.debug("Checking permission for sending {} notification with subject {}", notification.getType(), notification.getSubject());
+        return executeAuthorized(point, notification);
+    }
+
+    @Around("execution(* com.sflpro.notifier.services.notification..*.createNotificationsForUserActiveRecipients* (..)) " +
+            "&& args(userId,pushNotification,..)")
+    public Object aroundPushNotificationCreation(final ProceedingJoinPoint point, final Long userId, final PushNotificationDto pushNotification) throws Throwable {
+        logger.debug("Checking permission for sending push message with subject {} to user {}", pushNotification.getSubject(), userId);
+        return executeAuthorized(point, pushNotification);
+    }
+
+    private <R extends NotificationDto<?>> Object executeAuthorized(final ProceedingJoinPoint point, final R request) throws Throwable {
         if (!permissionChecker.isNotificationCreationAllowed(request)) {
             final String msg = "Creating notification is not permitted!";
             logger.warn(msg);

@@ -13,7 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -26,7 +26,7 @@ import javax.annotation.Nonnull;
  * Time: 8:02 PM
  */
 @Service
-@ConditionalOnProperty(name = "notifier.queue.engine")
+@ConditionalOnBean(AmqpConnectorService.class)
 public class PushNotificationSubscriptionRequestQueueProducerServiceImpl implements PushNotificationSubscriptionRequestQueueProducerService, InitializingBean {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PushNotificationSubscriptionRequestQueueProducerServiceImpl.class);

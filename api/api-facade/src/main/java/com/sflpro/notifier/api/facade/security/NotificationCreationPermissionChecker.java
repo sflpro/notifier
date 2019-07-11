@@ -11,5 +11,5 @@ import javax.annotation.Nonnull;
  */
 interface NotificationCreationPermissionChecker {
 
-    <R extends NotificationDto<?>> boolean isNotificationCreationAllowed(@Nonnull final R creationRequest);
+    <N extends NotificationDto<?>> boolean isNotificationCreationAllowed(@Nonnull final N notification);
 }

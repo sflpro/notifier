@@ -8,7 +8,6 @@ import com.sflpro.notifier.queue.producer.notification.push.impl.PushNotificatio
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -38,16 +37,14 @@ import javax.annotation.PostConstruct;
     }
 
     @Bean
-    @ConditionalOnBean(AmqpConnectorService.class)
     NotificationQueueProducerService notificationQueueProducerService() {
-        logger.debug("Creating notificationQueueProducerService.");
+        logger.info("Creating notificationQueueProducerService.");
         return new NotificationQueueProducerServiceImpl();
     }
 
     @Bean
-    @ConditionalOnBean(AmqpConnectorService.class)
     PushNotificationSubscriptionRequestQueueProducerService pushNotificationSubscriptionRequestQueueProducerService() {
-        logger.debug("Creating pushNotificationSubscriptionRequestQueueProducerService.");
+        logger.info("Creating pushNotificationSubscriptionRequestQueueProducerService.");
         return new PushNotificationSubscriptionRequestQueueProducerServiceImpl();
     }
 }

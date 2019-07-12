@@ -5,7 +5,7 @@
     <parent>
         <artifactId>infra-integrations</artifactId>
         <groupId>com.sflpro.notifier</groupId>
-        <version>1.5.0-SNAPSHOT</version>
+        <version>1.6.0</version>
     </parent>
 
     <artifactId>infra-integrations-email</artifactId>
@@ -21,6 +21,11 @@
             </plugin>
             <plugin>
                 <artifactId>maven-failsafe-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <configuration/>
             </plugin>
             <plugin>
                 <groupId>org.sonatype.plugins</groupId>
@@ -41,6 +46,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.mandrillapp.wrapper.lutung</groupId>

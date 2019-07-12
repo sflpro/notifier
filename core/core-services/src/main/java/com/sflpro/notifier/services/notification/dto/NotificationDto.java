@@ -1,12 +1,18 @@
 package com.sflpro.notifier.services.notification.dto;
 
 import com.sflpro.notifier.db.entities.notification.Notification;
+import com.sflpro.notifier.db.entities.notification.NotificationProviderType;
 import com.sflpro.notifier.db.entities.notification.NotificationType;
+import com.sflpro.notifier.db.entities.notification.email.NotificationProperty;
 import com.sflpro.notifier.services.common.dto.AbstractDomainEntityModelDto;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.util.Assert;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * User: Ruben Dilanyan
@@ -26,16 +32,41 @@ public abstract class NotificationDto<T extends Notification> extends AbstractDo
 
     private String clientIpAddress;
 
+    private Map<String, String> properties;
+
+    private String templateName;
+
+    private NotificationProviderType providerType;
+
+    private boolean hasSecureProperties;
+
     /* Constructors */
-    public NotificationDto(final NotificationType type, final String content, final String subject, final String clientIpAddress) {
+    public NotificationDto(final NotificationType type,
+                           final String content,
+                           final String subject,
+                           final String clientIpAddress,
+                           final NotificationProviderType providerType) {
         this.type = type;
         this.content = content;
         this.clientIpAddress = clientIpAddress;
         this.subject = subject;
+        this.providerType = providerType;
+        this.properties = new HashMap<>();
+    }
+
+    public NotificationDto(final NotificationType type, final String content, final String subject, final String clientIpAddress, final String templateName, final NotificationProviderType providerType) {
+        this.type = type;
+        this.content = content;
+        this.subject = subject;
+        this.clientIpAddress = clientIpAddress;
+        this.templateName = templateName;
+        this.providerType = providerType;
+        this.properties = new HashMap<>();
     }
 
     public NotificationDto(final NotificationType type) {
         this.type = type;
+        this.properties = new HashMap<>();
     }
 
     /* Properties getters and setters */
@@ -67,6 +98,38 @@ public abstract class NotificationDto<T extends Notification> extends AbstractDo
         this.clientIpAddress = clientIpAddress;
     }
 
+    public Map<String, String> getProperties() {
+        return properties;
+    }
+
+    public void setProperties(final Map<String, String> properties) {
+        this.properties = properties;
+    }
+
+    public String getTemplateName() {
+        return templateName;
+    }
+
+    public void setTemplateName(final String templateName) {
+        this.templateName = templateName;
+    }
+
+    public NotificationProviderType getProviderType() {
+        return providerType;
+    }
+
+    public void setProviderType(final NotificationProviderType providerType) {
+        this.providerType = providerType;
+    }
+
+    public boolean isHasSecureProperties() {
+        return hasSecureProperties;
+    }
+
+    public void setHasSecureProperties(final boolean hasSecureProperties) {
+        this.hasSecureProperties = hasSecureProperties;
+    }
+
     /* Public interface methods */
     @Override
     public void updateDomainEntityProperties(final T notification) {
@@ -74,6 +137,12 @@ public abstract class NotificationDto<T extends Notification> extends AbstractDo
         notification.setContent(getContent());
         notification.setClientIpAddress(getClientIpAddress());
         notification.setSubject(getSubject());
+        notification.setProviderType(providerType);
+        notification.setProperties(getProperties().entrySet()
+                .stream()
+                .map(entry -> new NotificationProperty(entry.getKey(), entry.getValue()))
+                .collect(Collectors.toList()));
+        notification.setHasSecureProperties(isHasSecureProperties());
     }
 
     /* Equals, HashCode and ToString */
@@ -92,6 +161,9 @@ public abstract class NotificationDto<T extends Notification> extends AbstractDo
         builder.append(this.getClientIpAddress(), that.getClientIpAddress());
         builder.append(this.getContent(), that.getContent());
         builder.append(this.getSubject(), that.getSubject());
+        builder.append(this.getProperties(), that.getProperties());
+        builder.append(this.getProviderType(), that.getProviderType());
+        builder.append(this.isHasSecureProperties(), that.isHasSecureProperties());
         return builder.isEquals();
     }
 
@@ -103,6 +175,9 @@ public abstract class NotificationDto<T extends Notification> extends AbstractDo
         builder.append(this.getClientIpAddress());
         builder.append(this.getContent());
         builder.append(this.getSubject());
+        builder.append(this.getProperties());
+        builder.append(this.getProviderType());
+        builder.append(this.isHasSecureProperties());
         return builder.build();
     }
 
@@ -115,6 +190,9 @@ public abstract class NotificationDto<T extends Notification> extends AbstractDo
         builder.append("clientIpAddress", this.getClientIpAddress());
         builder.append("content", this.getContent());
         builder.append("subject", this.getSubject());
+        builder.append("properties", this.getProperties());
+        builder.append("providerType", this.getProviderType());
+        builder.append("hasSecureProperties",this.isHasSecureProperties());
         return builder.build();
     }
 }

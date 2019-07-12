@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.annotation.Nonnull;
+import javax.annotation.PreDestroy;
 import java.util.Collection;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
@@ -85,6 +86,12 @@ public class ApplicationEventDistributionServiceImpl implements ApplicationEvent
         this.executorService = threadPoolExecutor;
     }
 
+    @PreDestroy
+    @SuppressWarnings("unused")
+    private void destroy() {
+        this.executorService.shutdown();
+    }
+
     /* Properties getters and setters */
     public PersistenceUtilityService getPersistenceUtilityService() {
         return persistenceUtilityService;
@@ -94,10 +101,6 @@ public class ApplicationEventDistributionServiceImpl implements ApplicationEvent
         this.persistenceUtilityService = persistenceUtilityService;
     }
 
-    public ExecutorService getExecutorService() {
-        return executorService;
-    }
-
     public void setExecutorService(final ExecutorService executorService) {
         this.executorService = executorService;
     }
@@ -105,7 +108,7 @@ public class ApplicationEventDistributionServiceImpl implements ApplicationEvent
     /* Inner classes */
     private class EventListenersAsynchronousIteratorTask extends AbstractEventListenersIteratorTask {
 
-        public EventListenersAsynchronousIteratorTask(final ApplicationEvent applicationEvent) {
+        EventListenersAsynchronousIteratorTask(final ApplicationEvent applicationEvent) {
             super(applicationEvent);
         }
 
@@ -117,7 +120,7 @@ public class ApplicationEventDistributionServiceImpl implements ApplicationEvent
 
     private class EventListenersSynchronousIteratorTask extends AbstractEventListenersIteratorTask {
 
-        public EventListenersSynchronousIteratorTask(final ApplicationEvent applicationEvent) {
+        EventListenersSynchronousIteratorTask(final ApplicationEvent applicationEvent) {
             super(applicationEvent);
         }
 
@@ -138,7 +141,7 @@ public class ApplicationEventDistributionServiceImpl implements ApplicationEvent
         /* Properties */
         private final ApplicationEvent applicationEvent;
 
-        public AbstractEventListenersIteratorTask(final ApplicationEvent applicationEvent) {
+        AbstractEventListenersIteratorTask(final ApplicationEvent applicationEvent) {
             this.applicationEvent = applicationEvent;
         }
 
@@ -163,7 +166,7 @@ public class ApplicationEventDistributionServiceImpl implements ApplicationEvent
         private final ApplicationEventListener eventListener;
 
         /* Constructors */
-        public ApplicationEventProcessorTask(final ApplicationEvent applicationEvent, final ApplicationEventListener eventListener) {
+        ApplicationEventProcessorTask(final ApplicationEvent applicationEvent, final ApplicationEventListener eventListener) {
             this.applicationEvent = applicationEvent;
             this.eventListener = eventListener;
         }

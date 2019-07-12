@@ -9,8 +9,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.persistence.*;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 /**
  * User: Ruben Dilanyan
@@ -21,6 +19,12 @@ import java.util.Set;
 @Entity
 @DiscriminatorValue(value = "PUSH")
 @Table(name = "notification_push")
+@NamedEntityGraph(name = "PushNotification.ProcessingFlow", attributeNodes = {
+        @NamedAttributeNode(value = "recipient", subgraph = "recipient.properties"),
+        @NamedAttributeNode("properties")},
+        subgraphs = @NamedSubgraph(name = "recipient.devices",
+                attributeNodes = {@NamedAttributeNode("devices"), @NamedAttributeNode("lastDevice")})
+)
 public class PushNotification extends Notification {
 
     private static final long serialVersionUID = -803404819866716200L;
@@ -29,9 +33,6 @@ public class PushNotification extends Notification {
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "recipient_id", nullable = false, unique = false)
     private PushNotificationRecipient recipient;
-
-    @OneToMany(mappedBy = "pushNotification", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<PushNotificationProperty> properties;
 
     /* Constructors */
     public PushNotification() {
@@ -52,18 +53,9 @@ public class PushNotification extends Notification {
         this.recipient = subscription;
     }
 
-    public Set<PushNotificationProperty> getProperties() {
-        return properties;
-    }
-
-    public void setProperties(final Set<PushNotificationProperty> properties) {
-        this.properties = properties;
-    }
-
     /* Private utility methods */
     private void initializeDefaults() {
         setType(NotificationType.PUSH);
-        this.properties = new LinkedHashSet<>();
     }
 
     /* Equals, HashCode and ToString */

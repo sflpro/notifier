@@ -22,15 +22,16 @@ import javax.annotation.Nonnull;
  * Time: 8:07 PM
  */
 @Service
-public class SmsNotificationServiceImpl extends AbstractNotificationServiceImpl<SmsNotification> implements SmsNotificationService {
+class SmsNotificationServiceImpl extends AbstractNotificationServiceImpl<SmsNotification> implements SmsNotificationService {
     private static final Logger LOGGER = LoggerFactory.getLogger(SmsNotificationServiceImpl.class);
 
     /* Dependencies */
     @Autowired
     private SmsNotificationRepository smsNotificationRepository;
 
+
     /* Constructors */
-    public SmsNotificationServiceImpl() {
+    SmsNotificationServiceImpl() {
         LOGGER.debug("Initializing SMS notification service");
     }
 

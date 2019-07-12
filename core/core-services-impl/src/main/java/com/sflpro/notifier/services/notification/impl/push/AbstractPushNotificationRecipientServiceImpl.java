@@ -55,8 +55,7 @@ public abstract class AbstractPushNotificationRecipientServiceImpl<T extends Pus
     public T getPushNotificationRecipientById(@Nonnull final Long recipientId) {
         assertPushNotificationRecipientIdNotNull(recipientId);
         LOGGER.debug("Getting push notification recipient for id - {}, class - {}", recipientId, getInstanceClass());
-        final T recipient = getRepository().findOne(recipientId);
-        assertPushNotificationRecipientNotNullForId(recipient, recipientId);
+        final T recipient = getRepository().findById(recipientId).orElseThrow(() -> new PushNotificationRecipientNotFoundForIdException(recipientId, getInstanceClass()));
         LOGGER.debug("Successfully retrieved push notification recipient for id - {}, class - {}, recipient - {}", recipient.getId(), getInstanceClass(), recipient);
         return recipient;
     }
@@ -68,8 +67,7 @@ public abstract class AbstractPushNotificationRecipientServiceImpl<T extends Pus
         assertPushNotificationRecipientIdNotNull(recipientId);
         Assert.notNull(userDeviceId, "User device id should not be null");
         LOGGER.debug("Updating user device for push notification recipient with id - {}, user device id - {}", recipientId, userDeviceId);
-        T recipient = getRepository().findOne(recipientId);
-        assertPushNotificationRecipientNotNullForId(recipient, recipientId);
+        T recipient = getRepository().findById(recipientId).orElseThrow(() -> new PushNotificationRecipientNotFoundForIdException(recipientId, getInstanceClass()));;
         // Load user device
         final UserDevice userDevice = userDeviceService.getUserDeviceById(userDeviceId);
         assertPushNotificationRecipientAndDeviceBelongToSameUser(recipient, userDevice);
@@ -102,8 +100,7 @@ public abstract class AbstractPushNotificationRecipientServiceImpl<T extends Pus
         assertPushNotificationRecipientIdNotNull(recipientId);
         Assert.notNull(status, "Push notification recipient status should not be null");
         LOGGER.debug("Updating push notification recipient status for recipient with id - {} , status - {}", recipientId, status);
-        T recipient = getRepository().findOne(recipientId);
-        assertPushNotificationRecipientNotNullForId(recipient, recipientId);
+        T recipient = getRepository().findById(recipientId).orElseThrow(() -> new PushNotificationRecipientNotFoundForIdException(recipientId, getInstanceClass()));;
         // Update recipient status
         recipient.setStatus(status);
         recipient.setUpdated(new Date());
@@ -119,7 +116,7 @@ public abstract class AbstractPushNotificationRecipientServiceImpl<T extends Pus
     protected abstract Class<T> getInstanceClass();
 
     /* Utility methods */
-    protected void assertPushNotificationRecipientAndDeviceBelongToSameUser(final T recipient, final UserDevice userDevice) {
+    private void assertPushNotificationRecipientAndDeviceBelongToSameUser(final T recipient, final UserDevice userDevice) {
         final Long recipientUserId = recipient.getSubscription().getUser().getId();
         final Long deviceUserId = userDevice.getUser().getId();
         if (!recipientUserId.equals(deviceUserId)) {
@@ -143,13 +140,6 @@ public abstract class AbstractPushNotificationRecipientServiceImpl<T extends Pus
         Assert.notNull(providerType, "Push notification provider type should not be null");
     }
 
-    protected void assertPushNotificationRecipientNotNullForId(final T recipient, final Long id) {
-        if (recipient == null) {
-            LOGGER.error("Push notification recipient not found for id - {}, class - {}", id, getInstanceClass());
-            throw new PushNotificationRecipientNotFoundForIdException(id, getInstanceClass());
-        }
-    }
-
     protected void assertPushNotificationRecipientIdNotNull(final Long recipientId) {
         Assert.notNull(recipientId, "Push notification recipient id should not be null");
     }
@@ -158,11 +148,12 @@ public abstract class AbstractPushNotificationRecipientServiceImpl<T extends Pus
         Assert.notNull(subscriptionId, "Push notification subscription ID should not be null");
     }
 
-    protected void assertPushNotificationRecipientDto(final PushNotificationRecipientDto<? extends PushNotificationRecipient> recipientDto) {
+    protected void assertPushNotificationRecipientDto(final PushNotificationRecipientDto recipientDto) {
         Assert.notNull(recipientDto, "Push notification recipient DTO should not be null");
         Assert.notNull(recipientDto.getDestinationRouteToken(), "Destination route token in push notification recipient DTO should not be null");
         Assert.notNull(recipientDto.getDeviceOperatingSystemType(), "Device operating system type in push notification recipient DTO should not be null");
         Assert.notNull(recipientDto.getApplicationType(), "Application type in push notification recipient DTO should not be null");
+        Assert.notNull(recipientDto.getPlatformApplicationArn(), "Platform application ARN should not be null in SNS recipient DTO");
     }
 
     protected void assertNoRecipientExists(final PushNotificationProviderType type, final PushNotificationSubscription subscription, final String destinationRouteToken, final String applicationType) {

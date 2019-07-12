@@ -15,6 +15,8 @@ import org.easymock.TestSubject;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.Optional;
+
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -69,7 +71,7 @@ public class UserNotificationServiceImplTest extends AbstractServicesUnitTest {
         // Reset
         resetAll();
         // Expectations
-        expect(userNotificationRepository.findOne(eq(userNotificationId))).andReturn(null).once();
+        expect(userNotificationRepository.findById(eq(userNotificationId))).andReturn(Optional.empty()).once();
         // Replay
         replayAll();
         // Run test scenario
@@ -93,7 +95,7 @@ public class UserNotificationServiceImplTest extends AbstractServicesUnitTest {
         // Reset
         resetAll();
         // Expectations
-        expect(userNotificationRepository.findOne(eq(userNotificationId))).andReturn(userNotification).once();
+        expect(userNotificationRepository.findById(eq(userNotificationId))).andReturn(Optional.of(userNotification)).once();
         // Replay
         replayAll();
         // Run test scenario

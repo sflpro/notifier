@@ -1,14 +1,13 @@
 package com.sflpro.notifier.db.repositories.utility.impl;
 
 import com.sflpro.notifier.db.repositories.utility.PersistenceUtilityService;
-import org.hibernate.Hibernate;
-import org.hibernate.proxy.HibernateProxy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.orm.jpa.EntityManagerFactoryUtils;
 import org.springframework.orm.jpa.EntityManagerHolder;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionSynchronizationAdapter;
@@ -16,6 +15,7 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 import org.springframework.util.Assert;
 
 import javax.annotation.Nonnull;
+import javax.annotation.PreDestroy;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceException;
@@ -28,6 +28,7 @@ import java.util.concurrent.Executors;
  * Date: 11/15/14
  * Time: 9:50 AM
  */
+@Service
 public class PersistenceUtilityServiceImpl implements PersistenceUtilityService {
     private static final Logger LOGGER = LoggerFactory.getLogger(PersistenceUtilityServiceImpl.class);
 
@@ -43,22 +44,6 @@ public class PersistenceUtilityServiceImpl implements PersistenceUtilityService 
     public PersistenceUtilityServiceImpl() {
         // Initialize thread pool
         initExecutorService();
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    @Nonnull
-    public <T> T initializeAndUnProxy(@Nonnull final T entity) {
-        Assert.notNull(entity, "Entity should not be null");
-        LOGGER.debug("UnProxying entity - {}", new Object[]{entity});
-        // UnProxied entity
-        T unProxiedEntity = entity;
-        // Initialize
-        Hibernate.initialize(unProxiedEntity);
-        if (unProxiedEntity instanceof HibernateProxy) {
-            unProxiedEntity = (T) ((HibernateProxy) unProxiedEntity).getHibernateLazyInitializer().getImplementation();
-        }
-        return unProxiedEntity;
     }
 
     @Override
@@ -115,6 +100,11 @@ public class PersistenceUtilityServiceImpl implements PersistenceUtilityService 
     private void initExecutorService() {
         LOGGER.debug("Initializing executor service using thread pool size - {}", MAX_THREADS_COUNT);
         this.executorService = Executors.newFixedThreadPool(MAX_THREADS_COUNT);
+    }
+
+    @PreDestroy
+    private void destroy(){
+        this.executorService.shutdown();
     }
 
     private void assertRunnable(final Runnable runnable) {

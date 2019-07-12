@@ -1,5 +1,6 @@
 package com.sflpro.notifier.services.notification.impl.sms;
 
+import com.sflpro.notifier.db.entities.notification.NotificationProviderType;
 import com.sflpro.notifier.db.entities.notification.sms.SmsNotification;
 import com.sflpro.notifier.db.repositories.repositories.notification.AbstractNotificationRepository;
 import com.sflpro.notifier.db.repositories.repositories.notification.sms.SmsNotificationRepository;
@@ -49,13 +50,11 @@ public class SmsNotificationServiceImplTest extends AbstractNotificationServiceI
             // Expected
         }
         try {
-            smsNotificationService.createSmsNotification(new SmsNotificationDto(null, smsNotificationDto.getProviderType(), smsNotificationDto.getContent(), smsNotificationDto.getClientIpAddress()));
-            fail("Exception should be thrown");
-        } catch (final IllegalArgumentException ex) {
-            // Expected
-        }
-        try {
-            smsNotificationService.createSmsNotification(new SmsNotificationDto(smsNotificationDto.getRecipientMobileNumber(), null, smsNotificationDto.getContent(), smsNotificationDto.getClientIpAddress()));
+            smsNotificationService.createSmsNotification(new SmsNotificationDto(null,
+                    smsNotificationDto.getContent(),
+                    smsNotificationDto.getClientIpAddress(),
+                    NotificationProviderType.TWILLIO)
+            );
             fail("Exception should be thrown");
         } catch (final IllegalArgumentException ex) {
             // Expected

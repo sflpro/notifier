@@ -1,6 +1,7 @@
 package com.sflpro.notifier.services.notification.push;
 
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipient;
+import com.sflpro.notifier.services.notification.dto.push.PushNotificationRecipientDto;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -32,4 +33,14 @@ public interface PushNotificationRecipientService extends AbstractPushNotificati
      */
     @Nonnull
     Long getPushNotificationRecipientsCountForSearchParameters(@Nonnull final PushNotificationRecipientSearchParameters searchParameters);
+
+    /**
+     * Creates new push notification recipient for provided subscription and recipient DTO
+     *
+     * @param subscriptionId
+     * @param recipientDto
+     * @return pushNotificationSnsRecipient
+     */
+    @Nonnull
+    PushNotificationRecipient createPushNotificationRecipient(@Nonnull final Long subscriptionId, @Nonnull final PushNotificationRecipientDto recipientDto);
 }

@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.sflpro.notifier</groupId>
         <artifactId>infra-queue</artifactId>
-        <version>1.5.0-SNAPSHOT</version>
+        <version>1.6.0</version>
     </parent>
 
     <packaging>jar</packaging>
@@ -49,10 +49,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.easymock</groupId>
             <artifactId>easymock</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

@@ -11,13 +11,15 @@ import java.util.List;
  * Time: 1:09 PM
  */
 public enum NotificationProviderType {
-    TWILLIO(NotificationType.SMS), SMTP_SERVER((NotificationType.EMAIL)), AMAZON_SNS(NotificationType.PUSH),
-    GOOGLE_GCM(NotificationType.PUSH), APPLE_APNS(NotificationType.PUSH), MANDRILL(NotificationType.EMAIL_THIRD_PARTY);
+    TWILLIO(NotificationType.SMS), MSG_AM(NotificationType.SMS), NIKITA_MOBILE(NotificationType.SMS),
+    SMTP_SERVER(NotificationType.EMAIL), AMAZON_SNS(NotificationType.PUSH),
+    GOOGLE_GCM(NotificationType.PUSH), APPLE_APNS(NotificationType.PUSH), MANDRILL(NotificationType.EMAIL),
+    FIREBASE_CLOUD_MESSAGING(NotificationType.PUSH);
 
     /* Properties */
     private final List<NotificationType> supportedNotificationTypes;
 
-    private NotificationProviderType(final NotificationType... notificationTypes) {
+    NotificationProviderType(final NotificationType... notificationTypes) {
         this.supportedNotificationTypes = Collections.unmodifiableList(Arrays.asList(notificationTypes));
     }
 

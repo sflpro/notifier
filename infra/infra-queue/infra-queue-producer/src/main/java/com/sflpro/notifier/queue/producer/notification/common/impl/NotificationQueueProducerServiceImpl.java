@@ -11,14 +11,12 @@ import com.sflpro.notifier.services.system.event.ApplicationEventDistributionSer
 import org.apache.commons.lang3.time.StopWatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.annotation.Nonnull;
+import javax.annotation.PostConstruct;
+import java.util.Map;
 
 /**
  * User: Mher Sargsyan
@@ -26,50 +24,48 @@ import javax.annotation.Nonnull;
  * Date: 4/10/15
  * Time: 7:55 PM
  */
-@Service
-@Lazy(false)
-public class NotificationQueueProducerServiceImpl implements NotificationQueueProducerService, InitializingBean {
+public class NotificationQueueProducerServiceImpl implements NotificationQueueProducerService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(NotificationQueueProducerServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(NotificationQueueProducerServiceImpl.class);
 
     /* Dependencies */
     @Autowired
     private ApplicationEventDistributionService applicationEventDistributionService;
 
-    @Autowired(required = false)
-    @Qualifier("QueueConnectorService")
+    @Autowired
     private AmqpConnectorService amqpConnectorService;
 
     /* Constructors */
     public NotificationQueueProducerServiceImpl() {
-        LOGGER.debug("Initializing sms notification queue producer service");
+        logger.info("Initializing notification queue producer service");
     }
 
-    @Override
-    public void afterPropertiesSet() {
+    @PostConstruct
+    void init() {
         applicationEventDistributionService.subscribe(new StartSendingNotificationEventListener());
     }
 
 
     /* Public methods */
     @Override
-    public void processStartSendingNotificationEvent(@Nonnull final Long notificationId) {
+    public void processStartSendingNotificationEvent(@Nonnull final Long notificationId, @Nonnull final Map<String, String> secureProperties) {
         Assert.notNull(notificationId, "Notification id should not be null.");
-        LOGGER.debug("Processing notification sending event for notification by id - {}", notificationId);
-        amqpConnectorService.publishMessage(RPCCallType.START_NOTIFICATION_PROCESSING, new NotificationRPCTransferModel(notificationId), NotificationRPCTransferModel.class, new NotificationMessageSendingEventListenerRPCResponseHandler());
+        Assert.notNull(secureProperties, "Secure properties should not be null.");
+        logger.debug("Processing notification sending event for notification by id - {}", notificationId);
+        amqpConnectorService.publishMessage(RPCCallType.START_NOTIFICATION_PROCESSING, new NotificationRPCTransferModel(notificationId, secureProperties), NotificationRPCTransferModel.class, new NotificationMessageSendingEventListenerRPCResponseHandler());
     }
 
     /* Inner classes */
     private class StartSendingNotificationEventListener extends StartSendingNotificationEventListenerAdapter {
 
         /* Constructors */
-        public StartSendingNotificationEventListener() {
+        StartSendingNotificationEventListener() {
             super();
         }
 
         @Override
         protected void processStartSendingNotificationEvent(final StartSendingNotificationEvent event) {
-            NotificationQueueProducerServiceImpl.this.processStartSendingNotificationEvent(event.getNotificationId());
+            NotificationQueueProducerServiceImpl.this.processStartSendingNotificationEvent(event.getNotificationId(), event.getSecureProperties());
         }
     }
 
@@ -78,7 +74,7 @@ public class NotificationQueueProducerServiceImpl implements NotificationQueuePr
         private final StopWatch stopWatch;
 
         /* Constructors */
-        public NotificationMessageSendingEventListenerRPCResponseHandler() {
+        NotificationMessageSendingEventListenerRPCResponseHandler() {
             this.stopWatch = new StopWatch();
             stopWatch.start();
         }
@@ -86,8 +82,7 @@ public class NotificationQueueProducerServiceImpl implements NotificationQueuePr
         @Override
         public void handleResponse(@Nonnull final NotificationRPCTransferModel responseModel) {
             stopWatch.stop();
-            LOGGER.debug("Finalized sending notification, response model - {}, duration - {}", responseModel, stopWatch.getTime());
-
+            logger.debug("Finalized sending notification, response model - {}, duration - {}", responseModel, stopWatch.getTime());
         }
     }
 }

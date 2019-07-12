@@ -1,6 +1,7 @@
 package com.sflpro.notifier.services.notification;
 
 import javax.annotation.Nonnull;
+import java.util.Map;
 
 /**
  * User: Ruben Dilanyan
@@ -15,5 +16,5 @@ public interface NotificationProcessor {
      *
      * @param notificationId
      */
-    void processNotification(@Nonnull final Long notificationId);
+    void processNotification(@Nonnull final Long notificationId, @Nonnull final Map<String, String> secureProperties);
 }

@@ -1,11 +1,14 @@
 package com.sflpro.notifier.db.entities.notification;
 
 import com.sflpro.notifier.db.entities.AbstractDomainUuIdAwareEntityModel;
+import com.sflpro.notifier.db.entities.notification.email.NotificationProperty;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * User: Ruben Dilanyan
@@ -18,12 +21,13 @@ import javax.persistence.*;
 @Table(name = "notification")
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
+@Access(AccessType.FIELD)
 public abstract class Notification extends AbstractDomainUuIdAwareEntityModel {
     private static final long serialVersionUID = -3642971556967427525L;
 
     /* Properties */
     @Enumerated(EnumType.STRING)
-    @Column(name = "type", nullable = false, insertable = false, updatable = false)
+    @Column(name = "type", updatable = false, nullable = false, insertable = false)
     private NotificationType type;
 
     @Enumerated(EnumType.STRING)
@@ -31,20 +35,27 @@ public abstract class Notification extends AbstractDomainUuIdAwareEntityModel {
     private NotificationState state;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "provider_type", nullable = false)
+    @Column(name = "provider_type", updatable = false, nullable = false)
     private NotificationProviderType providerType;
 
-    @Column(name = "content", nullable = true, length = 20000)
+    @Column(name = "content", updatable = false, nullable = true, length = 20000)
     private String content;
 
-    @Column(name = "subject", nullable = true, length = 500)
+    @Column(name = "subject", updatable = false, nullable = true, length = 500)
     private String subject;
 
-    @Column(name = "client_ip_address", nullable = true)
+    @Column(name = "client_ip_address", updatable = false, nullable = true)
     private String clientIpAddress;
 
     @Column(name = "provider_external_uuid", nullable = true)
     private String providerExternalUuId;
+
+    @Column(name = "has_secure_properties", updatable = false, nullable = false)
+    private boolean hasSecureProperties;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "notification_id", referencedColumnName = "id", updatable = false, nullable = false)
+    private List<NotificationProperty> properties;
 
     /* Constructors */
     public Notification() {
@@ -54,6 +65,7 @@ public abstract class Notification extends AbstractDomainUuIdAwareEntityModel {
     public Notification(final boolean generateUuId) {
         super(generateUuId);
         initializeDefaults();
+        properties = new ArrayList<>();
     }
 
     /* Properties getters and setters */
@@ -113,6 +125,22 @@ public abstract class Notification extends AbstractDomainUuIdAwareEntityModel {
         this.providerExternalUuId = providerExternalUuId;
     }
 
+    public boolean hasSecureProperties() {
+        return hasSecureProperties;
+    }
+
+    public void setHasSecureProperties(final boolean hasSecureProperties) {
+        this.hasSecureProperties = hasSecureProperties;
+    }
+
+    public List<NotificationProperty> getProperties() {
+        return properties;
+    }
+
+    public void setProperties(final List<NotificationProperty> properties) {
+        this.properties = properties;
+    }
+
     /* Private utility methods */
     private void initializeDefaults() {
         this.state = NotificationState.CREATED;
@@ -137,6 +165,7 @@ public abstract class Notification extends AbstractDomainUuIdAwareEntityModel {
         builder.append(this.getContent(), that.getContent());
         builder.append(this.getSubject(), that.getSubject());
         builder.append(this.getProviderExternalUuId(), that.getProviderExternalUuId());
+        builder.append(this.hasSecureProperties(), that.hasSecureProperties());
         return builder.isEquals();
     }
 
@@ -151,6 +180,7 @@ public abstract class Notification extends AbstractDomainUuIdAwareEntityModel {
         builder.append(this.getContent());
         builder.append(this.getSubject());
         builder.append(this.getProviderExternalUuId());
+        builder.append(this.hasSecureProperties());
         return builder.build();
     }
 
@@ -166,6 +196,7 @@ public abstract class Notification extends AbstractDomainUuIdAwareEntityModel {
         builder.append("content", this.getContent());
         builder.append("subject", this.getSubject());
         builder.append("providerExternalUuId", this.getProviderExternalUuId());
+        builder.append("has_secure_properties", this.hasSecureProperties());
         return builder.build();
     }
 }

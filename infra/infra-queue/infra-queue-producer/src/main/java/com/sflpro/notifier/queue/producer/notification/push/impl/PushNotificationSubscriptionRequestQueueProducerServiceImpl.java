@@ -11,14 +11,11 @@ import com.sflpro.notifier.services.system.event.ApplicationEventDistributionSer
 import org.apache.commons.lang3.time.StopWatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.annotation.Nonnull;
+import javax.annotation.PostConstruct;
 
 /**
  * User: Ruben Dilanyan
@@ -26,34 +23,31 @@ import javax.annotation.Nonnull;
  * Date: 8/22/15
  * Time: 8:02 PM
  */
-@Service
-@Lazy(false)
-public class PushNotificationSubscriptionRequestQueueProducerServiceImpl implements PushNotificationSubscriptionRequestQueueProducerService, InitializingBean {
+public class PushNotificationSubscriptionRequestQueueProducerServiceImpl implements PushNotificationSubscriptionRequestQueueProducerService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(PushNotificationSubscriptionRequestQueueProducerServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(PushNotificationSubscriptionRequestQueueProducerServiceImpl.class);
 
     /* Dependencies */
     @Autowired
     private ApplicationEventDistributionService applicationEventDistributionService;
 
     @Autowired
-    @Qualifier("QueueConnectorService")
     private AmqpConnectorService amqpConnectorService;
 
     /* Constructors */
     public PushNotificationSubscriptionRequestQueueProducerServiceImpl() {
-        LOGGER.debug("Initializing push notification subscription request queue producer service");
+        logger.debug("Initializing push notification subscription request queue producer service");
     }
 
-    @Override
-    public void afterPropertiesSet() {
+    @PostConstruct
+    void init() {
         applicationEventDistributionService.subscribe(new StartPushNotificationProcessingEventListener());
     }
 
     @Override
     public void processPushNotificationSubscriptionRequest(@Nonnull final Long requestId) {
         Assert.notNull(requestId, "Push notification subscription request should not be null");
-        LOGGER.debug("Processing push notification subscription request with id - {}", requestId);
+        logger.debug("Processing push notification subscription request with id - {}", requestId);
         amqpConnectorService.publishMessage(RPCCallType.START_PUSH_NOTIFICATION_SUBSCRIPTION_PROCESSING, new PushNotificationSubscriptionRequestRPCTransferModel(requestId), PushNotificationSubscriptionRequestRPCTransferModel.class, new PushNotificationSubscriptionRPCResponseHandler());
     }
 
@@ -78,7 +72,7 @@ public class PushNotificationSubscriptionRequestQueueProducerServiceImpl impleme
     private class StartPushNotificationProcessingEventListener extends StartPushNotificationSubscriptionRequestProcessingEventListenerAdapter {
 
         /* Constructors */
-        public StartPushNotificationProcessingEventListener() {
+        StartPushNotificationProcessingEventListener() {
         }
 
         @Override
@@ -100,8 +94,7 @@ public class PushNotificationSubscriptionRequestQueueProducerServiceImpl impleme
         @Override
         public void handleResponse(@Nonnull final PushNotificationSubscriptionRequestRPCTransferModel responseModel) {
             stopWatch.stop();
-            LOGGER.debug("Finalized processing push notification subscription request, response model - {}, duration - {}", responseModel, stopWatch.getTime());
-
+            logger.debug("Finalized processing push notification subscription request, response model - {}, duration - {}", responseModel, stopWatch.getTime());
         }
     }
 }

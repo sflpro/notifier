@@ -2,11 +2,13 @@ package com.sflpro.notifier.queue.consumer.notification.common;
 
 import com.sflpro.notifier.db.entities.notification.NotificationState;
 import com.sflpro.notifier.db.entities.notification.sms.SmsNotification;
+import com.sflpro.notifier.queue.consumer.common.NotificationQueueConsumerService;
 import com.sflpro.notifier.queue.consumer.test.AbstractQueueConsumerIntegrationTest;
 import com.sflpro.notifier.services.notification.sms.SmsNotificationService;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Collections;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -17,7 +19,6 @@ import static org.junit.Assert.assertNotNull;
  * Date: 4/10/15
  * Time: 7:17 PM
  */
-@Ignore
 public class NotificationQueueConsumerServiceIntegrationTest extends AbstractQueueConsumerIntegrationTest {
 
     /* Dependencies */
@@ -38,7 +39,7 @@ public class NotificationQueueConsumerServiceIntegrationTest extends AbstractQue
         SmsNotification smsNotification = getServicesTestHelper().createSmsNotification();
         /* Flush, clear  and process sending sms message */
         flushAndClear();
-        notificationQueueConsumerService.processNotification(smsNotification.getId());
+        notificationQueueConsumerService.processNotification(smsNotification.getId(), Collections.emptyMap());
         /* Flush, clear, reload notification and check state */
         smsNotification = smsNotificationService.getNotificationById(smsNotification.getId());
         assertNotNull(smsNotification);

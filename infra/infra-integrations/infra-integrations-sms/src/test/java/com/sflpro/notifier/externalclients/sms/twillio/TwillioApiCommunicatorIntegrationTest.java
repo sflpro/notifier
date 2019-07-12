@@ -6,9 +6,9 @@ import com.sflpro.notifier.externalclients.sms.twillio.exception.TwillioClientRu
 import com.sflpro.notifier.externalclients.sms.twillio.model.request.SendMessageRequest;
 import com.sflpro.notifier.externalclients.sms.twillio.model.response.SendMessageResponse;
 import org.apache.commons.lang3.StringUtils;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.TestPropertySource;
 
 import static org.junit.Assert.*;
 
@@ -18,17 +18,17 @@ import static org.junit.Assert.*;
  * Date: 3/15/15
  * Time: 11:03 AM
  */
-@Ignore
+@TestPropertySource(properties = {"twillio.enabled=true"})
 public class TwillioApiCommunicatorIntegrationTest extends AbstractSmsIntegrationTest {
 
     /* Constants */
-    private static final String VALID_RECIPIENT_PHONE_NUMBER = "+37498000000";
+    private static final String VALID_RECIPIENT_PHONE_NUMBER = "+37494668425";
 
-    private static final String INVALID_RECIPIENT_PHONE_NUMBER = "+15005550001";
+    private static final String INVALID_RECIPIENT_PHONE_NUMBER = "+37494668425";
 
     private static final String VALID_SENDER_PHONE_NUMBER = "+15005550006";
 
-    private static final String INVALID_SENDER_PHONE_NUMBER = "+15005550001";
+    private static final String INVALID_SENDER_PHONE_NUMBER = "+37494668425";
 
     private static final String MESSAGE_BODY = "Happy message body";
 
@@ -36,11 +36,6 @@ public class TwillioApiCommunicatorIntegrationTest extends AbstractSmsIntegratio
     @Autowired
     private TwillioApiCommunicator twillioApiCommunicator;
 
-    /* Properties */
-
-    /* Constructors */
-    public TwillioApiCommunicatorIntegrationTest() {
-    }
 
     /* Test methods */
     @Test
@@ -79,7 +74,6 @@ public class TwillioApiCommunicatorIntegrationTest extends AbstractSmsIntegratio
 
     /* Utility methods */
     private void assertTwillioClientException(final SendMessageRequest sendMessageRequest, final TwillioClientRuntimeException e) {
-        assertEquals(e.getMessageBody(), sendMessageRequest.getMessageBody());
         assertEquals(e.getRecipientNumber(), sendMessageRequest.getRecipientNumber());
         assertEquals(e.getSenderNumber(), sendMessageRequest.getSenderNumber());
     }

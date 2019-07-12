@@ -1,8 +1,8 @@
 package com.sflpro.notifier.api.internal.facade.test;
 
 import com.sflpro.notifier.api.internal.facade.helper.ServiceFacadeImplTestHelper;
-import com.sflpro.notifier.core.api.internal.model.common.result.ErrorResponseModel;
-import com.sflpro.notifier.core.api.internal.model.common.result.ErrorType;
+import com.sflpro.notifier.api.model.common.result.ErrorResponseModel;
+import com.sflpro.notifier.api.model.common.result.ErrorType;
 import org.apache.commons.lang3.mutable.MutableBoolean;
 import org.easymock.EasyMockRunner;
 import org.easymock.EasyMockSupport;
@@ -10,6 +10,7 @@ import org.junit.Ignore;
 import org.junit.runner.RunWith;
 
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.Assert.assertTrue;
 
@@ -40,6 +41,10 @@ public abstract class AbstractFacadeUnitTest extends EasyMockSupport {
             }
         });
         assertTrue(mutableBoolean.booleanValue());
+    }
+
+    public static String uuid(){
+       return UUID.randomUUID().toString();
     }
 
     /* Getters and setters */

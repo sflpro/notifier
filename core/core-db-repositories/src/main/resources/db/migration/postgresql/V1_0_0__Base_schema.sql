@@ -150,7 +150,7 @@ create table if not exists notification_sms (
   recipient_mobile_number varchar(255) not null
 );
 
-create table if not exists notification_usernotification_sms (
+create table if not exists notification_user (
   id bigint not null constraint pk_notification_user primary key,
   notification_id bigint not null constraint uk_notification_usernotification_sms_notification_id unique
     constraint fk_notification_usernotification_sms_notification references notification,

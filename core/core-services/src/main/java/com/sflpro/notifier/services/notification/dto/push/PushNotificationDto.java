@@ -1,8 +1,9 @@
 package com.sflpro.notifier.services.notification.dto.push;
 
+import com.sflpro.notifier.db.entities.notification.NotificationProviderType;
 import com.sflpro.notifier.db.entities.notification.NotificationType;
-import com.sflpro.notifier.services.notification.dto.NotificationDto;
 import com.sflpro.notifier.db.entities.notification.push.PushNotification;
+import com.sflpro.notifier.services.notification.dto.NotificationDto;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -22,9 +23,14 @@ public class PushNotificationDto extends NotificationDto<PushNotification> {
         super(NotificationType.PUSH);
     }
 
-    public PushNotificationDto(final String content, final String subject, final String clientIpAddress) {
-        super(NotificationType.PUSH, content, subject, clientIpAddress);
+    public PushNotificationDto(final String content, final String subject, final String clientIpAddress, final NotificationProviderType providerType) {
+        super(NotificationType.PUSH, content, subject, clientIpAddress, providerType);
     }
+
+    public PushNotificationDto(final String content, final String subject, final String clientIpAddress) {
+        super(NotificationType.PUSH, content, subject, clientIpAddress, null);
+    }
+
 
     /* Equals, HashCode and ToString */
     @Override

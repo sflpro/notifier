@@ -2,8 +2,8 @@ package com.sflpro.notifier.services.notification.dto.email;
 
 import com.sflpro.notifier.db.entities.notification.NotificationProviderType;
 import com.sflpro.notifier.db.entities.notification.NotificationType;
-import com.sflpro.notifier.services.notification.dto.NotificationDto;
 import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
+import com.sflpro.notifier.services.notification.dto.NotificationDto;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -22,15 +22,21 @@ public class EmailNotificationDto extends NotificationDto<EmailNotification> {
 
     private String senderEmail;
 
-    private NotificationProviderType providerType;
+    private String userUuid;
 
     /* Constructors */
-    public EmailNotificationDto(final String recipientEmail, final String senderEmail, final NotificationProviderType providerType, final String content, final String subject, final String clientIpAddress) {
-        super(NotificationType.EMAIL, content, subject, clientIpAddress);
+    public EmailNotificationDto(final String recipientEmail,
+                                final String senderEmail,
+                                final String content,
+                                final String subject,
+                                final String clientIpAddress,
+                                final String templateName,
+                                final NotificationProviderType providerType) {
+        super(NotificationType.EMAIL, content, subject, clientIpAddress, templateName, providerType);
         this.recipientEmail = recipientEmail;
         this.senderEmail = senderEmail;
-        this.providerType = providerType;
     }
+
 
     public EmailNotificationDto() {
         super(NotificationType.EMAIL);
@@ -53,12 +59,12 @@ public class EmailNotificationDto extends NotificationDto<EmailNotification> {
         this.senderEmail = senderEmail;
     }
 
-    public NotificationProviderType getProviderType() {
-        return providerType;
+    public String getUserUuid() {
+        return userUuid;
     }
 
-    public void setProviderType(final NotificationProviderType providerType) {
-        this.providerType = providerType;
+    public void setUserUuid(final String userUuid) {
+        this.userUuid = userUuid;
     }
 
     /* Public interface methods */
@@ -66,8 +72,8 @@ public class EmailNotificationDto extends NotificationDto<EmailNotification> {
     public void updateDomainEntityProperties(final EmailNotification notification) {
         super.updateDomainEntityProperties(notification);
         notification.setRecipientEmail(getRecipientEmail());
-        notification.setProviderType(getProviderType());
         notification.setSenderEmail(getSenderEmail());
+        notification.setTemplateName(getTemplateName());
     }
 
     /* Equals, HashCode and ToString */
@@ -84,7 +90,7 @@ public class EmailNotificationDto extends NotificationDto<EmailNotification> {
         builder.appendSuper(super.equals(that));
         builder.append(this.getRecipientEmail(), that.getRecipientEmail());
         builder.append(this.getSenderEmail(), that.getSenderEmail());
-        builder.append(this.getProviderType(), that.getProviderType());
+        builder.append(this.getTemplateName(), that.getTemplateName());
         return builder.isEquals();
     }
 
@@ -94,7 +100,7 @@ public class EmailNotificationDto extends NotificationDto<EmailNotification> {
         builder.appendSuper(super.hashCode());
         builder.append(this.getRecipientEmail());
         builder.append(this.getSenderEmail());
-        builder.append(this.getProviderType());
+        builder.append(this.getTemplateName());
         return builder.build();
     }
 
@@ -104,7 +110,7 @@ public class EmailNotificationDto extends NotificationDto<EmailNotification> {
         builder.appendSuper(super.toString());
         builder.append("recipientEmail", this.getRecipientEmail());
         builder.append("senderEmail", this.getSenderEmail());
-        builder.append("providerType", this.getProviderType());
+        builder.append("templateName", this.getTemplateName());
         return builder.build();
     }
 }

@@ -4,17 +4,21 @@ import com.sflpro.notifier.db.entities.device.mobile.DeviceOperatingSystemType;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationProviderType;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipient;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipientStatus;
+import com.sflpro.notifier.db.entities.notification.push.PushNotificationSubscription;
 import com.sflpro.notifier.db.repositories.repositories.notification.push.AbstractPushNotificationRecipientRepository;
 import com.sflpro.notifier.db.repositories.repositories.notification.push.PushNotificationRecipientSearchFilter;
+import com.sflpro.notifier.services.notification.dto.push.PushNotificationRecipientDto;
+import com.sflpro.notifier.services.notification.exception.push.PushNotificationRecipientAlreadyExistsException;
 import com.sflpro.notifier.services.notification.push.PushNotificationRecipientSearchParameters;
+import org.easymock.EasyMock;
 import org.easymock.TestSubject;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.easymock.EasyMock.eq;
-import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
@@ -133,6 +137,108 @@ public class PushNotificationRecipientServiceImplTest extends AbstractPushNotifi
         // Run test scenario
         final List<PushNotificationRecipient> result = pushNotificationRecipientService.getPushNotificationRecipientsForSearchParameters(parameters, startFrom, maxResults);
         assertEquals(recipients, result);
+        // Verify
+        verifyAll();
+    }
+
+    @Test
+    public void testCreatePushNotificationRecipientWithInvalidArguments() {
+        // Test data
+        final Long subscriptionId = 1L;
+        final PushNotificationRecipientDto recipientDto = getServicesImplTestHelper().createPushNotificationSnsRecipientDto();
+        // Reset
+        resetAll();
+        // Replay
+        replayAll();
+        // Run test scenario
+        try {
+            pushNotificationRecipientService.createPushNotificationRecipient(null, recipientDto);
+            fail("Exception should be thrown");
+        } catch (final IllegalArgumentException ex) {
+            // Expected
+        }
+        try {
+            pushNotificationRecipientService.createPushNotificationRecipient(subscriptionId, null);
+            fail("Exception should be thrown");
+        } catch (final IllegalArgumentException ex) {
+            // Expected
+        }
+        try {
+            pushNotificationRecipientService.createPushNotificationRecipient(subscriptionId, new PushNotificationRecipientDto(PushNotificationProviderType.SNS,null, recipientDto.getDeviceOperatingSystemType(), recipientDto.getApplicationType(), recipientDto.getPlatformApplicationArn()));
+            fail("Exception should be thrown");
+        } catch (final IllegalArgumentException ex) {
+            // Expected
+        }
+        try {
+            pushNotificationRecipientService.createPushNotificationRecipient(subscriptionId, new PushNotificationRecipientDto(PushNotificationProviderType.SNS,recipientDto.getDestinationRouteToken(), null, recipientDto.getApplicationType(), recipientDto.getPlatformApplicationArn()));
+            fail("Exception should be thrown");
+        } catch (final IllegalArgumentException ex) {
+            // Expected
+        }
+        try {
+            pushNotificationRecipientService.createPushNotificationRecipient(subscriptionId, new PushNotificationRecipientDto(PushNotificationProviderType.SNS,recipientDto.getDestinationRouteToken(), recipientDto.getDeviceOperatingSystemType(), null, recipientDto.getPlatformApplicationArn()));
+            fail("Exception should be thrown");
+        } catch (final IllegalArgumentException ex) {
+            // Expected
+        }
+        try {
+            pushNotificationRecipientService.createPushNotificationRecipient(subscriptionId, new PushNotificationRecipientDto(PushNotificationProviderType.SNS,recipientDto.getDestinationRouteToken(), recipientDto.getDeviceOperatingSystemType(), recipientDto.getApplicationType(), null));
+            fail("Exception should be thrown");
+        } catch (final IllegalArgumentException ex) {
+            // Expected
+        }
+        // Verify
+        verifyAll();
+    }
+
+    @Test
+    public void testCreatePushNotificationRecipientWhenItAlreadyExists() {
+        // Test data
+        final Long subscriptionId = 1L;
+        final PushNotificationSubscription subscription = getServicesImplTestHelper().createPushNotificationSubscription();
+        subscription.setId(subscriptionId);
+        final PushNotificationRecipientDto recipientDto = getServicesImplTestHelper().createPushNotificationSnsRecipientDto();
+        final Long existingRecipientId = 2L;
+        final PushNotificationRecipient existingRecipient = getServicesImplTestHelper().createPushNotificationSnsRecipient();
+        existingRecipient.setId(existingRecipientId);
+        // Reset
+        resetAll();
+        // Expectations
+        expect(getPushNotificationSubscriptionService().getPushNotificationSubscriptionById(eq(subscriptionId))).andReturn(subscription).once();
+        expect(getPushNotificationRecipientRepository().findByTypeAndSubscriptionAndDestinationRouteTokenAndApplicationType(eq(recipientDto.getType()), eq(subscription), EasyMock.eq(recipientDto.getDestinationRouteToken()), EasyMock.eq(recipientDto.getApplicationType()))).andReturn(existingRecipient).once();
+        // Replay
+        replayAll();
+        // Run test scenario
+        try {
+            pushNotificationRecipientService.createPushNotificationRecipient(subscriptionId, recipientDto);
+            fail("Exception should be thrown");
+        } catch (final PushNotificationRecipientAlreadyExistsException ex) {
+            // Expected
+            assertPushNotificationRecipientAlreadyExistsException(ex, existingRecipientId, recipientDto.getType(), recipientDto.getDestinationRouteToken(), subscriptionId);
+        }
+        // Verify
+        verifyAll();
+    }
+
+    @Test
+    public void testCreatePushNotificationRecipient() {
+        // Test data
+        final Long subscriptionId = 1L;
+        final PushNotificationSubscription subscription = getServicesImplTestHelper().createPushNotificationSubscription();
+        subscription.setId(subscriptionId);
+        final PushNotificationRecipientDto recipientDto = getServicesImplTestHelper().createPushNotificationSnsRecipientDto();
+        // Reset
+        resetAll();
+        // Expectations
+        expect(getPushNotificationSubscriptionService().getPushNotificationSubscriptionById(eq(subscriptionId))).andReturn(subscription).once();
+        expect(getPushNotificationRecipientRepository().findByTypeAndSubscriptionAndDestinationRouteTokenAndApplicationType(eq(recipientDto.getType()), eq(subscription), eq(recipientDto.getDestinationRouteToken()), EasyMock.eq(recipientDto.getApplicationType()))).andReturn(null).once();
+        expect(getRepository().save(isA(PushNotificationRecipient.class))).andAnswer(() -> (PushNotificationRecipient) getCurrentArguments()[0]).once();
+        // Replay
+        replayAll();
+        // Run test scenario
+        final PushNotificationRecipient result = pushNotificationRecipientService.createPushNotificationRecipient(subscriptionId, recipientDto);
+        getServicesImplTestHelper().assertPushNotificationSnsRecipient(result, recipientDto);
+        Assert.assertEquals(subscription, result.getSubscription());
         // Verify
         verifyAll();
     }

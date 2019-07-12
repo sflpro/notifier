@@ -30,7 +30,6 @@ public class ExecutorBuilderImpl implements ExecutorBuilder {
         final ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) Executors.newFixedThreadPool(MAX_THREAD_POOL_SIZE);
         threadPoolExecutor.setCorePoolSize(CORE_THREAD_POOL_SIZE);
         threadPoolExecutor.setMaximumPoolSize(MAX_THREAD_POOL_SIZE);
-
         return threadPoolExecutor;
     }
 }

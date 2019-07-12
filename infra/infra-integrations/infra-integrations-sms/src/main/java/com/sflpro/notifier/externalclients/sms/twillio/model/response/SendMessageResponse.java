@@ -1,6 +1,5 @@
 package com.sflpro.notifier.externalclients.sms.twillio.model.response;
 
-import com.sflpro.notifier.externalclients.sms.twillio.model.AbstractTwillioApiCommunicatorModel;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -12,7 +11,7 @@ import org.springframework.util.Assert;
  * Date: 4/9/15
  * Time: 5:29 PM
  */
-public class SendMessageResponse extends AbstractTwillioApiCommunicatorModel {
+public class SendMessageResponse{
 
     private static final long serialVersionUID = 9055257034174161692L;
 
@@ -55,9 +54,8 @@ public class SendMessageResponse extends AbstractTwillioApiCommunicatorModel {
         if (!(o instanceof SendMessageResponse)) {
             return false;
         }
-        SendMessageResponse that = (SendMessageResponse) o;
+        final SendMessageResponse that = (SendMessageResponse) o;
         final EqualsBuilder builder = new EqualsBuilder();
-        builder.appendSuper(super.equals(that));
         builder.append(getSid(), that.getSid());
         builder.append(getMessageBody(), that.getMessageBody());
         builder.append(getRecipientNumber(), that.getRecipientNumber());
@@ -67,7 +65,6 @@ public class SendMessageResponse extends AbstractTwillioApiCommunicatorModel {
     @Override
     public int hashCode() {
         final HashCodeBuilder builder = new HashCodeBuilder();
-        builder.appendSuper(super.hashCode());
         builder.append(getSid());
         builder.append(getMessageBody());
         builder.append(getRecipientNumber());

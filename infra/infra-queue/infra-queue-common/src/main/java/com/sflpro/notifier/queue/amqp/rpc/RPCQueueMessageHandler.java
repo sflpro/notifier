@@ -13,10 +13,10 @@ public interface RPCQueueMessageHandler {
     /**
      * Handles and returns RPC message
      *
-     * @param message
+     * @param messageBytes
      * @return handledMessageResult
      */
     @Nonnull
-    String handleMessage(@Nonnull final Object message);
+    String handleMessage(@Nonnull final byte[] messageBytes);
 }
 

@@ -1,5 +1,6 @@
 package com.sflpro.notifier.services.notification.impl.push;
 
+import com.sflpro.notifier.db.entities.notification.NotificationProviderType;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationProviderType;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipient;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationSubscriptionRequest;
@@ -14,6 +15,7 @@ import com.sflpro.notifier.services.notification.push.PushNotificationSubscripti
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -54,8 +56,12 @@ public class PushNotificationSubscriptionRequestProcessingServiceImpl implements
     @Autowired
     private PersistenceUtilityService persistenceUtilityService;
 
+    private PushNotificationProviderType pushNotificationProviderType;
+
     /* Constructors */
-    public PushNotificationSubscriptionRequestProcessingServiceImpl() {
+    PushNotificationSubscriptionRequestProcessingServiceImpl(@Value("${push.notification.provider:AMAZON_SNS}") final NotificationProviderType notificationProviderType) {
+        this.pushNotificationProviderType = PushNotificationProviderType.providerTypeFor(notificationProviderType)
+                .orElseThrow(() -> new IllegalStateException("Incorrect notificationProviderType was configured (push.notification.provider) for sending push notifications."));
         LOGGER.debug("Initializing push notification subscription request processing service");
     }
 
@@ -110,6 +116,7 @@ public class PushNotificationSubscriptionRequestProcessingServiceImpl implements
         parameters.setUserMobileDeviceId(request.getUserMobileDevice().getId());
         parameters.setUserId(request.getUser().getId());
         parameters.setApplicationType(request.getApplicationType());
+        parameters.setPushNotificationProviderType(pushNotificationProviderType);
         // Return parameters
         return parameters;
     }
@@ -137,20 +144,16 @@ public class PushNotificationSubscriptionRequestProcessingServiceImpl implements
     }
 
     /* Properties getters and setters */
-    public PushNotificationSubscriptionRequestService getPushNotificationSubscriptionRequestService() {
-        return pushNotificationSubscriptionRequestService;
-    }
-
     public void setPushNotificationSubscriptionRequestService(final PushNotificationSubscriptionRequestService pushNotificationSubscriptionRequestService) {
         this.pushNotificationSubscriptionRequestService = pushNotificationSubscriptionRequestService;
     }
 
-    public PushNotificationSubscriptionProcessingService getPushNotificationSubscriptionProcessingService() {
-        return pushNotificationSubscriptionProcessingService;
-    }
-
     public void setPushNotificationSubscriptionProcessingService(final PushNotificationSubscriptionProcessingService pushNotificationSubscriptionProcessingService) {
         this.pushNotificationSubscriptionProcessingService = pushNotificationSubscriptionProcessingService;
+    }
+
+    public void setPersistenceUtilityService(final PersistenceUtilityService persistenceUtilityService) {
+        this.persistenceUtilityService = persistenceUtilityService;
     }
 
     /* Inner classes */
@@ -162,17 +165,17 @@ public class PushNotificationSubscriptionRequestProcessingServiceImpl implements
         private final PushNotificationProviderType lastProviderType;
 
         /* Constructors */
-        public LastProviderTokenInformation(final String lastProviderToken, final PushNotificationProviderType lastProviderType) {
+        LastProviderTokenInformation(final String lastProviderToken, final PushNotificationProviderType lastProviderType) {
             this.lastProviderToken = lastProviderToken;
             this.lastProviderType = lastProviderType;
         }
 
         /* Properties getters and setters */
-        public String getLastProviderToken() {
+        String getLastProviderToken() {
             return lastProviderToken;
         }
 
-        public PushNotificationProviderType getLastProviderType() {
+        PushNotificationProviderType getLastProviderType() {
             return lastProviderType;
         }
     }

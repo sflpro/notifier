@@ -49,6 +49,12 @@ class SmsNotificationServiceImpl extends AbstractNotificationServiceImpl<SmsNoti
         return smsNotification;
     }
 
+    @Override
+    public SmsNotification getSmsNotificationForProcessing(final Long notificationId) {
+        Assert.notNull(notificationId, "Null was passed as an argument for parameter 'notificationId'.");
+        return smsNotificationRepository.findByIdForProcessingFlow(notificationId);
+    }
+
     /* Utility methods */
     private void assertSmsNotificationDto(final SmsNotificationDto notificationDto) {
         assertNotificationDto(notificationDto);

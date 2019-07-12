@@ -57,7 +57,7 @@ public class PushNotificationServiceImpl extends AbstractNotificationServiceImpl
     private UserNotificationService userNotificationService;
 
     /* Constructors */
-    public PushNotificationServiceImpl() {
+    PushNotificationServiceImpl() {
         LOGGER.debug("Initializing push notification service");
     }
 

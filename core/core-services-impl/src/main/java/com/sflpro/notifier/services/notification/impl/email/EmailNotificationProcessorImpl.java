@@ -5,7 +5,6 @@ import com.sflpro.notifier.db.entities.notification.NotificationProviderType;
 import com.sflpro.notifier.db.entities.notification.NotificationState;
 import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
 import com.sflpro.notifier.db.entities.notification.email.NotificationProperty;
-import com.sflpro.notifier.db.repositories.utility.PersistenceUtilityService;
 import com.sflpro.notifier.services.common.exception.ServicesRuntimeException;
 import com.sflpro.notifier.services.notification.email.EmailNotificationProcessor;
 import com.sflpro.notifier.services.notification.email.EmailNotificationService;
@@ -33,18 +32,16 @@ import static java.lang.String.format;
  */
 class EmailNotificationProcessorImpl implements EmailNotificationProcessor {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(EmailNotificationProcessorImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(EmailNotificationProcessorImpl.class);
 
     /* Dependencies */
     private final EmailNotificationService emailNotificationService;
-    private final PersistenceUtilityService persistenceUtilityService;
     private final EmailSenderProvider emailSenderProvider;
 
     /* Constructors */
     EmailNotificationProcessorImpl(final EmailNotificationService emailNotificationService,
-                                   final EmailSenderProvider emailSenderProvider, final PersistenceUtilityService persistenceUtilityService) {
+                                   final EmailSenderProvider emailSenderProvider) {
         this.emailNotificationService = emailNotificationService;
-        this.persistenceUtilityService = persistenceUtilityService;
         this.emailSenderProvider = emailSenderProvider;
     }
 
@@ -52,13 +49,12 @@ class EmailNotificationProcessorImpl implements EmailNotificationProcessor {
     public void processNotification(@Nonnull final Long notificationId, @Nonnull final Map<String, String> secureProperties) {
         Assert.notNull(notificationId, "Email notification id should not be null");
         Assert.notNull(secureProperties, "Secure properties map should not be null");
-        LOGGER.debug("Sending email notification for id - {}", notificationId);
+        logger.debug("Sending email notification for id - {}", notificationId);
         /* Retrieve email notification */
-        final EmailNotification emailNotification = persistenceUtilityService.initializeAndUnProxy(
-                emailNotificationService.getNotificationById(notificationId)
-        );
+        final EmailNotification emailNotification =
+                emailNotificationService.getEmailNotificationForProcessing(notificationId);
         assertNotificationStateIsCreated(emailNotification);
-        LOGGER.debug("Successfully retrieved email notification - {}", emailNotification);
+        logger.debug("Successfully retrieved email notification - {}", emailNotification);
         /* Update notification state to PROCESSING */
         updateEmailNotificationState(emailNotification.getId(), NotificationState.PROCESSING);
         try {
@@ -66,7 +62,7 @@ class EmailNotificationProcessorImpl implements EmailNotificationProcessor {
             processMessage(emailNotification, secureProperties);
         } catch (final Exception ex) {
             final String message = "Error occurred while sending email notification with id - " + emailNotification.getId();
-            LOGGER.error(message, ex);
+            logger.error(message, ex);
             /* Update state of notification to NotificationState.FAILED */
             updateEmailNotificationState(emailNotification.getId(), NotificationState.FAILED);
             throw new ServicesRuntimeException(message, ex);
@@ -99,7 +95,7 @@ class EmailNotificationProcessorImpl implements EmailNotificationProcessor {
                     emailNotification.getContent()
             ));
         }
-        LOGGER.debug("Successfully sent email message for notification with id - {}", emailNotification.getId());
+        logger.debug("Successfully sent email message for notification with id - {}", emailNotification.getId());
         updateEmailNotificationState(emailNotification.getId(), NotificationState.SENT);
     }
 

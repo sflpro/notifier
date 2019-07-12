@@ -11,4 +11,6 @@
 
     <context:component-scan base-package="com.sflpro.notifier.externalclients.sms.registry"/>
 
+    <bean name="smsTemplateContentResolver" class="com.sflpro.notifier.externalclients.sms.mock.DummySmsTemplateContentResolver"/>
+
 </beans>

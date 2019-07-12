@@ -43,13 +43,13 @@ public class KafkaProducerConfiguration {
 
     @Bean
     public ProducerFactory<String, byte[]> createPublisherFactory() {
-        logger.debug("Creating ProducerFactory,");
+        logger.info("Creating ProducerFactory.");
         return new DefaultKafkaProducerFactory<>(publisherConfig());
     }
 
     @Bean
     public Map<String, Object> publisherConfig() {
-        logger.debug("Creating publisherConfig");
+        logger.debug("Creating publisherConfig.");
         final Map<String, Object> props = new HashMap<>();
         props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         props.put(ProducerConfig.LINGER_MS_CONFIG, 1);
@@ -60,13 +60,13 @@ public class KafkaProducerConfiguration {
 
     @Bean
     public KafkaTemplate<String, byte[]> kafkaTemplate() {
-        logger.debug("Creating kafkaTemplate");
+        logger.info("Creating kafkaTemplate.");
         return new KafkaTemplate<>(createPublisherFactory());
     }
 
     @Bean
     public AmqpConnectorService kafkaConnectorService(@Qualifier("amqpObjectMapper") final ObjectMapper objectMapper) {
-        logger.debug("Creating kafka based component of type AmqpConnectorService.");
+        logger.info("Creating kafka based component of type AmqpConnectorService.");
         return new KafkaConnectorServiceImpl(topicNames, objectMapper, kafkaTemplate());
     }
 }

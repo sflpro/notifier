@@ -66,19 +66,19 @@ public class RabbitProducerConfiguration {
         rabbitTemplate.setRoutingKey(queueName);
         rabbitTemplate.setReplyAddress(responseQueueName);
         rabbitTemplate.setReplyTimeout(replyTimeout);
-        logger.debug("Configured rabbit producer to work with {}, {}", queueName, responseQueueName);
+        logger.info("Configured rabbit producer to work with {}, {}.", queueName, responseQueueName);
     }
 
     @Bean
     Queue responseQueue() {
-        logger.debug("Creating queue {}", AMQP_RESPONSE_QUEUE_NAME);
+        logger.info("Creating queue {}", AMQP_RESPONSE_QUEUE_NAME);
         return new UniquelyNamedConfigurableQueue(AMQP_RESPONSE_QUEUE_NAME, false, false, true);
     }
 
     @Bean
     @ConditionalOnMissingBean
     public RabbitTemplate rabbitTemplate(final ConnectionFactory connectionFactory) {
-        logger.debug("No rabbit template was found, creating the default on.");
+        logger.info("No rabbit template was found, creating the default on.");
         return new RabbitTemplate(connectionFactory);
     }
 
@@ -86,7 +86,7 @@ public class RabbitProducerConfiguration {
     @Lazy(false)
     public AmqpConnectorService connectorService(final RabbitTemplate rabbitTemplate,
                                                  @Qualifier("amqpObjectMapper") final ObjectMapper objectMapper) {
-        logger.debug("Creating rabbit based component of type AmqpConnectorService.");
+        logger.info("Creating rabbit based component of type AmqpConnectorService.");
         return new RabbitConnectorServiceImpl(rabbitTemplate, objectMapper);
     }
 
@@ -95,7 +95,7 @@ public class RabbitProducerConfiguration {
                                                                    final AmqpAdmin amqpAdmin,
                                                                    final RabbitTemplate rabbitTemplate,
                                                                    @Qualifier("amqpTaskExecutor") final ThreadPoolTaskExecutor taskExecutor) {
-        logger.debug("Creating MessageListenerContainer for response queue.");
+        logger.info("Creating MessageListenerContainer for response queue.");
         final SimpleMessageListenerContainer messageListenerContainer = new SimpleMessageListenerContainer(connectionFactory);
         messageListenerContainer.setAmqpAdmin(amqpAdmin);
         messageListenerContainer.setMessageListener(rabbitTemplate);

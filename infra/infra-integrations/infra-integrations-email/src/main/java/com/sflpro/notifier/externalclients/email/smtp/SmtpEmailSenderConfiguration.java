@@ -39,7 +39,7 @@ class SmtpEmailSenderConfiguration {
         return new SmtpTemplatedEmailSender(smtpTransportService(), emailTemplateContentResolver);
     }
 
-    @Bean("smtpSimpleEmailSenderRegistry")
+    @Bean("smtpTemplatedEmailSenderRegistry")
     TemplatedEmailSenderRegistry smtpTemplatedEmailSenderRegistry(final TemplatedEmailSender smtpTemplatedEmailSender) {
         return TemplatedEmailSenderRegistry.of(SMTP_PROVIDER_REGISTRY_NAME, smtpTemplatedEmailSender);
     }

@@ -11,14 +11,11 @@ import com.sflpro.notifier.services.system.event.ApplicationEventDistributionSer
 import org.apache.commons.lang3.time.StopWatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.annotation.Nonnull;
+import javax.annotation.PostConstruct;
 import java.util.Map;
 
 /**
@@ -27,10 +24,7 @@ import java.util.Map;
  * Date: 4/10/15
  * Time: 7:55 PM
  */
-@Service
-@Lazy(false)
-@ConditionalOnBean(AmqpConnectorService.class)
-class NotificationQueueProducerServiceImpl implements NotificationQueueProducerService, InitializingBean {
+public class NotificationQueueProducerServiceImpl implements NotificationQueueProducerService {
 
     private static final Logger logger = LoggerFactory.getLogger(NotificationQueueProducerServiceImpl.class);
 
@@ -42,12 +36,12 @@ class NotificationQueueProducerServiceImpl implements NotificationQueueProducerS
     private AmqpConnectorService amqpConnectorService;
 
     /* Constructors */
-    NotificationQueueProducerServiceImpl() {
+    public NotificationQueueProducerServiceImpl() {
         logger.info("Initializing notification queue producer service");
     }
 
-    @Override
-    public void afterPropertiesSet() {
+    @PostConstruct
+    void init() {
         applicationEventDistributionService.subscribe(new StartSendingNotificationEventListener());
     }
 

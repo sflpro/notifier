@@ -6,7 +6,6 @@ import com.sflpro.notifier.externalclients.sms.nikitamobile.communicator.Default
 import com.sflpro.notifier.externalclients.sms.nikitamobile.communicator.NikitamobileApiCommunicator;
 import com.sflpro.notifier.spi.sms.*;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -59,14 +58,12 @@ class NikitamobileConfiguration {
     }
 
     @Bean("nikitamobileSimpleSmsSender")
-    @ConditionalOnBean(SmsTemplateContentResolver.class)
     TemplatedSmsSender nikitamobileTemplatedSmsSender(final NikitamobileApiCommunicator nikitamobileApiCommunicator,
                                                       final SmsTemplateContentResolver smsTemplateContentResolver) {
         return new NikitamobileTemplatedSmsSender(nikitamobileApiCommunicator, smsTemplateContentResolver, operatorId, operatorName);
     }
 
     @Bean("nikitamobileSimpleSmsSender")
-    @ConditionalOnBean(name = "nikitamobileTemplatedSmsSender")
     TemplatedSmsSenderRegistry nikitamobileTemplatedSmsSenderRegistry(final TemplatedSmsSender nikitamobileTemplatedSmsSender) {
         return TemplatedSmsSenderRegistry.of(NIKITA_MOBILE_PROVIDER_REGISTRY_NAME, nikitamobileTemplatedSmsSender);
     }

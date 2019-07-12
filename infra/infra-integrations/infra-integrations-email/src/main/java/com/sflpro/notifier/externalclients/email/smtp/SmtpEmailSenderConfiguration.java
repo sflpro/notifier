@@ -4,7 +4,6 @@ import com.sflpro.notifier.spi.email.EmailTemplateContentResolver;
 import com.sflpro.notifier.spi.email.SimpleEmailSenderRegistry;
 import com.sflpro.notifier.spi.email.TemplatedEmailSender;
 import com.sflpro.notifier.spi.email.TemplatedEmailSenderRegistry;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -36,13 +35,11 @@ class SmtpEmailSenderConfiguration {
     }
 
     @Bean("smtpTemplatedEmailSender")
-    @ConditionalOnBean(EmailTemplateContentResolver.class)
     TemplatedEmailSender smtpTemplatedEmailSender(final EmailTemplateContentResolver emailTemplateContentResolver) {
         return new SmtpTemplatedEmailSender(smtpTransportService(), emailTemplateContentResolver);
     }
 
     @Bean("smtpSimpleEmailSenderRegistry")
-    @ConditionalOnBean(name = "smtpTemplatedEmailSender")
     TemplatedEmailSenderRegistry smtpTemplatedEmailSenderRegistry(final TemplatedEmailSender smtpTemplatedEmailSender) {
         return TemplatedEmailSenderRegistry.of(SMTP_PROVIDER_REGISTRY_NAME, smtpTemplatedEmailSender);
     }

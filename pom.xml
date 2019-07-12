@@ -159,7 +159,7 @@
         <maven.javadoc.plugin.version>3.1.0</maven.javadoc.plugin.version>
         <dockerfile.maven.plugin.version>1.4.10</dockerfile.maven.plugin.version>
         <maven.gpg.plugin.version>1.6</maven.gpg.plugin.version>
-        <gitflow.plugin.version>1.12.0</gitflow.plugin.version>
+        <gitflow.plugin.version>1.11.0</gitflow.plugin.version>
         <nexus.staging.maven.plugin.version>1.6.8</nexus.staging.maven.plugin.version>
         <fabric8.docker.maven.plugin.version>0.30.0</fabric8.docker.maven.plugin.version>
     </properties>

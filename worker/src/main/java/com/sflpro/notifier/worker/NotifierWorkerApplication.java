@@ -15,6 +15,7 @@ import org.springframework.context.annotation.PropertySource;
 @SpringBootApplication
 @PropertySource(value = "classpath:application.properties")
 @Import(ConsumerConfiguration.class)
+@PropertySource("classpath:application.properties")
 public class NotifierWorkerApplication {
 
     public static void main(String[] args) {

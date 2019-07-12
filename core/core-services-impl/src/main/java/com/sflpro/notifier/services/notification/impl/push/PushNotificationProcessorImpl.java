@@ -73,7 +73,6 @@ public class PushNotificationProcessorImpl implements PushNotificationProcessor 
             updatePushNotificationState(notificationId, NotificationState.SENT);
         } catch (final Exception ex) {
             final String message = "Error occurred while processing push notification with id - " + notificationId;
-            LOGGER.error(message, ex);
             updatePushNotificationState(notificationId, NotificationState.FAILED);
             throw new ServicesRuntimeException(message, ex);
         }

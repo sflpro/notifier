@@ -22,4 +22,12 @@ public interface EmailNotificationService extends AbstractNotificationService<Em
      */
     @Nonnull
     EmailNotification createEmailNotification(@Nonnull final EmailNotificationDto emailNotificationDto);
+
+    /**
+     * Returns the notification to be processed
+     *
+     * @param notificationId
+     * @return notification
+     */
+    EmailNotification getEmailNotificationForProcessing(final Long notificationId);
 }

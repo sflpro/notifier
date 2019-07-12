@@ -60,6 +60,12 @@ class EmailNotificationServiceImpl extends AbstractNotificationServiceImpl<Email
         return emailNotification;
     }
 
+    @Override
+    public EmailNotification getEmailNotificationForProcessing(final Long notificationId) {
+        Assert.notNull(notificationId, "Null was passed as an argument for parameter 'notificationId'.");
+        return emailNotificationRepository.findByIdForProcessingFlow(notificationId);
+    }
+
     /* Utility methods */
     @Override
     protected AbstractNotificationRepository<EmailNotification> getRepository() {

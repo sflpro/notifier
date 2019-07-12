@@ -21,6 +21,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @ConditionalOnProperty(value = "amazon.sns.enabled", havingValue = "true")
+@SuppressWarnings("unused")
 class AmazonSnsConfiguration {
 
     @Bean

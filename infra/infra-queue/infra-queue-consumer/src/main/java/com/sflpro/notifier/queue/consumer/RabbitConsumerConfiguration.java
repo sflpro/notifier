@@ -3,6 +3,8 @@ package com.sflpro.notifier.queue.consumer;
 import com.sflpro.notifier.queue.QueueConfigurationDefaults;
 import com.sflpro.notifier.queue.amqp.RabbitConfiguration;
 import com.sflpro.notifier.queue.amqp.rpc.RPCQueueMessageHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
@@ -27,6 +29,8 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 @Import({RabbitConfiguration.class, QueueConfigurationDefaults.class})
 public class RabbitConsumerConfiguration {
 
+    private static final Logger logger = LoggerFactory.getLogger(RabbitConsumerConfiguration.class);
+
     @Value("${notifier.rabbitmq.concurrentConsumers}")
     private int concurrentConsumers;
 
@@ -43,6 +47,7 @@ public class RabbitConsumerConfiguration {
                                                                    @Qualifier("amqpTaskExecutor") final ThreadPoolTaskExecutor taskExecutor,
                                                                    final RPCQueueMessageHandler messageHandler,
                                                                    @Qualifier("notificationQueue") final Queue notificationQueue) {
+        logger.info("Creating MessageListenerContainer for {} queue.",notificationQueue.getName());
         final SimpleMessageListenerContainer messageListenerContainer = new SimpleMessageListenerContainer(connectionFactory);
         messageListenerContainer.setAmqpAdmin(amqpAdmin);
         messageListenerContainer.setMessageListener(message -> messageHandler.handleMessage(message.getBody()));

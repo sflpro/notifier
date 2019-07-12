@@ -43,7 +43,7 @@ class NotificationQueueProducerServiceImpl implements NotificationQueueProducerS
 
     /* Constructors */
     NotificationQueueProducerServiceImpl() {
-        logger.debug("Initializing notification queue producer service");
+        logger.info("Initializing notification queue producer service");
     }
 
     @Override

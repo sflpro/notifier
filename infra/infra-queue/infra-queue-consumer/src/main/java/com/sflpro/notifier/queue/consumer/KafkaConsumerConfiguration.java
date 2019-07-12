@@ -54,14 +54,16 @@ public class KafkaConsumerConfiguration {
 
     @PostConstruct
     public void validateConfig() {
-        if(kafkaConcurrencyFactor <1 ) {
+        if (kafkaConcurrencyFactor < 1) {
             throw new IllegalStateException("Kafka concurrency factor should be a positive integer");
         }
+        logger.info("Kafka consumer configuration successfully done.");
     }
 
     @Bean
     public Map<String, Object> setupConsumerConfig() {
-        Map<String, Object> props = new HashMap<>();
+        logger.info("Creating setupConsumerConfig.");
+        final Map<String, Object> props = new HashMap<>();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, false);
         props.put(ConsumerConfig.HEARTBEAT_INTERVAL_MS_CONFIG, heartbeatInterval);
@@ -74,6 +76,7 @@ public class KafkaConsumerConfiguration {
 
     @Bean
     public ConsumerFactory<String, byte[]> setupConsumerFactory() {
+        logger.info("Creating setupConsumerFactory.");
         ConsumerFactory<String, byte[]> consumerFactory = new DefaultKafkaConsumerFactory<>(setupConsumerConfig(), new StringDeserializer(),
                 new ByteArrayDeserializer());
         logger.info("Kafka consumer factory initialized");
@@ -83,7 +86,8 @@ public class KafkaConsumerConfiguration {
     @Lazy(false)
     @Bean
     public ConcurrentKafkaListenerContainerFactory<String, byte[]> kafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, byte[]> factory =
+        logger.info("Creating kafkaListenerContainerFactory.");
+        final ConcurrentKafkaListenerContainerFactory<String, byte[]> factory =
                 new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(setupConsumerFactory());
         factory.setRetryTemplate(retryTemplate());

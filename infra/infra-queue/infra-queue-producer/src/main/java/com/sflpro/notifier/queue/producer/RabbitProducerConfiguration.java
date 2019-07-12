@@ -6,6 +6,8 @@ import com.sflpro.notifier.queue.amqp.RabbitConfiguration;
 import com.sflpro.notifier.queue.amqp.queues.UniquelyNamedConfigurableQueue;
 import com.sflpro.notifier.queue.producer.connector.AmqpConnectorService;
 import com.sflpro.notifier.queue.producer.connector.impl.RabbitConnectorServiceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
@@ -34,6 +36,8 @@ import javax.annotation.PostConstruct;
 @ConditionalOnProperty(name = "notifier.queue.engine", havingValue = "rabbit")
 public class RabbitProducerConfiguration {
 
+    private static final Logger logger = LoggerFactory.getLogger(RabbitProducerConfiguration.class);
+
     private final static String AMQP_RESPONSE_QUEUE_NAME = "notifier-responses-";
 
     @Value("${notifier.queue.topic}")
@@ -51,15 +55,21 @@ public class RabbitProducerConfiguration {
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
+    @Autowired
+    private @Qualifier("responseQueue")
+    Queue responseQueue;
+
     @PostConstruct
-    void init(){
+    void init() {
+        final String responseQueueName = responseQueue.getName();
         rabbitTemplate.setRoutingKey(queueName);
-        rabbitTemplate.setReplyAddress(responseQueue().getName());
+        rabbitTemplate.setReplyAddress(responseQueueName);
         rabbitTemplate.setReplyTimeout(replyTimeout);
+        logger.debug("Configured rabbit producer to work with {}, {}", queueName, responseQueueName);
     }
 
     @Bean
-    public Queue responseQueue() {
+    Queue responseQueue() {
         return new UniquelyNamedConfigurableQueue(AMQP_RESPONSE_QUEUE_NAME, false, false, true);
     }
 
@@ -81,14 +91,13 @@ public class RabbitProducerConfiguration {
                                                                    final RabbitTemplate rabbitTemplate,
                                                                    @Qualifier("amqpTaskExecutor") final ThreadPoolTaskExecutor taskExecutor) {
 
-        SimpleMessageListenerContainer messageListenerContainer = new SimpleMessageListenerContainer(connectionFactory);
+        final SimpleMessageListenerContainer messageListenerContainer = new SimpleMessageListenerContainer(connectionFactory);
         messageListenerContainer.setAmqpAdmin(amqpAdmin);
         messageListenerContainer.setMessageListener(rabbitTemplate);
         messageListenerContainer.setQueues(responseQueue());
         messageListenerContainer.setTaskExecutor(taskExecutor);
         messageListenerContainer.setConcurrentConsumers(concurrentConsumers);
         messageListenerContainer.setMaxConcurrentConsumers(maxConcurrentConsumers);
-
         return messageListenerContainer;
     }
 }

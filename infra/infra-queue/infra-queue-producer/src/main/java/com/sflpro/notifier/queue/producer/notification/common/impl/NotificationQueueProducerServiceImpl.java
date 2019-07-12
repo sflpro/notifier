@@ -32,7 +32,7 @@ import java.util.Map;
 @ConditionalOnBean(AmqpConnectorService.class)
 class NotificationQueueProducerServiceImpl implements NotificationQueueProducerService, InitializingBean {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(NotificationQueueProducerServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(NotificationQueueProducerServiceImpl.class);
 
     /* Dependencies */
     @Autowired
@@ -43,7 +43,7 @@ class NotificationQueueProducerServiceImpl implements NotificationQueueProducerS
 
     /* Constructors */
     NotificationQueueProducerServiceImpl() {
-        LOGGER.debug("Initializing sms notification queue producer service");
+        logger.debug("Initializing notification queue producer service");
     }
 
     @Override
@@ -57,7 +57,7 @@ class NotificationQueueProducerServiceImpl implements NotificationQueueProducerS
     public void processStartSendingNotificationEvent(@Nonnull final Long notificationId, @Nonnull final Map<String, String> secureProperties) {
         Assert.notNull(notificationId, "Notification id should not be null.");
         Assert.notNull(secureProperties, "Secure properties should not be null.");
-        LOGGER.debug("Processing notification sending event for notification by id - {}", notificationId);
+        logger.debug("Processing notification sending event for notification by id - {}", notificationId);
         amqpConnectorService.publishMessage(RPCCallType.START_NOTIFICATION_PROCESSING, new NotificationRPCTransferModel(notificationId, secureProperties), NotificationRPCTransferModel.class, new NotificationMessageSendingEventListenerRPCResponseHandler());
     }
 
@@ -88,7 +88,7 @@ class NotificationQueueProducerServiceImpl implements NotificationQueueProducerS
         @Override
         public void handleResponse(@Nonnull final NotificationRPCTransferModel responseModel) {
             stopWatch.stop();
-            LOGGER.debug("Finalized sending notification, response model - {}, duration - {}", responseModel, stopWatch.getTime());
+            logger.debug("Finalized sending notification, response model - {}, duration - {}", responseModel, stopWatch.getTime());
         }
     }
 }

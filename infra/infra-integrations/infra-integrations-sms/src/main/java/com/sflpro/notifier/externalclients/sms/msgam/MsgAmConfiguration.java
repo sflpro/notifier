@@ -9,7 +9,6 @@ import com.sflpro.notifier.externalclients.sms.msgam.client.MsgAmRestClientImpl;
 import com.sflpro.notifier.externalclients.sms.msgam.communicator.DefaultMsgAmApiCommunicator;
 import com.sflpro.notifier.externalclients.sms.msgam.communicator.MsgAmApiCommunicator;
 import com.sflpro.notifier.spi.sms.*;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
@@ -72,13 +71,11 @@ class MsgAmConfiguration {
     }
 
     @Bean("msgAmTemplatedSmsSender")
-    @ConditionalOnBean(SmsTemplateContentResolver.class)
     TemplatedSmsSender msgAmTemplatedSmsSender(final MsgAmApiCommunicator msgAmApiCommunicator, final SmsTemplateContentResolver smsTemplateContentResolver) {
         return new MsgAmTemplatedSmsSender(msgAmApiCommunicator, smsTemplateContentResolver);
     }
 
     @Bean("msgAmTemplatedSmsSenderRegistry")
-    @ConditionalOnBean(name = "msgAmTemplatedSmsSender")
     TemplatedSmsSenderRegistry msgAmTemplatedSmsSenderRegistry(final TemplatedSmsSender msgAmTemplatedSmsSender) {
         return TemplatedSmsSenderRegistry.of(MSGAM_PROVIDER_REGISTRY_NAME, msgAmTemplatedSmsSender);
     }

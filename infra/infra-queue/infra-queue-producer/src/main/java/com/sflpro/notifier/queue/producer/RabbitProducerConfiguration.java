@@ -21,6 +21,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import javax.annotation.PostConstruct;
@@ -70,18 +71,22 @@ public class RabbitProducerConfiguration {
 
     @Bean
     Queue responseQueue() {
+        logger.debug("Creating queue {}", AMQP_RESPONSE_QUEUE_NAME);
         return new UniquelyNamedConfigurableQueue(AMQP_RESPONSE_QUEUE_NAME, false, false, true);
     }
 
     @Bean
     @ConditionalOnMissingBean
     public RabbitTemplate rabbitTemplate(final ConnectionFactory connectionFactory) {
+        logger.debug("No rabbit template was found, creating the default on.");
         return new RabbitTemplate(connectionFactory);
     }
 
     @Bean
+    @Lazy(false)
     public AmqpConnectorService connectorService(final RabbitTemplate rabbitTemplate,
                                                  @Qualifier("amqpObjectMapper") final ObjectMapper objectMapper) {
+        logger.debug("Creating rabbit based component of type AmqpConnectorService.");
         return new RabbitConnectorServiceImpl(rabbitTemplate, objectMapper);
     }
 
@@ -90,7 +95,7 @@ public class RabbitProducerConfiguration {
                                                                    final AmqpAdmin amqpAdmin,
                                                                    final RabbitTemplate rabbitTemplate,
                                                                    @Qualifier("amqpTaskExecutor") final ThreadPoolTaskExecutor taskExecutor) {
-
+        logger.debug("Creating MessageListenerContainer for response queue.");
         final SimpleMessageListenerContainer messageListenerContainer = new SimpleMessageListenerContainer(connectionFactory);
         messageListenerContainer.setAmqpAdmin(amqpAdmin);
         messageListenerContainer.setMessageListener(rabbitTemplate);

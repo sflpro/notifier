@@ -38,13 +38,13 @@ import javax.annotation.PostConstruct;
 
     @Bean
     NotificationQueueProducerService notificationQueueProducerService() {
-        logger.debug("Creating notificationQueueProducerService.");
+        logger.info("Creating notificationQueueProducerService.");
         return new NotificationQueueProducerServiceImpl();
     }
 
     @Bean
     PushNotificationSubscriptionRequestQueueProducerService pushNotificationSubscriptionRequestQueueProducerService() {
-        logger.debug("Creating pushNotificationSubscriptionRequestQueueProducerService.");
+        logger.info("Creating pushNotificationSubscriptionRequestQueueProducerService.");
         return new PushNotificationSubscriptionRequestQueueProducerServiceImpl();
     }
 }

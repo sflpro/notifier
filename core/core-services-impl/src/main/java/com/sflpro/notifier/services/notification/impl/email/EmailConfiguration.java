@@ -46,6 +46,6 @@ class EmailConfiguration {
     @Bean
     EmailNotificationProcessor emailNotificationProcessor(final EmailNotificationService emailNotificationService,
                                                           final EmailSenderProvider emailSenderProvider, final PersistenceUtilityService persistenceUtilityService) {
-        return new EmailNotificationProcessorImpl(emailNotificationService, emailSenderProvider, persistenceUtilityService);
+        return new EmailNotificationProcessorImpl(emailNotificationService, emailSenderProvider);
     }
 }

@@ -5,7 +5,6 @@ import com.sflpro.notifier.db.entities.notification.NotificationProviderType;
 import com.sflpro.notifier.db.entities.notification.NotificationState;
 import com.sflpro.notifier.db.entities.notification.email.NotificationProperty;
 import com.sflpro.notifier.db.entities.notification.sms.SmsNotification;
-import com.sflpro.notifier.db.repositories.utility.PersistenceUtilityService;
 import com.sflpro.notifier.services.common.exception.ServicesRuntimeException;
 import com.sflpro.notifier.services.notification.sms.SmsNotificationProcessor;
 import com.sflpro.notifier.services.notification.sms.SmsNotificationService;
@@ -39,7 +38,6 @@ class SmsNotificationProcessorImpl implements SmsNotificationProcessor {
     /* Dependencies */
     private final SmsNotificationService smsNotificationService;
     private final SmsSenderProvider smsSenderProvider;
-    private final PersistenceUtilityService persistenceUtilityService;
 
     /* Properties */
     private final String senderName;
@@ -47,12 +45,10 @@ class SmsNotificationProcessorImpl implements SmsNotificationProcessor {
     /* Constructors */
     SmsNotificationProcessorImpl(final SmsNotificationService smsNotificationService,
                                  final SmsSenderProvider smsSenderProvider,
-                                 final PersistenceUtilityService persistenceUtilityService,
                                  @Value("${sms.account.sender.phone:}") final String senderName) {
         super();
         this.smsNotificationService = smsNotificationService;
         this.smsSenderProvider = smsSenderProvider;
-        this.persistenceUtilityService = persistenceUtilityService;
         this.senderName = senderName;
         if (StringUtils.isBlank(senderName)) {
             logger.warn("Nothing was configured for sms sender name. If you are not going to send any sms, then this bean shouldn't be initialized at all.");
@@ -65,9 +61,8 @@ class SmsNotificationProcessorImpl implements SmsNotificationProcessor {
         Assert.notNull(notificationId, "Sms notification id should not be null");
         Assert.notNull(secureProperties, "Secure properties map should not be null");
         /* Retrieve sms notification */
-        final SmsNotification smsNotification = persistenceUtilityService.initializeAndUnProxy(
-                smsNotificationService.getNotificationById(notificationId)
-        );
+        final SmsNotification smsNotification =
+                smsNotificationService.getSmsNotificationForProcessing(notificationId);
         assertNotificationStateIsCreated(smsNotification);
         logger.debug("Successfully retrieved sms notification - {}", smsNotification);
         /* Update notification state to PROCESSING */

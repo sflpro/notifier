@@ -22,6 +22,7 @@ import java.util.List;
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
 @Access(AccessType.FIELD)
+@NamedEntityGraph(name = "Notification.ProcessingFlow", attributeNodes = @NamedAttributeNode("properties"))
 public abstract class Notification extends AbstractDomainUuIdAwareEntityModel {
     private static final long serialVersionUID = -3642971556967427525L;
 

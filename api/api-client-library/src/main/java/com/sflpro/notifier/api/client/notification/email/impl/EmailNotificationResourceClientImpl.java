@@ -9,8 +9,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.Invocation;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 
@@ -22,15 +24,10 @@ import javax.ws.rs.core.MediaType;
  */
 public class EmailNotificationResourceClientImpl extends AbstractResourceClient implements EmailNotificationResourceClient {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(EmailNotificationResourceClientImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(EmailNotificationResourceClientImpl.class);
 
     /* Constants */
     private static final String PATH_EMAIL_CREATE = "notification/email/create";
-
-    /* Constructors */
-    public EmailNotificationResourceClientImpl() {
-        //default constructor
-    }
 
     public EmailNotificationResourceClientImpl(final Client client, final String apiPath) {
         super(client, apiPath);
@@ -39,14 +36,28 @@ public class EmailNotificationResourceClientImpl extends AbstractResourceClient 
     @Nonnull
     @Override
     public ResultResponseModel<CreateEmailNotificationResponse> createEmailNotification(@Nonnull final CreateEmailNotificationRequest request) {
+        return createEmailNotificationInternal(request, null);
+    }
+
+    @Nonnull
+    @Override
+    public ResultResponseModel<CreateEmailNotificationResponse> createEmailNotification(@Nonnull CreateEmailNotificationRequest request, @Nonnull final String authToken) {
+        asserValidAuthToken(authToken);
+        return createEmailNotificationInternal(request, authToken);
+    }
+
+    private ResultResponseModel<CreateEmailNotificationResponse> createEmailNotificationInternal(@Nonnull CreateEmailNotificationRequest request, @Nullable final String authToken) {
         assertCreateEmailNotificationRequest(request);
-        LOGGER.debug("Executing create email notification call, request - {}", request);
-        final ResultResponseModel<CreateEmailNotificationResponse> response = getClient().target(getApiPath())
+        logger.debug("Executing create email notification call, request - {}", request);
+        final Invocation.Builder requestBuilder = getClient().target(getApiPath())
                 .path(PATH_EMAIL_CREATE)
-                .request(MediaType.APPLICATION_JSON_TYPE)
-                .post(Entity.entity(request, MediaType.APPLICATION_JSON_TYPE), new GenericType<ResultResponseModel<CreateEmailNotificationResponse>>() {
-                });
-        LOGGER.debug("Successfully executed create email notification call, request - {}, response -  {}", request, response);
+                .request(MediaType.APPLICATION_JSON_TYPE);
+        if (authToken != null) {
+            addAutorizationHeader(requestBuilder, authToken);
+        }
+        final ResultResponseModel<CreateEmailNotificationResponse> response = requestBuilder.post(Entity.entity(request, MediaType.APPLICATION_JSON_TYPE), new GenericType<ResultResponseModel<CreateEmailNotificationResponse>>() {
+        });
+        logger.debug("Successfully executed create email notification call, request - {}, response -  {}", request, response);
         return response;
     }
 

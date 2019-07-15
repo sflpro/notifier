@@ -12,7 +12,6 @@ import javax.annotation.Nonnull;
  * Date: 1/14/16
  * Time: 2:17 PM
  */
-@FunctionalInterface
 public interface SmsNotificationResourceClient {
 
     /**
@@ -23,4 +22,14 @@ public interface SmsNotificationResourceClient {
      */
     @Nonnull
     ResultResponseModel<CreateSmsNotificationResponse> createSmsNotification(@Nonnull final CreateSmsNotificationRequest request);
+
+    /**
+     * Create SMS notification
+     *
+     * @param request
+     * @param authToken The Bearer token to be used for authentication/authorization
+     * @return response
+     */
+    @Nonnull
+    ResultResponseModel<CreateSmsNotificationResponse> createSmsNotification(@Nonnull final CreateSmsNotificationRequest request, @Nonnull final String authToken);
 }

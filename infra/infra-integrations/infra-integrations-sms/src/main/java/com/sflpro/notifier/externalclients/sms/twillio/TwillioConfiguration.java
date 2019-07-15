@@ -5,7 +5,6 @@ import com.sflpro.notifier.externalclients.sms.twillio.communicator.TwillioApiCo
 import com.sflpro.notifier.spi.sms.*;
 import com.twilio.http.TwilioRestClient;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -42,13 +41,11 @@ class TwillioConfiguration {
     }
 
     @Bean("twillioTemplatedSmsSender")
-    @ConditionalOnBean(SmsTemplateContentResolver.class)
     TemplatedSmsSender twillioTemplatedSmsSender(final TwillioApiCommunicator twillioApiCommunicator, final SmsTemplateContentResolver smsTemplateContentResolver) {
         return new TwillioTemplatedSmsSender(twillioApiCommunicator, smsTemplateContentResolver);
     }
 
     @Bean("twillioTemplatedSmsSenderRegistry")
-    @ConditionalOnBean(name = "twillioTemplatedSmsSender")
     TemplatedSmsSenderRegistry twillioTemplatedSmsSenderRegistry(final TemplatedSmsSender twillioTemplatedSmsSender) {
         return TemplatedSmsSenderRegistry.of(TWILLIO_PROVIDER_REGISTRY_NAME, twillioTemplatedSmsSender);
     }

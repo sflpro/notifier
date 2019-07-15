@@ -26,6 +26,16 @@ public interface PushNotificationResourceClient {
     ResultResponseModel<CreatePushNotificationResponse> createPushNotification(@Nonnull final CreatePushNotificationRequest request);
 
     /**
+     * Create push notification
+     *
+     * @param request
+     * @param authToken The Bearer token to be used for authentication/authorization
+     * @return response
+     */
+    @Nonnull
+    ResultResponseModel<CreatePushNotificationResponse> createPushNotification(@Nonnull final CreatePushNotificationRequest request, @Nonnull final String authToken);
+
+    /**
      * Update push notification subscription
      *
      * @param request

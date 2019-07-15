@@ -12,7 +12,6 @@ import javax.annotation.Nonnull;
  * Date: 1/14/16
  * Time: 2:17 PM
  */
-@FunctionalInterface
 public interface EmailNotificationResourceClient {
 
     /**
@@ -23,4 +22,14 @@ public interface EmailNotificationResourceClient {
      */
     @Nonnull
     ResultResponseModel<CreateEmailNotificationResponse> createEmailNotification(@Nonnull final CreateEmailNotificationRequest request);
+
+    /**
+     * Create email notification
+     *
+     * @param request
+     * @param authToken The Bearer token to be used for authentication/authorization
+     * @return response
+     */
+    @Nonnull
+    ResultResponseModel<CreateEmailNotificationResponse> createEmailNotification(@Nonnull final CreateEmailNotificationRequest request, @Nonnull final String authToken);
 }

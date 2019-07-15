@@ -16,12 +16,9 @@ public class EmailNotificationResourceClientImplTest extends AbstractRestApiClie
 
     @Mock
     private javax.ws.rs.client.Client client;
-
-    private final String apiPath = "notification/email";
-
     @Before
     public void prepare() {
-        emailNotificationResourceClient = new EmailNotificationResourceClientImpl(client, apiPath);
+        emailNotificationResourceClient = new EmailNotificationResourceClientImpl(client, "notification/email");
     }
 
     @Test

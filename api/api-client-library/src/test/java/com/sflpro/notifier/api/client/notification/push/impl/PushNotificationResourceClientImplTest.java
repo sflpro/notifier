@@ -18,11 +18,9 @@ public class PushNotificationResourceClientImplTest extends AbstractRestApiClien
     @Mock
     private javax.ws.rs.client.Client client;
 
-    private final String apiPath = "notification/sms";
-
     @Before
     public void prepare() {
-        pushNotificationResourceClient = new PushNotificationResourceClientImpl(client, apiPath);
+        pushNotificationResourceClient = new PushNotificationResourceClientImpl(client, "notification/push");
     }
 
     @Test

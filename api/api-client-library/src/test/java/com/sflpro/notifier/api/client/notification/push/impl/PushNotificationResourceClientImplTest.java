@@ -51,7 +51,7 @@ public class PushNotificationResourceClientImplTest extends AbstractRestApiClien
         expect(webTarget.request(MediaType.APPLICATION_JSON_TYPE)).andReturn(requestBuilder);
         expect(requestBuilder.header("Authorization", "Bearer " + authToken)).andReturn(requestBuilder);
         expect(requestBuilder.post(eq(Entity.entity(request, MediaType.APPLICATION_JSON_TYPE)), isA(GenericType.class))).andReturn(resultResponseModel);
-        replay(client, webTarget, requestBuilder);
+        replayAll();
         assertThat(pushNotificationResourceClient.createPushNotification(request, authToken)).isEqualTo(resultResponseModel);
         verifyAll();
     }
@@ -66,7 +66,7 @@ public class PushNotificationResourceClientImplTest extends AbstractRestApiClien
         expect(webTarget.path("notification/push/create")).andReturn(webTarget);
         expect(webTarget.request(MediaType.APPLICATION_JSON_TYPE)).andReturn(requestBuilder);
         expect(requestBuilder.post(eq(Entity.entity(request, MediaType.APPLICATION_JSON_TYPE)), isA(GenericType.class))).andReturn(resultResponseModel);
-        replay(client, webTarget, requestBuilder);
+        replayAll();
         assertThat(pushNotificationResourceClient.createPushNotification(request)).isEqualTo(resultResponseModel);
         verifyAll();
     }

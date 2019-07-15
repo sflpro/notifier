@@ -55,7 +55,7 @@ public class SmsNotificationResourceClientImplTest extends AbstractRestApiClient
         expect(webTarget.request(MediaType.APPLICATION_JSON_TYPE)).andReturn(requestBuilder);
         expect(requestBuilder.header("Authorization", "Bearer " + authToken)).andReturn(requestBuilder);
         expect(requestBuilder.post(eq(Entity.entity(request, MediaType.APPLICATION_JSON_TYPE)), isA(GenericType.class))).andReturn(resultResponseModel);
-        replay(client, webTarget, requestBuilder);
+        replayAll();
         assertThat(smsNotificationResourceClient.createSmsNotification(request, authToken)).isEqualTo(resultResponseModel);
         verifyAll();
     }
@@ -70,7 +70,7 @@ public class SmsNotificationResourceClientImplTest extends AbstractRestApiClient
         expect(webTarget.path("notification/sms/create")).andReturn(webTarget);
         expect(webTarget.request(MediaType.APPLICATION_JSON_TYPE)).andReturn(requestBuilder);
         expect(requestBuilder.post(eq(Entity.entity(request, MediaType.APPLICATION_JSON_TYPE)), isA(GenericType.class))).andReturn(resultResponseModel);
-        replay(client, webTarget, requestBuilder);
+        replayAll();
         assertThat(smsNotificationResourceClient.createSmsNotification(request)).isEqualTo(resultResponseModel);
         verifyAll();
     }

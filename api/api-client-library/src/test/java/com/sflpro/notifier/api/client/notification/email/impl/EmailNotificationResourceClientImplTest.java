@@ -52,7 +52,7 @@ public class EmailNotificationResourceClientImplTest extends AbstractRestApiClie
         expect(webTarget.request(MediaType.APPLICATION_JSON_TYPE)).andReturn(requestBuilder);
         expect(requestBuilder.header("Authorization", "Bearer " + authToken)).andReturn(requestBuilder);
         expect(requestBuilder.post(eq(Entity.entity(request, MediaType.APPLICATION_JSON_TYPE)), isA(GenericType.class))).andReturn(resultResponseModel);
-        replay(client, webTarget, requestBuilder);
+        replayAll();
         assertThat(emailNotificationResourceClient.createEmailNotification(request, authToken)).isEqualTo(resultResponseModel);
         verifyAll();
     }
@@ -67,7 +67,7 @@ public class EmailNotificationResourceClientImplTest extends AbstractRestApiClie
         expect(webTarget.path("notification/email/create")).andReturn(webTarget);
         expect(webTarget.request(MediaType.APPLICATION_JSON_TYPE)).andReturn(requestBuilder);
         expect(requestBuilder.post(eq(Entity.entity(request, MediaType.APPLICATION_JSON_TYPE)), isA(GenericType.class))).andReturn(resultResponseModel);
-        replay(client, webTarget, requestBuilder);
+        replayAll();
         assertThat(emailNotificationResourceClient.createEmailNotification(request)).isEqualTo(resultResponseModel);
         verifyAll();
     }

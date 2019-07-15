@@ -29,9 +29,9 @@ public class PushNotificationResourceClientImpl extends AbstractResourceClient i
     private static final Logger LOGGER = LoggerFactory.getLogger(PushNotificationResourceClientImpl.class);
 
     /* Constants */
-    private static final String PATH_PUSH_CREATE = "rest/notification/push/create";
+    private static final String PATH_PUSH_CREATE = "notification/push/create";
 
-    private static final String PATH_PUSH_SUBSCRIBE = "rest/notification/subscribe";
+    private static final String PATH_PUSH_SUBSCRIBE = "notification/subscribe";
 
     public PushNotificationResourceClientImpl(final Client client, final String apiPath) {
         super(client, apiPath);

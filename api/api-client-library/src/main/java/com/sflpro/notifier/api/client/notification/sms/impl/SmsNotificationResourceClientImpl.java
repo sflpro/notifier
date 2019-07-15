@@ -27,7 +27,7 @@ public class SmsNotificationResourceClientImpl extends AbstractResourceClient im
     private static final Logger LOGGER = LoggerFactory.getLogger(SmsNotificationResourceClientImpl.class);
 
     /* Constants */
-    private static final String PATH_SMS_CREATE = "rest/notification/sms/create";
+    private static final String PATH_SMS_CREATE = "notification/sms/create";
 
     public SmsNotificationResourceClientImpl(final Client client, final String apiPath) {
         super(client, apiPath);

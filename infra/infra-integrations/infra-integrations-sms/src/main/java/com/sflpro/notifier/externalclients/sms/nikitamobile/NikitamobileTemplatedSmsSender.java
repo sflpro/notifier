@@ -17,8 +17,9 @@ class NikitamobileTemplatedSmsSender extends AbstractNikitamobileSmsSender<Templ
     NikitamobileTemplatedSmsSender(final NikitamobileApiCommunicator nikitamobileApiCommunicator,
                                    final SmsTemplateContentResolver smsTemplateContentResolver,
                                    final String operatorId,
-                                   final String operatorName) {
-        super(nikitamobileApiCommunicator, operatorId, operatorName);
+                                   final String operatorName,
+                                   final String version) {
+        super(nikitamobileApiCommunicator, operatorId, operatorName, version);
         this.smsTemplateContentResolver = smsTemplateContentResolver;
     }
 

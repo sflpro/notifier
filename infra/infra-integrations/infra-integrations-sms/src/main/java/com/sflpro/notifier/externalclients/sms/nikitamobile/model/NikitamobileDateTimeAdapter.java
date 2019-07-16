@@ -1,8 +1,10 @@
 package com.sflpro.notifier.externalclients.sms.nikitamobile.model;
 
+import com.sflpro.notifier.externalclients.sms.nikitamobile.NikitamobileDateTimeUtil;
+import org.springframework.util.StringUtils;
+
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 /**
  * Created by Hayk Mkrtchyan.
@@ -11,16 +13,14 @@ import java.time.format.DateTimeFormatter;
  */
 public class NikitamobileDateTimeAdapter extends XmlAdapter<String, LocalDateTime> {
 
-    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
 
     @Override
     public LocalDateTime unmarshal(final String strVal) {
-
-        return LocalDateTime.parse(strVal, formatter);
+        return StringUtils.isEmpty(strVal) ? null : NikitamobileDateTimeUtil.parse(strVal);
     }
 
     @Override
     public String marshal(final LocalDateTime localDateTime) {
-        return formatter.format(localDateTime);
+        return  localDateTime == null ? null : NikitamobileDateTimeUtil.format(localDateTime);
     }
 }

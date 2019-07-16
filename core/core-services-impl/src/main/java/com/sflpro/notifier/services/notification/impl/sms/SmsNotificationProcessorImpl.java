@@ -45,7 +45,7 @@ class SmsNotificationProcessorImpl implements SmsNotificationProcessor {
     /* Constructors */
     SmsNotificationProcessorImpl(final SmsNotificationService smsNotificationService,
                                  final SmsSenderProvider smsSenderProvider,
-                                 @Value("${sms.account.sender.phone:}") final String senderName) {
+                                 @Value("${sms.sender:}") final String senderName) {
         super();
         this.smsNotificationService = smsNotificationService;
         this.smsSenderProvider = smsSenderProvider;

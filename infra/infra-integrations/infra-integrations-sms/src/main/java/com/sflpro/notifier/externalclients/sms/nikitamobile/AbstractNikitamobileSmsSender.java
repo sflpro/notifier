@@ -12,6 +12,9 @@ import io.jsonwebtoken.lang.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 /**
  * Created by Hayk Mkrtchyan.
  * Date: 6/24/19
@@ -23,14 +26,19 @@ abstract class AbstractNikitamobileSmsSender<M extends SmsMessage> implements Sm
 
     private final NikitamobileApiCommunicator nikitamobileApiCommunicator;
 
-    private final String operatorId;
-    private final String operatorName;
+    private final String login;
+    private final String password;
+    private final String version;
 
 
-    AbstractNikitamobileSmsSender(final NikitamobileApiCommunicator nikitamobileApiCommunicator, final String operatorId, final String operatorName) {
+    AbstractNikitamobileSmsSender(final NikitamobileApiCommunicator nikitamobileApiCommunicator,
+                                  final String login,
+                                  final String password,
+                                  final String version) {
         this.nikitamobileApiCommunicator = nikitamobileApiCommunicator;
-        this.operatorId = operatorId;
-        this.operatorName = operatorName;
+        this.login = login;
+        this.password = password;
+        this.version = version;
     }
 
     @Override
@@ -46,10 +54,14 @@ abstract class AbstractNikitamobileSmsSender<M extends SmsMessage> implements Sm
                         bodyFor(message)
                 )
         );
-        requestMessage.setOperatorId(operatorId);
-        requestMessage.setOperator(operatorName);
-        final SendMessageResponse sendMessageResponse = nikitamobileApiCommunicator.sendMessage(new SendMessageRequest(requestMessage));
-        return SmsMessageSendingResult.of(String.valueOf(sendMessageResponse.getMessage().getId()));
+        requestMessage.setValidityPeriod(1);
+        final SendMessageRequest request = new SendMessageRequest(requestMessage);
+        request.setLogin(login);
+        request.setPassword(password);
+        request.setRefId(NikitamobileDateTimeUtil.format(LocalDateTime.now()));
+        request.setVersion(version);
+        final SendMessageResponse sendMessageResponse = nikitamobileApiCommunicator.sendMessage(request);
+        return SmsMessageSendingResult.of(String.valueOf(message.internalId()));
     }
 
     abstract String bodyFor(final M message);

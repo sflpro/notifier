@@ -11,8 +11,8 @@ import com.sflpro.notifier.spi.sms.SimpleSmsSender;
  */
 class NikitamobileSimpleSmsSender extends AbstractNikitamobileSmsSender<SimpleSmsMessage> implements SimpleSmsSender {
 
-    NikitamobileSimpleSmsSender(final NikitamobileApiCommunicator nikitamobileApiCommunicator, final String operatorId, final String operatorName) {
-        super(nikitamobileApiCommunicator, operatorId, operatorName);
+    NikitamobileSimpleSmsSender(final NikitamobileApiCommunicator nikitamobileApiCommunicator, final String login, final String password, final String version) {
+        super(nikitamobileApiCommunicator, login, password, version);
     }
 
     @Override

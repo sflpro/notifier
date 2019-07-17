@@ -14,7 +14,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
-import java.time.LocalDateTime;
 import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -38,13 +37,14 @@ public class NikitamobileTemplatedSmsSenderTest extends AbstractSmsUnitTest {
     @Mock
     private SmsTemplateContentResolver smsTemplateContentResolver;
 
-    private String operatorId = "operatorId_" + uuid();
-    private String operatorName = "operator_name" + uuid();
+    private final String login = "login" + uuid();
+    private final String password = "password" + uuid();
+    private final String version = "1.0";
 
     @Before
     public void prepare() {
         nikitamobileTemplatedSmsSender = new NikitamobileTemplatedSmsSender(
-                nikitamobileApiCommunicator, smsTemplateContentResolver, operatorId, operatorName
+                nikitamobileApiCommunicator, smsTemplateContentResolver, login, password, version
         );
     }
 
@@ -66,30 +66,28 @@ public class NikitamobileTemplatedSmsSenderTest extends AbstractSmsUnitTest {
                         messageBody
                 )
         );
-        requestMessage.setOperatorId(operatorId);
-        requestMessage.setOperator(operatorName);
-        requestMessage.setSubmitDate(LocalDateTime.now());
         final SendMessageRequest request = new SendMessageRequest(
                 requestMessage
         );
-        final SendMessageResponse response = new SendMessageResponse(
-                new com.sflpro.notifier.externalclients.sms.nikitamobile.model.response.Message(request.getMessage().getId())
-        );
+        request.setLogin(login);
+        request.setPassword(password);
+        final SendMessageResponse response = new SendMessageResponse();
         when(smsTemplateContentResolver.resolve(message.templateId(), message.variables())).thenReturn(messageBody);
         when(nikitamobileApiCommunicator.sendMessage(isA(SendMessageRequest.class))).then(invocation -> {
             final SendMessageRequest requestArgument = invocation.getArgument(0);
+            assertThat(requestArgument)
+                    .hasFieldOrPropertyWithValue("login", login)
+                    .hasFieldOrPropertyWithValue("password", password)
+                    .hasFieldOrPropertyWithValue("version", version);
             assertThat(requestArgument.getMessage())
                     .hasFieldOrPropertyWithValue("id", requestMessage.getId())
                     .hasFieldOrPropertyWithValue("recipientNumber", requestMessage.getRecipientNumber())
                     .hasFieldOrPropertyWithValue("senderNumber", requestMessage.getSenderNumber())
-                    .hasFieldOrPropertyWithValue("messageCount", requestMessage.getMessageCount())
                     .hasFieldOrPropertyWithValue("content", requestMessage.getContent())
-                    .hasFieldOrPropertyWithValue("operatorId", requestMessage.getOperatorId())
-                    .hasFieldOrPropertyWithValue("operator", requestMessage.getOperator())
                     .hasFieldOrPropertyWithValue("priority", requestMessage.getPriority());
             return response;
         });
-        assertThat(nikitamobileTemplatedSmsSender.send(message)).isEqualTo(SmsMessageSendingResult.of(response.getMessage().getId().toString()));
+        assertThat(nikitamobileTemplatedSmsSender.send(message)).isEqualTo(SmsMessageSendingResult.of(String.valueOf(message.internalId())));
         verify(smsTemplateContentResolver).resolve(message.templateId(), message.variables());
         verify(nikitamobileApiCommunicator).sendMessage(any(SendMessageRequest.class));
     }

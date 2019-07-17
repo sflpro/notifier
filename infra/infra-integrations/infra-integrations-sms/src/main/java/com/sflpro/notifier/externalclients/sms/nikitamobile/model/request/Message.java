@@ -21,35 +21,28 @@ import java.time.LocalDateTime;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Message {
 
-    private static final int HIGHEST_PRIORITY = 9;
-    private static final int DEFAULT_MESSAGE_COUNT = 1;
+    private static final int HIGHEST_PRIORITY = 1;
 
     @XmlAttribute(name = "id")
     private Long id;
 
     @XmlAttribute(name = "msisdn")
-    private String senderNumber;
-
-    @XmlAttribute(name = "service-number")
     private String recipientNumber;
 
-    @XmlAttribute(name = "submit-date")
+    @XmlAttribute(name = "service-number")
+    private String senderNumber;
+
+    @XmlAttribute(name = "defer-date")
     @XmlJavaTypeAdapter(NikitamobileDateTimeAdapter.class)
-    private LocalDateTime submitDate;
+    private LocalDateTime deferDate;
+
+    @XmlAttribute(name = "validity-period")
+    private int validityPeriod;
 
     @XmlAttribute(name = "priority")
     private int priority;
 
-    @XmlAttribute(name = "operator_id")
-    private String operatorId;
-
-    @XmlAttribute(name = "operator")
-    private String operator;
-
-    @XmlAttribute(name = "message-count")
-    private int messageCount;
-
-    @XmlElement
+    @XmlElement(name = "content")
     private Content content;
 
     public Message() {
@@ -63,10 +56,9 @@ public class Message {
         this.id = id;
         this.senderNumber = senderNumber;
         this.recipientNumber = recipientNumber;
-        this.submitDate = LocalDateTime.now();
+        this.deferDate = LocalDateTime.now();
         this.priority = HIGHEST_PRIORITY;
         this.content = content;
-        this.messageCount = DEFAULT_MESSAGE_COUNT;
     }
 
 
@@ -102,12 +94,20 @@ public class Message {
         this.recipientNumber = recipientNumber;
     }
 
-    public LocalDateTime getSubmitDate() {
-        return submitDate;
+    public LocalDateTime getDeferDate() {
+        return deferDate;
     }
 
-    public void setSubmitDate(final LocalDateTime submitDate) {
-        this.submitDate = submitDate;
+    public void setDeferDate(LocalDateTime deferDate) {
+        this.deferDate = deferDate;
+    }
+
+    public int getValidityPeriod() {
+        return validityPeriod;
+    }
+
+    public void setValidityPeriod(int validityPeriod) {
+        this.validityPeriod = validityPeriod;
     }
 
     public int getPriority() {
@@ -118,32 +118,8 @@ public class Message {
         this.priority = priority;
     }
 
-    public String getOperatorId() {
-        return operatorId;
-    }
-
-    public void setOperatorId(final String operatorId) {
-        this.operatorId = operatorId;
-    }
-
-    public String getOperator() {
-        return operator;
-    }
-
-    public void setOperator(final String operator) {
-        this.operator = operator;
-    }
-
-    public int getMessageCount() {
-        return messageCount;
-    }
-
-    public void setMessageCount(final int messageCount) {
-        this.messageCount = messageCount;
-    }
-
     @Override
-    public boolean equals(final Object o) {
+    public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
@@ -152,14 +128,12 @@ public class Message {
         }
         final Message message = (Message) o;
         return new EqualsBuilder()
+                .append(validityPeriod, message.validityPeriod)
                 .append(priority, message.priority)
-                .append(messageCount, message.messageCount)
                 .append(id, message.id)
-                .append(senderNumber, message.senderNumber)
                 .append(recipientNumber, message.recipientNumber)
-                .append(submitDate, message.submitDate)
-                .append(operatorId, message.operatorId)
-                .append(operator, message.operator)
+                .append(senderNumber, message.senderNumber)
+                .append(deferDate, message.deferDate)
                 .append(content, message.content)
                 .isEquals();
     }
@@ -168,13 +142,11 @@ public class Message {
     public int hashCode() {
         return new HashCodeBuilder(17, 37)
                 .append(id)
-                .append(senderNumber)
                 .append(recipientNumber)
-                .append(submitDate)
+                .append(senderNumber)
+                .append(deferDate)
+                .append(validityPeriod)
                 .append(priority)
-                .append(operatorId)
-                .append(operator)
-                .append(messageCount)
                 .append(content)
                 .toHashCode();
     }
@@ -183,13 +155,11 @@ public class Message {
     public String toString() {
         return new ToStringBuilder(this)
                 .append("id", id)
-                .append("senderNumber", senderNumber)
                 .append("recipientNumber", recipientNumber)
-                .append("submitDate", submitDate)
+                .append("senderNumber", senderNumber)
+                .append("deferDate", deferDate)
+                .append("validityPeriod", validityPeriod)
                 .append("priority", priority)
-                .append("operatorId", operatorId)
-                .append("operator", operator)
-                .append("messageCount", messageCount)
                 .append("content", content)
                 .toString();
     }

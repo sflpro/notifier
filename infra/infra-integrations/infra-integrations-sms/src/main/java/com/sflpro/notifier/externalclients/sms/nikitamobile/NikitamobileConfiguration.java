@@ -1,5 +1,7 @@
 package com.sflpro.notifier.externalclients.sms.nikitamobile;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.module.jaxb.JaxbAnnotationModule;
 import com.sflpro.notifier.externalclients.common.http.rest.RestClient;
 import com.sflpro.notifier.externalclients.common.http.rest.RestClientImpl;
 import com.sflpro.notifier.externalclients.sms.nikitamobile.communicator.DefaultNikitamobileApiCommunicator;
@@ -10,8 +12,17 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpRequest;
+import org.springframework.http.client.ClientHttpRequestExecution;
+import org.springframework.http.client.ClientHttpRequestInterceptor;
+import org.springframework.http.client.ClientHttpResponse;
+import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+import org.springframework.http.converter.xml.MappingJackson2XmlHttpMessageConverter;
 import org.springframework.util.Assert;
 import org.springframework.web.client.RestTemplate;
+
+import java.io.IOException;
+import java.util.Collections;
 
 /**
  * Created by Hayk Mkrtchyan.
@@ -24,32 +35,36 @@ class NikitamobileConfiguration {
 
     private static final String NIKITA_MOBILE_PROVIDER_REGISTRY_NAME = "nikita_mobile";
 
-    @Value("${nikitamobile.operator.id}")
-    private String operatorId;
-    @Value("${nikitamobile.operator.name}")
-    private String operatorName;
+    @Value("${nikitamobile.login}")
+    private String login;
 
-    @Bean
-    @ConditionalOnMissingBean(RestTemplate.class)
-    RestTemplate restTemplate() {
-        return new RestTemplate();
-    }
+    @Value("${nikitamobile.password}")
+    private String password;
 
-    @Bean
-    @ConditionalOnMissingBean(RestClient.class)
-    RestClient restClient(final RestTemplate restTemplate) {
+    @Value("${nikitamobile.api.version:1.0}")
+    private String version;
+
+    @Bean("restClient_nikitamobileRestClient")
+    RestClient restClient_nikitamobileRestClient() {
+        final ObjectMapper objectMapper = Jackson2ObjectMapperBuilder.xml()
+                .modules(new JaxbAnnotationModule())
+                .build();
+        final RestTemplate restTemplate = new RestTemplate();
+        restTemplate.setMessageConverters(Collections.singletonList( new MappingJackson2XmlHttpMessageConverter(objectMapper)));
         return new RestClientImpl(restTemplate);
     }
 
+
+
     @Bean("nikitamobileApiCommunicator")
-    NikitamobileApiCommunicator nikitamobileApiCommunicator(final RestClient restClient, @Value("${nikitamobile.api.url:}") final String apiUrl) {
+    NikitamobileApiCommunicator nikitamobileApiCommunicator(@Value("${nikitamobile.api.url:}") final String apiUrl) {
         Assert.hasText(apiUrl, "API url is missing from Nikitamobile configuration.");
-        return new DefaultNikitamobileApiCommunicator(restClient, apiUrl);
+        return new DefaultNikitamobileApiCommunicator(restClient_nikitamobileRestClient(), apiUrl);
     }
 
     @Bean("nikitamobileSimpleSmsSender")
     SimpleSmsSender nikitamobileSimpleSmsSender(final NikitamobileApiCommunicator nikitamobileApiCommunicator) {
-        return new NikitamobileSimpleSmsSender(nikitamobileApiCommunicator, operatorId, operatorName);
+        return new NikitamobileSimpleSmsSender(nikitamobileApiCommunicator, login, password, version);
     }
 
     @Bean("nikitamobileSimpleSmsSender")
@@ -60,7 +75,7 @@ class NikitamobileConfiguration {
     @Bean("nikitamobileSimpleSmsSender")
     TemplatedSmsSender nikitamobileTemplatedSmsSender(final NikitamobileApiCommunicator nikitamobileApiCommunicator,
                                                       final SmsTemplateContentResolver smsTemplateContentResolver) {
-        return new NikitamobileTemplatedSmsSender(nikitamobileApiCommunicator, smsTemplateContentResolver, operatorId, operatorName);
+        return new NikitamobileTemplatedSmsSender(nikitamobileApiCommunicator, smsTemplateContentResolver, login, password, version);
     }
 
     @Bean("nikitamobileSimpleSmsSender")

@@ -18,14 +18,14 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @TestPropertySource(properties = {
         "nikitamobile.enabled=true",
-        "nikitamobile.api.url=http://31.47.195.66:80/broker",
-        "nikitamobile.login=sslpro",
-        "nikitamobile.password=sslpro",
-        "sms.sender=Hishecum"
+        "nikitamobile.api.url=http://test.com",
+        "nikitamobile.login=test",
+        "nikitamobile.password=test",
+        "sms.sender=Test"
 })
 public class NikitaMobileSimpleSmsSenderIntegrationTest extends AbstractSmsIntegrationTest {
 
-    @Value("${integrationtest.send.real.sms:true}")
+    @Value("${integrationtest.send.real.sms:false}")
     private Boolean sendRealSms = Boolean.FALSE;
 
     @Value("${sms.sender}")

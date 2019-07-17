@@ -13,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 /**
  * Created by Hayk Mkrtchyan.
@@ -44,7 +43,7 @@ abstract class AbstractNikitamobileSmsSender<M extends SmsMessage> implements Sm
     @Override
     public SmsMessageSendingResult send(final M message) {
         Assert.notNull(message, "Null was passed as an argument for parameter 'message'.");
-        logger.debug("Sending sms via ");
+        logger.debug("Sending sms via nikita");
         final Message requestMessage = new Message(
                 message.internalId(),
                 message.sender(),
@@ -61,6 +60,7 @@ abstract class AbstractNikitamobileSmsSender<M extends SmsMessage> implements Sm
         request.setRefId(NikitamobileDateTimeUtil.format(LocalDateTime.now()));
         request.setVersion(version);
         final SendMessageResponse sendMessageResponse = nikitamobileApiCommunicator.sendMessage(request);
+        logger.debug("Sms message was successfully sent {}.",sendMessageResponse);
         return SmsMessageSendingResult.of(String.valueOf(message.internalId()));
     }
 

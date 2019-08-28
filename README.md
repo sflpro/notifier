@@ -1,6 +1,7 @@
 # CI Status
 [![Build Status](https://travis-ci.org/sflpro/notifier.svg?branch=master)](https://travis-ci.org/sflpro/notifier)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=com.sflpro.notifier%3Anotifier&metric=alert_status)](https://sonarcloud.io/dashboard?id=com.sflpro.notifier%3Anotifier)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.sflpro.notifier/notifier/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.sflpro.notifier/notifier/)
 
 # Notifications Microservice
 The notifications microservice is an independently deployable component intended for sending various types of notifications. 
@@ -34,7 +35,7 @@ following maven dependency:
 <dependency>
     <groupId>com.sflpro.notifier</groupId>
     <artifactId>api-client-library</artifactId>
-    <version>1.4.5</version>
+    <version>1.6.0</version>
 </dependency>
 ```
 

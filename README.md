@@ -35,7 +35,7 @@ following maven dependency:
 <dependency>
     <groupId>com.sflpro.notifier</groupId>
     <artifactId>api-client-library</artifactId>
-    <version>1.6.0</version>
+    <version>1.7.0</version>
 </dependency>
 ```
 

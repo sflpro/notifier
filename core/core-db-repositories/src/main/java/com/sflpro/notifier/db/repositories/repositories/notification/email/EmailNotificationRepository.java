@@ -2,6 +2,9 @@ package com.sflpro.notifier.db.repositories.repositories.notification.email;
 
 import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
 import com.sflpro.notifier.db.repositories.repositories.notification.AbstractNotificationRepository;
+import org.springframework.data.jpa.repository.EntityGraph;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -12,4 +15,8 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface EmailNotificationRepository extends AbstractNotificationRepository<EmailNotification> {
+
+    @EntityGraph("Notification.ProcessingFlow")
+    @Query("select n from EmailNotification n where n.id = :id")
+    EmailNotification findByIdForProcessingFlow(@Param("id") final Long id);
 }

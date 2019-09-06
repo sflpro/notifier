@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import com.sflpro.notifier.db.entities.notification.NotificationState;
 import com.sflpro.notifier.db.entities.notification.email.NotificationProperty;
 import com.sflpro.notifier.db.entities.notification.sms.SmsNotification;
-import com.sflpro.notifier.db.repositories.utility.PersistenceUtilityService;
 import com.sflpro.notifier.services.common.exception.ServicesRuntimeException;
 import com.sflpro.notifier.services.notification.sms.SmsNotificationService;
 import com.sflpro.notifier.services.test.AbstractServicesUnitTest;
@@ -42,9 +41,6 @@ public class SmsNotificationProcessorImplTest extends AbstractServicesUnitTest {
     private SmsNotificationService smsNotificationService;
 
     @Mock
-    private PersistenceUtilityService persistenceUtilityService;
-
-    @Mock
     private SmsSenderProvider smsSenderProvider;
 
     @Mock
@@ -60,7 +56,6 @@ public class SmsNotificationProcessorImplTest extends AbstractServicesUnitTest {
         smsMessageProcessingService = new SmsNotificationProcessorImpl(
                 smsNotificationService,
                 smsSenderProvider,
-                persistenceUtilityService,
                 senderName
         );
     }
@@ -100,8 +95,7 @@ public class SmsNotificationProcessorImplTest extends AbstractServicesUnitTest {
         /* Reset mocks */
         resetAll();
         /* Register expectations */
-        expect(smsNotificationService.getNotificationById(notificationId)).andReturn(smsNotification).once();
-        expect(persistenceUtilityService.initializeAndUnProxy(smsNotification)).andReturn(smsNotification);
+        expect(smsNotificationService.getSmsNotificationForProcessing(notificationId)).andReturn(smsNotification).once();
         /* Replay mocks */
         replayAll();
         /* Run test cases */
@@ -123,8 +117,7 @@ public class SmsNotificationProcessorImplTest extends AbstractServicesUnitTest {
         /* Reset mocks */
         resetAll();
         /* Register expectations */
-        expect(smsNotificationService.getNotificationById(notificationId)).andReturn(smsNotification).once();
-        expect(persistenceUtilityService.initializeAndUnProxy(smsNotification)).andReturn(smsNotification);
+        expect(smsNotificationService.getSmsNotificationForProcessing(notificationId)).andReturn(smsNotification).once();
         expect(smsNotificationService.updateNotificationState(notificationId, NotificationState.PROCESSING)).andReturn(smsNotification).once();
         expect(smsSenderProvider.lookupSimpleSmsMessageSenderFor(smsNotification.getProviderType().name().toLowerCase())).andReturn(Optional.of(simpleSmsSender));
         expect(simpleSmsSender.send(isA(SimpleSmsMessage.class))).andAnswer(() -> {
@@ -155,8 +148,7 @@ public class SmsNotificationProcessorImplTest extends AbstractServicesUnitTest {
         /* Reset mocks */
         resetAll();
         /* Register expectations */
-        expect(smsNotificationService.getNotificationById(notificationId)).andReturn(smsNotification).once();
-        expect(persistenceUtilityService.initializeAndUnProxy(smsNotification)).andReturn(smsNotification);
+        expect(smsNotificationService.getSmsNotificationForProcessing(notificationId)).andReturn(smsNotification).once();
         expect(smsNotificationService.updateNotificationState(notificationId, NotificationState.PROCESSING)).andReturn(smsNotification).once();
         expect(smsSenderProvider.lookupSimpleSmsMessageSenderFor(smsNotification.getProviderType().name().toLowerCase())).andReturn(Optional.of(simpleSmsSender));
         expect(simpleSmsSender.send(isA(SimpleSmsMessage.class))).andAnswer(() -> {
@@ -191,8 +183,7 @@ public class SmsNotificationProcessorImplTest extends AbstractServicesUnitTest {
         /* Reset mocks */
         resetAll();
         /* Register expectations */
-        expect(smsNotificationService.getNotificationById(notificationId)).andReturn(smsNotification).once();
-        expect(persistenceUtilityService.initializeAndUnProxy(smsNotification)).andReturn(smsNotification);
+        expect(smsNotificationService.getSmsNotificationForProcessing(notificationId)).andReturn(smsNotification).once();
         expect(smsNotificationService.updateNotificationState(notificationId, NotificationState.PROCESSING)).andReturn(smsNotification).once();
         expect(smsSenderProvider.lookupTemplatedSmsMessageSenderFor(smsNotification.getProviderType().name().toLowerCase())).andReturn(Optional.of(templatedSmsSender));
         expect(templatedSmsSender.send(isA(TemplatedSmsMessage.class))).andAnswer(() -> {

@@ -37,10 +37,10 @@ public interface PushNotificationService extends AbstractNotificationService<Pus
     List<PushNotification> createNotificationsForUserActiveRecipients(@Nonnull final Long userId, @Nonnull final PushNotificationDto pushNotificationDto);
 
     /**
-     * Returns the PushNotification to be processed
+     * Returns the notification to be processed
      *
      * @param notificationId
-     * @return pushNotification
+     * @return notification
      */
     PushNotification getPushNotificationForProcessing(final Long notificationId);
 }

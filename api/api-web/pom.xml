@@ -5,12 +5,12 @@
     <parent>
         <groupId>com.sflpro.notifier</groupId>
         <artifactId>api</artifactId>
-        <version>1.6.0</version>
+        <version>1.7.0</version>
     </parent>
 
     <packaging>jar</packaging>
     <artifactId>api-web</artifactId>
-    <version>1.6.0</version>
+    <version>1.7.0</version>
 
     <description>Project is representing Internal Rest API service for SFL Notifier</description>
 
@@ -102,7 +102,7 @@
                             </execution>
                         </executions>
                         <configuration>
-                            <repository>sflpro/notifier</repository>
+                            <repository>sflpro/notifier-api</repository>
                             <googleContainerRegistryEnabled>false</googleContainerRegistryEnabled>
                             <buildArgs>
                                 <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>

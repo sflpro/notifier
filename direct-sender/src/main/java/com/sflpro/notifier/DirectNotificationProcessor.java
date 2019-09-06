@@ -22,7 +22,7 @@ import java.util.concurrent.Executor;
  */
 class DirectNotificationProcessor {
 
-    private Logger logger = LoggerFactory.getLogger(DirectNotificationProcessor.class);
+    private static final Logger logger = LoggerFactory.getLogger(DirectNotificationProcessor.class);
 
     private final NotificationProcessingService notificationProcessingService;
 

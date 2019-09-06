@@ -22,4 +22,12 @@ public interface SmsNotificationService extends AbstractNotificationService<SmsN
      */
     @Nonnull
     SmsNotification createSmsNotification(@Nonnull final SmsNotificationDto smsNotificationDto);
+
+    /**
+     * Returns the notification to be processed
+     *
+     * @param notificationId
+     * @return notification
+     */
+    SmsNotification getSmsNotificationForProcessing(final Long notificationId);
 }

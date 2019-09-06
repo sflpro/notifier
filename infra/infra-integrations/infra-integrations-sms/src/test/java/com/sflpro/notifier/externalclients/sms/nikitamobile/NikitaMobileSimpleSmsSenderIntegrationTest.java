@@ -16,11 +16,20 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Date: 6/20/19
  * Time: 6:19 PM
  */
-@TestPropertySource(properties = {"nikitamobile.enabled=true","nikitamobile.api.url=http://smsme.am/api"})
+@TestPropertySource(properties = {
+        "nikitamobile.enabled=true",
+        "nikitamobile.api.url=http://test.com",
+        "nikitamobile.login=test",
+        "nikitamobile.password=test",
+        "sms.sender=Test"
+})
 public class NikitaMobileSimpleSmsSenderIntegrationTest extends AbstractSmsIntegrationTest {
 
     @Value("${integrationtest.send.real.sms:false}")
     private Boolean sendRealSms = Boolean.FALSE;
+
+    @Value("${sms.sender}")
+    private String sender;
 
     @Autowired(required = false)
     @Qualifier("nikitamobileSimpleSmsSender")
@@ -28,12 +37,12 @@ public class NikitaMobileSimpleSmsSenderIntegrationTest extends AbstractSmsInteg
 
     @Test
     public void testSend() {
-        if(!sendRealSms){
+        if (!sendRealSms) {
             return;
         }
         assertThat(nikitamobileSimpleSmsSender.send(SimpleSmsMessage.of(
                 1L,
-                "+37444668425",
+                sender,
                 "+37494668425",
                 "Hi!"
         ))).isNotNull();

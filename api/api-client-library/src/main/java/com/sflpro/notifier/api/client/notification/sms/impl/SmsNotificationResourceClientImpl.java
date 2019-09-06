@@ -9,8 +9,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.Invocation;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 
@@ -25,12 +27,7 @@ public class SmsNotificationResourceClientImpl extends AbstractResourceClient im
     private static final Logger LOGGER = LoggerFactory.getLogger(SmsNotificationResourceClientImpl.class);
 
     /* Constants */
-    private static final String PATH_SMS_CREATE = "rest/notification/sms/create";
-
-    /* Constructors */
-    public SmsNotificationResourceClientImpl() {
-        //default constructor
-    }
+    private static final String PATH_SMS_CREATE = "notification/sms/create";
 
     public SmsNotificationResourceClientImpl(final Client client, final String apiPath) {
         super(client, apiPath);
@@ -39,13 +36,28 @@ public class SmsNotificationResourceClientImpl extends AbstractResourceClient im
     @Nonnull
     @Override
     public ResultResponseModel<CreateSmsNotificationResponse> createSmsNotification(@Nonnull final CreateSmsNotificationRequest request) {
+        return createSmsNotificationInternal(request, null);
+    }
+
+    @Nonnull
+    @Override
+    public ResultResponseModel<CreateSmsNotificationResponse> createSmsNotification(@Nonnull final CreateSmsNotificationRequest request, final @Nonnull String authToken) {
+        asserValidAuthToken(authToken);
+        return createSmsNotificationInternal(request, authToken);
+    }
+
+    @Nonnull
+    private ResultResponseModel<CreateSmsNotificationResponse> createSmsNotificationInternal(@Nonnull final CreateSmsNotificationRequest request, @Nullable final String authToken) {
         assertCreateSmsNotificationRequest(request);
         LOGGER.debug("Executing create SMS notification call, request - {}", request);
-        final ResultResponseModel<CreateSmsNotificationResponse> response = getClient().target(getApiPath())
+        final Invocation.Builder requestBuilder = getClient().target(getApiPath())
                 .path(PATH_SMS_CREATE)
-                .request(MediaType.APPLICATION_JSON_TYPE)
-                .post(Entity.entity(request, MediaType.APPLICATION_JSON_TYPE), new GenericType<ResultResponseModel<CreateSmsNotificationResponse>>() {
-                });
+                .request(MediaType.APPLICATION_JSON_TYPE);
+        if (authToken != null) {
+            addAutorizationHeader(requestBuilder, authToken);
+        }
+        final ResultResponseModel<CreateSmsNotificationResponse> response = requestBuilder.post(Entity.entity(request, MediaType.APPLICATION_JSON_TYPE), new GenericType<ResultResponseModel<CreateSmsNotificationResponse>>() {
+        });
         LOGGER.debug("Successfully executed create SMS notification call, request - {}, response -  {}", request, response);
         return response;
     }

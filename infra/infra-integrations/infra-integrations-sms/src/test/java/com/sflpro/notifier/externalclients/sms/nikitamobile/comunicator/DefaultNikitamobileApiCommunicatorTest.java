@@ -31,7 +31,7 @@ public class DefaultNikitamobileApiCommunicatorTest extends AbstractSmsUnitTest 
 
     @Mock
     private RestClient restClient;
-    final String apiUrl = "https://test.com";
+    private final String apiUrl = "https://test.com";
 
 
     @Before
@@ -48,9 +48,7 @@ public class DefaultNikitamobileApiCommunicatorTest extends AbstractSmsUnitTest 
         final HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.ACCEPT, MediaType.APPLICATION_XML_VALUE);
         headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_XML_VALUE);
-        final SendMessageResponse response = new SendMessageResponse(
-                new com.sflpro.notifier.externalclients.sms.nikitamobile.model.response.Message(1L)
-        );
+        final SendMessageResponse response = new SendMessageResponse();
         when(restClient.exchange(apiUrl, HttpMethod.POST, new HttpEntity<>(request, headers), SendMessageResponse.class))
                 .thenReturn(new ResponseEntity<>(response, HttpStatus.OK));
         assertThat(communicator.sendMessage(request)).isEqualTo(response);
@@ -66,9 +64,7 @@ public class DefaultNikitamobileApiCommunicatorTest extends AbstractSmsUnitTest 
         final HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.ACCEPT, MediaType.APPLICATION_XML_VALUE);
         headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_XML_VALUE);
-        final SendMessageResponse response = new SendMessageResponse(
-                new com.sflpro.notifier.externalclients.sms.nikitamobile.model.response.Message(1L)
-        );
+        final SendMessageResponse response = new SendMessageResponse();
         when(restClient.exchange(apiUrl, HttpMethod.POST, new HttpEntity<>(request, headers), SendMessageResponse.class))
                 .thenReturn(new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR));
         assertThatThrownBy(() -> communicator.sendMessage(request)).isInstanceOf(NikitamobileClientRuntimeException.class);

@@ -31,14 +31,6 @@ The sonar checks should be passed.
 The feature must not add unnecessary dependencies (where "unnecessary" is of course subjective,
 but new dependencies should be discussed).
 
-Adding Support for a New Plugin
---------------------------------
-See [SUPPORTING_NEW_SERVICES](./SUPPORTING_NEW_SERVICES.md) for guidelines on how to add new plugin. TODO
-
 Coding Style
 ------------
 Maintain the coding style in the project and in particular the modified files.
-
-## Code of Conduct
-
-Do we need this?

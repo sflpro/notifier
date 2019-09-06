@@ -5,7 +5,7 @@
     <parent>
         <artifactId>notifier</artifactId>
         <groupId>com.sflpro.notifier</groupId>
-        <version>1.7.0</version>
+        <version>1.8.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -50,97 +50,97 @@
         <dependency>
             <groupId>com.sflpro.notifier</groupId>
             <artifactId>worker</artifactId>
-            <version>1.7.0</version>
+            <version>1.8.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.sflpro.notifier</groupId>
             <artifactId>api-web</artifactId>
-            <version>1.7.0</version>
+            <version>1.8.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.sflpro.notifier</groupId>
             <artifactId>core-services-impl</artifactId>
-            <version>1.7.0</version>
+            <version>1.8.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.sflpro.notifier</groupId>
             <artifactId>core-db-entities</artifactId>
-            <version>1.7.0</version>
+            <version>1.8.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.sflpro.notifier</groupId>
             <artifactId>api-facade</artifactId>
-            <version>1.7.0</version>
+            <version>1.8.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.sflpro.notifier</groupId>
             <artifactId>api-model</artifactId>
-            <version>1.7.0</version>
+            <version>1.8.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.sflpro.notifier</groupId>
             <artifactId>api-client-library</artifactId>
-            <version>1.7.0</version>
+            <version>1.8.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.sflpro.notifier</groupId>
             <artifactId>core-db-repositories</artifactId>
-            <version>1.7.0</version>
+            <version>1.8.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.sflpro.notifier</groupId>
             <artifactId>core-services</artifactId>
-            <version>1.7.0</version>
+            <version>1.8.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.sflpro.notifier</groupId>
             <artifactId>core-test-toolkit</artifactId>
-            <version>1.7.0</version>
+            <version>1.8.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.sflpro.notifier</groupId>
             <artifactId>infra-integrations-common</artifactId>
-            <version>1.7.0</version>
+            <version>1.8.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.sflpro.notifier</groupId>
             <artifactId>infra-integrations-email</artifactId>
-            <version>1.7.0</version>
+            <version>1.8.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.sflpro.notifier</groupId>
             <artifactId>infra-integrations-push</artifactId>
-            <version>1.7.0</version>
+            <version>1.8.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.sflpro.notifier</groupId>
             <artifactId>infra-integrations-push</artifactId>
-            <version>1.7.0</version>
+            <version>1.8.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.sflpro.notifier</groupId>
             <artifactId>infra-integrations-sms</artifactId>
-            <version>1.7.0</version>
+            <version>1.8.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.sflpro.notifier</groupId>
             <artifactId>infra-queue-common</artifactId>
-            <version>1.7.0</version>
+            <version>1.8.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.sflpro.notifier</groupId>
             <artifactId>infra-queue-consumer</artifactId>
-            <version>1.7.0</version>
+            <version>1.8.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.sflpro.notifier</groupId>
             <artifactId>infra-queue-producer</artifactId>
-            <version>1.7.0</version>
+            <version>1.8.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.sflpro.notifier</groupId>
             <artifactId>direct-sender</artifactId>
-            <version>1.7.0</version>
+            <version>1.8.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 </project>

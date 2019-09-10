@@ -47,3 +47,51 @@ once the notifier microservice has been started.
 
 Notifier is dockerized and is easy to deploy as a docker container. For more details, see the images on docker hub:  
 https://hub.docker.com/r/sflpro/notifier & https://hub.docker.com/r/sflpro/notifier-worker
+
+## Running the application locally
+
+#### 1. Configure POSTGRES datasource
+The postgres has official images in [docker hub](https://hub.docker.com/_/postgres).
+```bash
+docker run --name notifier-postgres -e POSTGRES_PASSWORD=notifier -e POSTGRES_USER=notifier -e POSTGRES_DB=notifier -p 5432:5432 -d postgres:11
+```
+
+#### 2. Configure RabbitMQ queue engine
+RabbitMQ has official images in [docker hub](https://hub.docker.com/_/rabbitmq).
+Running RabbitMQ with [management plugin](https://www.rabbitmq.com/management.html) enabled
+```bash
+docker run -d --hostname notifier-rabbit --name some-rabbit -p 5671:5671 -p 5672:5672 -p 15672:15672 rabbitmq:3-management
+```
+
+#### 3. Prepare properties file for notifier images
+```properties
+# Postgres
+spring.datasource.url=jdbc:postgresql://{HOST_IP}:5432/POSTGRES_DB
+spring.datasource.username=POSTGRES_USER
+spring.datasource.password=POSTGRES_PASSWORD
+
+# Notifier queue engine
+notifier.queue.engine=rabbit
+
+# RabbitMQ
+spring.rabbitmq.host={HOST_IP}
+spring.rabbitmq.username=guest
+
+# Container port
+server.port=8080
+```
+
+#### 4. Run notifier-api
+Running [Notifier-API](https://hub.docker.com/r/sflpro/notifier-api) docker images.
+```bash
+docker run -p 8080:8080 -v {NOTIFIER_-_PROPERTIES_PATH}:/etc/notifier/notifier.properties sflpro/notifier-api:1.7.0 --spring.config.additional-location=etc/notifier/notifier.properties
+```
+Running [Notifier-Worker](https://hub.docker.com/r/sflpro/notifier-worker) docker images
+```bash
+docker run -p 8081:8080 -v {NOTIFIER_-_PROPERTIES_PATH}:/etc/notifier/notifier.properties sflpro/notifier-worker:1.7.0 --spring.config.additional-location=etc/notifier/notifier.properties
+```
+
+#### 5. Testing setup
+```curl
+curl -X POST "localhost:8080/notification/email/create"  -H "accept: application/json" -H "Content-Type: application/json" -d "{\"recipientEmail\":\"recipient-email@example.com\",\"senderEmail\":\"sender-email@example.com\",\"subject\":\"testing-subject\",\"templateName\":\"Email template name\"}"
+```

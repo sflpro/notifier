@@ -1,7 +1,8 @@
-# CI Status
 [![Build Status](https://travis-ci.org/sflpro/notifier.svg?branch=master)](https://travis-ci.org/sflpro/notifier)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=com.sflpro.notifier%3Anotifier&metric=alert_status)](https://sonarcloud.io/dashboard?id=com.sflpro.notifier%3Anotifier)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.sflpro.notifier/notifier/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.sflpro.notifier/notifier/)
+[![License: APACHE](https://img.shields.io/badge/license-Apache%20License%202.0-b)](https://opensource.org/licenses/Apache-2.0)
+
 
 # Notifications Microservice
 The notifications microservice is an independently deployable component intended for sending various types of notifications. 

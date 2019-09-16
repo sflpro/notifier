@@ -22,6 +22,9 @@ public class CreateSmsNotificationResponse extends AbstractCreateNotificationRes
     private SmsNotificationModel notification;
 
     /* Constructors */
+    public CreateSmsNotificationResponse() {
+    }
+
     public CreateSmsNotificationResponse(final SmsNotificationModel smsNotificationModel) {
         this.notification = smsNotificationModel;
     }

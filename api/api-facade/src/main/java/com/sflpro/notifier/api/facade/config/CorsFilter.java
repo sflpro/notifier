@@ -1,8 +1,8 @@
 package com.sflpro.notifier.api.facade.config;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
-import javax.inject.Singleton;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerResponseContext;
 import javax.ws.rs.container.ContainerResponseFilter;
@@ -14,7 +14,7 @@ import java.io.IOException;
  *
  * @author Davit Harutyunyan
  */
-@Singleton
+@Component
 public class CorsFilter implements ContainerResponseFilter {
 
     @Value("${notification.api.cors.allowAll}")

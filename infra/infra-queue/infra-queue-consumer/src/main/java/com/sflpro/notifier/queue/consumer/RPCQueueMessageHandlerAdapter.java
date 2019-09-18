@@ -5,6 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageListener;
 import org.springframework.amqp.core.MessageProperties;
+import org.springframework.amqp.rabbit.core.RabbitOperations;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 
 import javax.annotation.Nullable;
@@ -14,11 +15,11 @@ class RPCQueueMessageHandlerAdapter implements MessageListener {
 
     private final RPCQueueMessageHandler messageHandler;
 
-    private final RabbitTemplate rabbitTemplate;
+    private final RabbitOperations rabbitOperations;
 
-    RPCQueueMessageHandlerAdapter(final RPCQueueMessageHandler messageHandler, final RabbitTemplate rabbitTemplate) {
+    RPCQueueMessageHandlerAdapter(final RPCQueueMessageHandler messageHandler, final RabbitOperations rabbitOperations) {
         this.messageHandler = messageHandler;
-        this.rabbitTemplate = rabbitTemplate;
+        this.rabbitOperations = rabbitOperations;
     }
 
     @Override
@@ -35,6 +36,6 @@ class RPCQueueMessageHandlerAdapter implements MessageListener {
         replyMessageProperties.setContentType("application/json");
         replyMessageProperties.setContentEncoding(StandardCharsets.UTF_8.name());
         replyMessageProperties.setCorrelationId(correlationId);
-        rabbitTemplate.send(replyTo, new Message(replyPayload.getBytes(), replyMessageProperties));
+        rabbitOperations.send(replyTo, new Message(replyPayload.getBytes(), replyMessageProperties));
     }
 }

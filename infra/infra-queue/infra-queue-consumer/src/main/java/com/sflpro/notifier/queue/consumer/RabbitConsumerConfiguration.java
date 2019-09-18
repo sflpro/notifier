@@ -5,9 +5,9 @@ import com.sflpro.notifier.queue.amqp.RabbitConfiguration;
 import com.sflpro.notifier.queue.amqp.rpc.RPCQueueMessageHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.amqp.core.AmqpAdmin;
-import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -40,17 +40,22 @@ public class RabbitConsumerConfiguration {
     @Value("${amqp.prefetchCount}")
     private int prefetchCount;
 
+    @Bean
+    MessageListener rPCQueueMessageHandlerAdapter(final RPCQueueMessageHandler messageHandler, final RabbitTemplate rabbitTemplate) {
+        return new RPCQueueMessageHandlerAdapter(messageHandler, rabbitTemplate);
+    }
+
     @Lazy(false)
     @Bean(destroyMethod = "stop", initMethod = "start")
     public SimpleMessageListenerContainer messageListenerContainer(final ConnectionFactory connectionFactory,
                                                                    final AmqpAdmin amqpAdmin,
+                                                                   final MessageListener rPCQueueMessageHandlerAdapter,
                                                                    @Qualifier("amqpTaskExecutor") final ThreadPoolTaskExecutor taskExecutor,
-                                                                   final RPCQueueMessageHandler messageHandler,
                                                                    @Qualifier("notificationQueue") final Queue notificationQueue) {
-        logger.info("Creating MessageListenerContainer for {} queue.",notificationQueue.getName());
+        logger.info("Creating MessageListenerContainer for {} queue.", notificationQueue.getName());
         final SimpleMessageListenerContainer messageListenerContainer = new SimpleMessageListenerContainer(connectionFactory);
         messageListenerContainer.setAmqpAdmin(amqpAdmin);
-        messageListenerContainer.setMessageListener(message -> messageHandler.handleMessage(message.getBody()));
+        messageListenerContainer.setMessageListener(rPCQueueMessageHandlerAdapter);
         messageListenerContainer.setQueues(notificationQueue);
         messageListenerContainer.setTaskExecutor(taskExecutor);
         messageListenerContainer.setConcurrentConsumers(concurrentConsumers);
@@ -58,4 +63,5 @@ public class RabbitConsumerConfiguration {
         messageListenerContainer.setPrefetchCount(prefetchCount);
         return messageListenerContainer;
     }
+
 }

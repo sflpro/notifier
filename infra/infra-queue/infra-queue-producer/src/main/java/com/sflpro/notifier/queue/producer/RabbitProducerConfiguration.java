@@ -90,16 +90,18 @@ public class RabbitProducerConfiguration {
         return new RabbitConnectorServiceImpl(rabbitTemplate, objectMapper);
     }
 
-    @Bean(destroyMethod = "stop")
+    @Lazy(false)
+    @Bean(destroyMethod = "stop", initMethod = "start")
     public SimpleMessageListenerContainer messageListenerContainer(final ConnectionFactory connectionFactory,
                                                                    final AmqpAdmin amqpAdmin,
                                                                    final RabbitTemplate rabbitTemplate,
+                                                                   final @Qualifier("responseQueue") Queue responseQueue,
                                                                    @Qualifier("amqpTaskExecutor") final ThreadPoolTaskExecutor taskExecutor) {
         logger.info("Creating MessageListenerContainer for response queue.");
         final SimpleMessageListenerContainer messageListenerContainer = new SimpleMessageListenerContainer(connectionFactory);
         messageListenerContainer.setAmqpAdmin(amqpAdmin);
         messageListenerContainer.setMessageListener(rabbitTemplate);
-        messageListenerContainer.setQueues(responseQueue());
+        messageListenerContainer.setQueues(responseQueue);
         messageListenerContainer.setTaskExecutor(taskExecutor);
         messageListenerContainer.setConcurrentConsumers(concurrentConsumers);
         messageListenerContainer.setMaxConcurrentConsumers(maxConcurrentConsumers);

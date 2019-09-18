@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerResponseContext;
 import javax.ws.rs.container.ContainerResponseFilter;
-import java.io.IOException;
 
 /**
  * Company: SFL LLC
@@ -24,7 +23,7 @@ public class CorsFilter implements ContainerResponseFilter {
     private boolean allowSwagger;
 
     @Override
-    public void filter(ContainerRequestContext request, ContainerResponseContext response) throws IOException {
+    public void filter(ContainerRequestContext request, ContainerResponseContext response) {
         if(allowAll || (allowSwagger && request.getUriInfo().getPath().startsWith("swagger.json"))) {
             response.getHeaders().add("Access-Control-Allow-Origin", "*");
             response.getHeaders().add("Access-Control-Allow-Headers", "origin, content-type, accept, authorization");

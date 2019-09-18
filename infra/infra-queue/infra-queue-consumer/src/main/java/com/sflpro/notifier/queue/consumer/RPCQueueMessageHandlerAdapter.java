@@ -31,10 +31,10 @@ class RPCQueueMessageHandlerAdapter implements MessageListener {
     }
 
     private void reply(final String replyTo, final String replyPayload, @Nullable final String correlationId) {
-        final MessageProperties replyMessagProperties = new MessageProperties();
-        replyMessagProperties.setContentType("application/json");
-        replyMessagProperties.setContentEncoding(StandardCharsets.UTF_8.name());
-        replyMessagProperties.setCorrelationId(correlationId);
-        rabbitTemplate.send(replyTo, new Message(replyPayload.getBytes(), replyMessagProperties));
+        final MessageProperties replyMessageProperties = new MessageProperties();
+        replyMessageProperties.setContentType("application/json");
+        replyMessageProperties.setContentEncoding(StandardCharsets.UTF_8.name());
+        replyMessageProperties.setCorrelationId(correlationId);
+        rabbitTemplate.send(replyTo, new Message(replyPayload.getBytes(), replyMessageProperties));
     }
 }

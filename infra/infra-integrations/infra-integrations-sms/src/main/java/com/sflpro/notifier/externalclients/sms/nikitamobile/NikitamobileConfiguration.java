@@ -67,18 +67,18 @@ class NikitamobileConfiguration {
         return new NikitamobileSimpleSmsSender(nikitamobileApiCommunicator, login, password, version);
     }
 
-    @Bean("nikitamobileSimpleSmsSender")
+    @Bean("nikitamobileSimpleSmsSenderRegistry")
     SimpleSmsSenderRegistry nikitamobileSimpleSmsSenderRegistry(final SimpleSmsSender nikitamobileSimpleSmsSender) {
         return SimpleSmsSenderRegistry.of(NIKITA_MOBILE_PROVIDER_REGISTRY_NAME, nikitamobileSimpleSmsSender);
     }
 
-    @Bean("nikitamobileSimpleSmsSender")
+    @Bean("nikitamobileTemplatedSmsSender")
     TemplatedSmsSender nikitamobileTemplatedSmsSender(final NikitamobileApiCommunicator nikitamobileApiCommunicator,
                                                       final SmsTemplateContentResolver smsTemplateContentResolver) {
         return new NikitamobileTemplatedSmsSender(nikitamobileApiCommunicator, smsTemplateContentResolver, login, password, version);
     }
 
-    @Bean("nikitamobileSimpleSmsSender")
+    @Bean("nikitamobileTemplatedSmsSenderRegistry")
     TemplatedSmsSenderRegistry nikitamobileTemplatedSmsSenderRegistry(final TemplatedSmsSender nikitamobileTemplatedSmsSender) {
         return TemplatedSmsSenderRegistry.of(NIKITA_MOBILE_PROVIDER_REGISTRY_NAME, nikitamobileTemplatedSmsSender);
     }

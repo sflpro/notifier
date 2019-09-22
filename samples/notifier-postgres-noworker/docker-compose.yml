@@ -1,0 +1,45 @@
+version: '3'
+
+services:
+
+  notifier-api:
+    image:  sflpro/notifier:snapshot
+    ports:
+      - "8099:8099"
+    depends_on:
+      - db
+    links:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/notifier
+      - SPRING_DATASOURCE_USERNAME=notifier
+      - SPRING_DATASOURCE_PASSWORD=notifier
+      - SPRING_JPA_PROPERTIES_HIBERNATE_JDBC_LOB_NON_CONTEXTUAL_CREATION=true
+      - SPRING_FLYWAY_ENABLED=true
+      - SMS_ACCOUNT_SENDER_PHONE=00000000
+      - FIREBASE_PUSH_ENABLED=true
+      - PUSH_NOTIFICATION_PROVIDER=FIREBASE_CLOUD_MESSAGING
+      - SMTP_ENABLED=true
+      - SMTP_HOST=smtp
+      - SMTP_PORT=25
+      - SMTP_TIMEOUT=10000
+      - SMTP_USERNAME=john
+      - SMTP_PASSWORD=secret
+      - JAVA_TOOL_OPTIONS="-Dnotification.push.application.arn.test_app.android=test_app -Xmx256m"
+
+  smtp:
+    image: namshi/smtp
+    environment:
+      - SMARTHOST_USER=john
+      - SMARTHOST_PASSWORD=secret
+
+  db:
+    image: postgres:11.5
+    restart: always
+    environment:
+      POSTGRES_USER: notifier
+      POSTGRES_PASSWORD: notifier
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./../db_init:/docker-entrypoint-initdb.d

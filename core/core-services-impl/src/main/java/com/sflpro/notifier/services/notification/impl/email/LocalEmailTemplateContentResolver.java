@@ -48,7 +48,7 @@ class LocalEmailTemplateContentResolver implements EmailTemplateContentResolver 
 
     private EmailTemplateContent resolve(final String templateId, final Map<String, ?> variables,
                                          final BiFunction<String, Map<String, ?>, String> templateProvider) {
-        Assert.notNull(templateId, "Null or empty text was passed as an argument for parameter 'templateId'.");
+        Assert.hasText(templateId, "Null or empty text was passed as an argument for parameter 'templateId'.");
         Assert.notNull(variables, "Null was passed as an argument for parameter 'variables'.");
         return EmailTemplateContent.of(
                 templateProvider.apply(templateId + SUBJECT_SUFFIX, variables),

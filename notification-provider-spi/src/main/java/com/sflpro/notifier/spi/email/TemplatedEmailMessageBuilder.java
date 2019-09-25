@@ -18,6 +18,10 @@ public class TemplatedEmailMessageBuilder {
                                         final String to,
                                         final String templateId,
                                         final Map<String, ?> variables) {
+        Assert.hasText(from, "Null or empty text was passed as an argument for parameter 'from'.");
+        Assert.hasText(to, "Null or empty text was passed as an argument for parameter 'to'.");
+        Assert.hasText(templateId, "Null or empty text was passed as an argument for parameter 'templateId'.");
+        Assert.notNull(variables, "Null was passed as an argument for parameter 'variables'.");
         this.from = from;
         this.to = to;
         this.templateId = templateId;

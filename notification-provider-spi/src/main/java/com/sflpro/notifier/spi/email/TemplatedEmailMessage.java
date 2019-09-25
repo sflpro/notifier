@@ -35,16 +35,4 @@ public interface TemplatedEmailMessage extends EmailMessage {
     default Optional<Locale> locale() {
         return Optional.empty();
     }
-
-    static TemplatedEmailMessage of(final String from,
-                                    final String to,
-                                    final String templateId,
-                                    final Map<String, ?> variables) {
-        Assert.hasText(from, "Null or empty text was passed as an argument for parameter 'from'.");
-        Assert.hasText(to, "Null or empty text was passed as an argument for parameter 'to'.");
-        Assert.hasText(templateId, "Null or empty text was passed as an argument for parameter 'templateId'.");
-        Assert.notNull(variables, "Null was passed as an argument for parameter 'variables'.");
-        return new ImmutableTemplatedEmailMessage(from, to, templateId, null, variables, null);
-    }
-
 }

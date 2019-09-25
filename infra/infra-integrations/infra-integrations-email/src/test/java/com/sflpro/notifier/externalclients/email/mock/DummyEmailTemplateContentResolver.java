@@ -30,6 +30,5 @@ class DummyEmailTemplateContentResolver implements EmailTemplateContentResolver 
                 format("%s - %s - %s", templateId, locale, variables.entrySet().stream()
                         .map(entry -> entry.getKey() + " is " + entry.getValue())
                         .collect(Collectors.joining("\n"))));
-        ;
     }
 }

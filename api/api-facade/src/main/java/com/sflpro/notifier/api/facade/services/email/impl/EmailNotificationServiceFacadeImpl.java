@@ -13,9 +13,12 @@ import com.sflpro.notifier.services.notification.dto.email.EmailNotificationDto;
 import com.sflpro.notifier.services.notification.email.EmailNotificationService;
 import com.sflpro.notifier.services.notification.event.sms.StartSendingNotificationEvent;
 import com.sflpro.notifier.services.system.event.ApplicationEventDistributionService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
+
+import java.util.Locale;
 
 /**
  * Created by Hayk Mkrtchyan.
@@ -52,6 +55,9 @@ class EmailNotificationServiceFacadeImpl implements EmailNotificationServiceFaca
     /* utility methods */
     private EmailNotificationDto buildDto(final CreateEmailNotificationRequest request) {
         final EmailNotificationDto emailNotificationDto = new EmailNotificationDto();
+        if (StringUtils.isNoneBlank(request.getLanguage())) {
+            emailNotificationDto.setLocale(Locale.forLanguageTag(request.getLanguage()));
+        }
         emailNotificationDto.setRecipientEmail(request.getRecipientEmail());
         emailNotificationDto.setSenderEmail(request.getSenderEmail());
         emailNotificationDto.setContent(request.getBody());

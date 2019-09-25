@@ -1,0 +1,1 @@
+alter table notification_email add column locale varchar(255) default null;

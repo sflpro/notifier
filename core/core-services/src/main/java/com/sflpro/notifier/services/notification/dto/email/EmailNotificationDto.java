@@ -8,6 +8,8 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import java.util.Locale;
+
 /**
  * User: Ruben Dilanyan
  * Company: SFL LLC
@@ -15,6 +17,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  * Time: 7:29 PM
  */
 public class EmailNotificationDto extends NotificationDto<EmailNotification> {
+
     private static final long serialVersionUID = -2505594013054500474L;
 
     /* Properties */
@@ -23,6 +26,8 @@ public class EmailNotificationDto extends NotificationDto<EmailNotification> {
     private String senderEmail;
 
     private String userUuid;
+
+    private Locale locale;
 
     /* Constructors */
     public EmailNotificationDto(final String recipientEmail,
@@ -36,7 +41,6 @@ public class EmailNotificationDto extends NotificationDto<EmailNotification> {
         this.recipientEmail = recipientEmail;
         this.senderEmail = senderEmail;
     }
-
 
     public EmailNotificationDto() {
         super(NotificationType.EMAIL);
@@ -67,6 +71,14 @@ public class EmailNotificationDto extends NotificationDto<EmailNotification> {
         this.userUuid = userUuid;
     }
 
+    public Locale getLocale() {
+        return locale;
+    }
+
+    public void setLocale(Locale locale) {
+        this.locale = locale;
+    }
+
     /* Public interface methods */
     @Override
     public void updateDomainEntityProperties(final EmailNotification notification) {
@@ -74,6 +86,7 @@ public class EmailNotificationDto extends NotificationDto<EmailNotification> {
         notification.setRecipientEmail(getRecipientEmail());
         notification.setSenderEmail(getSenderEmail());
         notification.setTemplateName(getTemplateName());
+        notification.setLocale(getLocale());
     }
 
     /* Equals, HashCode and ToString */

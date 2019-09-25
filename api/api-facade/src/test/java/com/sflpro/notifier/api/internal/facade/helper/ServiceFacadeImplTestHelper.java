@@ -78,6 +78,7 @@ public class ServiceFacadeImplTestHelper {
         request.setRecipientEmail("dummy_recipient@dummy.com");
         request.setSenderEmail("dummy_sender@dummy.com");
         request.setSubject("Email subject");
+        request.setLanguage(Locale.getDefault().getLanguage());
         request.setBody("Email body");
         request.setClientIpAddress("127.0.0.1");
         request.setUserUuId("UGITYDTGUIGFITYDTDTFYKTYCL");

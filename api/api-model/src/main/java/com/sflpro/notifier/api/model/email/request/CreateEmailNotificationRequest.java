@@ -32,6 +32,9 @@ public class CreateEmailNotificationRequest extends AbstractTemplatableCreateNot
     @JsonProperty("subject")
     private String subject;
 
+    @JsonProperty("language")
+    private String language;
+
     /* Constructors */
     public CreateEmailNotificationRequest() {
         super();
@@ -60,6 +63,14 @@ public class CreateEmailNotificationRequest extends AbstractTemplatableCreateNot
 
     public void setSubject(final String subject) {
         this.subject = subject;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
     }
 
     /* Validation methods */
@@ -94,6 +105,7 @@ public class CreateEmailNotificationRequest extends AbstractTemplatableCreateNot
         builder.append(this.getTemplateName(), that.getTemplateName());
         builder.append(this.getProperties(), that.getProperties());
         builder.append(this.getSecureProperties(), that.getSecureProperties());
+        builder.append(this.getLanguage(), that.getLanguage());
         return builder.isEquals();
     }
 
@@ -107,6 +119,7 @@ public class CreateEmailNotificationRequest extends AbstractTemplatableCreateNot
         builder.append(this.getTemplateName());
         builder.append(this.getProperties());
         builder.append(this.getSecureProperties());
+        builder.append(this.getLanguage());
         return builder.build();
     }
 
@@ -120,6 +133,7 @@ public class CreateEmailNotificationRequest extends AbstractTemplatableCreateNot
         builder.append("templateName", this.getTemplateName());
         builder.append("properties", this.getProperties());
         builder.append("secureProperties", this.getSecureProperties());
+        builder.append("language", this.getLanguage());
         return builder.build();
     }
 }

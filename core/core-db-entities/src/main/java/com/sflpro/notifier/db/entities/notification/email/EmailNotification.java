@@ -7,6 +7,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.persistence.*;
+import java.util.Locale;
 
 /**
  * User: Ruben Dilanyan
@@ -29,6 +30,9 @@ public class EmailNotification extends Notification {
 
     @Column(name = "template_name", nullable = true)
     private String templateName;
+
+    @Column(name = "locale")
+    private Locale locale;
 
     /* Constructors */
     public EmailNotification() {
@@ -65,6 +69,14 @@ public class EmailNotification extends Notification {
         this.templateName = templateName;
     }
 
+    public Locale getLocale() {
+        return locale;
+    }
+
+    public void setLocale(Locale locale) {
+        this.locale = locale;
+    }
+
     /* Private utility methods */
     private void initializeDefaults() {
         setType(NotificationType.EMAIL);
@@ -85,6 +97,7 @@ public class EmailNotification extends Notification {
         builder.append(this.getRecipientEmail(), that.getRecipientEmail());
         builder.append(this.getSenderEmail(), that.getSenderEmail());
         builder.append(this.getTemplateName(), that.getTemplateName());
+        builder.append(this.getLocale(), that.getLocale());
         return builder.isEquals();
     }
 
@@ -95,6 +108,7 @@ public class EmailNotification extends Notification {
         builder.append(this.getRecipientEmail());
         builder.append(this.getSenderEmail());
         builder.append(this.getTemplateName());
+        builder.append(this.getLocale());
         return builder.build();
     }
 
@@ -105,6 +119,7 @@ public class EmailNotification extends Notification {
         builder.append("recipientEmail", this.getRecipientEmail());
         builder.append("senderEmail", this.getSenderEmail());
         builder.append("templateName", this.getTemplateName());
+        builder.append("locale", this.getLocale());
         return builder.build();
     }
 

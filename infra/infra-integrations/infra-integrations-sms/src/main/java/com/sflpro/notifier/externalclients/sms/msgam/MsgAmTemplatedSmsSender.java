@@ -23,6 +23,6 @@ class MsgAmTemplatedSmsSender extends AbstractMsgAmSmsSender<TemplatedSmsMessage
 
     @Override
     String bodyFor(final TemplatedSmsMessage message) {
-        return smsTemplateContentResolver.resolve(message.templateId(), message.variables());
+        return message.resolveBodyWith(smsTemplateContentResolver);
     }
 }

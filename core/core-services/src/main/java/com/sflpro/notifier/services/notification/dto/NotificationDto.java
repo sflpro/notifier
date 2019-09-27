@@ -11,6 +11,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.util.Assert;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -39,6 +40,8 @@ public abstract class NotificationDto<T extends Notification> extends AbstractDo
     private NotificationProviderType providerType;
 
     private boolean hasSecureProperties;
+
+    private Locale locale;
 
     /* Constructors */
     public NotificationDto(final NotificationType type,
@@ -128,6 +131,14 @@ public abstract class NotificationDto<T extends Notification> extends AbstractDo
 
     public void setHasSecureProperties(final boolean hasSecureProperties) {
         this.hasSecureProperties = hasSecureProperties;
+    }
+
+    public Locale getLocale() {
+        return locale;
+    }
+
+    public void setLocale(Locale locale) {
+        this.locale = locale;
     }
 
     /* Public interface methods */

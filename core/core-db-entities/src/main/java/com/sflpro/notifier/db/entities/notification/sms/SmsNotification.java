@@ -10,6 +10,7 @@ import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.util.Locale;
 
 /**
  * User: Ruben Dilanyan
@@ -29,6 +30,9 @@ public class SmsNotification extends Notification {
 
     @Column(name = "template_name", nullable = true)
     private String templateName;
+
+    @Column(name = "locale")
+    private Locale locale;
 
     /* Constructors */
     public SmsNotification() {
@@ -57,6 +61,14 @@ public class SmsNotification extends Notification {
         this.templateName = templateName;
     }
 
+    public Locale getLocale() {
+        return locale;
+    }
+
+    public void setLocale(Locale locale) {
+        this.locale = locale;
+    }
+
     /* Private utility methods */
     private void initializeDefaults() {
         setType(NotificationType.SMS);
@@ -76,6 +88,7 @@ public class SmsNotification extends Notification {
         builder.appendSuper(super.equals(that));
         builder.append(this.getRecipientMobileNumber(), that.getRecipientMobileNumber());
         builder.append(this.getTemplateName(), that.getTemplateName());
+        builder.append(this.getLocale(), that.getLocale());
         return builder.isEquals();
     }
 
@@ -85,6 +98,7 @@ public class SmsNotification extends Notification {
         builder.appendSuper(super.hashCode());
         builder.append(this.getRecipientMobileNumber());
         builder.append(this.getTemplateName());
+        builder.append(this.getLocale());
         return builder.build();
     }
 
@@ -95,6 +109,7 @@ public class SmsNotification extends Notification {
         builder.appendSuper(super.toString());
         builder.append("recipientMobileNumber", this.getRecipientMobileNumber());
         builder.append("templateName", this.getTemplateName());
+        builder.append("locale", this.getLocale());
         return builder.build();
     }
 }

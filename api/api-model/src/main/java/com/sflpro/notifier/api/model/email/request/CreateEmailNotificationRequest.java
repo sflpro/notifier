@@ -33,9 +33,6 @@ public class CreateEmailNotificationRequest extends AbstractTemplatableCreateNot
     @JsonProperty("subject")
     private String subject;
 
-    @JsonProperty("locale")
-    private Locale locale;
-
     /* Constructors */
     public CreateEmailNotificationRequest() {
         super();
@@ -64,14 +61,6 @@ public class CreateEmailNotificationRequest extends AbstractTemplatableCreateNot
 
     public void setSubject(final String subject) {
         this.subject = subject;
-    }
-
-    public Locale getLocale() {
-        return locale;
-    }
-
-    public void setLocale(Locale locale) {
-        this.locale = locale;
     }
 
     /* Validation methods */

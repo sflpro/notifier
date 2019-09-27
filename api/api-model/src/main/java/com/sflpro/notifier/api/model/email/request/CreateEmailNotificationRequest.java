@@ -11,6 +11,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.annotation.Nonnull;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * User: Ruben Dilanyan
@@ -32,8 +33,8 @@ public class CreateEmailNotificationRequest extends AbstractTemplatableCreateNot
     @JsonProperty("subject")
     private String subject;
 
-    @JsonProperty("language")
-    private String language;
+    @JsonProperty("locale")
+    private Locale locale;
 
     /* Constructors */
     public CreateEmailNotificationRequest() {
@@ -65,12 +66,12 @@ public class CreateEmailNotificationRequest extends AbstractTemplatableCreateNot
         this.subject = subject;
     }
 
-    public String getLanguage() {
-        return language;
+    public Locale getLocale() {
+        return locale;
     }
 
-    public void setLanguage(String language) {
-        this.language = language;
+    public void setLocale(Locale locale) {
+        this.locale = locale;
     }
 
     /* Validation methods */
@@ -105,7 +106,7 @@ public class CreateEmailNotificationRequest extends AbstractTemplatableCreateNot
         builder.append(this.getTemplateName(), that.getTemplateName());
         builder.append(this.getProperties(), that.getProperties());
         builder.append(this.getSecureProperties(), that.getSecureProperties());
-        builder.append(this.getLanguage(), that.getLanguage());
+        builder.append(this.getLocale(), that.getLocale());
         return builder.isEquals();
     }
 
@@ -119,7 +120,7 @@ public class CreateEmailNotificationRequest extends AbstractTemplatableCreateNot
         builder.append(this.getTemplateName());
         builder.append(this.getProperties());
         builder.append(this.getSecureProperties());
-        builder.append(this.getLanguage());
+        builder.append(this.getLocale());
         return builder.build();
     }
 
@@ -133,7 +134,7 @@ public class CreateEmailNotificationRequest extends AbstractTemplatableCreateNot
         builder.append("templateName", this.getTemplateName());
         builder.append("properties", this.getProperties());
         builder.append("secureProperties", this.getSecureProperties());
-        builder.append("language", this.getLanguage());
+        builder.append("language", this.getLocale());
         return builder.build();
     }
 }

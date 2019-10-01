@@ -11,6 +11,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.annotation.Nonnull;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * User: Ruben Dilanyan
@@ -94,6 +95,7 @@ public class CreateEmailNotificationRequest extends AbstractTemplatableCreateNot
         builder.append(this.getTemplateName(), that.getTemplateName());
         builder.append(this.getProperties(), that.getProperties());
         builder.append(this.getSecureProperties(), that.getSecureProperties());
+        builder.append(this.getLocale(), that.getLocale());
         return builder.isEquals();
     }
 
@@ -107,6 +109,7 @@ public class CreateEmailNotificationRequest extends AbstractTemplatableCreateNot
         builder.append(this.getTemplateName());
         builder.append(this.getProperties());
         builder.append(this.getSecureProperties());
+        builder.append(this.getLocale());
         return builder.build();
     }
 
@@ -120,6 +123,7 @@ public class CreateEmailNotificationRequest extends AbstractTemplatableCreateNot
         builder.append("templateName", this.getTemplateName());
         builder.append("properties", this.getProperties());
         builder.append("secureProperties", this.getSecureProperties());
+        builder.append("language", this.getLocale());
         return builder.build();
     }
 }

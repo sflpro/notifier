@@ -4,6 +4,7 @@ import com.sflpro.notifier.spi.email.EmailTemplateContent;
 import com.sflpro.notifier.spi.email.EmailTemplateContentResolver;
 import com.sflpro.notifier.spi.email.TemplatedEmailMessage;
 import com.sflpro.notifier.spi.email.TemplatedEmailSender;
+import org.springframework.util.Assert;
 
 
 /**
@@ -23,10 +24,17 @@ class SmtpTemplatedEmailSender implements TemplatedEmailSender {
 
     @Override
     public void send(final TemplatedEmailMessage message) {
-        final EmailTemplateContent content = emailTemplateContentResolver.resolve(message.templateId(), message.variables());
+        Assert.notNull(message, "Null was passed as an argument for parameter 'message'.");
+        final EmailTemplateContent content = contentFor(message);
         smtpTransportService.sendMessageOverSmtp(message.from(),
                 message.to(),
                 content.subject(),
                 content.body());
+    }
+
+    private EmailTemplateContent contentFor(final TemplatedEmailMessage message) {
+        return message.locale()
+                .map(locale -> emailTemplateContentResolver.resolve(message.templateId(), message.variables(), locale))
+                .orElseGet(() -> emailTemplateContentResolver.resolve(message.templateId(), message.variables()));
     }
 }

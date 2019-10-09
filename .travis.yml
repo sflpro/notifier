@@ -11,6 +11,7 @@ cache:
   directories:
   - "$HOME/.m2"
 install: true
+dist: trusty
 env:
   global:
   - DOCKER_USER: yervand

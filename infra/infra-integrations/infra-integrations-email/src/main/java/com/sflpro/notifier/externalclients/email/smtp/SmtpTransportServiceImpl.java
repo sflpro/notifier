@@ -54,7 +54,7 @@ public class SmtpTransportServiceImpl implements com.sflpro.notifier.externalcli
     @Value("${smtp.password}")
     private String smtpPassword;
 
-    @Value("${stmp.starttlsenabled:true}")
+    @Value("${smtp.starttlsenabled:true}")
     private boolean startTlsEnabled;
 
     /* Properties */

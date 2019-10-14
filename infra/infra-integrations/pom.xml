@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.sflpro.notifier</groupId>
         <artifactId>infra</artifactId>
-        <version>1.8.0</version>
+        <version>1.8.1</version>
     </parent>
 
     <packaging>pom</packaging>

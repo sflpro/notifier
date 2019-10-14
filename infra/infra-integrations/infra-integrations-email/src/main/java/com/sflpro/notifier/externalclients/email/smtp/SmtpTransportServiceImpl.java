@@ -54,6 +54,9 @@ public class SmtpTransportServiceImpl implements com.sflpro.notifier.externalcli
     @Value("${smtp.password}")
     private String smtpPassword;
 
+    @Value("${smtp.starttlsenabled:true}")
+    private boolean startTlsEnabled;
+
     /* Properties */
     private final SmtpSessionHolder smtpSessionHolder = new SmtpSessionHolder();
 
@@ -98,7 +101,7 @@ public class SmtpTransportServiceImpl implements com.sflpro.notifier.externalcli
         @Override
         protected Session initialize() {
             final Properties properties = System.getProperties();
-            properties.put(PROPERTY_KEY_STARTTLS_ENABLE, "true");
+            properties.put(PROPERTY_KEY_STARTTLS_ENABLE, startTlsEnabled);
             properties.put(PROPERTY_KEY_HOST, smtpHost);
             properties.put(PROPERTY_KEY_PORT, smtpPort);
             /* Set socket read smtpTimeout */

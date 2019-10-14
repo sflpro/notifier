@@ -44,6 +44,7 @@ public class SmsNotificationDto extends NotificationDto<SmsNotification> {
         super.updateDomainEntityProperties(notification);
         notification.setRecipientMobileNumber(getRecipientMobileNumber());
         notification.setTemplateName(getTemplateName());
+        notification.setLocale(getLocale());
     }
 
     /* Equals, HashCode and ToString */

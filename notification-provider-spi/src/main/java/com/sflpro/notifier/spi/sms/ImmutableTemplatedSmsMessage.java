@@ -4,7 +4,9 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Created by Hayk Mkrtchyan.
@@ -16,15 +18,18 @@ final class ImmutableTemplatedSmsMessage extends AbstractSmsMessage implements T
 
     private final String templateId;
     private final Map<String, ?> variables;
+    private final Locale locale;
 
     ImmutableTemplatedSmsMessage(final long internalId,
                                  final String senderNumber,
                                  final String recipientNumber,
                                  final String templateId,
-                                 final Map<String, ?> variables) {
+                                 final Map<String, ?> variables,
+                                 final Locale locale) {
         super(internalId, senderNumber, recipientNumber);
         this.templateId = templateId;
         this.variables = variables;
+        this.locale = locale;
     }
 
     @Override
@@ -39,6 +44,7 @@ final class ImmutableTemplatedSmsMessage extends AbstractSmsMessage implements T
         return new EqualsBuilder()
                 .appendSuper(super.equals(o))
                 .append(templateId, that.templateId())
+                .append(locale, that.locale())
                 .append(variables, that.variables())
                 .isEquals();
     }
@@ -48,6 +54,7 @@ final class ImmutableTemplatedSmsMessage extends AbstractSmsMessage implements T
         return new HashCodeBuilder(17, 37)
                 .appendSuper(super.hashCode())
                 .append(templateId)
+                .append(locale)
                 .append(variables)
                 .toHashCode();
     }
@@ -56,6 +63,7 @@ final class ImmutableTemplatedSmsMessage extends AbstractSmsMessage implements T
     public String toString() {
         return new ToStringBuilder(this)
                 .append("templateId", templateId)
+                .append("locale", locale)
                 .append("variables", variables)
                 .toString();
     }
@@ -68,5 +76,10 @@ final class ImmutableTemplatedSmsMessage extends AbstractSmsMessage implements T
     @Override
     public Map<String, ?> variables() {
         return variables;
+    }
+
+    @Override
+    public Optional<Locale> locale() {
+        return Optional.ofNullable(locale);
     }
 }

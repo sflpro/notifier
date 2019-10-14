@@ -9,10 +9,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Hayk Mkrtchyan.
@@ -29,6 +26,9 @@ public class AbstractTemplatableCreateNotificationRequest extends AbstractCreate
 
     @JsonProperty("secureProperties")
     private Map<String, String> secureProperties;
+
+    @JsonProperty("locale")
+    private Locale locale;
 
     /* Constructors */
     public AbstractTemplatableCreateNotificationRequest() {
@@ -58,6 +58,7 @@ public class AbstractTemplatableCreateNotificationRequest extends AbstractCreate
         return new EqualsBuilder()
                 .appendSuper(super.equals(o))
                 .append(templateName, that.templateName)
+                .append(locale, that.locale)
                 .append(properties, that.properties)
                 .append(secureProperties, that.secureProperties)
                 .isEquals();
@@ -68,6 +69,7 @@ public class AbstractTemplatableCreateNotificationRequest extends AbstractCreate
         return new HashCodeBuilder(17, 37)
                 .appendSuper(super.hashCode())
                 .append(templateName)
+                .append(locale)
                 .append(properties)
                 .append(secureProperties)
                 .toHashCode();
@@ -77,6 +79,7 @@ public class AbstractTemplatableCreateNotificationRequest extends AbstractCreate
     public String toString() {
         return new ToStringBuilder(this)
                 .append("templateName", templateName)
+                .append("locale", locale)
                 .append("properties", properties)
                 .append("secureProperties", secureProperties)
                 .toString();
@@ -104,5 +107,13 @@ public class AbstractTemplatableCreateNotificationRequest extends AbstractCreate
 
     public void setSecureProperties(final Map<String, String> secureProperties) {
         this.secureProperties = secureProperties;
+    }
+
+    public Locale getLocale() {
+        return locale;
+    }
+
+    public void setLocale(Locale locale) {
+        this.locale = locale;
     }
 }

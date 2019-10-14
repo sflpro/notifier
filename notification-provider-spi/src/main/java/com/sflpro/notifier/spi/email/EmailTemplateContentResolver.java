@@ -1,5 +1,6 @@
 package com.sflpro.notifier.spi.email;
 
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -10,4 +11,6 @@ import java.util.Map;
 public interface EmailTemplateContentResolver {
 
     EmailTemplateContent resolve(final String templateId, final Map<String, ?> variables);
+
+    EmailTemplateContent resolve(final String templateId, final Map<String, ?> variables, final Locale locale);
 }

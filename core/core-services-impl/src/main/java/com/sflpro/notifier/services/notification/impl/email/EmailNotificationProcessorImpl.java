@@ -8,10 +8,7 @@ import com.sflpro.notifier.db.entities.notification.email.NotificationProperty;
 import com.sflpro.notifier.services.common.exception.ServicesRuntimeException;
 import com.sflpro.notifier.services.notification.email.EmailNotificationProcessor;
 import com.sflpro.notifier.services.notification.email.EmailNotificationService;
-import com.sflpro.notifier.spi.email.SimpleEmailMessage;
-import com.sflpro.notifier.spi.email.SimpleEmailSender;
-import com.sflpro.notifier.spi.email.TemplatedEmailMessage;
-import com.sflpro.notifier.spi.email.TemplatedEmailSender;
+import com.sflpro.notifier.spi.email.*;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -101,21 +98,19 @@ class EmailNotificationProcessorImpl implements EmailNotificationProcessor {
 
     private TemplatedEmailMessage templatedMessageFor(final EmailNotification emailNotification, final Map<String, String> secureProperties) {
         final Map<String, String> variables = variablesFor(emailNotification, secureProperties);
-        if (StringUtils.isNoneBlank(emailNotification.getSubject())) {
-            return TemplatedEmailMessage.of(
-                    emailNotification.getSenderEmail(),
-                    emailNotification.getRecipientEmail(),
-                    emailNotification.getTemplateName(),
-                    emailNotification.getSubject(),
-                    variables
-            );
-        }
-        return TemplatedEmailMessage.of(
+        final TemplatedEmailMessageBuilder messageBuilder = new TemplatedEmailMessageBuilder(
                 emailNotification.getSenderEmail(),
                 emailNotification.getRecipientEmail(),
                 emailNotification.getTemplateName(),
                 variables
         );
+        if (StringUtils.isNoneBlank(emailNotification.getSubject())) {
+            messageBuilder.withSubject(emailNotification.getSubject());
+        }
+        if (emailNotification.getLocale() != null) {
+            messageBuilder.withLocale(emailNotification.getLocale());
+        }
+        return messageBuilder.build();
     }
 
     private Map<String, String> variablesFor(final EmailNotification emailNotification, final Map<String, String> secureProperties) {

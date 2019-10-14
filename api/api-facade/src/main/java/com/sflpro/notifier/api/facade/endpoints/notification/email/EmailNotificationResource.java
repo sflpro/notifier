@@ -5,6 +5,10 @@ import com.sflpro.notifier.api.model.common.result.ErrorResponseModel;
 import com.sflpro.notifier.api.model.common.result.ResultResponseModel;
 import com.sflpro.notifier.api.model.email.request.CreateEmailNotificationRequest;
 import com.sflpro.notifier.api.model.email.response.CreateEmailNotificationResponse;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.SwaggerDefinition;
+import io.swagger.annotations.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
@@ -25,6 +29,8 @@ import java.util.List;
  * Date: 1/14/16
  * Time: 12:40 PM
  */
+@SwaggerDefinition(tags = {@Tag(name = "email", description = "Email-notification operations")})
+@Api(tags = {"email"})
 @Singleton
 @Path("notification/email")
 @Produces(MediaType.APPLICATION_JSON)
@@ -41,6 +47,7 @@ public class EmailNotificationResource {
         //default constructor
     }
 
+    @ApiOperation("Creates email notification")
     @POST
     @Path("create")
     @Consumes(MediaType.APPLICATION_JSON)

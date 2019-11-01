@@ -4,6 +4,10 @@ import com.sflpro.notifier.api.facade.services.sms.SmsNotificationServiceFacade;
 import com.sflpro.notifier.api.model.common.result.ResultResponseModel;
 import com.sflpro.notifier.api.model.sms.request.CreateSmsNotificationRequest;
 import com.sflpro.notifier.api.model.sms.response.CreateSmsNotificationResponse;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.SwaggerDefinition;
+import io.swagger.annotations.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,6 +25,8 @@ import javax.ws.rs.core.Response;
  * Date: 1/14/16
  * Time: 12:40 PM
  */
+@SwaggerDefinition(tags = {@Tag(name = "sms", description = "SMS-notification operations")})
+@Api(tags = {"sms"})
 @Singleton
 @Path("notification/sms")
 @Produces("application/json")
@@ -37,6 +43,7 @@ public class SmsNotificationResource {
         super();
     }
 
+    @ApiOperation("Creates sms notification")
     @POST
     @Path("create")
     @Consumes("application/json")

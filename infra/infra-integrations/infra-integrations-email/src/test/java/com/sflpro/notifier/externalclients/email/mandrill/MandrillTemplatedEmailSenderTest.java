@@ -3,6 +3,7 @@ package com.sflpro.notifier.externalclients.email.mandrill;
 import com.sflpro.notifier.externalclients.email.mandrill.communicator.MandrillApiCommunicator;
 import com.sflpro.notifier.externalclients.email.test.AbstractEmailNotificationUnitTest;
 import com.sflpro.notifier.spi.email.TemplatedEmailMessage;
+import com.sflpro.notifier.spi.email.TemplatedEmailMessageBuilder;
 import com.sflpro.notifier.spi.email.TemplatedEmailSender;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,12 +39,12 @@ public class MandrillTemplatedEmailSenderTest extends AbstractEmailNotificationU
 
     @Test
     public void testSend() {
-        final TemplatedEmailMessage message = TemplatedEmailMessage.of(
+        final TemplatedEmailMessage message = new TemplatedEmailMessageBuilder(
                 uuid(),
                 uuid(),
                 uuid(),
                 Collections.singletonMap(uuid(), uuid())
-        );
+        ).build();
         templatedEmailSender.send(message);
         verify(mandrillApiCommunicator).sendEmailTemplate(message);
     }

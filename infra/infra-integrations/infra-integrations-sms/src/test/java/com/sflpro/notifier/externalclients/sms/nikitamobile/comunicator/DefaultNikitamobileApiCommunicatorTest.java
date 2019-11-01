@@ -14,6 +14,8 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.springframework.http.*;
 
+import java.nio.charset.StandardCharsets;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.verify;
@@ -47,7 +49,7 @@ public class DefaultNikitamobileApiCommunicatorTest extends AbstractSmsUnitTest 
         final SendMessageRequest request = new SendMessageRequest(message);
         final HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.ACCEPT, MediaType.APPLICATION_XML_VALUE);
-        headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_XML_VALUE);
+        headers.add(HttpHeaders.CONTENT_TYPE, new MediaType(MediaType.APPLICATION_XML, StandardCharsets.US_ASCII).toString());
         final SendMessageResponse response = new SendMessageResponse();
         when(restClient.exchange(apiUrl, HttpMethod.POST, new HttpEntity<>(request, headers), SendMessageResponse.class))
                 .thenReturn(new ResponseEntity<>(response, HttpStatus.OK));
@@ -63,7 +65,7 @@ public class DefaultNikitamobileApiCommunicatorTest extends AbstractSmsUnitTest 
         final SendMessageRequest request = new SendMessageRequest(message);
         final HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.ACCEPT, MediaType.APPLICATION_XML_VALUE);
-        headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_XML_VALUE);
+        headers.add(HttpHeaders.CONTENT_TYPE, new MediaType(MediaType.APPLICATION_XML, StandardCharsets.US_ASCII).toString());
         final SendMessageResponse response = new SendMessageResponse();
         when(restClient.exchange(apiUrl, HttpMethod.POST, new HttpEntity<>(request, headers), SendMessageResponse.class))
                 .thenReturn(new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR));

@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.*;
 
 import javax.annotation.Nonnull;
+import java.nio.charset.StandardCharsets;
 
 /**
  * User: Mher Sargsyan
@@ -36,7 +37,10 @@ public class DefaultNikitamobileApiCommunicator implements NikitamobileApiCommun
             logger.debug("Preparing to send text message with request - {}", request);
             final HttpHeaders headers = new HttpHeaders();
             headers.add(HttpHeaders.ACCEPT, MediaType.APPLICATION_XML_VALUE);
-            headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_XML_VALUE);
+            headers.add(
+                    HttpHeaders.CONTENT_TYPE,
+                    new MediaType(MediaType.APPLICATION_XML, StandardCharsets.US_ASCII).toString()
+            );
             final ResponseEntity<SendMessageResponse> response = restClient.exchange(
                     apiUrl,
                     HttpMethod.POST,

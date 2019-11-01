@@ -25,18 +25,18 @@ public class SwaggerConfig {
 
         beanConfig.setVersion(version);
 
-        beanConfig.setResourcePackage("com.sflpro.notifier.api.internal.rest.resources");
+        beanConfig.setResourcePackage("com.sflpro.notifier.api.facade.endpoints");
         beanConfig.setScan(true);
 
         final Info info = new Info();
 
-        info.setTitle("Weadapt Notification API Documentation");
+        info.setTitle("Notifier API Documentation");
         info.setDescription("Description of API calls and their parameters");
         info.setContact(
                 new Contact()
-                        .name("Weadapt")
-                        .email("info@weadapt.eu")
-                        .url("https://weadapt.digital/contact/")
+                        .name("sflpro")
+                        .email("info@sflpro.com")
+                        .url("https://sflpro.com/about/")
         );
         info.version(version);
 

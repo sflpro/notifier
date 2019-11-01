@@ -6,6 +6,10 @@ import com.sflpro.notifier.api.model.push.request.CreatePushNotificationRequest;
 import com.sflpro.notifier.api.model.push.request.UpdatePushNotificationSubscriptionRequest;
 import com.sflpro.notifier.api.model.push.response.CreatePushNotificationResponse;
 import com.sflpro.notifier.api.model.push.response.UpdatePushNotificationSubscriptionResponse;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.SwaggerDefinition;
+import io.swagger.annotations.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,6 +27,8 @@ import javax.ws.rs.core.Response;
  * Date: 1/14/16
  * Time: 12:40 PM
  */
+@SwaggerDefinition(tags = {@Tag(name = "push", description = "Push-notification operations")})
+@Api(tags = {"push"})
 @Singleton
 @Path("notification/push")
 @Produces("application/json")
@@ -39,6 +45,7 @@ public class PushNotificationResource {
         //default constructor
     }
 
+    @ApiOperation("Creates push notification")
     @POST
     @Path("create")
     @Consumes("application/json")
@@ -49,6 +56,7 @@ public class PushNotificationResource {
         return Response.ok(response).build();
     }
 
+    @ApiOperation("Subscribes for push notifications")
     @POST
     @Path("subscribe")
     @Consumes("application/json")

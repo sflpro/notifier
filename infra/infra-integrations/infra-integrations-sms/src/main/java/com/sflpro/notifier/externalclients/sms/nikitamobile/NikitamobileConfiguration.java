@@ -1,27 +1,21 @@
 package com.sflpro.notifier.externalclients.sms.nikitamobile;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.module.jaxb.JaxbAnnotationModule;
 import com.sflpro.notifier.externalclients.common.http.rest.RestClient;
 import com.sflpro.notifier.externalclients.common.http.rest.RestClientImpl;
 import com.sflpro.notifier.externalclients.sms.nikitamobile.communicator.DefaultNikitamobileApiCommunicator;
 import com.sflpro.notifier.externalclients.sms.nikitamobile.communicator.NikitamobileApiCommunicator;
 import com.sflpro.notifier.spi.sms.*;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpRequest;
-import org.springframework.http.client.ClientHttpRequestExecution;
-import org.springframework.http.client.ClientHttpRequestInterceptor;
-import org.springframework.http.client.ClientHttpResponse;
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
-import org.springframework.http.converter.xml.MappingJackson2XmlHttpMessageConverter;
+import org.springframework.http.MediaType;
+import org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter;
 import org.springframework.util.Assert;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.Collections;
 
 /**
@@ -46,11 +40,16 @@ class NikitamobileConfiguration {
 
     @Bean("restClient_nikitamobileRestClient")
     RestClient restClient_nikitamobileRestClient() {
-        final ObjectMapper objectMapper = Jackson2ObjectMapperBuilder.xml()
-                .modules(new JaxbAnnotationModule())
-                .build();
+        final Jaxb2RootElementHttpMessageConverter jaxbMessageConverter = new Jaxb2RootElementHttpMessageConverter();
+        jaxbMessageConverter.setSupportedMediaTypes(Arrays.asList(
+                MediaType.APPLICATION_XML,
+                MediaType.TEXT_XML,
+                new MediaType(MediaType.APPLICATION_XML, StandardCharsets.US_ASCII),
+                new MediaType(MediaType.APPLICATION_XHTML_XML, StandardCharsets.US_ASCII)
+        ));
+        jaxbMessageConverter.setDefaultCharset(StandardCharsets.US_ASCII);
         final RestTemplate restTemplate = new RestTemplate();
-        restTemplate.setMessageConverters(Collections.singletonList( new MappingJackson2XmlHttpMessageConverter(objectMapper)));
+        restTemplate.setMessageConverters(Collections.singletonList(jaxbMessageConverter));
         return new RestClientImpl(restTemplate);
     }
 
@@ -67,18 +66,18 @@ class NikitamobileConfiguration {
         return new NikitamobileSimpleSmsSender(nikitamobileApiCommunicator, login, password, version);
     }
 
-    @Bean("nikitamobileSimpleSmsSender")
+    @Bean("nikitamobileSimpleSmsSenderRegistry")
     SimpleSmsSenderRegistry nikitamobileSimpleSmsSenderRegistry(final SimpleSmsSender nikitamobileSimpleSmsSender) {
         return SimpleSmsSenderRegistry.of(NIKITA_MOBILE_PROVIDER_REGISTRY_NAME, nikitamobileSimpleSmsSender);
     }
 
-    @Bean("nikitamobileSimpleSmsSender")
+    @Bean("nikitamobileTemplatedSmsSender")
     TemplatedSmsSender nikitamobileTemplatedSmsSender(final NikitamobileApiCommunicator nikitamobileApiCommunicator,
                                                       final SmsTemplateContentResolver smsTemplateContentResolver) {
         return new NikitamobileTemplatedSmsSender(nikitamobileApiCommunicator, smsTemplateContentResolver, login, password, version);
     }
 
-    @Bean("nikitamobileSimpleSmsSender")
+    @Bean("nikitamobileTemplatedSmsSenderRegistry")
     TemplatedSmsSenderRegistry nikitamobileTemplatedSmsSenderRegistry(final TemplatedSmsSender nikitamobileTemplatedSmsSender) {
         return TemplatedSmsSenderRegistry.of(NIKITA_MOBILE_PROVIDER_REGISTRY_NAME, nikitamobileTemplatedSmsSender);
     }

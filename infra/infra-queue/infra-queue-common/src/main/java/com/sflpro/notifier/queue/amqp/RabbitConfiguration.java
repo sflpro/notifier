@@ -23,15 +23,6 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 @Import({RabbitAutoConfiguration.class, QueueConfigurationDefaults.class})
 public class RabbitConfiguration {
 
-    @Value("${spring.rabbitmq.host}")
-    private String host;
-
-    @Value("${spring.rabbitmq.username}")
-    private String username;
-
-    @Value("${spring.rabbitmq.password}")
-    private String password;
-
     @Value("${amqp.executor.coreSize}")
     private int executorServiceCoreSize;
 

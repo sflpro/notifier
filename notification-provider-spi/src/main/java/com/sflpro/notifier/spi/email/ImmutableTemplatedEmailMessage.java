@@ -4,6 +4,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 
@@ -16,17 +17,18 @@ final class ImmutableTemplatedEmailMessage extends AbstractEmailMessage implemen
 
     private final String templateId;
     private final Map<String, ?> variables;
+    private final Locale locale;
 
-    ImmutableTemplatedEmailMessage(final String from, final String to, final String templateId, final Map<String, ?> variables) {
-        super(from, to);
-        this.templateId = templateId;
-        this.variables = variables;
-    }
-
-    ImmutableTemplatedEmailMessage(final String from, final String to, final String templateId, final String subject, final Map<String, ?> variables) {
+    ImmutableTemplatedEmailMessage(final String from,
+                                   final String to,
+                                   final String templateId,
+                                   final String subject,
+                                   final Map<String, ?> variables,
+                                   final Locale locale) {
         super(from, to, subject);
         this.templateId = templateId;
         this.variables = variables;
+        this.locale = locale;
     }
 
     @Override
@@ -42,6 +44,7 @@ final class ImmutableTemplatedEmailMessage extends AbstractEmailMessage implemen
                 .appendSuper(super.equals(o))
                 .append(templateId, that.templateId())
                 .append(variables, that.variables())
+                .append(locale, that.locale())
                 .isEquals();
     }
 
@@ -50,6 +53,8 @@ final class ImmutableTemplatedEmailMessage extends AbstractEmailMessage implemen
         return new HashCodeBuilder(17, 37)
                 .appendSuper(super.hashCode())
                 .append(templateId)
+                .append(variables)
+                .append(locale)
                 .toHashCode();
     }
 
@@ -58,6 +63,7 @@ final class ImmutableTemplatedEmailMessage extends AbstractEmailMessage implemen
         return new ToStringBuilder(this)
                 .append("templateId", templateId)
                 .append("variables", variables)
+                .append("locale", locale)
                 .toString();
     }
 
@@ -74,5 +80,10 @@ final class ImmutableTemplatedEmailMessage extends AbstractEmailMessage implemen
     @Override
     public Optional<String> subject() {
         return Optional.ofNullable(getSubject());
+    }
+
+    @Override
+    public Optional<Locale> locale() {
+        return Optional.ofNullable(locale);
     }
 }

@@ -2,6 +2,7 @@ package com.sflpro.notifier.externalclients.sms.mock;
 
 import com.sflpro.notifier.spi.sms.SmsTemplateContentResolver;
 
+import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -19,5 +20,15 @@ class DummySmsTemplateContentResolver implements SmsTemplateContentResolver {
         return format("%s - %s", templateId, variables.entrySet().stream()
                 .map(entry -> entry.getKey() + " is " + entry.getValue())
                 .collect(Collectors.joining("\n")));
+    }
+
+    @Override
+    public String resolve(String templateId, Map<String, ?> variables, Locale locale) {
+        return format("%s - %s - %s",
+                templateId,
+                variables.entrySet().stream()
+                        .map(entry -> entry.getKey() + " is " + entry.getValue())
+                        .collect(Collectors.joining("\n")),
+                locale);
     }
 }

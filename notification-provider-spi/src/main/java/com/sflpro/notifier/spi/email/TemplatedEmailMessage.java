@@ -2,6 +2,7 @@ package com.sflpro.notifier.spi.email;
 
 import org.springframework.util.Assert;
 
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 
@@ -17,22 +18,21 @@ public interface TemplatedEmailMessage extends EmailMessage {
     @SuppressWarnings("squid:S1452")
     Map<String, ?> variables();
 
-    default Optional<String> subject(){
+    default Optional<String> subject() {
         return Optional.empty();
     }
 
-    static TemplatedEmailMessage of(final String from, final String to, final String templateId, final Map<String, ?> variables) {
-        Assert.hasText(from, "Null or empty text was passed as an argument for parameter 'from'.");
-        Assert.hasText(to, "Null or empty text was passed as an argument for parameter 'to'.");
-        Assert.hasText(templateId, "Null or empty text was passed as an argument for parameter 'templateId'.");
-        return new ImmutableTemplatedEmailMessage(from, to, templateId, variables);
+    default TemplatedEmailMessage withSubject(final String subject) {
+        Assert.notNull(subject, "Null was passed as an argument for parameter 'subject'.");
+        return new ImmutableTemplatedEmailMessage(from(), to(), templateId(), subject, variables(), locale().orElse(null));
     }
 
-    static TemplatedEmailMessage of(final String from, final String to, final String templateId, final String subject, final Map<String, ?> variables) {
-        Assert.hasText(from, "Null or empty text was passed as an argument for parameter 'from'.");
-        Assert.hasText(to, "Null or empty text was passed as an argument for parameter 'to'.");
-        Assert.hasText(templateId, "Null or empty text was passed as an argument for parameter 'templateId'.");
-        Assert.hasText(subject, "Null or empty text was passed as an argument for parameter 'subject'.");
-        return new ImmutableTemplatedEmailMessage(from, to, templateId, subject, variables);
+    default TemplatedEmailMessage withLocale(final Locale locale) {
+        Assert.notNull(locale, "Null was passed as an argument for parameter 'locale'.");
+        return new ImmutableTemplatedEmailMessage(from(), to(), templateId(), subject().orElse(null), variables(), locale);
+    }
+
+    default Optional<Locale> locale() {
+        return Optional.empty();
     }
 }

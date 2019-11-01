@@ -108,13 +108,7 @@ class SmsNotificationProcessorImpl implements SmsNotificationProcessor {
         if (StringUtils.isNoneBlank(smsNotification.getTemplateName())) {
             return getSmsSender(smsSenderProvider::lookupTemplatedSmsMessageSenderFor,
                     smsNotification.getProviderType()).sendMessage(
-                    TemplatedSmsMessage.of(
-                            smsNotification.getId(),
-                            senderName,
-                            smsNotification.getRecipientMobileNumber(),
-                            smsNotification.getTemplateName(),
-                            variables(smsNotification, secureProperties)
-                    )
+                    templatedSmsMessage(smsNotification, secureProperties)
             );
         } else {
             return getSmsSender(smsSenderProvider::lookupSimpleSmsMessageSenderFor,
@@ -128,6 +122,27 @@ class SmsNotificationProcessorImpl implements SmsNotificationProcessor {
             );
         }
 
+    }
+
+    private TemplatedSmsMessage templatedSmsMessage(final SmsNotification smsNotification, final Map<String, String> secureProperties) {
+        if (smsNotification.getLocale() == null) {
+            return TemplatedSmsMessage.of(
+                    smsNotification.getId(),
+                    senderName,
+                    smsNotification.getRecipientMobileNumber(),
+                    smsNotification.getTemplateName(),
+                    variables(smsNotification, secureProperties)
+            );
+        } else {
+            return TemplatedSmsMessage.of(
+                    smsNotification.getId(),
+                    senderName,
+                    smsNotification.getRecipientMobileNumber(),
+                    smsNotification.getTemplateName(),
+                    variables(smsNotification, secureProperties),
+                    smsNotification.getLocale()
+            );
+        }
     }
 
     private Map<String, String> variables(final SmsNotification smsNotification, final Map<String, String> secureProperties) {

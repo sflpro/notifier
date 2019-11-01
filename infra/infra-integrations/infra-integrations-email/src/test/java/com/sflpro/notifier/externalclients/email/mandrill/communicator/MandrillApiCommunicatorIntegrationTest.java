@@ -4,6 +4,7 @@ import com.microtripit.mandrillapp.lutung.model.MandrillApiError;
 import com.sflpro.notifier.externalclients.email.mandrill.exception.MandrillEmailClientRuntimeException;
 import com.sflpro.notifier.externalclients.email.test.AbstractEmailNotificationIntegrationTest;
 import com.sflpro.notifier.spi.email.TemplatedEmailMessage;
+import com.sflpro.notifier.spi.email.TemplatedEmailMessageBuilder;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -45,7 +46,8 @@ public class MandrillApiCommunicatorIntegrationTest extends AbstractEmailNotific
         final String templateName = "integration-test-template";
         final Map<String, Object> templateContent = new HashMap<>();
         templateContent.put("token", "super-secure-token");
-        final TemplatedEmailMessage message = TemplatedEmailMessage.of("some_dummy_mail_from@weadapt.digital", "some_dummy_mail@weadapt.digital", templateName, templateContent);
+        final TemplatedEmailMessage message = new TemplatedEmailMessageBuilder("some_dummy_mail_from@weadapt.digital",
+                "some_dummy_mail@weadapt.digital", templateName, templateContent).build();
         // Execute send request
         try {
             mandrillApiCommunicator.sendEmailTemplate(message);
@@ -61,7 +63,8 @@ public class MandrillApiCommunicatorIntegrationTest extends AbstractEmailNotific
         final String templateName = RandomStringUtils.randomAlphanumeric(50) + "MEKA-CHEQ-KARA";
         Map<String, Object> templateContent = new HashMap<>();
         templateContent.put("token", "super-secure-token");
-        final TemplatedEmailMessage message = TemplatedEmailMessage.of("some_dummy_mail_from@weadapt.digital", "some_dummy_mal@weadapt.digital", templateName, templateContent);
+        final TemplatedEmailMessage message = new TemplatedEmailMessageBuilder("some_dummy_mail_from@weadapt.digital",
+                "some_dummy_mal@weadapt.digital", templateName, templateContent).build();
         // Execute send request
         try {
             mandrillApiCommunicator.sendEmailTemplate(message);

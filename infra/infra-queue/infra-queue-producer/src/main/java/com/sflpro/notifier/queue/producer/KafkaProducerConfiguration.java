@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sflpro.notifier.queue.QueueConfigurationDefaults;
 import com.sflpro.notifier.queue.producer.connector.AmqpConnectorService;
 import com.sflpro.notifier.queue.producer.connector.impl.KafkaConnectorServiceImpl;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.ByteArraySerializer;
 import org.apache.kafka.common.serialization.StringSerializer;
@@ -39,6 +41,24 @@ public class KafkaProducerConfiguration {
     @Value("${kafka.bootstrap.servers}")
     private String bootstrapServers;
 
+    @Value(value = "${kafka.request.timeout.ms}")
+    private String requestTimeoutMs;
+
+    @Value(value = "${kafka.retry.backoff.ms}")
+    private String retryBackoffMs;
+
+    @Value(value = "${kafka.ssl.endpoint.identification.algorithm}")
+    private String sslEndpointIdentificationAlgorithm;
+
+    @Value(value = "${kafka.sasl.mechanism}")
+    private String saslMechanism;
+
+    @Value(value = "${kafka.sasl.jaas.config}")
+    private String saslJaasConfig;
+
+    @Value(value = "${kafka.security.protocol}")
+    private String securityProtocol;
+
     @Value("${notifier.queue.topic}")
     private String topicNames;
 
@@ -56,6 +76,21 @@ public class KafkaProducerConfiguration {
         props.put(ProducerConfig.LINGER_MS_CONFIG, 1);
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, ByteArraySerializer.class);
+        props.put(ConsumerConfig.REQUEST_TIMEOUT_MS_CONFIG, StringUtils.defaultIfBlank(requestTimeoutMs, "20000"));
+        props.put(ConsumerConfig.RETRY_BACKOFF_MS_CONFIG, StringUtils.defaultIfBlank(retryBackoffMs, "500"));
+        // Security
+        if (StringUtils.isNoneBlank(sslEndpointIdentificationAlgorithm)) {
+            props.put("ssl.endpoint.identification.algorithm", sslEndpointIdentificationAlgorithm);
+        }
+        if (StringUtils.isNoneBlank(saslMechanism)) {
+            props.put("sasl.mechanism", saslMechanism);
+        }
+        if (StringUtils.isNoneBlank(saslJaasConfig)) {
+            props.put("sasl.jaas.config", saslJaasConfig);
+        }
+        if (StringUtils.isNoneBlank(securityProtocol)) {
+            props.put("security.protocol", securityProtocol);
+        }
         return props;
     }
 

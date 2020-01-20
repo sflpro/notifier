@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+echo "Decrypting secure credentials"
+openssl aes-256-cbc -K $encrypted_49fa1606db88_key -iv $encrypted_49fa1606db88_iv -in secret.tar.bz2.enc -out secret.tar.bz2 -d
+
+echo "Authorizing docker client"
+docker login --username $DOCKER_USER --password $DOCKERHUB_PASS
+
 echo "Extract secrets"
 tar -jxvf secret.tar.bz2
 mv secret/travis-gpg-key.asc ./travis-gpg-key.asc

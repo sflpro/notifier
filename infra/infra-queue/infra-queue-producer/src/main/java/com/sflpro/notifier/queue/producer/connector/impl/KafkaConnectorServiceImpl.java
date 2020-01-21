@@ -13,6 +13,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.util.Assert;
 
 import javax.annotation.Nonnull;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Company: SFL LLC
@@ -45,14 +46,13 @@ public class KafkaConnectorServiceImpl implements AmqpConnectorService {
         Assert.notNull(requestModel, "Request model should not be null");
         Assert.notNull(responseModelClass, "Response model class should not be null");
         Assert.notNull(responseHandler, "Response handler should not be null");
-
         try {
             final RPCMessage rpcMessage = new RPCMessage();
             rpcMessage.setCallIdentifier(callType.getCallIdentifier());
             rpcMessage.setPayload(objectMapper.writeValueAsString(requestModel));
             // Serialize into JSON
             final String jsonMessage = objectMapper.writeValueAsString(rpcMessage);
-            kafkaTemplate.send(kafkaTopics, jsonMessage.getBytes("UTF8"));
+            kafkaTemplate.send(kafkaTopics, jsonMessage.getBytes(StandardCharsets.UTF_8));
         } catch (final Exception ex) {
             // Only log
             LOGGER.error("Error occurred while executing RPC call, call type - {}, request model - {}", callType, requestModel, ex);

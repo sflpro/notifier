@@ -4,6 +4,7 @@ import com.sflpro.notifier.externalclients.push.test.AbstractPushNotificationInt
 import com.sflpro.notifier.spi.push.PlatformType;
 import com.sflpro.notifier.spi.push.PushMessage;
 import com.sflpro.notifier.spi.push.PushMessageSender;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.TestPropertySource;
@@ -24,10 +25,11 @@ public class FirebasePushMessageSenderIntegrationTest extends AbstractPushNotifi
     @Autowired
     private PushMessageSender pushMessageSender;
 
+    @Ignore
     @Test
     public void testSend(){
         assertThat(pushMessageSender.send(PushMessage.of(
-                "cYHsFopdjms:APA91bGv-70ceTYWQ0HqguGMW3U25z1LTE5ArdhkQfBk88Ww6i2SBKWSB_mX0T-mNVRu8fu3pChQZRGKkxb_ilOQ4nGclcSn3xOqBD_6AqWah2KVxGfpciZ0x_tFjy6IaoZOBlGwvx9z",
+                "cYHsFopdjms:APA91bGv-70ceTYWQ0HqguGMW3U25z1LTE5ArdhkQfBk88Ww6i2SBKWSB_mX0T-mNVRu8fu3pChQZRGKkxb_ilOQ4nGclcSn3xOqBD_6AqWah2KVxGfpciZ0x_tFjy6IaoZOBlGwvx9z", // TODO remove secure variables and private keys from project
                 "Hey!",
                 "Hey amigo!",
                 PlatformType.GCM,

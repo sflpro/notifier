@@ -21,13 +21,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 @TestPropertySource(properties = "firebase.push.enabled=true")
 public class FirebasePushMessageSenderIntegrationTest extends AbstractPushNotificationIntegrationTest {
 
-
     @Autowired
     private PushMessageSender pushMessageSender;
 
     @Ignore
     @Test
-    public void testSend(){
+    public void testSend() {
         assertThat(pushMessageSender.send(PushMessage.of(
                 "cYHsFopdjms:APA91bGv-70ceTYWQ0HqguGMW3U25z1LTE5ArdhkQfBk88Ww6i2SBKWSB_mX0T-mNVRu8fu3pChQZRGKkxb_ilOQ4nGclcSn3xOqBD_6AqWah2KVxGfpciZ0x_tFjy6IaoZOBlGwvx9z", // TODO remove secure variables and private keys from project
                 "Hey!",

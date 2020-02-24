@@ -294,7 +294,7 @@
                                 <goal>prepare-agent</goal>
                             </goals>
                             <configuration>
-                                <propertyName>jacoco.surefire.argLine</propertyName>
+<!--                                <propertyName>jacoco.surefire.argLine</propertyName>-->
                             </configuration>
                         </execution>
                         <execution>
@@ -316,7 +316,7 @@
                         <excludes>
                             <exclude>**IntegrationTest</exclude>
                         </excludes>
-                        <argLine>@{jacoco.surefire.argLine}</argLine>
+<!--                        <argLine>@{jacoco.surefire.argLine}</argLine>-->
                     </configuration>
                 </plugin>
                 <plugin>

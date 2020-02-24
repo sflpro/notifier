@@ -7,7 +7,6 @@
 
     <context:component-scan base-package="com.sflpro.notifier.externalclients.email.registry"/>
 
-    <bean id="emailTemplateContentResolver"
-          class="com.sflpro.notifier.externalclients.email.mock.DummyEmailTemplateContentResolver"/>
+    <bean id="templateContentResolver" class="com.sflpro.notifier.externalclients.email.mock.DummyTemplateContentResolver"/>
 
 </beans>

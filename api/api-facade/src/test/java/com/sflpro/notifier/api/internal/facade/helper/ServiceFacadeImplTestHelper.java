@@ -10,6 +10,7 @@ import com.sflpro.notifier.api.model.push.PushNotificationModel;
 import com.sflpro.notifier.api.model.push.PushNotificationPropertyModel;
 import com.sflpro.notifier.api.model.push.PushNotificationRecipientModel;
 import com.sflpro.notifier.api.model.push.request.CreatePushNotificationRequest;
+import com.sflpro.notifier.api.model.push.request.CreateTemplatedPushNotificationRequest;
 import com.sflpro.notifier.api.model.push.request.UpdatePushNotificationSubscriptionRequest;
 import com.sflpro.notifier.api.model.sms.SmsNotificationModel;
 import com.sflpro.notifier.api.model.sms.request.CreateSmsNotificationRequest;
@@ -17,7 +18,6 @@ import com.sflpro.notifier.db.entities.device.UserDevice;
 import com.sflpro.notifier.db.entities.device.mobile.DeviceOperatingSystemType;
 import com.sflpro.notifier.db.entities.notification.Notification;
 import com.sflpro.notifier.db.entities.notification.NotificationProviderType;
-import com.sflpro.notifier.db.entities.notification.NotificationState;
 import com.sflpro.notifier.db.entities.notification.UserNotification;
 import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
 import com.sflpro.notifier.db.entities.notification.email.NotificationProperty;
@@ -28,7 +28,6 @@ import com.sflpro.notifier.db.entities.notification.push.PushNotificationSubscri
 import com.sflpro.notifier.db.entities.notification.sms.SmsNotification;
 import com.sflpro.notifier.db.entities.user.User;
 import com.sflpro.notifier.services.device.dto.UserDeviceDto;
-import com.sflpro.notifier.services.notification.dto.NotificationDto;
 import com.sflpro.notifier.services.notification.dto.NotificationPropertyDto;
 import com.sflpro.notifier.services.notification.dto.UserNotificationDto;
 import com.sflpro.notifier.services.notification.dto.email.EmailNotificationDto;
@@ -106,6 +105,16 @@ public class ServiceFacadeImplTestHelper {
         final CreatePushNotificationRequest request = new CreatePushNotificationRequest();
         request.setBody("Push notification body");
         request.setClientIpAddress("127.0.0.1");
+        request.setUserUuId("UGITYDTGUIGFITYDTDTFYKTYCL");
+        request.setProperties(createProperties(10));
+        return request;
+    }
+
+    public CreateTemplatedPushNotificationRequest createCreateTemplatedPushNotificationRequest() {
+        final CreateTemplatedPushNotificationRequest request = new CreateTemplatedPushNotificationRequest();
+        request.setClientIpAddress("127.0.0.1");
+        request.setTemplate("templateName");
+        request.setLocale(Locale.ENGLISH);
         request.setUserUuId("UGITYDTGUIGFITYDTDTFYKTYCL");
         request.setProperties(createProperties(10));
         return request;
@@ -197,15 +206,6 @@ public class ServiceFacadeImplTestHelper {
         return notification;
     }
 
-    public void assertNotification(final Notification notification, final NotificationDto<? extends Notification> notificationDto) {
-        assertNotNull(notification);
-        assertEquals(notificationDto.getClientIpAddress(), notification.getClientIpAddress());
-        assertEquals(notificationDto.getContent(), notification.getContent());
-        assertEquals(notificationDto.getSubject(), notification.getSubject());
-        assertEquals(notificationDto.getType(), notification.getType());
-        assertEquals(NotificationState.CREATED, notification.getState());
-    }
-
     /* User notification */
     public UserNotificationDto createUserNotificationDto() {
         return new UserNotificationDto();
@@ -280,7 +280,7 @@ public class ServiceFacadeImplTestHelper {
     }
 
     public PushNotificationRecipient createPushNotificationSnsRecipient(final PushNotificationRecipientDto recipientDto) {
-        final PushNotificationRecipient recipient = new PushNotificationRecipient(PushNotificationProviderType.SNS,true);
+        final PushNotificationRecipient recipient = new PushNotificationRecipient(PushNotificationProviderType.SNS, true);
         recipientDto.updateDomainEntityProperties(recipient);
         return recipient;
     }

@@ -16,14 +16,18 @@ public class PushNotificationPropertyModel extends AbstractApiModel {
 
     private static final long serialVersionUID = -3654804345700318929L;
 
-    /* Properties */
+    //region Properties
+
     @JsonProperty("propertyKey")
     private String propertyKey;
 
     @JsonProperty("propertyValue")
     private String propertyValue;
 
-    /* Constructors */
+    //endregion
+
+    //region Constants
+
     public PushNotificationPropertyModel() {
         //default constructor
     }
@@ -33,7 +37,10 @@ public class PushNotificationPropertyModel extends AbstractApiModel {
         this.propertyValue = propertyValue;
     }
 
-    /* Properties getters and setters */
+    //endregion
+
+    //region Getters and Setters
+
     public String getPropertyKey() {
         return propertyKey;
     }
@@ -50,38 +57,46 @@ public class PushNotificationPropertyModel extends AbstractApiModel {
         this.propertyValue = propertyValue;
     }
 
-    /* Equals, HashCode and ToString */
+    //endregion
+
+    //region Equals, HashCode and ToString
+
     @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof PushNotificationPropertyModel)) {
+    public boolean equals(Object obj) {
+        if (obj == null) {
             return false;
         }
-        final PushNotificationPropertyModel that = (PushNotificationPropertyModel) o;
-        final EqualsBuilder builder = new EqualsBuilder();
-        builder.appendSuper(super.equals(o));
-        builder.append(this.getPropertyKey(), that.getPropertyKey());
-        builder.append(this.getPropertyValue(), that.getPropertyValue());
-        return builder.isEquals();
+        if (obj == this) {
+            return true;
+        }
+        if (obj.getClass() != getClass()) {
+            return false;
+        }
+        PushNotificationPropertyModel rhs = (PushNotificationPropertyModel) obj;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(obj))
+                .append(this.propertyKey, rhs.propertyKey)
+                .append(this.propertyValue, rhs.propertyValue)
+                .isEquals();
     }
 
     @Override
     public int hashCode() {
-        final HashCodeBuilder builder = new HashCodeBuilder();
-        builder.appendSuper(super.hashCode());
-        builder.append(this.getPropertyKey());
-        builder.append(this.getPropertyValue());
-        return builder.build();
+        return new HashCodeBuilder()
+                .appendSuper(super.hashCode())
+                .append(propertyKey)
+                .append(propertyValue)
+                .toHashCode();
     }
 
     @Override
     public String toString() {
-        final ToStringBuilder builder = new ToStringBuilder(this);
-        builder.appendSuper(super.toString());
-        builder.append("propertyKey", this.getPropertyKey());
-        builder.append("propertyValue", this.getPropertyValue());
-        return builder.build();
+        return new ToStringBuilder(this)
+                .appendSuper(super.toString())
+                .append("propertyKey", propertyKey)
+                .append("propertyValue", propertyValue)
+                .toString();
     }
+
+    //endregion
 }

@@ -3,6 +3,7 @@ package com.sflpro.notifier.api.client.notification.push.impl;
 import com.sflpro.notifier.api.client.notification.push.PushNotificationResourceClient;
 import com.sflpro.notifier.api.model.common.result.ResultResponseModel;
 import com.sflpro.notifier.api.model.push.request.CreatePushNotificationRequest;
+import com.sflpro.notifier.api.model.push.request.CreateTemplatedPushNotificationRequest;
 import com.sflpro.notifier.api.model.push.response.CreatePushNotificationResponse;
 import com.sflpro.notifier.client.test.AbstractRestApiClientUnitTest;
 import org.easymock.Mock;
@@ -33,9 +34,11 @@ public class PushNotificationResourceClientImplTest extends AbstractRestApiClien
         pushNotificationResourceClient = new PushNotificationResourceClientImpl(client, apiPath);
     }
 
+    //region createPushNotification...
+
     @Test
     public void testCreatePushNotificationWithInvalidArgument() {
-        assertThatThrownBy(() -> pushNotificationResourceClient.createPushNotification(null));
+        assertThatThrownBy(() -> pushNotificationResourceClient.createPushNotification((CreatePushNotificationRequest) null));
         assertThatThrownBy(() -> pushNotificationResourceClient.createPushNotification(new CreatePushNotificationRequest(), null));
     }
 
@@ -70,5 +73,49 @@ public class PushNotificationResourceClientImplTest extends AbstractRestApiClien
         assertThat(pushNotificationResourceClient.createPushNotification(request)).isEqualTo(resultResponseModel);
         verifyAll();
     }
+
+    //endregion
+
+    //region createPushNotification templated...
+
+    @Test
+    public void testCreateTemplatedPushNotificationWithInvalidArgument() {
+        assertThatThrownBy(() -> pushNotificationResourceClient.createPushNotification((CreateTemplatedPushNotificationRequest) null));
+        assertThatThrownBy(() -> pushNotificationResourceClient.createPushNotification(new CreateTemplatedPushNotificationRequest(), null));
+    }
+
+    @Test
+    public void testCreateTemplatedPushNotificationWithAuthorization() {
+        final CreateTemplatedPushNotificationRequest request = new CreateTemplatedPushNotificationRequest();
+        final String authToken = uuid();
+        final WebTarget webTarget = createMock(WebTarget.class);
+        final Invocation.Builder requestBuilder = createMock(Invocation.Builder.class);
+        final ResultResponseModel<CreatePushNotificationResponse> resultResponseModel = new ResultResponseModel<>(new CreatePushNotificationResponse());
+        expect(client.target(apiPath)).andReturn(webTarget);
+        expect(webTarget.path("notification/push/create")).andReturn(webTarget);
+        expect(webTarget.request(MediaType.APPLICATION_JSON_TYPE)).andReturn(requestBuilder);
+        expect(requestBuilder.header("Authorization", "Bearer " + authToken)).andReturn(requestBuilder);
+        expect(requestBuilder.post(eq(Entity.entity(request, MediaType.APPLICATION_JSON_TYPE)), isA(GenericType.class))).andReturn(resultResponseModel);
+        replayAll();
+        assertThat(pushNotificationResourceClient.createPushNotification(request, authToken)).isEqualTo(resultResponseModel);
+        verifyAll();
+    }
+
+    @Test
+    public void testCreateTemplatedPushNotification() {
+        final CreateTemplatedPushNotificationRequest request = new CreateTemplatedPushNotificationRequest();
+        final WebTarget webTarget = createMock(WebTarget.class);
+        final Invocation.Builder requestBuilder = createMock(Invocation.Builder.class);
+        final ResultResponseModel<CreatePushNotificationResponse> resultResponseModel = new ResultResponseModel<>(new CreatePushNotificationResponse());
+        expect(client.target(apiPath)).andReturn(webTarget);
+        expect(webTarget.path("notification/push/create")).andReturn(webTarget);
+        expect(webTarget.request(MediaType.APPLICATION_JSON_TYPE)).andReturn(requestBuilder);
+        expect(requestBuilder.post(eq(Entity.entity(request, MediaType.APPLICATION_JSON_TYPE)), isA(GenericType.class))).andReturn(resultResponseModel);
+        replayAll();
+        assertThat(pushNotificationResourceClient.createPushNotification(request)).isEqualTo(resultResponseModel);
+        verifyAll();
+    }
+
+    //endregion
 
 }

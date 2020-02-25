@@ -1,5 +1,6 @@
 package com.sflpro.notifier.services.notification.impl.push;
 
+import com.sflpro.notifier.db.entities.notification.NotificationProviderType;
 import com.sflpro.notifier.db.entities.notification.UserNotification;
 import com.sflpro.notifier.db.entities.notification.email.NotificationProperty;
 import com.sflpro.notifier.db.entities.notification.push.PushNotification;
@@ -10,9 +11,9 @@ import com.sflpro.notifier.db.entities.user.User;
 import com.sflpro.notifier.db.repositories.repositories.notification.AbstractNotificationRepository;
 import com.sflpro.notifier.db.repositories.repositories.notification.push.PushNotificationRepository;
 import com.sflpro.notifier.services.notification.UserNotificationService;
-import com.sflpro.notifier.services.notification.dto.NotificationPropertyDto;
 import com.sflpro.notifier.services.notification.dto.UserNotificationDto;
 import com.sflpro.notifier.services.notification.dto.push.PushNotificationDto;
+import com.sflpro.notifier.services.notification.dto.push.TemplatedPushNotificationDto;
 import com.sflpro.notifier.services.notification.impl.AbstractNotificationServiceImpl;
 import com.sflpro.notifier.services.notification.impl.AbstractNotificationServiceImplTest;
 import com.sflpro.notifier.services.notification.push.PushNotificationRecipientSearchParameters;
@@ -41,7 +42,8 @@ import static org.junit.Assert.*;
  */
 public class PushNotificationServiceImplTest extends AbstractNotificationServiceImplTest<PushNotification> {
 
-    /* Test subject and mocks */
+    //region Test subject and mocks
+
     @TestSubject
     private PushNotificationServiceImpl pushNotificationService = new PushNotificationServiceImpl();
 
@@ -60,17 +62,18 @@ public class PushNotificationServiceImplTest extends AbstractNotificationService
     @Mock
     private UserNotificationService userNotificationService;
 
-    /* Constructors */
     public PushNotificationServiceImplTest() {
     }
 
-    /* Test methods */
+    //endregion
+
+    //region createNotification...
+
     @Test
     public void testCreateNotificationsForUserActiveRecipientsWithInvalidArguments() {
         // Test data
         final Long userId = 1L;
         final PushNotificationDto pushNotificationDto = getServicesImplTestHelper().createPushNotificationDto();
-        final List<NotificationPropertyDto> notificationPropertyDtos = new ArrayList<>();
         // Reset
         resetAll();
         // Replay
@@ -83,7 +86,7 @@ public class PushNotificationServiceImplTest extends AbstractNotificationService
             // Expected
         }
         try {
-            pushNotificationService.createNotificationsForUserActiveRecipients(userId, null);
+            pushNotificationService.createNotificationsForUserActiveRecipients(userId, (PushNotificationDto) null);
             fail("Exception should be thrown");
         } catch (final IllegalArgumentException ex) {
             // Expected
@@ -99,7 +102,6 @@ public class PushNotificationServiceImplTest extends AbstractNotificationService
         final User user = getServicesImplTestHelper().createUser();
         user.setId(userId);
         final PushNotificationDto pushNotificationDto = getServicesImplTestHelper().createPushNotificationDto();
-        final List<NotificationPropertyDto> notificationPropertyDtos = new ArrayList<>();
         // Reset
         resetAll();
         // Expectations
@@ -169,12 +171,12 @@ public class PushNotificationServiceImplTest extends AbstractNotificationService
             getServicesImplTestHelper().assertPushNotification(pushNotification, pushNotificationDto);
             assertEquals(recipient, pushNotification.getRecipient());
             assertEquals(pushNotificationDto.getProperties().size(), pushNotification.getProperties().size());
-           assertEquals(pushNotificationDto.getProperties(),
-                   pushNotification.getProperties().stream().collect(Collectors.toMap(
-                           NotificationProperty::getPropertyKey,
-                           NotificationProperty::getPropertyValue
-                   ))
-                   );
+            assertEquals(pushNotificationDto.getProperties(),
+                    pushNotification.getProperties().stream().collect(Collectors.toMap(
+                            NotificationProperty::getPropertyKey,
+                            NotificationProperty::getPropertyValue
+                    ))
+            );
             // Increment counter
             counter.increment();
         });
@@ -187,7 +189,6 @@ public class PushNotificationServiceImplTest extends AbstractNotificationService
         // Test data
         final Long recipientId = 1L;
         final PushNotificationDto notificationDto = getServicesImplTestHelper().createPushNotificationDto();
-        final List<NotificationPropertyDto> notificationPropertyDtos = new ArrayList<>();
         // Reset
         resetAll();
         // Replay
@@ -200,7 +201,7 @@ public class PushNotificationServiceImplTest extends AbstractNotificationService
             // Expected
         }
         try {
-            pushNotificationService.createNotification(recipientId, null);
+            pushNotificationService.createNotification(recipientId, (PushNotificationDto) null);
             fail("Exception should be thrown");
         } catch (final IllegalArgumentException ex) {
             // Expected
@@ -231,14 +232,229 @@ public class PushNotificationServiceImplTest extends AbstractNotificationService
         assertEquals(notificationDto.getProperties().size(), result.getProperties().size());
         // Create counter
         final MutableInt counter = new MutableInt(0);
-        assertEquals(result.getProperties().stream()
-                        .collect(Collectors.toMap(NotificationProperty::getPropertyKey, NotificationProperty::getPropertyValue)),
-                notificationDto.getProperties());
+        assertEquals(result.getProperties().stream().collect(Collectors.toMap(NotificationProperty::getPropertyKey, NotificationProperty::getPropertyValue)), notificationDto.getProperties());
         // Verify
         verifyAll();
     }
 
-    /* Utility methods */
+    //endregion
+
+    //region createNotification templated...
+
+    @Test
+    public void testCreateTemplatedNotificationWithInvalidArguments() {
+        // Test data
+        final Long recipientId = 1L;
+        // Reset
+        resetAll();
+        // Replay
+        replayAll();
+        // Run test scenario
+        try {
+            pushNotificationService.createNotification(null, new TemplatedPushNotificationDto(null, null, null));
+            fail("Exception should be thrown");
+        } catch (final IllegalArgumentException ex) {
+            // Expected
+        }
+        try {
+            pushNotificationService.createNotification(recipientId, new TemplatedPushNotificationDto("templateName", null, null));
+            fail("Exception should be thrown");
+        } catch (final IllegalArgumentException ex) {
+            // Expected
+        }
+        try {
+            pushNotificationService.createNotification(recipientId, new TemplatedPushNotificationDto("templateName", "ip", null));
+            fail("Exception should be thrown");
+        } catch (final IllegalArgumentException ex) {
+            // Expected
+        }
+        try {
+            pushNotificationService.createNotification(recipientId, new TemplatedPushNotificationDto("templateName", null, NotificationProviderType.FIREBASE_CLOUD_MESSAGING));
+            fail("Exception should be thrown");
+        } catch (final IllegalArgumentException ex) {
+            // Expected
+        }
+        try {
+            pushNotificationService.createNotification(recipientId, (TemplatedPushNotificationDto) null);
+            fail("Exception should be thrown");
+        } catch (final IllegalArgumentException ex) {
+            // Expected
+        }
+        // Verify
+        verifyAll();
+    }
+
+    @Test
+    public void testCreateTemplatedNotification() {
+        // Test data
+        final Long recipientId = 1L;
+        final String templateName = "templateName";
+        final String ipAddress = "127.0.0.1";
+        final NotificationProviderType notificationProviderType = NotificationProviderType.FIREBASE_CLOUD_MESSAGING;
+        final PushNotificationRecipient recipient = getServicesImplTestHelper().createPushNotificationSnsRecipient();
+        recipient.setId(recipientId);
+        final TemplatedPushNotificationDto notificationDto = new TemplatedPushNotificationDto(templateName, ipAddress, notificationProviderType);
+        notificationDto.setProperties(getServicesImplTestHelper().createNotificationProperties(10));
+        // Reset
+        resetAll();
+        // Expectations
+        expect(pushNotificationRecipientService.getPushNotificationRecipientById(eq(recipientId))).andReturn(recipient).once();
+        expect(pushNotificationRepository.save(isA(PushNotification.class))).andAnswer(() -> (PushNotification) getCurrentArguments()[0]).once();
+        // Replay
+        replayAll();
+        // Run test scenario
+        final PushNotification result = pushNotificationService.createNotification(recipientId, notificationDto);
+        getServicesImplTestHelper().assertTemplatedPushNotificationDto(result, notificationDto);
+        assertEquals(recipient, result.getRecipient());
+        assertEquals(notificationDto.getProperties().size(), result.getProperties().size());
+        // Create counter
+        final MutableInt counter = new MutableInt(0);
+        assertEquals(result.getProperties().stream().collect(Collectors.toMap(NotificationProperty::getPropertyKey, NotificationProperty::getPropertyValue)), notificationDto.getProperties());
+        // Verify
+        verifyAll();
+    }
+
+    //endregion
+
+    //region createNotificationsForUserActiveRecipients templated...
+
+    @Test
+    public void testCreateTemplatedNotificationsForUserActiveRecipientsWithInvalidArguments() {
+        // Test data
+        final Long userId = 1L;
+        // Reset
+        resetAll();
+        // Replay
+        replayAll();
+        // Run test scenario
+        try {
+            pushNotificationService.createNotificationsForUserActiveRecipients(null, new TemplatedPushNotificationDto(null, null, null));
+            fail("Exception should be thrown");
+        } catch (final IllegalArgumentException ex) {
+            // Expected
+        }
+        try {
+            pushNotificationService.createNotificationsForUserActiveRecipients(userId, new TemplatedPushNotificationDto("templateName", null, null));
+            fail("Exception should be thrown");
+        } catch (final IllegalArgumentException ex) {
+            // Expected
+        }
+        try {
+            pushNotificationService.createNotificationsForUserActiveRecipients(userId, new TemplatedPushNotificationDto("templateName", "ip", null));
+            fail("Exception should be thrown");
+        } catch (final IllegalArgumentException ex) {
+            // Expected
+        }
+        try {
+            pushNotificationService.createNotificationsForUserActiveRecipients(userId, new TemplatedPushNotificationDto("templateName", null, NotificationProviderType.FIREBASE_CLOUD_MESSAGING));
+            fail("Exception should be thrown");
+        } catch (final IllegalArgumentException ex) {
+            // Expected
+        }
+        try {
+            pushNotificationService.createNotificationsForUserActiveRecipients(userId, (TemplatedPushNotificationDto) null);
+            fail("Exception should be thrown");
+        } catch (final IllegalArgumentException ex) {
+            // Expected
+        }
+        // Verify
+        verifyAll();
+    }
+
+    @Test
+    public void testCreateTemplatedNotificationsForUserActiveRecipientsWhenNoSubscriptionExistsForUser() {
+        // Test data
+        final Long userId = 1L;
+        final User user = getServicesImplTestHelper().createUser();
+        user.setId(userId);
+        final TemplatedPushNotificationDto pushNotificationDto = new TemplatedPushNotificationDto("templateName", "127.0.0.1", NotificationProviderType.FIREBASE_CLOUD_MESSAGING);
+
+        // Reset
+        resetAll();
+        // Expectations
+        expect(userService.getUserById(eq(userId))).andReturn(user).once();
+        expect(pushNotificationSubscriptionService.checkIfPushNotificationSubscriptionExistsForUser(eq(userId))).andReturn(false).once();
+        // Replay
+        replayAll();
+        // Run test scenario
+        final List<PushNotification> pushNotifications = pushNotificationService.createNotificationsForUserActiveRecipients(userId, pushNotificationDto);
+        assertNotNull(pushNotifications);
+        assertEquals(0, pushNotifications.size());
+        // Verify
+        verifyAll();
+    }
+
+    @Test
+    public void testTemplatedCreateNotificationsForUserActiveRecipients() {
+        // Test data
+        // Create user
+        final Long userId = 1L;
+        final User user = getServicesImplTestHelper().createUser();
+        user.setId(userId);
+        // Push notification DTO
+        final TemplatedPushNotificationDto pushNotificationDto = new TemplatedPushNotificationDto("templateName", "127.0.0.1", NotificationProviderType.FIREBASE_CLOUD_MESSAGING);
+        // Subscriptions
+        final Long subscriptionId = 2L;
+        final PushNotificationSubscription subscription = getServicesImplTestHelper().createPushNotificationSubscription();
+        subscription.setId(subscriptionId);
+        // Expected recipients search parameters
+        final PushNotificationRecipientSearchParameters searchParameters = new PushNotificationRecipientSearchParameters();
+        searchParameters.setStatus(PushNotificationRecipientStatus.ENABLED);
+        searchParameters.setSubscriptionId(subscriptionId);
+        // Expected list of recipients
+        final List<PushNotificationRecipient> recipients = createPushNotificationsRecipients(10);
+        // Reset
+        resetAll();
+        // Expectations
+        expect(userService.getUserById(eq(userId))).andReturn(user).once();
+        expect(pushNotificationSubscriptionService.checkIfPushNotificationSubscriptionExistsForUser(eq(userId))).andReturn(true).once();
+        expect(pushNotificationSubscriptionService.getPushNotificationSubscriptionForUser(eq(userId))).andReturn(subscription).once();
+        expect(pushNotificationRecipientService.getPushNotificationRecipientsForSearchParameters(eq(searchParameters), eq(0L), eq(Integer.MAX_VALUE))).andReturn(recipients).once();
+        final MutableLong counter = new MutableLong(0);
+        recipients.forEach(recipient -> {
+            final Long expectedNotificationId = counter.getValue();
+            expect(pushNotificationRecipientService.getPushNotificationRecipientById(EasyMock.eq(recipient.getId()))).andReturn(recipient).once();
+            expect(pushNotificationRepository.save(isA(PushNotification.class))).andAnswer(() -> {
+                final PushNotification pushNotification = (PushNotification) getCurrentArguments()[0];
+                pushNotification.setId(expectedNotificationId);
+                return pushNotification;
+            }).once();
+            final UserNotification userNotification = getServicesImplTestHelper().createUserNotification();
+            userNotification.setId(expectedNotificationId * 10);
+            expect(userNotificationService.createUserNotification(eq(userId), eq(expectedNotificationId), eq(new UserNotificationDto()))).andReturn(userNotification).once();
+            counter.increment();
+        });
+        // Replay
+        replayAll();
+        // Run test scenario
+        final List<PushNotification> pushNotifications = pushNotificationService.createNotificationsForUserActiveRecipients(userId, pushNotificationDto);
+        assertNotNull(pushNotifications);
+        assertEquals(recipients.size(), pushNotifications.size());
+        // Create counter
+        counter.setValue(0);
+        pushNotifications.forEach(pushNotification -> {
+            // Grab push notifications
+            final PushNotificationRecipient recipient = recipients.get(counter.intValue());
+            getServicesImplTestHelper().assertTemplatedPushNotificationDto(pushNotification, pushNotificationDto);
+            assertEquals(recipient, pushNotification.getRecipient());
+            assertEquals(pushNotificationDto.getProperties().size(), pushNotification.getProperties().size());
+            assertEquals(pushNotificationDto.getProperties(),
+                    pushNotification.getProperties().stream().collect(Collectors.toMap(
+                            NotificationProperty::getPropertyKey,
+                            NotificationProperty::getPropertyValue
+                    ))
+            );
+            // Increment counter
+            counter.increment();
+        });
+        // Verify
+        verifyAll();
+    }
+
+    //endregion
+
+    //region Utility methods
+
     @Override
     protected AbstractNotificationRepository<PushNotification> getRepository() {
         return pushNotificationRepository;
@@ -268,5 +484,7 @@ public class PushNotificationServiceImplTest extends AbstractNotificationService
         }
         return recipients;
     }
+
+    //endregion
 
 }

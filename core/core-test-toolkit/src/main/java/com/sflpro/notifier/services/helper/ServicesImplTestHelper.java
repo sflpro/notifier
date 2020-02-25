@@ -16,7 +16,10 @@ import com.sflpro.notifier.services.notification.dto.NotificationDto;
 import com.sflpro.notifier.services.notification.dto.NotificationPropertyDto;
 import com.sflpro.notifier.services.notification.dto.UserNotificationDto;
 import com.sflpro.notifier.services.notification.dto.email.EmailNotificationDto;
-import com.sflpro.notifier.services.notification.dto.push.*;
+import com.sflpro.notifier.services.notification.dto.push.PushNotificationDto;
+import com.sflpro.notifier.services.notification.dto.push.PushNotificationRecipientDto;
+import com.sflpro.notifier.services.notification.dto.push.PushNotificationSubscriptionDto;
+import com.sflpro.notifier.services.notification.dto.push.PushNotificationSubscriptionRequestDto;
 import com.sflpro.notifier.services.notification.dto.sms.SmsNotificationDto;
 import com.sflpro.notifier.services.user.dto.UserDto;
 import org.junit.Assert;
@@ -196,14 +199,6 @@ public class ServicesImplTestHelper {
         Assert.assertEquals(notificationDto.getType(), notification.getType());
         Assert.assertEquals(NotificationState.CREATED, notification.getState());
 
-    }
-
-    public void assertTemplatedPushNotificationDto(final PushNotification notification, final TemplatedPushNotificationDto notificationDto) {
-        assertNotNull(notification);
-        Assert.assertEquals(notificationDto.getClientIpAddress(), notification.getClientIpAddress());
-        Assert.assertEquals(notificationDto.getTemplateName(), notification.getTemplateName());
-        Assert.assertEquals(notificationDto.getType(), notification.getType());
-        Assert.assertEquals(NotificationState.CREATED, notification.getState());
     }
 
     /* Push notification property */

@@ -2,7 +2,6 @@ package com.sflpro.notifier.api.facade.security;
 
 import com.sflpro.notifier.services.notification.dto.NotificationDto;
 import com.sflpro.notifier.services.notification.dto.push.PushNotificationDto;
-import com.sflpro.notifier.services.notification.dto.push.TemplatedPushNotificationDto;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -36,13 +35,6 @@ class NotificationCreationPermissionCheckerAspect {
     @Around("execution(* com.sflpro.notifier.services.notification..*.createNotificationsForUserActiveRecipients* (..)) " +
             "&& args(userId,pushNotification,..)")
     public Object aroundPushNotificationCreation(final ProceedingJoinPoint point, final Long userId, final PushNotificationDto pushNotification) throws Throwable {
-        logger.debug("Checking permission for sending push message with subject {} to user {}", pushNotification.getSubject(), userId);
-        return executeAuthorized(point, pushNotification);
-    }
-
-    @Around("execution(* com.sflpro.notifier.services.notification..*.createNotificationsForUserActiveRecipients* (..)) " +
-            "&& args(userId,pushNotification,..)")
-    public Object aroundTemplatedPushNotificationCreation(final ProceedingJoinPoint point, final Long userId, final TemplatedPushNotificationDto pushNotification) throws Throwable {
         logger.debug("Checking permission for sending push message with subject {} to user {}", pushNotification.getSubject(), userId);
         return executeAuthorized(point, pushNotification);
     }

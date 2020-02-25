@@ -3,7 +3,6 @@ package com.sflpro.notifier.api.facade.endpoints.notification.push;
 import com.sflpro.notifier.api.facade.services.push.PushNotificationServiceFacade;
 import com.sflpro.notifier.api.model.common.result.ResultResponseModel;
 import com.sflpro.notifier.api.model.push.request.CreatePushNotificationRequest;
-import com.sflpro.notifier.api.model.push.request.CreateTemplatedPushNotificationRequest;
 import com.sflpro.notifier.api.model.push.request.UpdatePushNotificationSubscriptionRequest;
 import com.sflpro.notifier.api.model.push.response.CreatePushNotificationResponse;
 import com.sflpro.notifier.api.model.push.response.UpdatePushNotificationSubscriptionResponse;
@@ -54,17 +53,6 @@ public class PushNotificationResource {
         LOGGER.debug("Processing create push notification request - {}", request);
         final ResultResponseModel<CreatePushNotificationResponse> response = pushNotificationServiceFacade.createPushNotifications(request);
         LOGGER.debug("Processed create push notification request - {}, response - {}", request, response);
-        return Response.ok(response).build();
-    }
-
-    @ApiOperation("Creates templated push notification")
-    @POST
-    @Path("create-templated")
-    @Consumes("application/json")
-    public Response createTemplatedPushNotification(final CreateTemplatedPushNotificationRequest request) {
-        LOGGER.debug("Processing create templated push notification request - {}", request);
-        final ResultResponseModel<CreatePushNotificationResponse> response = pushNotificationServiceFacade.createPushNotifications(request);
-        LOGGER.debug("Processed create templated push notification request - {}, response - {}", request, response);
         return Response.ok(response).build();
     }
 

@@ -7,10 +7,8 @@ import com.sflpro.notifier.api.model.notification.NotificationClientType;
 import com.sflpro.notifier.api.model.notification.NotificationModel;
 import com.sflpro.notifier.api.model.notification.NotificationStateClientType;
 import com.sflpro.notifier.api.model.push.PushNotificationModel;
-import com.sflpro.notifier.api.model.push.PushNotificationPropertyModel;
 import com.sflpro.notifier.api.model.push.PushNotificationRecipientModel;
 import com.sflpro.notifier.api.model.push.request.CreatePushNotificationRequest;
-import com.sflpro.notifier.api.model.push.request.CreateTemplatedPushNotificationRequest;
 import com.sflpro.notifier.api.model.push.request.UpdatePushNotificationSubscriptionRequest;
 import com.sflpro.notifier.api.model.sms.SmsNotificationModel;
 import com.sflpro.notifier.api.model.sms.request.CreateSmsNotificationRequest;
@@ -36,9 +34,11 @@ import com.sflpro.notifier.services.notification.dto.push.PushNotificationRecipi
 import com.sflpro.notifier.services.notification.dto.push.PushNotificationSubscriptionRequestDto;
 import com.sflpro.notifier.services.notification.dto.sms.SmsNotificationDto;
 import com.sflpro.notifier.services.user.dto.UserDto;
-import org.apache.commons.lang3.mutable.MutableInt;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -110,26 +110,12 @@ public class ServiceFacadeImplTestHelper {
         return request;
     }
 
-    public CreateTemplatedPushNotificationRequest createCreateTemplatedPushNotificationRequest() {
-        final CreateTemplatedPushNotificationRequest request = new CreateTemplatedPushNotificationRequest();
-        request.setClientIpAddress("127.0.0.1");
-        request.setTemplate("templateName");
-        request.setLocale(Locale.ENGLISH);
-        request.setUserUuId("UGITYDTGUIGFITYDTDTFYKTYCL");
-        request.setProperties(createProperties(10));
-        return request;
-    }
-
-    private List<PushNotificationPropertyModel> createProperties(final int count) {
-        final List<PushNotificationPropertyModel> propertyModels = new ArrayList<>();
+    private Map<String, String> createProperties(final int count) {
+        final Map<String, String> propertyModels = new HashMap<>();
         for (int i = 0; i < count; i++) {
-            propertyModels.add(createPushNotificationPropertyModel(i));
+            propertyModels.put("Property key - " + i, "Property value - " + i);
         }
         return propertyModels;
-    }
-
-    private PushNotificationPropertyModel createPushNotificationPropertyModel(final int index) {
-        return new PushNotificationPropertyModel("Property key - " + index, "Property value - " + index);
     }
 
     /* Create Push notifications subscription request */
@@ -244,17 +230,12 @@ public class ServiceFacadeImplTestHelper {
         assertPushNotificationRecipientModel(pushNotification.getRecipient(), pushNotificationModel.getRecipient());
         // Assert properties
         assertEquals(pushNotification.getProperties().size(), pushNotificationModel.getProperties().size());
-        final MutableInt counter = new MutableInt(0);
-        pushNotification.getProperties().forEach(property -> {
-            final PushNotificationPropertyModel propertyModel = pushNotificationModel.getProperties().get(counter.intValue());
-            assertPushNotificationPropertyModel(property, propertyModel);
-            counter.increment();
-        });
+        pushNotification.getProperties().forEach(property -> assertPushNotificationPropertyModel(property, property.getPropertyKey(), pushNotificationModel.getProperties().get(property.getPropertyKey())));
     }
 
-    public void assertPushNotificationPropertyModel(final NotificationProperty pushNotificationProperty, final PushNotificationPropertyModel pushNotificationPropertyModel) {
-        assertEquals(pushNotificationProperty.getPropertyKey(), pushNotificationPropertyModel.getPropertyKey());
-        assertEquals(pushNotificationProperty.getPropertyValue(), pushNotificationPropertyModel.getPropertyValue());
+    public void assertPushNotificationPropertyModel(final NotificationProperty pushNotificationProperty, final String propertyKey, final String propertyValue) {
+        assertEquals(pushNotificationProperty.getPropertyKey(), propertyKey);
+        assertEquals(pushNotificationProperty.getPropertyValue(), propertyValue);
     }
 
     public void assertPushNotificationRecipientModel(final PushNotificationRecipient recipient, final PushNotificationRecipientModel recipientModel) {

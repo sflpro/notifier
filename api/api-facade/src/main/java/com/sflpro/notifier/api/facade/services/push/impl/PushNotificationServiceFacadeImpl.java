@@ -5,16 +5,15 @@ import com.sflpro.notifier.api.facade.services.push.PushNotificationServiceFacad
 import com.sflpro.notifier.api.model.common.result.ErrorResponseModel;
 import com.sflpro.notifier.api.model.common.result.ResultResponseModel;
 import com.sflpro.notifier.api.model.push.PushNotificationModel;
-import com.sflpro.notifier.api.model.push.PushNotificationPropertyModel;
 import com.sflpro.notifier.api.model.push.PushNotificationRecipientModel;
 import com.sflpro.notifier.api.model.push.request.CreatePushNotificationRequest;
-import com.sflpro.notifier.api.model.push.request.CreateTemplatedPushNotificationRequest;
 import com.sflpro.notifier.api.model.push.request.UpdatePushNotificationSubscriptionRequest;
 import com.sflpro.notifier.api.model.push.response.CreatePushNotificationResponse;
 import com.sflpro.notifier.api.model.push.response.UpdatePushNotificationSubscriptionResponse;
 import com.sflpro.notifier.db.entities.device.UserDevice;
 import com.sflpro.notifier.db.entities.device.mobile.DeviceOperatingSystemType;
 import com.sflpro.notifier.db.entities.notification.NotificationProviderType;
+import com.sflpro.notifier.db.entities.notification.email.NotificationProperty;
 import com.sflpro.notifier.db.entities.notification.push.PushNotification;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipient;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationSubscriptionRequest;
@@ -23,7 +22,6 @@ import com.sflpro.notifier.services.device.UserDeviceService;
 import com.sflpro.notifier.services.device.dto.UserDeviceDto;
 import com.sflpro.notifier.services.notification.dto.push.PushNotificationDto;
 import com.sflpro.notifier.services.notification.dto.push.PushNotificationSubscriptionRequestDto;
-import com.sflpro.notifier.services.notification.dto.push.TemplatedPushNotificationDto;
 import com.sflpro.notifier.services.notification.event.push.StartPushNotificationSubscriptionRequestProcessingEvent;
 import com.sflpro.notifier.services.notification.event.sms.StartSendingNotificationEvent;
 import com.sflpro.notifier.services.notification.push.PushNotificationService;
@@ -39,6 +37,7 @@ import org.springframework.util.Assert;
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -93,38 +92,11 @@ public class PushNotificationServiceFacadeImpl extends AbstractNotificationServi
         final User user = getUserService().getOrCreateUserForUuId(request.getUserUuId());
         // Create push notification DTO
         final PushNotificationDto pushNotificationDto = new PushNotificationDto(request.getBody(), request.getSubject(), request.getClientIpAddress(), providerType);
-        pushNotificationDto.setProperties(request.getProperties().stream()
-                .collect(Collectors.toMap(PushNotificationPropertyModel::getPropertyKey,
-                        PushNotificationPropertyModel::getPropertyValue)));
+        pushNotificationDto.setTemplateName(request.getTemplateName());
+        pushNotificationDto.setLocale(request.getLocale());
+        pushNotificationDto.setProperties(request.getProperties());
         // Create push notifications
         final List<PushNotification> pushNotifications = pushNotificationService.createNotificationsForUserActiveRecipients(user.getId(), pushNotificationDto);
-        // Publish events
-        pushNotifications.forEach(pushNotification -> applicationEventDistributionService.publishAsynchronousEvent(new StartSendingNotificationEvent(pushNotification.getId())));
-        // Convert to notification models
-        final List<PushNotificationModel> pushNotificationModels = pushNotifications.stream().map(PushNotificationServiceFacadeImpl::createPushNotificationModel).collect(Collectors.toCollection(ArrayList::new));
-        // Create response model
-        final CreatePushNotificationResponse response = new CreatePushNotificationResponse(pushNotificationModels);
-        logger.debug("Successfully created push notification response - {} for request - {}", response, request);
-        return new ResultResponseModel<>(response);
-    }
-
-    @Nonnull
-    @Override
-    public ResultResponseModel<CreatePushNotificationResponse> createPushNotifications(@Nonnull final CreateTemplatedPushNotificationRequest request) {
-        Assert.notNull(request, "Request should not be null");
-        logger.debug("Creating templated push notifications for request - {}", request);
-        // Validate request
-        final List<ErrorResponseModel> errors = request.validateRequiredFields();
-        if (!errors.isEmpty()) {
-            return new ResultResponseModel<>(errors);
-        }
-        // Grab user
-        final User user = getUserService().getOrCreateUserForUuId(request.getUserUuId());
-        // Create templated push notification DTO
-        final TemplatedPushNotificationDto templatedPushNotificationDto = new TemplatedPushNotificationDto(request.getTemplate(), request.getClientIpAddress(), providerType);
-        templatedPushNotificationDto.setProperties(request.getProperties().stream().collect(Collectors.toMap(PushNotificationPropertyModel::getPropertyKey, PushNotificationPropertyModel::getPropertyValue)));
-        // Create push notifications
-        final List<PushNotification> pushNotifications = pushNotificationService.createNotificationsForUserActiveRecipients(user.getId(), templatedPushNotificationDto);
         // Publish events
         pushNotifications.forEach(pushNotification -> applicationEventDistributionService.publishAsynchronousEvent(new StartSendingNotificationEvent(pushNotification.getId())));
         // Convert to notification models
@@ -168,7 +140,8 @@ public class PushNotificationServiceFacadeImpl extends AbstractNotificationServi
         // Create recipient model
         pushNotificationModel.setRecipient(createPushNotificationRecipientModel(pushNotification.getRecipient()));
         // Set properties
-        final List<PushNotificationPropertyModel> propertyModels = pushNotification.getProperties().stream().map(property -> new PushNotificationPropertyModel(property.getPropertyKey(), property.getPropertyValue())).collect(Collectors.toCollection(ArrayList::new));
+
+        final Map<String, String> propertyModels = pushNotification.getProperties().stream().collect(Collectors.toMap(NotificationProperty::getPropertyKey, NotificationProperty::getPropertyValue));
         pushNotificationModel.setProperties(propertyModels);
         return pushNotificationModel;
     }

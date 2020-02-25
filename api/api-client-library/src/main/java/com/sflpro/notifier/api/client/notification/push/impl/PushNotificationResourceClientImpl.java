@@ -4,7 +4,6 @@ import com.sflpro.notifier.api.client.common.AbstractResourceClient;
 import com.sflpro.notifier.api.client.notification.push.PushNotificationResourceClient;
 import com.sflpro.notifier.api.model.common.result.ResultResponseModel;
 import com.sflpro.notifier.api.model.push.request.CreatePushNotificationRequest;
-import com.sflpro.notifier.api.model.push.request.CreateTemplatedPushNotificationRequest;
 import com.sflpro.notifier.api.model.push.request.UpdatePushNotificationSubscriptionRequest;
 import com.sflpro.notifier.api.model.push.response.CreatePushNotificationResponse;
 import com.sflpro.notifier.api.model.push.response.UpdatePushNotificationSubscriptionResponse;
@@ -60,19 +59,6 @@ public class PushNotificationResourceClientImpl extends AbstractResourceClient i
 
     @Nonnull
     @Override
-    public ResultResponseModel<CreatePushNotificationResponse> createPushNotification(@Nonnull final CreateTemplatedPushNotificationRequest request) {
-        return createTemplatedPushNotificationInternal(request, null);
-    }
-
-    @Nonnull
-    @Override
-    public ResultResponseModel<CreatePushNotificationResponse> createPushNotification(@Nonnull final CreateTemplatedPushNotificationRequest request, @Nonnull final String authToken) {
-        asserValidAuthToken(authToken);
-        return createTemplatedPushNotificationInternal(request, authToken);
-    }
-
-    @Nonnull
-    @Override
     public ResultResponseModel<UpdatePushNotificationSubscriptionResponse> updatePushNotificationSubscription(@Nonnull final UpdatePushNotificationSubscriptionRequest request) {
         assertUpdatePushNotificationSubscriptionRequest(request);
         logger.debug("Executing update push notification subscription request - {}", request);
@@ -101,27 +87,7 @@ public class PushNotificationResourceClientImpl extends AbstractResourceClient i
         return response;
     }
 
-    @Nonnull
-    private ResultResponseModel<CreatePushNotificationResponse> createTemplatedPushNotificationInternal(@Nonnull final CreateTemplatedPushNotificationRequest request, @Nullable final String authToken) {
-        assertCreateTemplatedPushNotificationRequest(request);
-        logger.debug("Executing create templated push notification call, request - {}", request);
-        final Invocation.Builder requestBuilder = getClient().target(getApiPath()).path(PATH_PUSH_CREATE).request(MediaType.APPLICATION_JSON_TYPE);
-        if (authToken != null) {
-            addAutorizationHeader(requestBuilder, authToken);
-        }
-        final ResultResponseModel<CreatePushNotificationResponse> response = requestBuilder.post(Entity.entity(request, MediaType.APPLICATION_JSON_TYPE), new GenericType<ResultResponseModel<CreatePushNotificationResponse>>() {
-        });
-        logger.debug("Successfully executed create templated push notification call, request - {}, response -  {}", request, response);
-        return response;
-    }
-
     private static void assertCreatePushNotificationRequest(final CreatePushNotificationRequest request) {
-        if (request == null) {
-            throw new IllegalArgumentException("Create push notification request should not be null");
-        }
-    }
-
-    private static void assertCreateTemplatedPushNotificationRequest(final CreateTemplatedPushNotificationRequest request) {
         if (request == null) {
             throw new IllegalArgumentException("Create push notification request should not be null");
         }

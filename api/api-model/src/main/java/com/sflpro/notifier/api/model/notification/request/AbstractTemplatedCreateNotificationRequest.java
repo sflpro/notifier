@@ -16,7 +16,7 @@ import java.util.*;
  * Date: 7/1/19
  * Time: 4:11 PM
  */
-public class AbstractTemplatableCreateNotificationRequest extends AbstractCreateNotificationRequest {
+public class AbstractTemplatedCreateNotificationRequest extends AbstractCreateNotificationRequest {
 
     @JsonProperty("templateName")
     private String templateName;
@@ -31,7 +31,7 @@ public class AbstractTemplatableCreateNotificationRequest extends AbstractCreate
     private Locale locale;
 
     /* Constructors */
-    public AbstractTemplatableCreateNotificationRequest() {
+    public AbstractTemplatedCreateNotificationRequest() {
         properties = new HashMap<>();
         secureProperties = new HashMap<>();
     }
@@ -44,45 +44,6 @@ public class AbstractTemplatableCreateNotificationRequest extends AbstractCreate
             errors.add(new ErrorResponseModel(ErrorType.NOTIFICATION_BODY_MISSING));
         }
         return errors;
-    }
-
-    @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof AbstractTemplatableCreateNotificationRequest)) {
-            return false;
-        }
-        final AbstractTemplatableCreateNotificationRequest that = (AbstractTemplatableCreateNotificationRequest) o;
-        return new EqualsBuilder()
-                .appendSuper(super.equals(o))
-                .append(templateName, that.templateName)
-                .append(locale, that.locale)
-                .append(properties, that.properties)
-                .append(secureProperties, that.secureProperties)
-                .isEquals();
-    }
-
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder(17, 37)
-                .appendSuper(super.hashCode())
-                .append(templateName)
-                .append(locale)
-                .append(properties)
-                .append(secureProperties)
-                .toHashCode();
-    }
-
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this)
-                .append("templateName", templateName)
-                .append("locale", locale)
-                .append("properties", properties)
-                .append("secureProperties", secureProperties)
-                .toString();
     }
 
     public String getTemplateName() {
@@ -115,5 +76,44 @@ public class AbstractTemplatableCreateNotificationRequest extends AbstractCreate
 
     public void setLocale(Locale locale) {
         this.locale = locale;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof AbstractTemplatedCreateNotificationRequest)) {
+            return false;
+        }
+        final AbstractTemplatedCreateNotificationRequest that = (AbstractTemplatedCreateNotificationRequest) o;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(o))
+                .append(templateName, that.templateName)
+                .append(locale, that.locale)
+                .append(properties, that.properties)
+                .append(secureProperties, that.secureProperties)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .appendSuper(super.hashCode())
+                .append(templateName)
+                .append(locale)
+                .append(properties)
+                .append(secureProperties)
+                .toHashCode();
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("templateName", templateName)
+                .append("locale", locale)
+                .append("properties", properties)
+                .append("secureProperties", secureProperties)
+                .toString();
     }
 }

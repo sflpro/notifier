@@ -3,15 +3,12 @@ package com.sflpro.notifier.api.facade.services.push.impl;
 import com.sflpro.notifier.api.internal.facade.test.AbstractFacadeUnitTest;
 import com.sflpro.notifier.api.model.common.result.ErrorType;
 import com.sflpro.notifier.api.model.common.result.ResultResponseModel;
-import com.sflpro.notifier.api.model.push.PushNotificationPropertyModel;
 import com.sflpro.notifier.api.model.push.request.CreatePushNotificationRequest;
-import com.sflpro.notifier.api.model.push.request.CreateTemplatedPushNotificationRequest;
 import com.sflpro.notifier.api.model.push.request.UpdatePushNotificationSubscriptionRequest;
 import com.sflpro.notifier.api.model.push.response.CreatePushNotificationResponse;
 import com.sflpro.notifier.api.model.push.response.UpdatePushNotificationSubscriptionResponse;
 import com.sflpro.notifier.db.entities.device.UserDevice;
 import com.sflpro.notifier.db.entities.device.mobile.DeviceOperatingSystemType;
-import com.sflpro.notifier.db.entities.notification.NotificationProviderType;
 import com.sflpro.notifier.db.entities.notification.email.NotificationProperty;
 import com.sflpro.notifier.db.entities.notification.push.PushNotification;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipient;
@@ -21,7 +18,6 @@ import com.sflpro.notifier.services.device.UserDeviceService;
 import com.sflpro.notifier.services.device.dto.UserDeviceDto;
 import com.sflpro.notifier.services.notification.dto.push.PushNotificationDto;
 import com.sflpro.notifier.services.notification.dto.push.PushNotificationSubscriptionRequestDto;
-import com.sflpro.notifier.services.notification.dto.push.TemplatedPushNotificationDto;
 import com.sflpro.notifier.services.notification.event.push.StartPushNotificationSubscriptionRequestProcessingEvent;
 import com.sflpro.notifier.services.notification.event.sms.StartSendingNotificationEvent;
 import com.sflpro.notifier.services.notification.push.PushNotificationService;
@@ -35,7 +31,6 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.*;
@@ -201,7 +196,7 @@ public class PushNotificationServiceFacadeImplTest extends AbstractFacadeUnitTes
         user.setId(userId);
         // Expected push notification DTO
         final PushNotificationDto pushNotificationDto = new PushNotificationDto(request.getBody(), request.getSubject(), request.getClientIpAddress());
-        pushNotificationDto.setProperties(request.getProperties().stream().collect(Collectors.toMap(PushNotificationPropertyModel::getPropertyKey, PushNotificationPropertyModel::getPropertyValue)));
+        pushNotificationDto.setProperties(request.getProperties());
         final List<PushNotification> pushNotifications = createPushNotifications(10);
         // Reset
         resetAll();
@@ -228,86 +223,6 @@ public class PushNotificationServiceFacadeImplTest extends AbstractFacadeUnitTes
         // Verify
         verifyAll();
     }
-
-    //region createPushNotifications templated...
-
-    @Test
-    public void testCreateTemplatedPushNotificationsWithInvalidArguments() {
-        // Reset
-        resetAll();
-        // Replay
-        replayAll();
-        // Run test scenario
-        try {
-            pushNotificationServiceFacade.createPushNotifications((CreateTemplatedPushNotificationRequest) null);
-            fail("Exception should be thrown");
-        } catch (final IllegalArgumentException ex) {
-            // Expected
-        }
-        // Verify
-        verifyAll();
-    }
-
-    @Test
-    public void testCreateTemplatedPushNotificationsWithValidationErrors() {
-        // Test data
-        final CreateTemplatedPushNotificationRequest request = new CreateTemplatedPushNotificationRequest();
-        // Reset
-        resetAll();
-        // Replay
-        replayAll();
-        // Run test scenario
-        final ResultResponseModel<CreatePushNotificationResponse> result = pushNotificationServiceFacade.createPushNotifications(request);
-        assertNotNull(result);
-        assertNull(result.getResponse());
-        assertNotNull(result.getErrors());
-        assertErrorExists(result.getErrors(), ErrorType.NOTIFICATION_USER_MISSING);
-        assertErrorExists(result.getErrors(), ErrorType.SUBSCRIPTION_PUSH_TEMPLATE_MISSING);
-        // Verify
-        verifyAll();
-    }
-
-    @Test
-    public void testTemplatedCreatePushNotifications() {
-        // Test data
-        final CreateTemplatedPushNotificationRequest request = getServiceFacadeImplTestHelper().createCreateTemplatedPushNotificationRequest();
-        // Create user
-        final Long userId = 1L;
-        final User user = getServiceFacadeImplTestHelper().createUser();
-        user.setUuId(request.getUserUuId());
-        user.setId(userId);
-        // Expected push notification DTO
-        final TemplatedPushNotificationDto pushNotificationDto = new TemplatedPushNotificationDto(request.getTemplate(), request.getClientIpAddress(), null);
-        pushNotificationDto.setProperties(request.getProperties().stream().collect(Collectors.toMap(PushNotificationPropertyModel::getPropertyKey, PushNotificationPropertyModel::getPropertyValue)));
-        final List<PushNotification> pushNotifications = createPushNotifications(10);
-        // Reset
-        resetAll();
-        // Expectations
-        expect(userService.getOrCreateUserForUuId(eq(user.getUuId()))).andReturn(user).once();
-        expect(pushNotificationService.createNotificationsForUserActiveRecipients(eq(user.getId()), eq(pushNotificationDto))).andReturn(pushNotifications).once();
-        pushNotifications.forEach(pushNotification -> {
-            applicationEventDistributionService.publishAsynchronousEvent(eq(new StartSendingNotificationEvent(pushNotification.getId())));
-            expectLastCall().once();
-        });
-        // Replay
-        replayAll();
-        // Run test scenario
-        final ResultResponseModel<CreatePushNotificationResponse> result = pushNotificationServiceFacade.createPushNotifications(request);
-        assertNotNull(result);
-        assertNotNull(result.getResponse());
-        assertEquals(0, result.getErrors().size());
-        // Assert result
-        final MutableInt counter = new MutableInt(0);
-        result.getResponse().getNotifications().forEach(pushNotificationModel -> {
-            getServiceFacadeImplTestHelper().assertPushNotificationModel(pushNotifications.get(counter.intValue()), pushNotificationModel);
-            counter.increment();
-        });
-        // Verify
-        verifyAll();
-    }
-
-
-    //endregion
 
     /* Utility methods */
     private List<PushNotification> createPushNotifications(final int count) {

@@ -157,7 +157,7 @@ public class PushNotificationServiceFacadeImplTest extends AbstractFacadeUnitTes
         replayAll();
         // Run test scenario
         try {
-            pushNotificationServiceFacade.createPushNotifications((CreatePushNotificationRequest) null);
+            pushNotificationServiceFacade.createPushNotifications(null);
             fail("Exception should be thrown");
         } catch (final IllegalArgumentException ex) {
             // Expected

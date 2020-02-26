@@ -37,7 +37,7 @@ public class PushNotificationResourceClientImplTest extends AbstractRestApiClien
 
     @Test
     public void testCreatePushNotificationWithInvalidArgument() {
-        assertThatThrownBy(() -> pushNotificationResourceClient.createPushNotification((CreatePushNotificationRequest) null));
+        assertThatThrownBy(() -> pushNotificationResourceClient.createPushNotification(null));
         assertThatThrownBy(() -> pushNotificationResourceClient.createPushNotification(new CreatePushNotificationRequest(), null));
     }
 

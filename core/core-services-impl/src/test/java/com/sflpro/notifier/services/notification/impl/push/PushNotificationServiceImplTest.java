@@ -84,7 +84,7 @@ public class PushNotificationServiceImplTest extends AbstractNotificationService
             // Expected
         }
         try {
-            pushNotificationService.createNotificationsForUserActiveRecipients(userId, (PushNotificationDto) null);
+            pushNotificationService.createNotificationsForUserActiveRecipients(userId, null);
             fail("Exception should be thrown");
         } catch (final IllegalArgumentException ex) {
             // Expected
@@ -199,7 +199,7 @@ public class PushNotificationServiceImplTest extends AbstractNotificationService
             // Expected
         }
         try {
-            pushNotificationService.createNotification(recipientId, (PushNotificationDto) null);
+            pushNotificationService.createNotification(recipientId, null);
             fail("Exception should be thrown");
         } catch (final IllegalArgumentException ex) {
             // Expected

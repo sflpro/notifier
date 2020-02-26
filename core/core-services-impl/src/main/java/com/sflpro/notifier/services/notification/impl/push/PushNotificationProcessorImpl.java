@@ -2,6 +2,7 @@ package com.sflpro.notifier.services.notification.impl.push;
 
 import com.sflpro.notifier.db.entities.device.mobile.DeviceOperatingSystemType;
 import com.sflpro.notifier.db.entities.notification.NotificationState;
+import com.sflpro.notifier.db.entities.notification.email.NotificationProperty;
 import com.sflpro.notifier.db.entities.notification.push.PushNotification;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationProviderType;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipient;
@@ -13,6 +14,8 @@ import com.sflpro.notifier.spi.push.PlatformType;
 import com.sflpro.notifier.spi.push.PushMessage;
 import com.sflpro.notifier.spi.push.PushMessageSender;
 import com.sflpro.notifier.spi.push.PushMessageSendingResult;
+import com.sflpro.notifier.spi.template.TemplateContent;
+import com.sflpro.notifier.spi.template.TemplateContentResolver;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,10 +24,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.annotation.Nonnull;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static java.lang.String.format;
 
@@ -37,36 +38,44 @@ import static java.lang.String.format;
 @Service
 public class PushNotificationProcessorImpl implements PushNotificationProcessor {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(PushNotificationProcessorImpl.class);
+    //region Logger
 
+    private static final Logger logger = LoggerFactory.getLogger(PushNotificationProcessorImpl.class);
 
-    /* Dependencies */
+    //endregion
+
+    //region Injections
+
     @Autowired
     private PushNotificationService pushNotificationService;
 
     @Autowired
     private PushMessageServiceProvider pushMessageServiceProvider;
 
-    /* Constructors */
+    @Autowired
+    private TemplateContentResolver templateContentResolver;
+
     PushNotificationProcessorImpl() {
-        LOGGER.debug("Initializing push notification processing service");
+        logger.debug("Initializing push notification processing service");
     }
+
+    //endregion
 
     @Override
     public void processNotification(@Nonnull final Long notificationId, @Nonnull final Map<String, String> secureProperties) {
         Assert.notNull(notificationId, "Push notification id should not be null");
         Assert.notNull(secureProperties, "Secure properties map should not be null");
-        LOGGER.debug("Processing push notification for id - {}", notificationId);
+        logger.debug("Processing push notification for id - {}", notificationId);
         final PushNotification pushNotification = pushNotificationService.getPushNotificationForProcessing(notificationId);
         assertPushNotificationState(pushNotification);
         // Update state to processing
         updatePushNotificationState(notificationId, NotificationState.PROCESSING);
         try {
             // Process push notification
-            final String pushNotificationProviderExternalUuid = send(pushNotification);
+            final String pushNotificationProviderExternalUuid = send(pushNotification, secureProperties);
             // Check if provider uuid is provided
             if (StringUtils.isNotBlank(pushNotificationProviderExternalUuid)) {
-                LOGGER.debug("Updating provider uuid for push notification with id - {}, uuid - {}", notificationId, pushNotificationProviderExternalUuid);
+                logger.debug("Updating provider uuid for push notification with id - {}, uuid - {}", notificationId, pushNotificationProviderExternalUuid);
                 updatePushNotificationExternalUuId(notificationId, pushNotificationProviderExternalUuid);
             }
             // Mark push notification as processed
@@ -78,28 +87,80 @@ public class PushNotificationProcessorImpl implements PushNotificationProcessor 
         }
     }
 
-    /* Utility methods */
-    private String send(final PushNotification pushNotification) {
+    //region Utility methods
+
+    private String send(final PushNotification pushNotification, final Map<String, String> secureProperties) {
         Assert.notNull(pushNotification, "Push notification should not be null");
         final PushNotificationRecipient recipient = pushNotification.getRecipient();
         final PushMessageSender pushMessageSender = getPushMessageSender(recipient.getType());
-        final PushMessageSendingResult pushMessageSendingResult = pushMessageSender.send(PushMessage.of(
+        final String templateName = pushNotification.getTemplateName();
+        final PushMessage pushMessage;
+        if (StringUtils.isBlank(templateName)) {
+            //process without template
+            pushMessage = buildPushMessage(pushNotification, recipient);
+        } else {
+            //process with template
+            pushMessage = buildPushMessageForTemplate(pushNotification, recipient, secureProperties);
+        }
+        final PushMessageSendingResult pushMessageSendingResult = pushMessageSender.send(pushMessage);
+        logger.debug("Sending SNS push notification - {} , recipient - {}", pushNotification, recipient);
+        return pushMessageSendingResult.messageId();
+    }
+
+    private PushMessage buildPushMessage(final PushNotification pushNotification, final PushNotificationRecipient recipient) {
+        return PushMessage.of(
                 recipient.getDestinationRouteToken(),
                 pushNotification.getSubject(),
                 pushNotification.getContent(),
                 platformType(recipient.getDeviceOperatingSystemType()),
                 createPushNotificationAttributes(pushNotification)
-        ));
-        LOGGER.debug("Sending SNS push notification - {} , recipient - {}", pushNotification, recipient);
-        return pushMessageSendingResult.messageId();
+        );
+    }
+
+    private PushMessage buildPushMessageForTemplate(final PushNotification pushNotification, final PushNotificationRecipient recipient, final Map<String, String> secureProperties) {
+        final TemplateContent templateContent;
+        final String templateName = pushNotification.getTemplateName();
+        final Locale locale = pushNotification.getLocale();
+        final Map<String, String> variables = variablesFor(pushNotification, secureProperties);
+        if (locale == null) {
+            templateContent = templateContentResolver.resolve(templateName, variables);
+        } else {
+            templateContent = templateContentResolver.resolve(templateName, variables, locale);
+        }
+        return PushMessage.of(
+                recipient.getDestinationRouteToken(),
+                templateContent.subject(),
+                templateContent.body(),
+                platformType(recipient.getDeviceOperatingSystemType()),
+                createPushNotificationAttributes(pushNotification)
+        );
+    }
+
+    private Map<String, String> variablesFor(final PushNotification pushNotification, final Map<String, String> secureProperties) {
+        final Map<String, String> variables = pushNotification.getProperties().stream().collect(Collectors.toMap(NotificationProperty::getPropertyKey, NotificationProperty::getPropertyValue));
+        variables.putAll(secureProperties);
+        return variables;
     }
 
     private PushMessageSender getPushMessageSender(final PushNotificationProviderType providerType) {
-        return pushMessageServiceProvider.lookupPushMessageSender(providerType)
-                .orElseThrow(() -> new IllegalStateException(format("No push message sender was registered for type '%s'.", providerType)));
+        return pushMessageServiceProvider.lookupPushMessageSender(providerType).orElseThrow(() -> new IllegalStateException(format("No push message sender was registered for type '%s'.", providerType)));
     }
 
-    private Map<String, String> createPushNotificationAttributes(final PushNotification pushNotification) {
+    private static PlatformType platformType(final DeviceOperatingSystemType operatingSystemType) {
+        switch (operatingSystemType) {
+            case IOS: {
+                return PlatformType.APNS;
+            }
+            case ANDROID: {
+                return PlatformType.GCM;
+            }
+            default: {
+                throw new ServicesRuntimeException("Unsupported operating system type - " + operatingSystemType);
+            }
+        }
+    }
+
+    private static Map<String, String> createPushNotificationAttributes(final PushNotification pushNotification) {
         final Map<String, String> attributes = new LinkedHashMap<>();
         pushNotification.getProperties().forEach(pushNotificationProperty -> {
             // Add to the map of attributes
@@ -107,20 +168,6 @@ public class PushNotificationProcessorImpl implements PushNotificationProcessor 
         });
         return attributes;
     }
-
-    private PlatformType platformType(final DeviceOperatingSystemType operatingSystemType) {
-        switch (operatingSystemType) {
-            case IOS:
-                return PlatformType.APNS;
-            case ANDROID:
-                return PlatformType.GCM;
-            default: {
-                final String message = "Unsupported operating system type - " + operatingSystemType;
-                throw new ServicesRuntimeException(message);
-            }
-        }
-    }
-
 
     private void updatePushNotificationState(final Long notificationId, final NotificationState notificationState) {
         pushNotificationService.updateNotificationState(notificationId, notificationState);
@@ -130,11 +177,13 @@ public class PushNotificationProcessorImpl implements PushNotificationProcessor 
         pushNotificationService.updateProviderExternalUuid(notificationId, providerUuId);
     }
 
-    private void assertPushNotificationState(final PushNotification pushNotification) {
+    private static void assertPushNotificationState(final PushNotification pushNotification) {
         final NotificationState notificationState = pushNotification.getState();
         if (!(NotificationState.CREATED.equals(notificationState) || NotificationState.FAILED.equals(notificationState))) {
-            LOGGER.error("Push notification with id - {} has invalid state - {}", pushNotification.getId(), notificationState);
+            logger.error("Push notification with id - {} has invalid state - {}", pushNotification.getId(), notificationState);
             throw new NotificationInvalidStateException(pushNotification.getId(), notificationState, new HashSet<>(Arrays.asList(NotificationState.CREATED, NotificationState.FAILED)));
         }
     }
+
+    //endregion
 }

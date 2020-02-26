@@ -11,9 +11,7 @@ final class ImmutablePushMessageServiceRegistry implements PushMessageServiceReg
     private final PushMessageSender sender;
     private final PushMessageSubscriber subscriber;
 
-    ImmutablePushMessageServiceRegistry(final String name,
-                                        final PushMessageSender sender,
-                                        final PushMessageSubscriber subscriber) {
+    ImmutablePushMessageServiceRegistry(final String name, final PushMessageSender sender, final PushMessageSubscriber subscriber) {
         this.name = name;
         this.sender = sender;
         this.subscriber = subscriber;

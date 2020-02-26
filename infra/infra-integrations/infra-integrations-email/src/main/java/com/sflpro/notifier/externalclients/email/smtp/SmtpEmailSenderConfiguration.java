@@ -1,6 +1,6 @@
 package com.sflpro.notifier.externalclients.email.smtp;
 
-import com.sflpro.notifier.spi.email.EmailTemplateContentResolver;
+import com.sflpro.notifier.spi.template.TemplateContentResolver;
 import com.sflpro.notifier.spi.email.SimpleEmailSenderRegistry;
 import com.sflpro.notifier.spi.email.TemplatedEmailSender;
 import com.sflpro.notifier.spi.email.TemplatedEmailSenderRegistry;
@@ -35,8 +35,8 @@ class SmtpEmailSenderConfiguration {
     }
 
     @Bean("smtpTemplatedEmailSender")
-    TemplatedEmailSender smtpTemplatedEmailSender(final EmailTemplateContentResolver emailTemplateContentResolver) {
-        return new SmtpTemplatedEmailSender(smtpTransportService(), emailTemplateContentResolver);
+    TemplatedEmailSender smtpTemplatedEmailSender(final TemplateContentResolver templateContentResolver) {
+        return new SmtpTemplatedEmailSender(smtpTransportService(), templateContentResolver);
     }
 
     @Bean("smtpTemplatedEmailSenderRegistry")

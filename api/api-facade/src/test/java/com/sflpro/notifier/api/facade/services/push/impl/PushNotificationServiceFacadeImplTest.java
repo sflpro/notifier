@@ -3,7 +3,6 @@ package com.sflpro.notifier.api.facade.services.push.impl;
 import com.sflpro.notifier.api.internal.facade.test.AbstractFacadeUnitTest;
 import com.sflpro.notifier.api.model.common.result.ErrorType;
 import com.sflpro.notifier.api.model.common.result.ResultResponseModel;
-import com.sflpro.notifier.api.model.push.PushNotificationPropertyModel;
 import com.sflpro.notifier.api.model.push.request.CreatePushNotificationRequest;
 import com.sflpro.notifier.api.model.push.request.UpdatePushNotificationSubscriptionRequest;
 import com.sflpro.notifier.api.model.push.response.CreatePushNotificationResponse;
@@ -32,7 +31,6 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.*;
@@ -198,7 +196,7 @@ public class PushNotificationServiceFacadeImplTest extends AbstractFacadeUnitTes
         user.setId(userId);
         // Expected push notification DTO
         final PushNotificationDto pushNotificationDto = new PushNotificationDto(request.getBody(), request.getSubject(), request.getClientIpAddress());
-        pushNotificationDto.setProperties(request.getProperties().stream().collect(Collectors.toMap(PushNotificationPropertyModel::getPropertyKey, PushNotificationPropertyModel::getPropertyValue)));
+        pushNotificationDto.setProperties(request.getProperties());
         final List<PushNotification> pushNotifications = createPushNotifications(10);
         // Reset
         resetAll();

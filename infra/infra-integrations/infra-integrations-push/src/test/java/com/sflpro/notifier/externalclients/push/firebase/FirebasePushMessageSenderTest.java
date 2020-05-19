@@ -11,7 +11,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -44,19 +43,20 @@ public class FirebasePushMessageSenderTest extends AbstractPushNotificationUnitT
 
     @Test
     public void testSendWithIllegalArguments() {
-        assertThatThrownBy(() -> pushMessageSender.send(null))
-                .isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> pushMessageSender.send(null)).isInstanceOf(IllegalArgumentException.class);
         verifyZeroInteractions(firebaseMessaging, defaultAndroidConfig, defaultApnsConfig);
     }
 
     @Test
     public void testSendToAndroidDeviceWithDefaultConfigsOnly() throws FirebaseMessagingException {
+        final Map<String, String> properties = new HashMap<>();
+        properties.put(uuid(), uuid());
         final PushMessage message = PushMessage.of(
                 uuid(),
                 uuid(),
                 uuid(),
                 PlatformType.GCM,
-                Collections.singletonMap(uuid(), uuid())
+                properties
         );
         final String messageId = uuid();
         final String ttlKey = "ttl";
@@ -100,6 +100,8 @@ public class FirebasePushMessageSenderTest extends AbstractPushNotificationUnitT
         properties.put(priorityKey, "HIGH");
         properties.put(collapseKey, uuid());
         properties.put(restrictedPackageNameKey, uuid());
+        properties.put("title", uuid());
+        properties.put("body", uuid());
         when(firebaseMessaging.send(isA(Message.class))).thenAnswer(invocation -> {
             checkProperties(message, invocation.getArgument(0));
             return messageId;
@@ -111,12 +113,14 @@ public class FirebasePushMessageSenderTest extends AbstractPushNotificationUnitT
 
     @Test
     public void testSendToIOSDeviceWithDefaultConfigsOnly() throws FirebaseMessagingException {
+        final Map<String, String> properties = new HashMap<>();
+        properties.put(uuid(), uuid());
         final PushMessage pushMessage = PushMessage.of(
                 uuid(),
                 uuid(),
                 uuid(),
                 PlatformType.APNS,
-                Collections.singletonMap(uuid(), uuid())
+                properties
         );
         final String messageId = uuid();
         final String badgeKey = "badge";
@@ -142,8 +146,17 @@ public class FirebasePushMessageSenderTest extends AbstractPushNotificationUnitT
 
     @Test
     public void testSendToIOSDeviceWithProvidedConfigs() throws FirebaseMessagingException {
+        final String messageId = uuid();
+        final String badgeKey = "badge";
+        final String categoryKey = "category";
+        final String soundKey = "sound";
+        final String alertKey = "alert";
         final Map<String, String> properties = new HashMap<>();
         properties.put(uuid(), uuid());
+        properties.put(badgeKey, "1");
+        properties.put(categoryKey, uuid());
+        properties.put(soundKey, uuid());
+        properties.put(alertKey, uuid());
         final PushMessage pushMessage = PushMessage.of(
                 uuid(),
                 uuid(),
@@ -151,15 +164,7 @@ public class FirebasePushMessageSenderTest extends AbstractPushNotificationUnitT
                 PlatformType.APNS,
                 properties
         );
-        final String messageId = uuid();
-        final String badgeKey = "badge";
-        final String categoryKey = "category";
-        final String soundKey = "sound";
-        final String alertKey = "alert";
-        properties.put(badgeKey, "1");
-        properties.put(categoryKey, uuid());
-        properties.put(soundKey, uuid());
-        properties.put(alertKey, uuid());
+
         when(firebaseMessaging.send(isA(Message.class))).thenAnswer(invocation -> {
             checkProperties(pushMessage, invocation.getArgument(0));
             return messageId;
@@ -172,9 +177,6 @@ public class FirebasePushMessageSenderTest extends AbstractPushNotificationUnitT
     private static void checkProperties(final PushMessage pushMessage, final Message message) {
         assertThat(message)
                 .hasFieldOrPropertyWithValue("data", pushMessage.properties())
-                .hasFieldOrPropertyWithValue("token", pushMessage.destinationRouteToken())
-                .hasFieldOrPropertyWithValue("notification.title", pushMessage.subject())
-                .hasFieldOrPropertyWithValue("notification.body", pushMessage.body());
+                .hasFieldOrPropertyWithValue("token", pushMessage.destinationRouteToken());
     }
-
 }

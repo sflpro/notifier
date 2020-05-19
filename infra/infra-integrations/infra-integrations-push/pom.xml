@@ -16,7 +16,7 @@
     </description>
 
     <properties>
-        <firebase-admin.version>6.8.1</firebase-admin.version>
+        <firebase-admin.version>6.13.0</firebase-admin.version>
     </properties>
 
     <build>

@@ -27,6 +27,10 @@ class FirebasePushMessageSender implements PushMessageSender {
 
     private static final Logger logger = LoggerFactory.getLogger(FirebasePushMessageSender.class);
 
+    private static final String TITLE = "title";
+
+    private static final String BODY = "body";
+
     private final FirebaseMessaging firebaseMessaging;
 
     private final Map<PlatformType, BiConsumer<PushMessage, Message.Builder>> platformConfigurationHandlers;
@@ -44,8 +48,8 @@ class FirebasePushMessageSender implements PushMessageSender {
         Assert.notNull(message, "Null was passed as an argument for parameter 'message'.");
         try {
             final Map<String, String> properties = message.properties();
-            properties.put("title", message.subject());
-            properties.put("body", message.body());
+            properties.put(TITLE, message.subject());
+            properties.put(BODY, message.body());
             final Message.Builder builder = Message.builder()
                     .setToken(message.destinationRouteToken())
                     .putAllData(properties);

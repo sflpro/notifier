@@ -51,6 +51,7 @@ public class FirebasePushMessageSenderTest extends AbstractPushNotificationUnitT
     public void testSendToAndroidDeviceWithDefaultConfigsOnly() throws FirebaseMessagingException {
         final Map<String, String> properties = new HashMap<>();
         properties.put(uuid(), uuid());
+
         final PushMessage message = PushMessage.of(
                 uuid(),
                 uuid(),
@@ -58,6 +59,8 @@ public class FirebasePushMessageSenderTest extends AbstractPushNotificationUnitT
                 PlatformType.GCM,
                 properties
         );
+        properties.put("title", message.subject());
+        properties.put("body", message.body());
         final String messageId = uuid();
         final String ttlKey = "ttl";
         final String priorityKey = "priority";
@@ -100,8 +103,8 @@ public class FirebasePushMessageSenderTest extends AbstractPushNotificationUnitT
         properties.put(priorityKey, "HIGH");
         properties.put(collapseKey, uuid());
         properties.put(restrictedPackageNameKey, uuid());
-        properties.put("title", uuid());
-        properties.put("body", uuid());
+        properties.put("title", message.subject());
+        properties.put("body", message.body());
         when(firebaseMessaging.send(isA(Message.class))).thenAnswer(invocation -> {
             checkProperties(message, invocation.getArgument(0));
             return messageId;

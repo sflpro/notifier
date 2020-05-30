@@ -4,6 +4,7 @@ import com.sflpro.notifier.db.entities.notification.UserNotification;
 import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
 import com.sflpro.notifier.db.entities.user.User;
 import com.sflpro.notifier.db.repositories.repositories.notification.AbstractNotificationRepository;
+import com.sflpro.notifier.db.repositories.repositories.notification.email.EmailNotificationFileAttachmentRepository;
 import com.sflpro.notifier.db.repositories.repositories.notification.email.EmailNotificationRepository;
 import com.sflpro.notifier.services.notification.UserNotificationService;
 import com.sflpro.notifier.services.notification.dto.UserNotificationDto;
@@ -35,6 +36,9 @@ class EmailNotificationServiceImpl extends AbstractNotificationServiceImpl<Email
     private EmailNotificationRepository emailNotificationRepository;
 
     @Autowired
+    private EmailNotificationFileAttachmentRepository emailNotificationFileAttachmentRepository;
+
+    @Autowired
     private UserService userService;
 
     @Autowired
@@ -52,6 +56,7 @@ class EmailNotificationServiceImpl extends AbstractNotificationServiceImpl<Email
         assertEmailNotificationDto(emailNotificationDto);
         LOGGER.debug("Creating email notification for DTO - {} and property dtos - {}", emailNotificationDto, emailNotificationDto.getProperties());
         EmailNotification emailNotification = new EmailNotification(true);
+        emailNotification.setFileAttachments(emailNotificationDto.getFileAttachments());
         emailNotificationDto.updateDomainEntityProperties(emailNotification);
         // Persist notification
         emailNotification = emailNotificationRepository.save(emailNotification);

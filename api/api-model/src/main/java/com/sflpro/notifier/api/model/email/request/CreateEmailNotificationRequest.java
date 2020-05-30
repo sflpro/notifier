@@ -32,6 +32,9 @@ public class CreateEmailNotificationRequest extends AbstractTemplatedCreateNotif
     @JsonProperty("subject")
     private String subject;
 
+    @JsonProperty("fileAttachments")
+    private List<EmailNotificationFileAttachmentModel> fileAttachments;
+
     /* Constructors */
     public CreateEmailNotificationRequest() {
         super();
@@ -60,6 +63,15 @@ public class CreateEmailNotificationRequest extends AbstractTemplatedCreateNotif
 
     public void setSubject(final String subject) {
         this.subject = subject;
+    }
+
+    public List<EmailNotificationFileAttachmentModel> getFileAttachments() {
+        return fileAttachments;
+    }
+
+    public CreateEmailNotificationRequest setFileAttachments(final List<EmailNotificationFileAttachmentModel> fileAttachments) {
+        this.fileAttachments = fileAttachments;
+        return this;
     }
 
     /* Validation methods */
@@ -95,6 +107,7 @@ public class CreateEmailNotificationRequest extends AbstractTemplatedCreateNotif
         builder.append(this.getProperties(), that.getProperties());
         builder.append(this.getSecureProperties(), that.getSecureProperties());
         builder.append(this.getLocale(), that.getLocale());
+        builder.append(this.fileAttachments, that.getFileAttachments());
         return builder.isEquals();
     }
 
@@ -109,6 +122,7 @@ public class CreateEmailNotificationRequest extends AbstractTemplatedCreateNotif
         builder.append(this.getProperties());
         builder.append(this.getSecureProperties());
         builder.append(this.getLocale());
+        builder.append(this.getFileAttachments());
         return builder.build();
     }
 
@@ -123,6 +137,7 @@ public class CreateEmailNotificationRequest extends AbstractTemplatedCreateNotif
         builder.append("properties", this.getProperties());
         builder.append("secureProperties", this.getSecureProperties());
         builder.append("language", this.getLocale());
+        builder.append("fileAttachments", this.getFileAttachments());
         return builder.build();
     }
 }

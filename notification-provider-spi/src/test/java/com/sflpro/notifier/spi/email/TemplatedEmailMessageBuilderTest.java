@@ -19,28 +19,32 @@ public class TemplatedEmailMessageBuilderTest {
                         null,
                         uuid(),
                         uuid(),
-                        Collections.emptyMap()
+                        Collections.emptyMap(),
+                        Collections.emptyList()
                 )
         ).isInstanceOf(IllegalArgumentException.class);
         assertThatThrownBy(() -> new TemplatedEmailMessageBuilder(
                         uuid(),
                         null,
                         uuid(),
-                        Collections.emptyMap()
+                        Collections.emptyMap(),
+                        Collections.emptyList()
                 )
         ).isInstanceOf(IllegalArgumentException.class);
         assertThatThrownBy(() -> new TemplatedEmailMessageBuilder(
                         uuid(),
                         uuid(),
                         null,
-                        Collections.emptyMap()
+                        Collections.emptyMap(),
+                        Collections.emptyList()
                 )
         ).isInstanceOf(IllegalArgumentException.class);
         assertThatThrownBy(() -> new TemplatedEmailMessageBuilder(
                         uuid(),
                         uuid(),
                         uuid(),
-                        null
+                        null,
+                        Collections.emptyList()
                 )
         ).isInstanceOf(IllegalArgumentException.class);
     }
@@ -51,7 +55,8 @@ public class TemplatedEmailMessageBuilderTest {
                         uuid(),
                         uuid(),
                         uuid(),
-                        Collections.emptyMap()
+                        Collections.emptyMap(),
+                        Collections.emptyList()
                 ).withLocale(null)
         ).isInstanceOf(IllegalArgumentException.class);
     }
@@ -62,7 +67,8 @@ public class TemplatedEmailMessageBuilderTest {
                         uuid(),
                         uuid(),
                         uuid(),
-                        Collections.emptyMap()
+                        Collections.emptyMap(),
+                        Collections.emptyList()
                 ).withSubject(null)
         ).isInstanceOf(IllegalArgumentException.class);
     }
@@ -79,7 +85,8 @@ public class TemplatedEmailMessageBuilderTest {
                 from,
                 to,
                 templateId,
-                variables
+                variables,
+                Collections.emptyList()
         )
                 .withSubject(subject)
                 .withLocale(locale).build())

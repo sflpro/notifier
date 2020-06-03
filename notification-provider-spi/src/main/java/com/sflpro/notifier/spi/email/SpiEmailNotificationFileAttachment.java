@@ -1,79 +1,71 @@
-package com.sflpro.notifier.db.entities.notification.email;
+package com.sflpro.notifier.spi.email;
 
-import com.sflpro.notifier.db.entities.AbstractDomainEntityModel;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 
 /**
  * User: Arthur Hakobyan
  * Company: SFL LLC
  * Date: 05/29/2020
  */
-@Entity
-@Table(name = "notification_email_file_attachment")
-public class EmailNotificationFileAttachment extends AbstractDomainEntityModel {
 
-    private static final long serialVersionUID = -736625849821741940L;
+public class SpiEmailNotificationFileAttachment {
 
     /* Properties */
-    @Column(name = "name")
     private String fileName;
 
-    @Column(name = "mime_type")
     private String mimeType;
 
-    @Column(name = "url",length = 1000)
     private String fileUrl;
 
-    /* Constructors */
-    public EmailNotificationFileAttachment() {
-        super();
+    /* Constructor */
+    public SpiEmailNotificationFileAttachment() {
     }
 
-    /* Properties getters and setters */
+    public SpiEmailNotificationFileAttachment(final String fileName,
+                                              final String mimeType,
+                                              final String fileUrl) {
+        this.fileName = fileName;
+        this.mimeType = mimeType;
+        this.fileUrl = fileUrl;
+    }
+
+    /* Getters and setters */
     public String getFileName() {
         return fileName;
     }
 
-    public EmailNotificationFileAttachment setFileName(String fileName) {
+    public void setFileName(final String fileName) {
         this.fileName = fileName;
-        return this;
     }
 
     public String getMimeType() {
         return mimeType;
     }
 
-    public EmailNotificationFileAttachment setMimeType(String mimeType) {
+    public void setMimeType(final String mimeType) {
         this.mimeType = mimeType;
-        return this;
     }
 
     public String getFileUrl() {
         return fileUrl;
     }
 
-    public EmailNotificationFileAttachment setFileUrl(String fileUrl) {
+    public void setFileUrl(final String fileUrl) {
         this.fileUrl = fileUrl;
-        return this;
     }
 
-    /* Equals, HashCode and ToString */
+    /* Equals, hashCode, toString */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
 
         if (o == null || getClass() != o.getClass()) return false;
 
-        EmailNotificationFileAttachment that = (EmailNotificationFileAttachment) o;
+        SpiEmailNotificationFileAttachment that = (SpiEmailNotificationFileAttachment) o;
 
         return new EqualsBuilder()
-                .appendSuper(super.equals(o))
                 .append(fileName, that.fileName)
                 .append(mimeType, that.mimeType)
                 .append(fileUrl, that.fileUrl)
@@ -83,7 +75,6 @@ public class EmailNotificationFileAttachment extends AbstractDomainEntityModel {
     @Override
     public int hashCode() {
         return new HashCodeBuilder(17, 37)
-                .appendSuper(super.hashCode())
                 .append(fileName)
                 .append(mimeType)
                 .append(fileUrl)
@@ -98,5 +89,4 @@ public class EmailNotificationFileAttachment extends AbstractDomainEntityModel {
                 .append("fileUrl", fileUrl)
                 .toString();
     }
-
 }

@@ -4,6 +4,7 @@ import com.sflpro.notifier.db.entities.notification.Notification;
 import com.sflpro.notifier.db.entities.notification.NotificationProviderType;
 import com.sflpro.notifier.db.entities.notification.NotificationState;
 import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
+import com.sflpro.notifier.db.entities.notification.email.EmailNotificationFileAttachment;
 import com.sflpro.notifier.db.entities.notification.email.NotificationProperty;
 import com.sflpro.notifier.services.common.exception.ServicesRuntimeException;
 import com.sflpro.notifier.services.notification.email.EmailNotificationProcessor;
@@ -15,6 +16,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 
 import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -82,8 +85,8 @@ class EmailNotificationProcessorImpl implements EmailNotificationProcessor {
         if (StringUtils.isNoneBlank(emailNotification.getTemplateName())) {
             getTemplatedEmailSender(emailNotification.getProviderType()).send(templatedMessageFor(emailNotification, secureProperties));
         } else {
-            Assert.hasText("Null or emty text was passed as an argument for parameter 'subject'.", emailNotification.getSubject());
-            Assert.hasText("Null or emty text was passed as an argument for parameter 'content'.", emailNotification.getContent());
+            Assert.hasText("Null or empty text was passed as an argument for parameter 'subject'.", emailNotification.getSubject());
+            Assert.hasText("Null or empty text was passed as an argument for parameter 'content'.", emailNotification.getContent());
             getSimpleEmailSender(emailNotification.getProviderType()).send(SimpleEmailMessage.of(
                     emailNotification.getSenderEmail(),
                     emailNotification.getRecipientEmail(),
@@ -101,7 +104,8 @@ class EmailNotificationProcessorImpl implements EmailNotificationProcessor {
                 emailNotification.getSenderEmail(),
                 emailNotification.getRecipientEmail(),
                 emailNotification.getTemplateName(),
-                variables
+                variables,
+                convertFileAttachments(emailNotification.getFileAttachments())
         );
         if (StringUtils.isNoneBlank(emailNotification.getSubject())) {
             messageBuilder.withSubject(emailNotification.getSubject());
@@ -122,6 +126,14 @@ class EmailNotificationProcessorImpl implements EmailNotificationProcessor {
         Assert.isTrue(notification.getState().equals(NotificationState.CREATED), "Notification state must be NotificationState.CREATED in order to proceed.");
     }
 
+    private List<SpiEmailNotificationFileAttachment> convertFileAttachments(List<EmailNotificationFileAttachment> from) {
+        List<SpiEmailNotificationFileAttachment> attachments = new ArrayList<>();
+        for (EmailNotificationFileAttachment item : from) {
+            attachments.add(new SpiEmailNotificationFileAttachment(
+                    item.getFileName(), item.getMimeType(), item.getFileUrl()));
+        }
+        return attachments;
+    }
 
     private void updateEmailNotificationState(final Long notificationId, final NotificationState notificationState) {
         emailNotificationService.updateNotificationState(notificationId, notificationState);

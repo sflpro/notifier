@@ -36,7 +36,7 @@ public class MandrillSimpleEmailSenderTest extends AbstractEmailNotificationUnit
 
     @Test
     public void testSend(){
-        final SimpleEmailMessage message = SimpleEmailMessage.of(uuid(),uuid(),uuid(),uuid());
+        final SimpleEmailMessage message = SimpleEmailMessage.of(uuid(), uuid(), uuid(), uuid(), null);
         mandrillSimpleEmailSender.send(message);
         verify(mandrillApiCommunicator).sendEmail(message);
     }

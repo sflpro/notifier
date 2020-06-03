@@ -19,7 +19,6 @@ final class ImmutableTemplatedEmailMessage extends AbstractEmailMessage implemen
     private final String templateId;
     private final Map<String, ?> variables;
     private final Locale locale;
-    private final List<SpiEmailNotificationFileAttachment> fileAttachments;
 
     ImmutableTemplatedEmailMessage(final String from,
                                    final String to,
@@ -28,11 +27,10 @@ final class ImmutableTemplatedEmailMessage extends AbstractEmailMessage implemen
                                    final Map<String, ?> variables,
                                    final Locale locale,
                                    final List<SpiEmailNotificationFileAttachment> fileAttachments) {
-        super(from, to, subject);
+        super(from, to, subject, fileAttachments);
         this.templateId = templateId;
         this.variables = variables;
         this.locale = locale;
-        this.fileAttachments = fileAttachments;
     }
 
     @Override
@@ -49,7 +47,6 @@ final class ImmutableTemplatedEmailMessage extends AbstractEmailMessage implemen
                 .append(templateId, that.templateId())
                 .append(variables, that.variables())
                 .append(locale, that.locale())
-                .append(fileAttachments, that.fileAttachments())
                 .isEquals();
     }
 
@@ -60,7 +57,6 @@ final class ImmutableTemplatedEmailMessage extends AbstractEmailMessage implemen
                 .append(templateId)
                 .append(variables)
                 .append(locale)
-                .append(fileAttachments)
                 .toHashCode();
     }
 
@@ -70,7 +66,6 @@ final class ImmutableTemplatedEmailMessage extends AbstractEmailMessage implemen
                 .append("templateId", templateId)
                 .append("variables", variables)
                 .append("locale", locale)
-                .append("fileAttachments", fileAttachments)
                 .toString();
     }
 
@@ -94,8 +89,4 @@ final class ImmutableTemplatedEmailMessage extends AbstractEmailMessage implemen
         return Optional.ofNullable(locale);
     }
 
-    @Override
-    public List<SpiEmailNotificationFileAttachment> fileAttachments() {
-        return fileAttachments;
-    }
 }

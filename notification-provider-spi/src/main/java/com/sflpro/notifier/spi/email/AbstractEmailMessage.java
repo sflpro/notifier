@@ -4,6 +4,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import java.util.List;
 /**
  * Created by Hayk Mkrtchyan.
  * Date: 6/19/19
@@ -14,16 +15,18 @@ abstract class AbstractEmailMessage implements EmailMessage {
     private final String from;
     private final String to;
     private final String subject;
+    private final List<SpiEmailNotificationFileAttachment> fileAttachments;
 
     AbstractEmailMessage(final String from, final String to) {
-       this(from,to,null);
+        this(from, to, null, null);
     }
 
 
-    AbstractEmailMessage(final String from, final String to, final String subject) {
+    AbstractEmailMessage(final String from, final String to, final String subject, final List<SpiEmailNotificationFileAttachment> fileAttachments) {
         this.from = from;
         this.to = to;
         this.subject = subject;
+        this.fileAttachments = fileAttachments;
     }
 
 
@@ -40,6 +43,7 @@ abstract class AbstractEmailMessage implements EmailMessage {
                 .append(from, that.from)
                 .append(to, that.to)
                 .append(subject, that.subject)
+                .append(fileAttachments, that.fileAttachments)
                 .isEquals();
     }
 
@@ -48,6 +52,7 @@ abstract class AbstractEmailMessage implements EmailMessage {
         return new HashCodeBuilder(17, 37)
                 .append(from)
                 .append(to)
+                .append(fileAttachments)
                 .toHashCode();
     }
 
@@ -57,6 +62,7 @@ abstract class AbstractEmailMessage implements EmailMessage {
                 .append("from", from)
                 .append("to", to)
                 .append("subject", subject)
+                .append("fileAttachments", fileAttachments)
                 .toString();
     }
 
@@ -68,6 +74,11 @@ abstract class AbstractEmailMessage implements EmailMessage {
     @Override
     public String to() {
         return to;
+    }
+
+    @Override
+    public List<SpiEmailNotificationFileAttachment> fileAttachments() {
+        return fileAttachments;
     }
 
     public String getSubject() {

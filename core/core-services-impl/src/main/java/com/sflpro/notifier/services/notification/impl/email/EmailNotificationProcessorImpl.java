@@ -91,7 +91,8 @@ class EmailNotificationProcessorImpl implements EmailNotificationProcessor {
                     emailNotification.getSenderEmail(),
                     emailNotification.getRecipientEmail(),
                     emailNotification.getSubject(),
-                    emailNotification.getContent()
+                    emailNotification.getContent(),
+                    convertFileAttachments(emailNotification.getFileAttachments())
             ));
         }
         logger.debug("Successfully sent email message for notification with id - {}", emailNotification.getId());

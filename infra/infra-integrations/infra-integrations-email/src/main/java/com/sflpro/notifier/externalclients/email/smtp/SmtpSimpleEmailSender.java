@@ -4,8 +4,6 @@ package com.sflpro.notifier.externalclients.email.smtp;
 import com.sflpro.notifier.spi.email.SimpleEmailMessage;
 import com.sflpro.notifier.spi.email.SimpleEmailSender;
 
-import java.util.Collections;
-
 /**
  * Created by Hayk Mkrtchyan.
  * Date: 6/19/19
@@ -26,6 +24,6 @@ class SmtpSimpleEmailSender implements SimpleEmailSender {
                 message.to(),
                 message.subject(),
                 message.body(),
-                Collections.emptyList());
+                message.fileAttachments());
     }
 }

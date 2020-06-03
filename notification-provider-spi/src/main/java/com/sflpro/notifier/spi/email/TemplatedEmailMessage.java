@@ -2,7 +2,6 @@ package com.sflpro.notifier.spi.email;
 
 import org.springframework.util.Assert;
 
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
@@ -19,20 +18,18 @@ public interface TemplatedEmailMessage extends EmailMessage {
     @SuppressWarnings("squid:S1452")
     Map<String, ?> variables();
 
-    List<SpiEmailNotificationFileAttachment> fileAttachments();
-
     default Optional<String> subject() {
         return Optional.empty();
     }
 
     default TemplatedEmailMessage withSubject(final String subject) {
         Assert.notNull(subject, "Null was passed as an argument for parameter 'subject'.");
-        return new ImmutableTemplatedEmailMessage(from(), to(), templateId(), subject, variables(), locale().orElse(null), fileAttachments());
+        return new ImmutableTemplatedEmailMessage(from(), to(), templateId(), subject, variables(), locale().orElse(null), null);
     }
 
     default TemplatedEmailMessage withLocale(final Locale locale) {
         Assert.notNull(locale, "Null was passed as an argument for parameter 'locale'.");
-        return new ImmutableTemplatedEmailMessage(from(), to(), templateId(), subject().orElse(null), variables(), locale, fileAttachments());
+        return new ImmutableTemplatedEmailMessage(from(), to(), templateId(), subject().orElse(null), variables(), locale, null);
     }
 
     default Optional<Locale> locale() {

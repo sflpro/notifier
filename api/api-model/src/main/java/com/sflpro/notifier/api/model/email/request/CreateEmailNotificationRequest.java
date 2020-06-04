@@ -10,6 +10,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.annotation.Nonnull;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -33,7 +34,7 @@ public class CreateEmailNotificationRequest extends AbstractTemplatedCreateNotif
     private String subject;
 
     @JsonProperty("fileAttachments")
-    private List<EmailNotificationFileAttachmentModel> fileAttachments;
+    private List<EmailNotificationFileAttachmentModel> fileAttachments = Collections.emptyList();
 
     /* Constructors */
     public CreateEmailNotificationRequest() {

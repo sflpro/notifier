@@ -92,7 +92,7 @@ class EmailNotificationProcessorImpl implements EmailNotificationProcessor {
                     emailNotification.getRecipientEmail(),
                     emailNotification.getSubject(),
                     emailNotification.getContent(),
-                    convertFileAttachments(emailNotification.getFileAttachments())
+                    copyFileAttachments(emailNotification.getFileAttachments())
             ));
         }
         logger.debug("Successfully sent email message for notification with id - {}", emailNotification.getId());
@@ -106,7 +106,7 @@ class EmailNotificationProcessorImpl implements EmailNotificationProcessor {
                 emailNotification.getRecipientEmail(),
                 emailNotification.getTemplateName(),
                 variables,
-                convertFileAttachments(emailNotification.getFileAttachments())
+                copyFileAttachments(emailNotification.getFileAttachments())
         );
         if (StringUtils.isNoneBlank(emailNotification.getSubject())) {
             messageBuilder.withSubject(emailNotification.getSubject());
@@ -127,13 +127,13 @@ class EmailNotificationProcessorImpl implements EmailNotificationProcessor {
         Assert.isTrue(notification.getState().equals(NotificationState.CREATED), "Notification state must be NotificationState.CREATED in order to proceed.");
     }
 
-    private List<SpiEmailNotificationFileAttachment> convertFileAttachments(List<EmailNotificationFileAttachment> from) {
-        List<SpiEmailNotificationFileAttachment> attachments = new ArrayList<>();
-        for (EmailNotificationFileAttachment item : from) {
-            attachments.add(new SpiEmailNotificationFileAttachment(
-                    item.getFileName(), item.getMimeType(), item.getFileUrl()));
+    private List<SpiEmailNotificationFileAttachment> copyFileAttachments(List<EmailNotificationFileAttachment> fileAttachmentResource) {
+        List<SpiEmailNotificationFileAttachment> destinationAttachments = new ArrayList<>();
+        for (EmailNotificationFileAttachment attachment : fileAttachmentResource) {
+            destinationAttachments.add(new SpiEmailNotificationFileAttachment(
+                    attachment.getFileName(), attachment.getMimeType(), attachment.getFileUrl()));
         }
-        return attachments;
+        return destinationAttachments;
     }
 
     private void updateEmailNotificationState(final Long notificationId, final NotificationState notificationState) {

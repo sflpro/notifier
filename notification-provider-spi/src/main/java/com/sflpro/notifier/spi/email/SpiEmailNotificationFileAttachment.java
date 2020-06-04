@@ -3,6 +3,7 @@ package com.sflpro.notifier.spi.email;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.springframework.util.Assert;
 
 /**
  * User: Arthur Hakobyan
@@ -26,6 +27,8 @@ public class SpiEmailNotificationFileAttachment {
     public SpiEmailNotificationFileAttachment(final String fileName,
                                               final String mimeType,
                                               final String fileUrl) {
+        Assert.notNull(fileName, "File name has not to be null");
+        Assert.notNull(fileUrl, "File URL has not to be null");
         this.fileName = fileName;
         this.mimeType = mimeType;
         this.fileUrl = fileUrl;

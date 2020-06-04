@@ -214,7 +214,7 @@ public class MandrillApiCommunicatorImplTest extends AbstractEmailNotificationUn
 
     @Test
     public void testSendEmaileStatusSuccess() throws IOException, MandrillApiError {
-        final SimpleEmailMessage message = SimpleEmailMessage.of(uuid(), uuid(), uuid(), uuid(), null);
+        final SimpleEmailMessage message = SimpleEmailMessage.of(uuid(), uuid(), uuid(), uuid(), Collections.emptyList());
         when(mandrillMessageStatus.getStatus()).thenReturn("invalid");
         when(mandrillMessagesApi.send(
                 isA(MandrillMessage.class),
@@ -266,19 +266,19 @@ public class MandrillApiCommunicatorImplTest extends AbstractEmailNotificationUn
 
 
         static SimpleEmailMessage withoutFrom() {
-            return new InvalidSimpleEmailMessage(null, uuid(), uuid(), uuid(), null);
+            return new InvalidSimpleEmailMessage(null, uuid(), uuid(), uuid(), Collections.emptyList());
         }
 
         static SimpleEmailMessage withoutTo() {
-            return new InvalidSimpleEmailMessage(uuid(), null, uuid(), uuid(), null);
+            return new InvalidSimpleEmailMessage(uuid(), null, uuid(), uuid(), Collections.emptyList());
         }
 
         static SimpleEmailMessage withoutSubject() {
-            return new InvalidSimpleEmailMessage(uuid(), uuid(), null, uuid(), null);
+            return new InvalidSimpleEmailMessage(uuid(), uuid(), null, uuid(), Collections.emptyList());
         }
 
         static SimpleEmailMessage withoutBody() {
-            return new InvalidSimpleEmailMessage(uuid(), uuid(), uuid(), null, null);
+            return new InvalidSimpleEmailMessage(uuid(), uuid(), uuid(), null, Collections.emptyList());
         }
 
         @Override

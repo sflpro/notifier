@@ -8,6 +8,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
+import java.util.Collections;
+
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.verify;
 
@@ -36,7 +38,7 @@ public class MandrillSimpleEmailSenderTest extends AbstractEmailNotificationUnit
 
     @Test
     public void testSend(){
-        final SimpleEmailMessage message = SimpleEmailMessage.of(uuid(), uuid(), uuid(), uuid(), null);
+        final SimpleEmailMessage message = SimpleEmailMessage.of(uuid(), uuid(), uuid(), uuid(), Collections.emptyList());
         mandrillSimpleEmailSender.send(message);
         verify(mandrillApiCommunicator).sendEmail(message);
     }

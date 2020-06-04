@@ -68,7 +68,7 @@ class EmailNotificationServiceFacadeImpl implements EmailNotificationServiceFaca
         emailNotificationDto.setProperties(request.getProperties());
         emailNotificationDto.setUserUuid(request.getUserUuId());
         emailNotificationDto.setHasSecureProperties(!request.getSecureProperties().isEmpty());
-        emailNotificationDto.setFileAttachments(copyAttachmentsList(request.getFileAttachments()));
+        emailNotificationDto.setFileAttachments(copyFileAttachments(request.getFileAttachments()));
         return emailNotificationDto;
     }
 
@@ -84,15 +84,16 @@ class EmailNotificationServiceFacadeImpl implements EmailNotificationServiceFaca
         return notificationModel;
     }
 
-    private List<EmailNotificationFileAttachment> copyAttachmentsList(List<EmailNotificationFileAttachmentModel> from) {
-        List<EmailNotificationFileAttachment> attachments = new ArrayList<>();
-        for (EmailNotificationFileAttachmentModel model : from) {
+    private List<EmailNotificationFileAttachment> copyFileAttachments(final List<EmailNotificationFileAttachmentModel> fileAttachmentResource) {
+        List<EmailNotificationFileAttachment> destinationAttachments = new ArrayList<>();
+
+        for (EmailNotificationFileAttachmentModel attachment : fileAttachmentResource) {
             EmailNotificationFileAttachment item = new EmailNotificationFileAttachment();
-            item.setFileName(model.getFileName());
-            item.setFileUrl(model.getFileUrl());
-            item.setMimeType(model.getMimeType());
-            attachments.add(item);
+            item.setFileName(attachment.getFileName());
+            item.setFileUrl(attachment.getFileUrl());
+            item.setMimeType(attachment.getMimeType());
+            destinationAttachments.add(item);
         }
-        return attachments;
+        return destinationAttachments;
     }
 }

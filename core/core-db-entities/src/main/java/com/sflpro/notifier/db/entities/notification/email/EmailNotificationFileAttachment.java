@@ -21,13 +21,13 @@ public class EmailNotificationFileAttachment extends AbstractDomainEntityModel {
     private static final long serialVersionUID = -736625849821741940L;
 
     /* Properties */
-    @Column(name = "name")
+    @Column(name = "file_name", nullable = false)
     private String fileName;
 
     @Column(name = "mime_type")
     private String mimeType;
 
-    @Column(name = "url",length = 1000)
+    @Column(name = "url", length = 1000, nullable = false)
     private String fileUrl;
 
     /* Constructors */

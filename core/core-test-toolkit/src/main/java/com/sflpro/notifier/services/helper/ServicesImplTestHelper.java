@@ -100,6 +100,7 @@ public class ServicesImplTestHelper {
         notificationDto.setProperties(Collections.singletonMap("token", UUID.randomUUID().toString()));
         notificationDto.setProviderType(NotificationProviderType.SMTP_SERVER);
         EmailNotificationFileAttachment fileAttachment = new EmailNotificationFileAttachment();
+        fileAttachment.setFileName("someting.jpg");
         fileAttachment.setFileUrl("http://somthing.something.com");
         notificationDto.setFileAttachments(Collections.singletonList(fileAttachment));
         return notificationDto;

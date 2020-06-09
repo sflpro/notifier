@@ -35,10 +35,7 @@ import com.sflpro.notifier.services.notification.dto.push.PushNotificationSubscr
 import com.sflpro.notifier.services.notification.dto.sms.SmsNotificationDto;
 import com.sflpro.notifier.services.user.dto.UserDto;
 
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -87,6 +84,7 @@ public class ServiceFacadeImplTestHelper {
         properties.put("prop2", "value2");
         properties.put("prop3", "value3");
         request.setProperties(properties);
+        request.setFileAttachments(Collections.emptyList());
         return request;
     }
 

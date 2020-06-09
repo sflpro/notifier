@@ -40,8 +40,8 @@ public abstract class AbstractDomainEntityModel implements Serializable {
 
     /* Constructors */
     public AbstractDomainEntityModel() {
-        created = LocalDateTime.now().truncatedTo(ChronoUnit.MICROS);
-        updated = LocalDateTime.now().truncatedTo(ChronoUnit.MICROS);
+        created = LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS);
+        updated = LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS);
     }
 
     /* Getters and setters */

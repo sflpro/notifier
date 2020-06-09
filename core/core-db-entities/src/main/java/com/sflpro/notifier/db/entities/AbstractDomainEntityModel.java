@@ -8,6 +8,8 @@ import org.joda.time.MutableDateTime;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
 /**
@@ -28,18 +30,18 @@ public abstract class AbstractDomainEntityModel implements Serializable {
     private Long id;
 
     @Column(name = "created", nullable = false)
-    private Date created;
+    private LocalDateTime created;
 
     @Column(name = "removed", nullable = true)
-    private Date removed;
+    private LocalDateTime removed;
 
     @Column(name = "updated", nullable = false)
-    private Date updated;
+    private LocalDateTime updated;
 
     /* Constructors */
     public AbstractDomainEntityModel() {
-        setCreated(new Date());
-        setUpdated(getCreated());
+        created = LocalDateTime.now().truncatedTo(ChronoUnit.MICROS);
+        updated = LocalDateTime.now().truncatedTo(ChronoUnit.MICROS);
     }
 
     /* Getters and setters */
@@ -51,28 +53,31 @@ public abstract class AbstractDomainEntityModel implements Serializable {
         this.id = id;
     }
 
-    public Date getCreated() {
-        return cloneDateIfNotNull(created);
+    public LocalDateTime getCreated() {
+        return created;
     }
 
-    public void setCreated(final Date created) {
-        this.created = cloneDateIfNotNullAndStripOffMillisOfSecond(created);
+    public AbstractDomainEntityModel setCreated(LocalDateTime created) {
+        this.created = created;
+        return this;
     }
 
-    public Date getRemoved() {
-        return cloneDateIfNotNull(removed);
+    public LocalDateTime getRemoved() {
+        return removed;
     }
 
-    public void setRemoved(final Date removed) {
-        this.removed = cloneDateIfNotNullAndStripOffMillisOfSecond(removed);
+    public AbstractDomainEntityModel setRemoved(LocalDateTime removed) {
+        this.removed = removed;
+        return this;
     }
 
-    public Date getUpdated() {
-        return cloneDateIfNotNull(updated);
+    public LocalDateTime getUpdated() {
+        return updated;
     }
 
-    public void setUpdated(final Date updated) {
-        this.updated = cloneDateIfNotNullAndStripOffMillisOfSecond(updated);
+    public AbstractDomainEntityModel setUpdated(LocalDateTime updated) {
+        this.updated = updated;
+        return this;
     }
 
     /* Static utility methods */

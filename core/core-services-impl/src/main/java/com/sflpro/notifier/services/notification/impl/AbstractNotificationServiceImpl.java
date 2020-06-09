@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import javax.annotation.Nonnull;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * User: Ruben Dilanyan
@@ -48,7 +48,7 @@ public abstract class AbstractNotificationServiceImpl<T extends Notification> im
         T notification = getRepository().findById(notificationId).orElseThrow(() -> new NotificationNotFoundForIdException(notificationId, getInstanceClass()));
         // Update notification state
         notification.setState(notificationState);
-        notification.setUpdated(new Date());
+        notification.setUpdated(LocalDateTime.now());
         // Persist notification
         notification = getRepository().save(notification);
         LOGGER.debug("Successfully updated state for notification with id - {}, notification state - {}", notificationId, notificationState);
@@ -65,7 +65,7 @@ public abstract class AbstractNotificationServiceImpl<T extends Notification> im
         T notification = getRepository().findById(notificationId).orElseThrow(() -> new NotificationNotFoundForIdException(notificationId, getInstanceClass()));
         // Update notification external uuid
         notification.setProviderExternalUuId(providerExternalUuid);
-        notification.setUpdated(new Date());
+        notification.setUpdated(LocalDateTime.now());
         // Persist notification
         notification = getRepository().save(notification);
         LOGGER.debug("Successfully updated notification external uuid for notification with id - {}, notification - {}", notification.getId(), notification);

@@ -12,7 +12,7 @@ import java.io.Serializable;
  * Company: SFL LLC
  * Date: 05/24/2020
  */
-public class EmailNotificationFileAttachmentModel implements Serializable {
+public class EmailNotificationFileAttachmentRequest implements Serializable {
 
     private static final long serialVersionUID = -2738802140434754413L;
 
@@ -27,7 +27,7 @@ public class EmailNotificationFileAttachmentModel implements Serializable {
     private String fileUrl;
 
     /* Constructors */
-    public EmailNotificationFileAttachmentModel() {
+    public EmailNotificationFileAttachmentRequest() {
     }
 
     /* Properties Getters and Setters */
@@ -62,7 +62,7 @@ public class EmailNotificationFileAttachmentModel implements Serializable {
 
         if (o == null || getClass() != o.getClass()) return false;
 
-        EmailNotificationFileAttachmentModel that = (EmailNotificationFileAttachmentModel) o;
+        EmailNotificationFileAttachmentRequest that = (EmailNotificationFileAttachmentRequest) o;
 
         return new EqualsBuilder()
                 .append(fileName, that.fileName)

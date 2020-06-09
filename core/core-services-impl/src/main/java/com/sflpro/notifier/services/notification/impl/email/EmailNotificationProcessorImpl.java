@@ -92,7 +92,7 @@ class EmailNotificationProcessorImpl implements EmailNotificationProcessor {
                     emailNotification.getRecipientEmail(),
                     emailNotification.getSubject(),
                     emailNotification.getContent(),
-                    copyFileAttachments(emailNotification.getFileAttachments())
+                    mapFileAttachments(emailNotification.getFileAttachments())
             ));
         }
         logger.debug("Successfully sent email message for notification with id - {}", emailNotification.getId());
@@ -106,7 +106,7 @@ class EmailNotificationProcessorImpl implements EmailNotificationProcessor {
                 emailNotification.getRecipientEmail(),
                 emailNotification.getTemplateName(),
                 variables,
-                copyFileAttachments(emailNotification.getFileAttachments())
+                mapFileAttachments(emailNotification.getFileAttachments())
         );
         if (StringUtils.isNoneBlank(emailNotification.getSubject())) {
             messageBuilder.withSubject(emailNotification.getSubject());
@@ -127,7 +127,7 @@ class EmailNotificationProcessorImpl implements EmailNotificationProcessor {
         Assert.isTrue(notification.getState().equals(NotificationState.CREATED), "Notification state must be NotificationState.CREATED in order to proceed.");
     }
 
-    private List<SpiEmailNotificationFileAttachment> copyFileAttachments(List<EmailNotificationFileAttachment> fileAttachmentResource) {
+    private List<SpiEmailNotificationFileAttachment> mapFileAttachments(List<EmailNotificationFileAttachment> fileAttachmentResource) {
         List<SpiEmailNotificationFileAttachment> destinationAttachments = new ArrayList<>();
         for (EmailNotificationFileAttachment attachment : fileAttachmentResource) {
             destinationAttachments.add(new SpiEmailNotificationFileAttachment(

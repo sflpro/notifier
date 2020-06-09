@@ -34,7 +34,7 @@ public class CreateEmailNotificationRequest extends AbstractTemplatedCreateNotif
     private String subject;
 
     @JsonProperty("fileAttachments")
-    private List<EmailNotificationFileAttachmentModel> fileAttachments = Collections.emptyList();
+    private List<EmailNotificationFileAttachmentRequest> fileAttachments = Collections.emptyList();
 
     /* Constructors */
     public CreateEmailNotificationRequest() {
@@ -66,11 +66,11 @@ public class CreateEmailNotificationRequest extends AbstractTemplatedCreateNotif
         this.subject = subject;
     }
 
-    public List<EmailNotificationFileAttachmentModel> getFileAttachments() {
+    public List<EmailNotificationFileAttachmentRequest> getFileAttachments() {
         return fileAttachments;
     }
 
-    public CreateEmailNotificationRequest setFileAttachments(final List<EmailNotificationFileAttachmentModel> fileAttachments) {
+    public CreateEmailNotificationRequest setFileAttachments(final List<EmailNotificationFileAttachmentRequest> fileAttachments) {
         this.fileAttachments = fileAttachments;
         return this;
     }

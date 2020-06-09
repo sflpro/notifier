@@ -9,19 +9,15 @@ import com.sflpro.notifier.externalclients.email.mandrill.exception.MandrillMess
 import com.sflpro.notifier.externalclients.email.mandrill.exception.MandrillMessageRejectedException;
 import com.sflpro.notifier.spi.email.EmailMessage;
 import com.sflpro.notifier.spi.email.SimpleEmailMessage;
-import com.sflpro.notifier.spi.email.SpiEmailNotificationFileAttachment;
 import com.sflpro.notifier.spi.email.TemplatedEmailMessage;
-import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
 
@@ -59,9 +55,6 @@ public class MandrillApiCommunicatorImpl implements MandrillApiCommunicator {
         mandrillMessage.setTo(recipients);
         mandrillMessage.setFromEmail(message.from());
         mandrillMessage.setMergeLanguage(MERGE_LANGUAGE_MAILCHIMP);
-        if (!message.fileAttachments().isEmpty()) {
-            mandrillMessage.setAttachments(copyFileAttachments(message.fileAttachments()));
-        }
         return mandrillMessage;
     }
 
@@ -166,23 +159,4 @@ public class MandrillApiCommunicatorImpl implements MandrillApiCommunicator {
         Assert.hasText(message.to(), "Mandrill message to should not be null");
     }
 
-    private static List<MandrillMessage.MessageContent> copyFileAttachments(final List<SpiEmailNotificationFileAttachment> fileAttachmentResource) {
-        List<MandrillMessage.MessageContent> destinationAttachments = new ArrayList<>();
-
-        for (SpiEmailNotificationFileAttachment attachment : fileAttachmentResource) {
-            MandrillMessage.MessageContent messageContent = new MandrillMessage.MessageContent();
-            messageContent.setName(attachment.getFileName());
-            messageContent.setType(attachment.getMimeType());
-            messageContent.setBinary(true);
-            String encodedString = null;
-            try {
-                byte[] fileContent = FileUtils.readFileToByteArray(new File(attachment.getFileUrl()));
-                encodedString = Base64.getEncoder().encodeToString(fileContent);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            messageContent.setContent(encodedString);
-        }
-        return destinationAttachments;
-    }
 }

@@ -4,7 +4,7 @@ import com.sflpro.notifier.api.facade.services.email.EmailNotificationServiceFac
 import com.sflpro.notifier.api.model.common.result.ResultResponseModel;
 import com.sflpro.notifier.api.model.email.EmailNotificationModel;
 import com.sflpro.notifier.api.model.email.request.CreateEmailNotificationRequest;
-import com.sflpro.notifier.api.model.email.request.EmailNotificationFileAttachmentModel;
+import com.sflpro.notifier.api.model.email.request.EmailNotificationFileAttachmentRequest;
 import com.sflpro.notifier.api.model.email.response.CreateEmailNotificationResponse;
 import com.sflpro.notifier.api.model.notification.NotificationClientType;
 import com.sflpro.notifier.api.model.notification.NotificationStateClientType;
@@ -68,7 +68,7 @@ class EmailNotificationServiceFacadeImpl implements EmailNotificationServiceFaca
         emailNotificationDto.setProperties(request.getProperties());
         emailNotificationDto.setUserUuid(request.getUserUuId());
         emailNotificationDto.setHasSecureProperties(!request.getSecureProperties().isEmpty());
-        emailNotificationDto.setFileAttachments(copyFileAttachments(request.getFileAttachments()));
+        emailNotificationDto.setFileAttachments(mapFileAttachments(request.getFileAttachments()));
         return emailNotificationDto;
     }
 
@@ -84,10 +84,10 @@ class EmailNotificationServiceFacadeImpl implements EmailNotificationServiceFaca
         return notificationModel;
     }
 
-    private List<EmailNotificationFileAttachment> copyFileAttachments(final List<EmailNotificationFileAttachmentModel> fileAttachmentResource) {
+    private List<EmailNotificationFileAttachment> mapFileAttachments(final List<EmailNotificationFileAttachmentRequest> fileAttachmentResource) {
         List<EmailNotificationFileAttachment> destinationAttachments = new ArrayList<>();
 
-        for (EmailNotificationFileAttachmentModel attachment : fileAttachmentResource) {
+        for (EmailNotificationFileAttachmentRequest attachment : fileAttachmentResource) {
             EmailNotificationFileAttachment item = new EmailNotificationFileAttachment();
             item.setFileName(attachment.getFileName());
             item.setFileUrl(attachment.getFileUrl());

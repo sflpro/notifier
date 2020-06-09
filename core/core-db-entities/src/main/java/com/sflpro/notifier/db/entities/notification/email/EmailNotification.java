@@ -35,7 +35,7 @@ public class EmailNotification extends Notification {
     @Column(name = "locale")
     private Locale locale;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "notification_email_id", referencedColumnName = "id")
     private List<EmailNotificationFileAttachment> fileAttachments;
 

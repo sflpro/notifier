@@ -3,14 +3,12 @@ package com.sflpro.notifier.db.entities;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.joda.time.MutableDateTime;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.Date;
 
 /**
  * User: Ruben Dilanyan
@@ -57,7 +55,7 @@ public abstract class AbstractDomainEntityModel implements Serializable {
         return created;
     }
 
-    public AbstractDomainEntityModel setCreated(LocalDateTime created) {
+    public AbstractDomainEntityModel setCreated(final LocalDateTime created) {
         this.created = created;
         return this;
     }
@@ -66,7 +64,7 @@ public abstract class AbstractDomainEntityModel implements Serializable {
         return removed;
     }
 
-    public AbstractDomainEntityModel setRemoved(LocalDateTime removed) {
+    public AbstractDomainEntityModel setRemoved(final LocalDateTime removed) {
         this.removed = removed;
         return this;
     }
@@ -75,28 +73,12 @@ public abstract class AbstractDomainEntityModel implements Serializable {
         return updated;
     }
 
-    public AbstractDomainEntityModel setUpdated(LocalDateTime updated) {
+    public AbstractDomainEntityModel setUpdated(final LocalDateTime updated) {
         this.updated = updated;
         return this;
     }
 
     /* Static utility methods */
-    public static Date cloneDateIfNotNull(final Date date) {
-        if (date == null) {
-            return null;
-        }
-        return (Date) date.clone();
-    }
-
-    public static Date cloneDateIfNotNullAndStripOffMillisOfSecond(final Date date) {
-        if (date == null) {
-            return null;
-        }
-        final MutableDateTime mutableDateTime = new MutableDateTime(date);
-        mutableDateTime.setMillisOfSecond(0);
-        return mutableDateTime.toDate();
-    }
-
     public static Long getIdOrNull(final AbstractDomainEntityModel entity) {
         return entity != null ? entity.getId() : null;
     }
@@ -108,23 +90,22 @@ public abstract class AbstractDomainEntityModel implements Serializable {
     /* Equals, HashCode and ToString */
     @Override
     public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof AbstractDomainEntityModel)) {
-            return false;
-        }
+        if (this == o) return true;
+
+        if (o == null || getClass() != o.getClass()) return false;
+
         final AbstractDomainEntityModel that = (AbstractDomainEntityModel) o;
-        final EqualsBuilder builder = new EqualsBuilder();
-        builder.append(getId(), that.getId());
-        return builder.isEquals();
+
+        return new EqualsBuilder()
+                .append(getId(), that.getId())
+                .isEquals();
     }
 
     @Override
     public int hashCode() {
-        final HashCodeBuilder builder = new HashCodeBuilder();
-        builder.append(getId());
-        return builder.build();
+        return new HashCodeBuilder(17, 37)
+                .append(getId())
+                .toHashCode();
     }
 
     @Override

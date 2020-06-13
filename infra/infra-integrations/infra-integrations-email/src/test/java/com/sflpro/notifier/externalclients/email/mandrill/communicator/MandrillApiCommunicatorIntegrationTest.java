@@ -48,7 +48,7 @@ public class MandrillApiCommunicatorIntegrationTest extends AbstractEmailNotific
         final Map<String, Object> templateContent = new HashMap<>();
         templateContent.put("token", "super-secure-token");
         final TemplatedEmailMessage message = new TemplatedEmailMessageBuilder("some_dummy_mail_from@weadapt.digital",
-                "some_dummy_mail@weadapt.digital", templateName, templateContent, Collections.emptyList()).build();
+                "some_dummy_mail@weadapt.digital", templateName, templateContent, Collections.emptySet()).build();
         // Execute send request
         try {
             mandrillApiCommunicator.sendEmailTemplate(message);
@@ -65,7 +65,7 @@ public class MandrillApiCommunicatorIntegrationTest extends AbstractEmailNotific
         Map<String, Object> templateContent = new HashMap<>();
         templateContent.put("token", "super-secure-token");
         final TemplatedEmailMessage message = new TemplatedEmailMessageBuilder("some_dummy_mail_from@weadapt.digital",
-                "some_dummy_mal@weadapt.digital", templateName, templateContent, Collections.emptyList()).build();
+                "some_dummy_mal@weadapt.digital", templateName, templateContent, Collections.emptySet()).build();
         // Execute send request
         try {
             mandrillApiCommunicator.sendEmailTemplate(message);

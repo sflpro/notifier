@@ -16,8 +16,8 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 
 /**
  * User: Ruben Dilanyan
@@ -78,7 +78,7 @@ public class SmtpTransportServiceImpl implements com.sflpro.notifier.externalcli
                                     final String to,
                                     final String subject,
                                     final String body,
-                                    final List<SpiEmailNotificationFileAttachment> fileAttachments) {
+                                    final Set<SpiEmailNotificationFileAttachment> fileAttachments) {
         Assert.hasText(from, "from should not be null or empty.");
         Assert.hasText(to, "to should not be null or empty.");
         Assert.hasText(subject, "subject should not be null or empty.");
@@ -99,7 +99,7 @@ public class SmtpTransportServiceImpl implements com.sflpro.notifier.externalcli
     }
 
     /* Private methods */
-    private Multipart setEmailContentParts(final String body, final List<SpiEmailNotificationFileAttachment> attachments)
+    private Multipart setEmailContentParts(final String body, final Set<SpiEmailNotificationFileAttachment> attachments)
             throws MessagingException, MalformedURLException {
         Multipart multipart = new MimeMultipart();
         BodyPart textBody = new MimeBodyPart();

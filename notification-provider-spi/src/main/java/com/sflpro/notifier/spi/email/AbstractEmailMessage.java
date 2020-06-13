@@ -4,7 +4,8 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import java.util.List;
+import java.util.Set;
+
 /**
  * Created by Hayk Mkrtchyan.
  * Date: 6/19/19
@@ -15,14 +16,14 @@ abstract class AbstractEmailMessage implements EmailMessage {
     private final String from;
     private final String to;
     private final String subject;
-    private final List<SpiEmailNotificationFileAttachment> fileAttachments;
+    private final Set<SpiEmailNotificationFileAttachment> fileAttachments;
 
     AbstractEmailMessage(final String from, final String to) {
         this(from, to, null, null);
     }
 
 
-    AbstractEmailMessage(final String from, final String to, final String subject, final List<SpiEmailNotificationFileAttachment> fileAttachments) {
+    AbstractEmailMessage(final String from, final String to, final String subject, final Set<SpiEmailNotificationFileAttachment> fileAttachments) {
         this.from = from;
         this.to = to;
         this.subject = subject;
@@ -77,7 +78,7 @@ abstract class AbstractEmailMessage implements EmailMessage {
     }
 
     @Override
-    public List<SpiEmailNotificationFileAttachment> fileAttachments() {
+    public Set<SpiEmailNotificationFileAttachment> fileAttachments() {
         return fileAttachments;
     }
 

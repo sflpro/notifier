@@ -12,6 +12,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import javax.annotation.Nonnull;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 /**
  * User: Ruben Dilanyan
@@ -34,7 +35,7 @@ public class CreateEmailNotificationRequest extends AbstractTemplatedCreateNotif
     private String subject;
 
     @JsonProperty("fileAttachments")
-    private List<EmailNotificationFileAttachmentRequest> fileAttachments = Collections.emptyList();
+    private Set<EmailNotificationFileAttachmentRequest> fileAttachments = Collections.emptySet();
 
     /* Constructors */
     public CreateEmailNotificationRequest() {
@@ -66,11 +67,11 @@ public class CreateEmailNotificationRequest extends AbstractTemplatedCreateNotif
         this.subject = subject;
     }
 
-    public List<EmailNotificationFileAttachmentRequest> getFileAttachments() {
+    public Set<EmailNotificationFileAttachmentRequest> getFileAttachments() {
         return fileAttachments;
     }
 
-    public CreateEmailNotificationRequest setFileAttachments(final List<EmailNotificationFileAttachmentRequest> fileAttachments) {
+    public CreateEmailNotificationRequest setFileAttachments(final Set<EmailNotificationFileAttachmentRequest> fileAttachments) {
         this.fileAttachments = fileAttachments;
         return this;
     }

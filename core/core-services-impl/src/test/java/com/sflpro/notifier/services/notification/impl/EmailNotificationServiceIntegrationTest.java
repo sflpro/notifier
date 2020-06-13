@@ -8,8 +8,6 @@ import com.sflpro.notifier.services.notification.email.EmailNotificationService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static org.junit.Assert.assertEquals;
-
 /**
  * User: Ruben Dilanyan
  * Company: SFL LLC
@@ -35,25 +33,6 @@ public class EmailNotificationServiceIntegrationTest extends AbstractNotificatio
         flushAndClear();
         emailNotification = emailNotificationService.getNotificationById(emailNotification.getId());
         getServicesTestHelper().assertEmailNotification(emailNotification, notificationDto);
-    }
-
-    @Override
-    public void testGetNotificationById() {
-        // Prepare data
-        final EmailNotification notification = getInstance();
-        // Load and assert
-        EmailNotification result = getService().getNotificationById(notification.getId());
-        assertEquals(notification.getLocale(), result.getLocale());
-        assertEquals(notification.getRecipientEmail(), result.getRecipientEmail());
-        assertEquals(notification.getSenderEmail(), result.getSenderEmail());
-        assertEquals(notification.getTemplateName(), result.getTemplateName());
-        // Flush, clear, reload and assert again
-        flushAndClear();
-        result = getService().getNotificationById(notification.getId());
-        assertEquals(notification.getLocale(), result.getLocale());
-        assertEquals(notification.getRecipientEmail(), result.getRecipientEmail());
-        assertEquals(notification.getSenderEmail(), result.getSenderEmail());
-        assertEquals(notification.getTemplateName(), result.getTemplateName());
     }
 
     /* Utility methods */

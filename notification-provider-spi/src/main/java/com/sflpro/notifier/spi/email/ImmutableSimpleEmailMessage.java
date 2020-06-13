@@ -3,7 +3,8 @@ package com.sflpro.notifier.spi.email;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import java.util.List;
+import java.util.Set;
+
 /**
  * Created by Hayk Mkrtchyan.
  * Date: 6/19/19
@@ -12,7 +13,7 @@ import java.util.List;
 final class ImmutableSimpleEmailMessage extends AbstractEmailMessage implements SimpleEmailMessage {
     private final String body;
 
-    ImmutableSimpleEmailMessage(final String from, final String to, final String subject, final String body, final List<SpiEmailNotificationFileAttachment> fileAttachments) {
+    ImmutableSimpleEmailMessage(final String from, final String to, final String subject, final String body, final Set<SpiEmailNotificationFileAttachment> fileAttachments) {
         super(from, to, subject, fileAttachments);
         this.body = body;
     }

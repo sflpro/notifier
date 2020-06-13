@@ -9,9 +9,8 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 /**
  * User: Ruben Dilanyan
@@ -32,7 +31,7 @@ public class EmailNotificationDto extends NotificationDto<EmailNotification> {
 
     private Locale locale;
 
-    private List<EmailNotificationFileAttachment> fileAttachments;
+    private Set<EmailNotificationFileAttachment> fileAttachments;
 
     /* Constructors */
     public EmailNotificationDto(final String recipientEmail,
@@ -84,11 +83,11 @@ public class EmailNotificationDto extends NotificationDto<EmailNotification> {
         this.locale = locale;
     }
 
-    public List<EmailNotificationFileAttachment> getFileAttachments() {
+    public Set<EmailNotificationFileAttachment> getFileAttachments() {
         return fileAttachments;
     }
 
-    public void setFileAttachments(final List<EmailNotificationFileAttachment> fileAttachments) {
+    public void setFileAttachments(final Set<EmailNotificationFileAttachment> fileAttachments) {
         this.fileAttachments = fileAttachments;
     }
 

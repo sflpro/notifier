@@ -53,7 +53,7 @@ public class EmailNotificationServiceFacadeImpleTest extends AbstractFacadeUnitT
         emailNotification.setSenderEmail(request.getSenderEmail());
         emailNotification.setContent(request.getBody());
         emailNotification.setSubject(request.getSubject());
-        emailNotification.setFileAttachments(Collections.emptyList());
+        emailNotification.setFileAttachments(Collections.emptySet());
         final EmailNotificationDto emailNotificationDto = new EmailNotificationDto(
                 request.getRecipientEmail(),
                 request.getSenderEmail(),
@@ -65,7 +65,7 @@ public class EmailNotificationServiceFacadeImpleTest extends AbstractFacadeUnitT
         );
         emailNotificationDto.setUserUuid(request.getUserUuId());
         emailNotificationDto.setProperties(request.getProperties());
-        emailNotificationDto.setFileAttachments(Collections.emptyList());
+        emailNotificationDto.setFileAttachments(Collections.emptySet());
         // Expectations
         expect(emailNotificationService.createEmailNotification(emailNotificationDto)).andReturn(emailNotification);
         applicationEventDistributionService.publishAsynchronousEvent(new StartSendingNotificationEvent(emailNotification.getId(), request.getSecureProperties()));
@@ -79,8 +79,8 @@ public class EmailNotificationServiceFacadeImpleTest extends AbstractFacadeUnitT
                 .hasFieldOrPropertyWithValue("subject", request.getSubject())
                 .hasFieldOrPropertyWithValue("body", request.getBody())
                 .hasFieldOrPropertyWithValue("state", NotificationStateClientType.CREATED)
-                .hasFieldOrPropertyWithValue("type", NotificationClientType.EMAIL);
-//                .hasFieldOrPropertyWithValue("fileAttachments", request.getFileAttachments());
+                .hasFieldOrPropertyWithValue("type", NotificationClientType.EMAIL)
+                .hasFieldOrPropertyWithValue("fileAttachments", request.getFileAttachments());
         verifyAll();
     }
 

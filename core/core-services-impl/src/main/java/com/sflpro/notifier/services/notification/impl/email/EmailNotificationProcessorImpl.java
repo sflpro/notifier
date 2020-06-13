@@ -16,9 +16,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static java.lang.String.format;
@@ -127,8 +127,8 @@ class EmailNotificationProcessorImpl implements EmailNotificationProcessor {
         Assert.isTrue(notification.getState().equals(NotificationState.CREATED), "Notification state must be NotificationState.CREATED in order to proceed.");
     }
 
-    private List<SpiEmailNotificationFileAttachment> mapFileAttachments(List<EmailNotificationFileAttachment> fileAttachmentResource) {
-        List<SpiEmailNotificationFileAttachment> destinationAttachments = new ArrayList<>();
+    private Set<SpiEmailNotificationFileAttachment> mapFileAttachments(final Set<EmailNotificationFileAttachment> fileAttachmentResource) {
+        Set<SpiEmailNotificationFileAttachment> destinationAttachments = new HashSet<>();
         for (EmailNotificationFileAttachment attachment : fileAttachmentResource) {
             destinationAttachments.add(new SpiEmailNotificationFileAttachment(
                     attachment.getFileName(), attachment.getMimeType(), attachment.getFileUrl()));

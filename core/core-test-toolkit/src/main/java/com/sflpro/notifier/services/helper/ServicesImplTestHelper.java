@@ -7,7 +7,6 @@ import com.sflpro.notifier.db.entities.notification.NotificationProviderType;
 import com.sflpro.notifier.db.entities.notification.NotificationState;
 import com.sflpro.notifier.db.entities.notification.UserNotification;
 import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
-import com.sflpro.notifier.db.entities.notification.email.EmailNotificationFileAttachment;
 import com.sflpro.notifier.db.entities.notification.email.NotificationProperty;
 import com.sflpro.notifier.db.entities.notification.push.*;
 import com.sflpro.notifier.db.entities.notification.sms.SmsNotification;
@@ -99,10 +98,7 @@ public class ServicesImplTestHelper {
         notificationDto.setTemplateName("YoTemplate");
         notificationDto.setProperties(Collections.singletonMap("token", UUID.randomUUID().toString()));
         notificationDto.setProviderType(NotificationProviderType.SMTP_SERVER);
-        EmailNotificationFileAttachment fileAttachment = new EmailNotificationFileAttachment();
-        fileAttachment.setFileName("someting.jpg");
-        fileAttachment.setFileUrl("http://somthing.something.com");
-        notificationDto.setFileAttachments(Collections.singletonList(fileAttachment));
+        notificationDto.setFileAttachments(Collections.emptySet());
         return notificationDto;
     }
 

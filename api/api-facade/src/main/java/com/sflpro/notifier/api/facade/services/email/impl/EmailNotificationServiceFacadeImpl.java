@@ -19,8 +19,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by Hayk Mkrtchyan.
@@ -84,8 +84,8 @@ class EmailNotificationServiceFacadeImpl implements EmailNotificationServiceFaca
         return notificationModel;
     }
 
-    private List<EmailNotificationFileAttachment> mapFileAttachments(final List<EmailNotificationFileAttachmentRequest> fileAttachmentResource) {
-        List<EmailNotificationFileAttachment> destinationAttachments = new ArrayList<>();
+    private Set<EmailNotificationFileAttachment> mapFileAttachments(final Set<EmailNotificationFileAttachmentRequest> fileAttachmentResource) {
+        Set<EmailNotificationFileAttachment> destinationAttachments = new HashSet<>();
 
         for (EmailNotificationFileAttachmentRequest attachment : fileAttachmentResource) {
             EmailNotificationFileAttachment item = new EmailNotificationFileAttachment();

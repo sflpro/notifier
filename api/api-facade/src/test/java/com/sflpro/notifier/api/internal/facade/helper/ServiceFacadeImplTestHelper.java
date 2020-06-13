@@ -84,7 +84,7 @@ public class ServiceFacadeImplTestHelper {
         properties.put("prop2", "value2");
         properties.put("prop3", "value3");
         request.setProperties(properties);
-        request.setFileAttachments(Collections.emptyList());
+        request.setFileAttachments(Collections.emptySet());
         return request;
     }
 

@@ -4,10 +4,10 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * Created by Hayk Mkrtchyan.
@@ -26,7 +26,7 @@ final class ImmutableTemplatedEmailMessage extends AbstractEmailMessage implemen
                                    final String subject,
                                    final Map<String, ?> variables,
                                    final Locale locale,
-                                   final List<SpiEmailNotificationFileAttachment> fileAttachments) {
+                                   final Set<SpiEmailNotificationFileAttachment> fileAttachments) {
         super(from, to, subject, fileAttachments);
         this.templateId = templateId;
         this.variables = variables;

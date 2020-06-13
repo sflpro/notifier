@@ -18,8 +18,8 @@ import org.mockito.Mock;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -82,7 +82,7 @@ public class MandrillApiCommunicatorImplTest extends AbstractEmailNotificationUn
                         uuid(),
                         uuid(),
                         Collections.singletonMap(uuid(), uuid()),
-                        Collections.emptyList())
+                        Collections.emptySet())
                         .build();
         when(mandrillMessageStatus.getStatus()).thenReturn("rejected");
         when(mandrillMessageStatus.getRejectReason()).thenReturn("Something went wrong.");
@@ -112,7 +112,7 @@ public class MandrillApiCommunicatorImplTest extends AbstractEmailNotificationUn
                         uuid(),
                         uuid(),
                         Collections.singletonMap(uuid(), uuid()),
-                        Collections.emptyList()
+                        Collections.emptySet()
                 ).build();
         when(mandrillMessageStatus.getStatus()).thenReturn("invalid");
         when(mandrillMessagesApi.sendTemplate(
@@ -140,7 +140,7 @@ public class MandrillApiCommunicatorImplTest extends AbstractEmailNotificationUn
                 uuid(),
                 uuid(),
                 Collections.singletonMap(variableName, uuid()),
-                Collections.emptyList()
+                Collections.emptySet()
         ).build();
         when(mandrillMessageStatus.getStatus()).thenReturn(uuid());
         when(mandrillMessageStatus.getEmail()).thenReturn(templatedEmailMessage.to());
@@ -180,7 +180,7 @@ public class MandrillApiCommunicatorImplTest extends AbstractEmailNotificationUn
 
     @Test
     public void testSendEmailStatusRejected() throws IOException, MandrillApiError {
-        final SimpleEmailMessage message = SimpleEmailMessage.of(uuid(), uuid(), uuid(), uuid(), Collections.emptyList());
+        final SimpleEmailMessage message = SimpleEmailMessage.of(uuid(), uuid(), uuid(), uuid(), Collections.emptySet());
         when(mandrillMessageStatus.getStatus()).thenReturn("rejected");
         when(mandrillMessagesApi.send(
                 isA(MandrillMessage.class),
@@ -197,7 +197,7 @@ public class MandrillApiCommunicatorImplTest extends AbstractEmailNotificationUn
 
     @Test
     public void testSendEmailStatusInvalid() throws IOException, MandrillApiError {
-        final SimpleEmailMessage message = SimpleEmailMessage.of(uuid(), uuid(), uuid(), uuid(), Collections.emptyList());
+        final SimpleEmailMessage message = SimpleEmailMessage.of(uuid(), uuid(), uuid(), uuid(), Collections.emptySet());
         when(mandrillMessageStatus.getStatus()).thenReturn("invalid");
         when(mandrillMessagesApi.send(
                 isA(MandrillMessage.class),
@@ -214,7 +214,7 @@ public class MandrillApiCommunicatorImplTest extends AbstractEmailNotificationUn
 
     @Test
     public void testSendEmaileStatusSuccess() throws IOException, MandrillApiError {
-        final SimpleEmailMessage message = SimpleEmailMessage.of(uuid(), uuid(), uuid(), uuid(), Collections.emptyList());
+        final SimpleEmailMessage message = SimpleEmailMessage.of(uuid(), uuid(), uuid(), uuid(), Collections.emptySet());
         when(mandrillMessageStatus.getStatus()).thenReturn("invalid");
         when(mandrillMessagesApi.send(
                 isA(MandrillMessage.class),
@@ -249,13 +249,13 @@ public class MandrillApiCommunicatorImplTest extends AbstractEmailNotificationUn
         private final String to;
         private final String subject;
         private final String body;
-        private final List<SpiEmailNotificationFileAttachment> fileAttachments;
+        private final Set<SpiEmailNotificationFileAttachment> fileAttachments;
 
         private InvalidSimpleEmailMessage(final String from,
                                           final String to,
                                           final String subject,
                                           final String body,
-                                          final List<SpiEmailNotificationFileAttachment> fileAttachments
+                                          final Set<SpiEmailNotificationFileAttachment> fileAttachments
         ) {
             this.from = from;
             this.to = to;
@@ -266,19 +266,19 @@ public class MandrillApiCommunicatorImplTest extends AbstractEmailNotificationUn
 
 
         static SimpleEmailMessage withoutFrom() {
-            return new InvalidSimpleEmailMessage(null, uuid(), uuid(), uuid(), Collections.emptyList());
+            return new InvalidSimpleEmailMessage(null, uuid(), uuid(), uuid(), Collections.emptySet());
         }
 
         static SimpleEmailMessage withoutTo() {
-            return new InvalidSimpleEmailMessage(uuid(), null, uuid(), uuid(), Collections.emptyList());
+            return new InvalidSimpleEmailMessage(uuid(), null, uuid(), uuid(), Collections.emptySet());
         }
 
         static SimpleEmailMessage withoutSubject() {
-            return new InvalidSimpleEmailMessage(uuid(), uuid(), null, uuid(), Collections.emptyList());
+            return new InvalidSimpleEmailMessage(uuid(), uuid(), null, uuid(), Collections.emptySet());
         }
 
         static SimpleEmailMessage withoutBody() {
-            return new InvalidSimpleEmailMessage(uuid(), uuid(), uuid(), null, Collections.emptyList());
+            return new InvalidSimpleEmailMessage(uuid(), uuid(), uuid(), null, Collections.emptySet());
         }
 
         @Override
@@ -302,7 +302,7 @@ public class MandrillApiCommunicatorImplTest extends AbstractEmailNotificationUn
         }
 
         @Override
-        public List<SpiEmailNotificationFileAttachment> fileAttachments() {
+        public Set<SpiEmailNotificationFileAttachment> fileAttachments() {
             return fileAttachments;
         }
     }
@@ -337,8 +337,8 @@ public class MandrillApiCommunicatorImplTest extends AbstractEmailNotificationUn
         }
 
         @Override
-        public List<SpiEmailNotificationFileAttachment> fileAttachments() {
-            return Collections.emptyList();
+        public Set<SpiEmailNotificationFileAttachment> fileAttachments() {
+            return Collections.emptySet();
         }
 
         @Override

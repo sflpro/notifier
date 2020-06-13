@@ -7,8 +7,8 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 /**
  * User: Ruben Dilanyan
@@ -37,7 +37,7 @@ public class EmailNotification extends Notification {
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "notification_email_id", referencedColumnName = "id")
-    private List<EmailNotificationFileAttachment> fileAttachments;
+    private Set<EmailNotificationFileAttachment> fileAttachments;
 
     /* Constructors */
     public EmailNotification() {
@@ -82,11 +82,11 @@ public class EmailNotification extends Notification {
         this.locale = locale;
     }
 
-    public List<EmailNotificationFileAttachment> getFileAttachments() {
+    public Set<EmailNotificationFileAttachment> getFileAttachments() {
         return fileAttachments;
     }
 
-    public void setFileAttachments(final List<EmailNotificationFileAttachment> fileAttachments) {
+    public void setFileAttachments(final Set<EmailNotificationFileAttachment> fileAttachments) {
         this.fileAttachments = fileAttachments;
     }
 

@@ -44,7 +44,7 @@ public class MandrillTemplatedEmailSenderTest extends AbstractEmailNotificationU
                 uuid(),
                 uuid(),
                 Collections.singletonMap(uuid(), uuid()),
-                Collections.emptyList()
+                Collections.emptySet()
         ).build();
         templatedEmailSender.send(message);
         verify(mandrillApiCommunicator).sendEmailTemplate(message);

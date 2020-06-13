@@ -79,8 +79,7 @@ public class EmailNotificationServiceFacadeImpleTest extends AbstractFacadeUnitT
                 .hasFieldOrPropertyWithValue("subject", request.getSubject())
                 .hasFieldOrPropertyWithValue("body", request.getBody())
                 .hasFieldOrPropertyWithValue("state", NotificationStateClientType.CREATED)
-                .hasFieldOrPropertyWithValue("type", NotificationClientType.EMAIL)
-                .hasFieldOrPropertyWithValue("fileAttachments", request.getFileAttachments());
+                .hasFieldOrPropertyWithValue("type", NotificationClientType.EMAIL);
         verifyAll();
     }
 

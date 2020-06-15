@@ -106,7 +106,7 @@
         <logstash-encoder.version>4.7</logstash-encoder.version>
         <logback.logstash.encoder.version>4.5.1</logback.logstash.encoder.version>
 
-        <commons.collections.version>3.2.1</commons.collections.version>
+        <commons.collections.version>3.2.2</commons.collections.version>
         <commons.lang3.version>3.4</commons.lang3.version>
         <commons.io.version>2.4</commons.io.version>
         <commons.validator>1.4.1</commons.validator>

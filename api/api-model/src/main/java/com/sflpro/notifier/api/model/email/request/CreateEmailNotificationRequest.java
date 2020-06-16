@@ -3,7 +3,7 @@ package com.sflpro.notifier.api.model.email.request;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sflpro.notifier.api.model.common.result.ErrorResponseModel;
 import com.sflpro.notifier.api.model.common.result.ErrorType;
-import com.sflpro.notifier.api.model.notification.request.AbstractTemplatableCreateNotificationRequest;
+import com.sflpro.notifier.api.model.notification.request.AbstractTemplatedCreateNotificationRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -11,7 +11,6 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.annotation.Nonnull;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * User: Ruben Dilanyan
@@ -19,7 +18,7 @@ import java.util.Locale;
  * Date: 1/12/16
  * Time: 7:36 PM
  */
-public class CreateEmailNotificationRequest extends AbstractTemplatableCreateNotificationRequest {
+public class CreateEmailNotificationRequest extends AbstractTemplatedCreateNotificationRequest {
 
     private static final long serialVersionUID = 8423183227450211673L;
 

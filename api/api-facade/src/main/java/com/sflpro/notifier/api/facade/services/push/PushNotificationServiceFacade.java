@@ -19,18 +19,17 @@ public interface PushNotificationServiceFacade {
     /**
      * Create push notifications
      *
-     * @param request
-     * @return result
+     * @param request CreatePushNotificationRequest
+     * @return CreatePushNotificationResponse
      */
     @Nonnull
     ResultResponseModel<CreatePushNotificationResponse> createPushNotifications(@Nonnull final CreatePushNotificationRequest request);
 
-
     /**
      * Updates push notification subscription
      *
-     * @param request
-     * @return result
+     * @param request UpdatePushNotificationSubscriptionRequest
+     * @return UpdatePushNotificationSubscriptionResponse
      */
     @Nonnull
     ResultResponseModel<UpdatePushNotificationSubscriptionResponse> updatePushNotificationSubscription(@Nonnull final UpdatePushNotificationSubscriptionRequest request);

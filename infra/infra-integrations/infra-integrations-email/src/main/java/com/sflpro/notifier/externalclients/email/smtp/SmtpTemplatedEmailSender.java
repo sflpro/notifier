@@ -1,7 +1,7 @@
 package com.sflpro.notifier.externalclients.email.smtp;
 
-import com.sflpro.notifier.spi.email.EmailTemplateContent;
-import com.sflpro.notifier.spi.email.EmailTemplateContentResolver;
+import com.sflpro.notifier.spi.template.TemplateContent;
+import com.sflpro.notifier.spi.template.TemplateContentResolver;
 import com.sflpro.notifier.spi.email.TemplatedEmailMessage;
 import com.sflpro.notifier.spi.email.TemplatedEmailSender;
 import org.springframework.util.Assert;
@@ -15,26 +15,26 @@ import org.springframework.util.Assert;
 class SmtpTemplatedEmailSender implements TemplatedEmailSender {
 
     private final SmtpTransportService smtpTransportService;
-    private final EmailTemplateContentResolver emailTemplateContentResolver;
+    private final TemplateContentResolver templateContentResolver;
 
-    SmtpTemplatedEmailSender(final SmtpTransportService smtpTransportService, final EmailTemplateContentResolver emailTemplateContentResolver) {
+    SmtpTemplatedEmailSender(final SmtpTransportService smtpTransportService, final TemplateContentResolver templateContentResolver) {
         this.smtpTransportService = smtpTransportService;
-        this.emailTemplateContentResolver = emailTemplateContentResolver;
+        this.templateContentResolver = templateContentResolver;
     }
 
     @Override
     public void send(final TemplatedEmailMessage message) {
         Assert.notNull(message, "Null was passed as an argument for parameter 'message'.");
-        final EmailTemplateContent content = contentFor(message);
+        final TemplateContent content = contentFor(message);
         smtpTransportService.sendMessageOverSmtp(message.from(),
                 message.to(),
                 content.subject(),
                 content.body());
     }
 
-    private EmailTemplateContent contentFor(final TemplatedEmailMessage message) {
+    private TemplateContent contentFor(final TemplatedEmailMessage message) {
         return message.locale()
-                .map(locale -> emailTemplateContentResolver.resolve(message.templateId(), message.variables(), locale))
-                .orElseGet(() -> emailTemplateContentResolver.resolve(message.templateId(), message.variables()));
+                .map(locale -> templateContentResolver.resolve(message.templateId(), message.variables(), locale))
+                .orElseGet(() -> templateContentResolver.resolve(message.templateId(), message.variables()));
     }
 }

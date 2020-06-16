@@ -15,9 +15,7 @@ public interface PushMessageServiceRegistry {
 
     PushMessageSubscriber subscriber();
 
-    static PushMessageServiceRegistry of(final String name,
-                                         final PushMessageSender sender,
-                                         final PushMessageSubscriber subscriber) {
+    static PushMessageServiceRegistry of(final String name, final PushMessageSender sender, final PushMessageSubscriber subscriber) {
         Assert.hasText(name, "Null or empty text was passed as an argument for parameter 'name'.");
         Assert.hasText(name, "Null was passed as an argument for parameter 'sender'.");
         Assert.hasText(name, "Null text was passed as an argument for parameter 'subscriber'.");

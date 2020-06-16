@@ -48,8 +48,7 @@ class EmailNotificationProcessorImpl implements EmailNotificationProcessor {
         Assert.notNull(secureProperties, "Secure properties map should not be null");
         logger.debug("Sending email notification for id - {}", notificationId);
         /* Retrieve email notification */
-        final EmailNotification emailNotification =
-                emailNotificationService.getEmailNotificationForProcessing(notificationId);
+        final EmailNotification emailNotification = emailNotificationService.getEmailNotificationForProcessing(notificationId);
         assertNotificationStateIsCreated(emailNotification);
         logger.debug("Successfully retrieved email notification - {}", emailNotification);
         /* Update notification state to PROCESSING */
@@ -114,25 +113,17 @@ class EmailNotificationProcessorImpl implements EmailNotificationProcessor {
     }
 
     private Map<String, String> variablesFor(final EmailNotification emailNotification, final Map<String, String> secureProperties) {
-        final Map<String, String> variables = emailNotification.getProperties().stream()
-                .collect(Collectors.toMap(
-                        NotificationProperty::getPropertyKey, NotificationProperty::getPropertyValue)
-                );
+        final Map<String, String> variables = emailNotification.getProperties().stream().collect(Collectors.toMap(NotificationProperty::getPropertyKey, NotificationProperty::getPropertyValue));
         variables.putAll(secureProperties);
         return variables;
     }
 
     private static void assertNotificationStateIsCreated(final Notification notification) {
-        Assert.isTrue(notification.getState().equals(
-                NotificationState.CREATED),
-                "Notification state must be NotificationState.CREATED in order to proceed."
-        );
+        Assert.isTrue(notification.getState().equals(NotificationState.CREATED), "Notification state must be NotificationState.CREATED in order to proceed.");
     }
 
 
     private void updateEmailNotificationState(final Long notificationId, final NotificationState notificationState) {
         emailNotificationService.updateNotificationState(notificationId, notificationState);
-
     }
-
 }

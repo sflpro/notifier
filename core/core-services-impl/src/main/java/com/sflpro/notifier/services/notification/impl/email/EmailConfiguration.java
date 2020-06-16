@@ -3,10 +3,11 @@ package com.sflpro.notifier.services.notification.impl.email;
 import com.sflpro.notifier.db.repositories.utility.PersistenceUtilityService;
 import com.sflpro.notifier.services.notification.email.EmailNotificationProcessor;
 import com.sflpro.notifier.services.notification.email.EmailNotificationService;
+import com.sflpro.notifier.services.notification.impl.template.LocalTemplateContentResolver;
 import com.sflpro.notifier.services.template.TemplatingService;
-import com.sflpro.notifier.spi.email.EmailTemplateContentResolver;
 import com.sflpro.notifier.spi.email.SimpleEmailSenderRegistry;
 import com.sflpro.notifier.spi.email.TemplatedEmailSenderRegistry;
+import com.sflpro.notifier.spi.template.TemplateContentResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
@@ -39,13 +40,12 @@ class EmailConfiguration {
     }
 
     @Bean
-    EmailTemplateContentResolver emailTemplateContentResolver(final TemplatingService templatingService) {
-        return new LocalEmailTemplateContentResolver(templatingService);
+    TemplateContentResolver emailTemplateContentResolver(final TemplatingService templatingService) {
+        return new LocalTemplateContentResolver(templatingService);
     }
 
     @Bean
-    EmailNotificationProcessor emailNotificationProcessor(final EmailNotificationService emailNotificationService,
-                                                          final EmailSenderProvider emailSenderProvider, final PersistenceUtilityService persistenceUtilityService) {
+    EmailNotificationProcessor emailNotificationProcessor(final EmailNotificationService emailNotificationService, final EmailSenderProvider emailSenderProvider, final PersistenceUtilityService persistenceUtilityService) {
         return new EmailNotificationProcessorImpl(emailNotificationService, emailSenderProvider);
     }
 }

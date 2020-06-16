@@ -33,6 +33,8 @@ public class PushNotificationResourceClientImplTest extends AbstractRestApiClien
         pushNotificationResourceClient = new PushNotificationResourceClientImpl(client, apiPath);
     }
 
+    //region createPushNotification...
+
     @Test
     public void testCreatePushNotificationWithInvalidArgument() {
         assertThatThrownBy(() -> pushNotificationResourceClient.createPushNotification(null));
@@ -70,5 +72,7 @@ public class PushNotificationResourceClientImplTest extends AbstractRestApiClien
         assertThat(pushNotificationResourceClient.createPushNotification(request)).isEqualTo(resultResponseModel);
         verifyAll();
     }
+
+    //endregion
 
 }

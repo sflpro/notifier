@@ -198,6 +198,7 @@ public class ServicesImplTestHelper {
         Assert.assertEquals(notificationDto.getSubject(), notification.getSubject());
         Assert.assertEquals(notificationDto.getType(), notification.getType());
         Assert.assertEquals(NotificationState.CREATED, notification.getState());
+
     }
 
     /* Push notification property */

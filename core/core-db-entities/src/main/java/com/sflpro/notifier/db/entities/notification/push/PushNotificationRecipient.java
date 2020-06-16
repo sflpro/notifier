@@ -18,8 +18,19 @@ import java.util.Set;
  * Time: 4:05 PM
  */
 @Entity
-@Table(name = "notification_push_recipient", indexes = {@Index(name = "IDX_push_notification_recipient_device_operating_system_type", columnList = "device_operating_system_type"), @Index(name = "IDX_push_notification_recipient_status", columnList = "status"), @Index(name = "IDX_push_notification_recipient_type", columnList = "type"), @Index(name = "IDX_push_notification_recipient_destination_route_token", columnList = "destination_route_token"), @Index(name = "IDX_push_notification_application_type", columnList = "application_type")}, uniqueConstraints = {
-        @UniqueConstraint(name = "UK_push_notification_recipient_type_tkn_subs_id_app_type", columnNames = {"type", "destination_route_token", "subscription_id", "application_type"})})
+@Table(
+        name = "notification_push_recipient",
+        indexes = {
+                @Index(name = "IDX_push_notification_recipient_device_operating_system_type", columnList = "device_operating_system_type"),
+                @Index(name = "IDX_push_notification_recipient_status", columnList = "status"),
+                @Index(name = "IDX_push_notification_recipient_type", columnList = "type"),
+                @Index(name = "IDX_push_notification_recipient_destination_route_token", columnList = "destination_route_token"),
+                @Index(name = "IDX_push_notification_application_type", columnList = "application_type")
+        },
+        uniqueConstraints = {
+                @UniqueConstraint(name = "UK_push_notification_recipient_type_tkn_subs_id_app_type", columnNames = {"type", "destination_route_token", "subscription_id", "application_type"})
+        }
+)
 public class PushNotificationRecipient extends AbstractDomainUuIdAwareEntityModel {
 
     private static final long serialVersionUID = 4607098397294722795L;

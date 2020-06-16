@@ -5,7 +5,6 @@ import com.sflpro.notifier.api.facade.services.push.PushNotificationServiceFacad
 import com.sflpro.notifier.api.model.common.result.ErrorResponseModel;
 import com.sflpro.notifier.api.model.common.result.ResultResponseModel;
 import com.sflpro.notifier.api.model.push.PushNotificationModel;
-import com.sflpro.notifier.api.model.push.PushNotificationPropertyModel;
 import com.sflpro.notifier.api.model.push.PushNotificationRecipientModel;
 import com.sflpro.notifier.api.model.push.request.CreatePushNotificationRequest;
 import com.sflpro.notifier.api.model.push.request.UpdatePushNotificationSubscriptionRequest;
@@ -14,6 +13,7 @@ import com.sflpro.notifier.api.model.push.response.UpdatePushNotificationSubscri
 import com.sflpro.notifier.db.entities.device.UserDevice;
 import com.sflpro.notifier.db.entities.device.mobile.DeviceOperatingSystemType;
 import com.sflpro.notifier.db.entities.notification.NotificationProviderType;
+import com.sflpro.notifier.db.entities.notification.email.NotificationProperty;
 import com.sflpro.notifier.db.entities.notification.push.PushNotification;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipient;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationSubscriptionRequest;
@@ -37,6 +37,7 @@ import org.springframework.util.Assert;
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -48,9 +49,14 @@ import java.util.stream.Collectors;
 @Component
 public class PushNotificationServiceFacadeImpl extends AbstractNotificationServiceFacadeImpl implements PushNotificationServiceFacade {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(PushNotificationServiceFacadeImpl.class);
+    //region Logger
 
-    /* Properties */
+    private static final Logger logger = LoggerFactory.getLogger(PushNotificationServiceFacadeImpl.class);
+
+    //endregion
+
+    //region Injections
+
     @Autowired
     private PushNotificationService pushNotificationService;
 
@@ -66,16 +72,17 @@ public class PushNotificationServiceFacadeImpl extends AbstractNotificationServi
     @Value("${push.notification.provider:AMAZON_SNS}")
     private NotificationProviderType providerType;
 
-    /* Constructors */
     public PushNotificationServiceFacadeImpl() {
         //default constructor
     }
+
+    //endregion
 
     @Nonnull
     @Override
     public ResultResponseModel<CreatePushNotificationResponse> createPushNotifications(@Nonnull final CreatePushNotificationRequest request) {
         Assert.notNull(request, "Request should not be null");
-        LOGGER.debug("Creating push notifications for request - {}", request);
+        logger.debug("Creating push notifications for request - {}", request);
         // Validate request
         final List<ErrorResponseModel> errors = request.validateRequiredFields();
         if (!errors.isEmpty()) {
@@ -85,18 +92,18 @@ public class PushNotificationServiceFacadeImpl extends AbstractNotificationServi
         final User user = getUserService().getOrCreateUserForUuId(request.getUserUuId());
         // Create push notification DTO
         final PushNotificationDto pushNotificationDto = new PushNotificationDto(request.getBody(), request.getSubject(), request.getClientIpAddress(), providerType);
-        pushNotificationDto.setProperties(request.getProperties().stream()
-                .collect(Collectors.toMap(PushNotificationPropertyModel::getPropertyKey,
-                        PushNotificationPropertyModel::getPropertyValue)));
+        pushNotificationDto.setTemplateName(request.getTemplateName());
+        pushNotificationDto.setLocale(request.getLocale());
+        pushNotificationDto.setProperties(request.getProperties());
         // Create push notifications
         final List<PushNotification> pushNotifications = pushNotificationService.createNotificationsForUserActiveRecipients(user.getId(), pushNotificationDto);
         // Publish events
         pushNotifications.forEach(pushNotification -> applicationEventDistributionService.publishAsynchronousEvent(new StartSendingNotificationEvent(pushNotification.getId())));
         // Convert to notification models
-        final List<PushNotificationModel> pushNotificationModels = pushNotifications.stream().map(this::createPushNotificationModel).collect(Collectors.toCollection(ArrayList::new));
+        final List<PushNotificationModel> pushNotificationModels = pushNotifications.stream().map(PushNotificationServiceFacadeImpl::createPushNotificationModel).collect(Collectors.toCollection(ArrayList::new));
         // Create response model
         final CreatePushNotificationResponse response = new CreatePushNotificationResponse(pushNotificationModels);
-        LOGGER.debug("Successfully created push notification response - {} for request - {}", response, request);
+        logger.debug("Successfully created push notification response - {} for request - {}", response, request);
         return new ResultResponseModel<>(response);
     }
 
@@ -104,7 +111,7 @@ public class PushNotificationServiceFacadeImpl extends AbstractNotificationServi
     @Override
     public ResultResponseModel<UpdatePushNotificationSubscriptionResponse> updatePushNotificationSubscription(@Nonnull final UpdatePushNotificationSubscriptionRequest request) {
         Assert.notNull(request, "Request should not be null");
-        LOGGER.debug("Processing push notification subscription request - {}", request);
+        logger.debug("Processing push notification subscription request - {}", request);
         // Validate request
         final List<ErrorResponseModel> errors = request.validateRequiredFields();
         if (!errors.isEmpty()) {
@@ -121,18 +128,20 @@ public class PushNotificationServiceFacadeImpl extends AbstractNotificationServi
         applicationEventDistributionService.publishAsynchronousEvent(new StartPushNotificationSubscriptionRequestProcessingEvent(subscriptionRequest.getId()));
         // Create result
         final UpdatePushNotificationSubscriptionResponse response = new UpdatePushNotificationSubscriptionResponse(subscriptionRequest.getUuId());
-        LOGGER.debug("Successfully processed subscription request - {} , response - {}", request, response);
+        logger.debug("Successfully processed subscription request - {} , response - {}", request, response);
         return new ResultResponseModel<>(response);
     }
 
-    /* Utility methods */
-    private PushNotificationModel createPushNotificationModel(final PushNotification pushNotification) {
+    //region Utility methods
+
+    private static PushNotificationModel createPushNotificationModel(final PushNotification pushNotification) {
         final PushNotificationModel pushNotificationModel = new PushNotificationModel();
         setNotificationCommonProperties(pushNotificationModel, pushNotification);
         // Create recipient model
         pushNotificationModel.setRecipient(createPushNotificationRecipientModel(pushNotification.getRecipient()));
         // Set properties
-        final List<PushNotificationPropertyModel> propertyModels = pushNotification.getProperties().stream().map(property -> new PushNotificationPropertyModel(property.getPropertyKey(), property.getPropertyValue())).collect(Collectors.toCollection(ArrayList::new));
+
+        final Map<String, String> propertyModels = pushNotification.getProperties().stream().collect(Collectors.toMap(NotificationProperty::getPropertyKey, NotificationProperty::getPropertyValue));
         pushNotificationModel.setProperties(propertyModels);
         return pushNotificationModel;
     }
@@ -143,4 +152,6 @@ public class PushNotificationServiceFacadeImpl extends AbstractNotificationServi
         recipientModel.setDeviceOperatingSystemType(recipient.getDeviceOperatingSystemType().name());
         return recipientModel;
     }
+
+    //endregion
 }

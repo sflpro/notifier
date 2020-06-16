@@ -1,6 +1,7 @@
 package com.sflpro.notifier.queue.consumer;
 
 import com.sflpro.notifier.queue.QueueConfigurationDefaults;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.ByteArrayDeserializer;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -52,6 +53,24 @@ public class KafkaConsumerConfiguration {
     @Value("${kafka.concurrency.factor}")
     private int kafkaConcurrencyFactor;
 
+    @Value(value = "${kafka.request.timeout.ms}")
+    private String requestTimeoutMs;
+
+    @Value(value = "${kafka.retry.backoff.ms}")
+    private String retryBackoffMs;
+
+    @Value(value = "${kafka.ssl.endpoint.identification.algorithm}")
+    private String sslEndpointIdentificationAlgorithm;
+
+    @Value(value = "${kafka.sasl.mechanism}")
+    private String saslMechanism;
+
+    @Value(value = "${kafka.sasl.jaas.config}")
+    private String saslJaasConfig;
+
+    @Value(value = "${kafka.security.protocol}")
+    private String securityProtocol;
+
     @PostConstruct
     public void validateConfig() {
         if (kafkaConcurrencyFactor < 1) {
@@ -71,6 +90,21 @@ public class KafkaConsumerConfiguration {
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, ByteArrayDeserializer.class);
         props.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, 1);
         props.put(ConsumerConfig.GROUP_ID_CONFIG, "notifier-worker");
+        props.put(ConsumerConfig.REQUEST_TIMEOUT_MS_CONFIG, StringUtils.defaultIfBlank(requestTimeoutMs, "20000"));
+        props.put(ConsumerConfig.RETRY_BACKOFF_MS_CONFIG, StringUtils.defaultIfBlank(retryBackoffMs, "500"));
+        // Security
+        if (StringUtils.isNoneBlank(sslEndpointIdentificationAlgorithm)) {
+            props.put("ssl.endpoint.identification.algorithm", sslEndpointIdentificationAlgorithm);
+        }
+        if (StringUtils.isNoneBlank(saslMechanism)) {
+            props.put("sasl.mechanism", saslMechanism);
+        }
+        if (StringUtils.isNoneBlank(saslJaasConfig)) {
+            props.put("sasl.jaas.config", saslJaasConfig);
+        }
+        if (StringUtils.isNoneBlank(securityProtocol)) {
+            props.put("security.protocol", securityProtocol);
+        }
         return props;
     }
 

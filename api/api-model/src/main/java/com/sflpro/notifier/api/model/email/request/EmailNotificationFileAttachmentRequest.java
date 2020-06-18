@@ -32,7 +32,7 @@ public class EmailNotificationFileAttachmentRequest implements Serializable {
 
     /* Properties Getters and Setters */
     public String getFileName() {
-        return fileName;
+        return this.fileName;
     }
 
     public void setFileName(final String fileName) {
@@ -40,7 +40,7 @@ public class EmailNotificationFileAttachmentRequest implements Serializable {
     }
 
     public String getMimeType() {
-        return mimeType;
+        return this.mimeType;
     }
 
     public void setMimeType(final String mimeType) {
@@ -48,7 +48,7 @@ public class EmailNotificationFileAttachmentRequest implements Serializable {
     }
 
     public String getFileUrl() {
-        return fileUrl;
+        return this.fileUrl;
     }
 
     public void setFileUrl(final String fileUrl) {

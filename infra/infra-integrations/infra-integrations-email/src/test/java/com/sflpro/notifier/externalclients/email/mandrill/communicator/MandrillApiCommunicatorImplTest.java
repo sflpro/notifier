@@ -213,7 +213,7 @@ public class MandrillApiCommunicatorImplTest extends AbstractEmailNotificationUn
     }
 
     @Test
-    public void testSendEmaileStatusSuccess() throws IOException, MandrillApiError {
+    public void testSendEmailStatusSuccess() throws IOException, MandrillApiError {
         final SimpleEmailMessage message = SimpleEmailMessage.of(uuid(), uuid(), uuid(), uuid(), Collections.emptySet());
         when(mandrillMessageStatus.getStatus()).thenReturn("invalid");
         when(mandrillMessagesApi.send(

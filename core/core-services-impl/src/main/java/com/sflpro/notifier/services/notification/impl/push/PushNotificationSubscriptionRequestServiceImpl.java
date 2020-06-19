@@ -23,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import javax.annotation.Nonnull;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * User: Ruben Dilanyan
@@ -98,7 +98,7 @@ public class PushNotificationSubscriptionRequestServiceImpl implements PushNotif
                 .orElseThrow(() -> new PushNotificationSubscriptionRequestNotFoundForIdException(requestId));
         // Update state and persist
         request.setState(state);
-        request.setUpdated(new Date());
+        request.setUpdated(LocalDateTime.now());
         request = pushNotificationSubscriptionRequestRepository.save(request);
         LOGGER.debug("Successfully updated push notification request state for request with id - {}, request - {}", request.getId(), request);
         return request;
@@ -139,7 +139,7 @@ public class PushNotificationSubscriptionRequestServiceImpl implements PushNotif
         assertSubscriptionRequestAndRecipientUsers(request, recipient);
         // Update recipient on request and persist it
         request.setRecipient(recipient);
-        request.setUpdated(new Date());
+        request.setUpdated(LocalDateTime.now());
         request = pushNotificationSubscriptionRequestRepository.save(request);
         LOGGER.debug("Successfully updated recipient for push notification subscription request with id - {}, recipient id - {}, request - {}", request.getId(), recipientId, request);
         return request;

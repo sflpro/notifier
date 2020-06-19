@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import javax.annotation.Nonnull;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * User: Ruben Dilanyan
@@ -86,7 +86,7 @@ public abstract class AbstractPushNotificationRecipientServiceImpl<T extends Pus
         }
         // Update last used device for recipient
         recipient.setLastDevice(userDevice);
-        recipient.setUpdated(new Date());
+        recipient.setUpdated(LocalDateTime.now());
         // Persist recipient
         recipient = getRepository().save(recipient);
         LOGGER.debug("Successfully updated user device for push notification recipient with id - {}. User device id - {}", recipient.getId(), userDevice.getId());
@@ -103,7 +103,7 @@ public abstract class AbstractPushNotificationRecipientServiceImpl<T extends Pus
         T recipient = getRepository().findById(recipientId).orElseThrow(() -> new PushNotificationRecipientNotFoundForIdException(recipientId, getInstanceClass()));;
         // Update recipient status
         recipient.setStatus(status);
-        recipient.setUpdated(new Date());
+        recipient.setUpdated(LocalDateTime.now());
         // Persist recipient
         recipient = getRepository().save(recipient);
         LOGGER.debug("Successfully update push notification recipient status with id - {}, recipient - {}", recipient.getId(), recipient);

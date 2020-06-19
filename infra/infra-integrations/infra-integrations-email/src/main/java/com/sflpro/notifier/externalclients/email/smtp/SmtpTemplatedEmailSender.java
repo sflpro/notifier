@@ -1,9 +1,9 @@
 package com.sflpro.notifier.externalclients.email.smtp;
 
-import com.sflpro.notifier.spi.template.TemplateContent;
-import com.sflpro.notifier.spi.template.TemplateContentResolver;
 import com.sflpro.notifier.spi.email.TemplatedEmailMessage;
 import com.sflpro.notifier.spi.email.TemplatedEmailSender;
+import com.sflpro.notifier.spi.template.TemplateContent;
+import com.sflpro.notifier.spi.template.TemplateContentResolver;
 import org.springframework.util.Assert;
 
 
@@ -29,7 +29,8 @@ class SmtpTemplatedEmailSender implements TemplatedEmailSender {
         smtpTransportService.sendMessageOverSmtp(message.from(),
                 message.to(),
                 content.subject(),
-                content.body());
+                content.body(),
+                message.fileAttachments());
     }
 
     private TemplateContent contentFor(final TemplatedEmailMessage message) {

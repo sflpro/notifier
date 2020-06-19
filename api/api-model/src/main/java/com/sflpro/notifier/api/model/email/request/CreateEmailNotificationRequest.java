@@ -10,7 +10,9 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.annotation.Nonnull;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 /**
  * User: Ruben Dilanyan
@@ -31,6 +33,9 @@ public class CreateEmailNotificationRequest extends AbstractTemplatedCreateNotif
 
     @JsonProperty("subject")
     private String subject;
+
+    @JsonProperty("fileAttachments")
+    private Set<EmailNotificationFileAttachmentRequest> fileAttachments = Collections.emptySet();
 
     /* Constructors */
     public CreateEmailNotificationRequest() {
@@ -60,6 +65,15 @@ public class CreateEmailNotificationRequest extends AbstractTemplatedCreateNotif
 
     public void setSubject(final String subject) {
         this.subject = subject;
+    }
+
+    public Set<EmailNotificationFileAttachmentRequest> getFileAttachments() {
+        return fileAttachments;
+    }
+
+    public CreateEmailNotificationRequest setFileAttachments(final Set<EmailNotificationFileAttachmentRequest> fileAttachments) {
+        this.fileAttachments = fileAttachments;
+        return this;
     }
 
     /* Validation methods */
@@ -95,6 +109,7 @@ public class CreateEmailNotificationRequest extends AbstractTemplatedCreateNotif
         builder.append(this.getProperties(), that.getProperties());
         builder.append(this.getSecureProperties(), that.getSecureProperties());
         builder.append(this.getLocale(), that.getLocale());
+        builder.append(this.fileAttachments, that.getFileAttachments());
         return builder.isEquals();
     }
 
@@ -109,6 +124,7 @@ public class CreateEmailNotificationRequest extends AbstractTemplatedCreateNotif
         builder.append(this.getProperties());
         builder.append(this.getSecureProperties());
         builder.append(this.getLocale());
+        builder.append(this.getFileAttachments());
         return builder.build();
     }
 
@@ -123,6 +139,7 @@ public class CreateEmailNotificationRequest extends AbstractTemplatedCreateNotif
         builder.append("properties", this.getProperties());
         builder.append("secureProperties", this.getSecureProperties());
         builder.append("language", this.getLocale());
+        builder.append("fileAttachments", this.getFileAttachments());
         return builder.build();
     }
 }

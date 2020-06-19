@@ -18,7 +18,7 @@ import org.easymock.Mock;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.easymock.EasyMock.*;
@@ -105,7 +105,7 @@ public abstract class AbstractPushNotificationRecipientServiceImplTest<T extends
         final Long recipientId = 1L;
         final T recipient = getInstance();
         recipient.setStatus(PushNotificationRecipientStatus.ENABLED);
-        final Date recipientUpdateDate = recipient.getUpdated();
+        final LocalDateTime recipientUpdateDate = recipient.getUpdated();
         final PushNotificationRecipientStatus status = PushNotificationRecipientStatus.DISABLED;
         // Reset
         resetAll();
@@ -225,7 +225,7 @@ public abstract class AbstractPushNotificationRecipientServiceImplTest<T extends
         final T recipient = getInstance();
         recipient.setId(recipientId);
         recipient.setSubscription(subscription);
-        final Date recipientUpdateDate = recipient.getUpdated();
+        final LocalDateTime recipientUpdateDate = recipient.getUpdated();
         final Long userDeviceId = 2L;
         final UserDevice userDevice = getServicesImplTestHelper().createUserDevice();
         userDevice.setId(userDeviceId);
@@ -271,7 +271,7 @@ public abstract class AbstractPushNotificationRecipientServiceImplTest<T extends
         final T recipient = getInstance();
         recipient.setId(recipientId);
         recipient.setSubscription(subscription);
-        final Date recipientUpdateDate = recipient.getUpdated();
+        final LocalDateTime recipientUpdateDate = recipient.getUpdated();
         final Long userDeviceId = 2L;
         final UserDevice userDevice = getServicesImplTestHelper().createUserDevice();
         userDevice.setId(userDeviceId);

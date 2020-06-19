@@ -15,6 +15,8 @@ import org.easymock.Mock;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Collections;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.expectLastCall;
@@ -51,6 +53,7 @@ public class EmailNotificationServiceFacadeImpleTest extends AbstractFacadeUnitT
         emailNotification.setSenderEmail(request.getSenderEmail());
         emailNotification.setContent(request.getBody());
         emailNotification.setSubject(request.getSubject());
+        emailNotification.setFileAttachments(Collections.emptySet());
         final EmailNotificationDto emailNotificationDto = new EmailNotificationDto(
                 request.getRecipientEmail(),
                 request.getSenderEmail(),
@@ -62,6 +65,7 @@ public class EmailNotificationServiceFacadeImpleTest extends AbstractFacadeUnitT
         );
         emailNotificationDto.setUserUuid(request.getUserUuId());
         emailNotificationDto.setProperties(request.getProperties());
+        emailNotificationDto.setFileAttachments(Collections.emptySet());
         // Expectations
         expect(emailNotificationService.createEmailNotification(emailNotificationDto)).andReturn(emailNotification);
         applicationEventDistributionService.publishAsynchronousEvent(new StartSendingNotificationEvent(emailNotification.getId(), request.getSecureProperties()));

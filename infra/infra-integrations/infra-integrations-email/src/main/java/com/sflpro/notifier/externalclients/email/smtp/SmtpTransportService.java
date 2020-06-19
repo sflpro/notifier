@@ -1,5 +1,9 @@
 package com.sflpro.notifier.externalclients.email.smtp;
 
+import com.sflpro.notifier.spi.email.SpiEmailNotificationFileAttachment;
+
+import java.util.Set;
+
 /**
  * User: Ruben Dilanyan
  * Company: SFL LLC
@@ -12,11 +16,15 @@ interface SmtpTransportService {
 
     /**
      * Perform email over SMTP
-     *
      * @param from
      * @param to
      * @param subject
      * @param body
+     * @param fileAttachments
      */
-    void sendMessageOverSmtp(final String from, final String to, final String subject, final String body);
+    void sendMessageOverSmtp(final String from,
+                             final String to,
+                             final String subject,
+                             final String body,
+                             final Set<SpiEmailNotificationFileAttachment> fileAttachments);
 }

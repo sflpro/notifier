@@ -93,8 +93,39 @@ public class EmailNotificationProcessorImplTest extends AbstractServicesUnitTest
     }
 
     @Test
-    public void testProcessNotificationForWhenProviderTypeIsSmtpAndSuccess() {
+    public void testProcessTemplatedNotificationForWhenProviderTypeIsSmtpAndSuccess() {
         // Test data
+        final Long notificationId = 1L;
+        final EmailNotification notification = getServicesImplTestHelper().createEmailNotification();
+        notification.setId(notificationId);
+        notification.setState(NotificationState.CREATED);
+        notification.setProviderType(NotificationProviderType.SMTP_SERVER);
+        notification.setTemplateName("YoTemplate");
+        // Reset
+        resetAll();
+        // Expectations
+        expect(emailNotificationService.getEmailNotificationForProcessing(notificationId)).andReturn(notification).once();
+        expect(emailNotificationService.updateNotificationState(notificationId, NotificationState.PROCESSING)).andReturn(notification).once();
+        expect(emailSenderProvider.lookupTemplatedEmailSenderFor(notification.getProviderType().name().toLowerCase())).andReturn(Optional.of(templatedEmailSender));
+        templatedEmailSender.send(isA(TemplatedEmailMessage.class));
+        expectLastCall().andAnswer(() -> {
+            final TemplatedEmailMessage message = (TemplatedEmailMessage) getCurrentArguments()[0];
+            assertTemplatedEmailMessage(message, notification);
+            return null;
+        });
+        expect(emailNotificationService.updateNotificationState(notificationId, NotificationState.SENT)).andReturn(notification).once();
+        // Replay
+        replayAll();
+        // Run test scenario
+        emailNotificationProcessor.processNotification(notificationId, Collections.emptyMap());
+        // Verify
+        verifyAll();
+    }
+
+    @Test
+    public void testProcessSimpleNotificationForWhenProviderTypeIsSmtpAndSuccess() {
+        // Test data
+
         final Long notificationId = 1L;
         final EmailNotification notification = getServicesImplTestHelper().createEmailNotification();
         notification.setId(notificationId);
@@ -105,14 +136,14 @@ public class EmailNotificationProcessorImplTest extends AbstractServicesUnitTest
         // Expectations
         expect(emailNotificationService.getEmailNotificationForProcessing(notificationId)).andReturn(notification).once();
         expect(emailNotificationService.updateNotificationState(notificationId, NotificationState.PROCESSING)).andReturn(notification).once();
-        expect(emailSenderProvider.lookupTemplatedEmailSenderFor(notification.getProviderType().name().toLowerCase())).andReturn(Optional.of(templatedEmailSender));
-        templatedEmailSender.send(isA(TemplatedEmailMessage.class));
-        expectLastCall().andAnswer(()->{
-            final TemplatedEmailMessage message = (TemplatedEmailMessage) getCurrentArguments()[0];
-            assertTemplatedEmailMessage(message, notification);
+        expect(emailSenderProvider.lookupSimpleEmailSenderFor(notification.getProviderType().name().toLowerCase())).andReturn(Optional.of(simpleEmailSender));
+        simpleEmailSender.send(isA(SimpleEmailMessage.class));
+        expectLastCall().andAnswer(() -> {
+            final SimpleEmailMessage message = (SimpleEmailMessage) getCurrentArguments()[0];
+            assertSimpleEmailMessage(message, notification);
             return null;
         });
-        expect(emailNotificationService.updateNotificationState(notificationId,NotificationState.SENT)).andReturn(notification).once();
+        expect(emailNotificationService.updateNotificationState(notificationId, NotificationState.SENT)).andReturn(notification).once();
         // Replay
         replayAll();
         // Run test scenario
@@ -129,6 +160,7 @@ public class EmailNotificationProcessorImplTest extends AbstractServicesUnitTest
         notification.setId(notificationId);
         notification.setState(NotificationState.CREATED);
         notification.setProviderType(NotificationProviderType.MANDRILL);
+        notification.setTemplateName("YoTemplate");
         // Reset
         resetAll();
         // Expectations
@@ -168,6 +200,7 @@ public class EmailNotificationProcessorImplTest extends AbstractServicesUnitTest
         final EmailNotification notification = getServicesImplTestHelper().createEmailNotification();
         notification.setId(notificationId);
         notification.setState(NotificationState.CREATED);
+        notification.setTemplateName("YoTemplate");
         // Reset
         resetAll();
         // Expectations

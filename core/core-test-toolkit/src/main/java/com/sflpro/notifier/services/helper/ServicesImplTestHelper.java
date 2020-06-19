@@ -95,7 +95,6 @@ public class ServicesImplTestHelper {
         notificationDto.setClientIpAddress("127.0.0.1");
         notificationDto.setContent("YoYoYo");
         notificationDto.setSubject("YoYo");
-        notificationDto.setTemplateName("YoTemplate");
         notificationDto.setProperties(Collections.singletonMap("token", UUID.randomUUID().toString()));
         notificationDto.setProviderType(NotificationProviderType.SMTP_SERVER);
         notificationDto.setFileAttachments(Collections.emptySet());

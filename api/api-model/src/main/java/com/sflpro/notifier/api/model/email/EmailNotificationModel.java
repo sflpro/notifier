@@ -1,10 +1,14 @@
 package com.sflpro.notifier.api.model.email;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.sflpro.notifier.api.model.email.request.EmailNotificationFileAttachmentRequest;
 import com.sflpro.notifier.api.model.notification.NotificationModel;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+
+import java.util.Collections;
+import java.util.Set;
 
 /**
  * User: Ruben Dilanyan
@@ -22,6 +26,9 @@ public class EmailNotificationModel extends NotificationModel {
 
     @JsonProperty("recipientEmail")
     private String recipientEmail;
+
+    @JsonProperty("fileAttachments")
+    private Set<EmailNotificationFileAttachmentModel> fileAttachments = Collections.emptySet();
 
     /* Constructors */
     public EmailNotificationModel() {
@@ -45,6 +52,14 @@ public class EmailNotificationModel extends NotificationModel {
         this.recipientEmail = recipientEmail;
     }
 
+    public Set<EmailNotificationFileAttachmentModel> getFileAttachments() {
+        return fileAttachments;
+    }
+
+    public void setFileAttachments(final Set<EmailNotificationFileAttachmentModel> fileAttachments) {
+        this.fileAttachments = fileAttachments;
+    }
+
     /* Equals, HashCode and ToString */
     @Override
     public boolean equals(final Object o) {
@@ -59,6 +74,7 @@ public class EmailNotificationModel extends NotificationModel {
         builder.appendSuper(super.equals(o));
         builder.append(this.getRecipientEmail(), that.getRecipientEmail());
         builder.append(this.getSenderEmail(), that.getSenderEmail());
+        builder.append(this.getFileAttachments(), that.getFileAttachments());
         return builder.isEquals();
     }
 
@@ -68,6 +84,7 @@ public class EmailNotificationModel extends NotificationModel {
         builder.appendSuper(super.hashCode());
         builder.append(this.getRecipientEmail());
         builder.append(this.getSenderEmail());
+        builder.append(this.getFileAttachments());
         return builder.build();
     }
 
@@ -77,6 +94,7 @@ public class EmailNotificationModel extends NotificationModel {
         builder.appendSuper(super.toString());
         builder.append("recipientEmail", this.getRecipientEmail());
         builder.append("senderEmail", this.getSenderEmail());
+        builder.append("fileAttachments", this.getFileAttachments());
         return builder.build();
     }
 }

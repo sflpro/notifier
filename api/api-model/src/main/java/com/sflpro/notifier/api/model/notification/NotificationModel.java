@@ -5,11 +5,16 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.sflpro.notifier.api.model.common.AbstractApiModel;
 import com.sflpro.notifier.api.model.email.EmailNotificationModel;
+import com.sflpro.notifier.api.model.email.request.CreateEmailNotificationRequest;
+import com.sflpro.notifier.api.model.email.request.EmailNotificationFileAttachmentRequest;
 import com.sflpro.notifier.api.model.push.PushNotificationModel;
 import com.sflpro.notifier.api.model.sms.SmsNotificationModel;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+
+import java.util.Collections;
+import java.util.Set;
 
 /**
  * User: Ruben Dilanyan
@@ -44,6 +49,7 @@ public abstract class NotificationModel extends AbstractApiModel {
 
     @JsonProperty("state")
     private NotificationStateClientType state;
+
 
     /* Constructors */
     public NotificationModel() {
@@ -89,6 +95,7 @@ public abstract class NotificationModel extends AbstractApiModel {
     public void setState(final NotificationStateClientType state) {
         this.state = state;
     }
+
 
     /* Equals, HashCode and ToString */
     @Override

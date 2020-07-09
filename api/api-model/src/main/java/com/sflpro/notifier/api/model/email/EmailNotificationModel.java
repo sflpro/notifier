@@ -1,7 +1,6 @@
 package com.sflpro.notifier.api.model.email;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.sflpro.notifier.api.model.email.request.EmailNotificationFileAttachmentRequest;
 import com.sflpro.notifier.api.model.notification.NotificationModel;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;

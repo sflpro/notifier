@@ -1,36 +1,68 @@
-version: '3.8'
+version: '3'
 
 services:
 
-  # notifier-api:
-  #   image:  sflpro/notifier:snapshot
-  #   ports:
-  #     - "8099:8099"
-  #   depends_on:
-  #     - notifier-worker
-  #   links:
-  #     - db
-  #     - rabbit
-  #   entrypoint: "java -Xms350m -Xmx600m -jar /api-web.jar --spring.config.additional-location=/etc/notifier/notifier.properties"
-  #   volumes: 
-  #     - type: bind
-  #       source: C:\Users\hrant.arakelyan\Desktop\notifier\samples\notifier-postgres-rabbit\notifier.properties
-  #       target: /etc/notifier/notifier.properties
+  notifier-api:
+    image:  sflpro/notifier:snapshot
+    ports:
+      - "8099:8099"
+    depends_on:
+      - notifier-worker
+    links:
+      - db
+      - rabbit
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/notifier
+      - SPRING_DATASOURCE_USERNAME=notifier
+      - SPRING_DATASOURCE_PASSWORD=notifier
+      - SPRING_JPA_PROPERTIES_HIBERNATE_JDBC_LOB_NON_CONTEXTUAL_CREATION=true
+      - SPRING_FLYWAY_ENABLED=false
+      - SPRING_RABBITMQ_HOST=rabbit
+      - SPRING_RABBITMQ_USERNAME=notifier
+      - SPRING_RABBITMQ_PASSWORD=notifier
+      - SPRING_RABBITMQ_PORT=5672
+      - NOTIFIER_QUEUE_ENGINE=rabbit
+      - SMS_ACCOUNT_SENDER_PHONE=00000000
+      - PUSH_NOTIFICATION_PROVIDER=FIREBASE_CLOUD_MESSAGING
+      - JAVA_TOOL_OPTIONS="-Dnotification.push.application.arn.test_app.android=test_app -Xmx256m"
 
-  # notifier-worker:
-  #   image:  sflpro/notifier-worker:snapshot
-  #   depends_on:
-  #     - db
-  #     - rabbit
-  #   links:
-  #     - db
-  #     - rabbit
-  #   restart: on-failure
-  #   entrypoint: "java -Xms350m -Xmx600m -jar /worker.jar --spring.config.additional-location=/etc/notifier/notifier.properties"
-  #   volumes:
-  #     - type: bind
-  #       source: C:\Users\hrant.arakelyan\Desktop\notifier\samples\notifier-postgres-rabbit\notifier.properties
-  #       target: /etc/notifier/notifier.properties
+  notifier-worker:
+    image:  sflpro/notifier-worker:snapshot
+    depends_on:
+      - db
+      - rabbit
+      - smtp
+    links:
+      - db
+      - rabbit
+      - smtp
+    restart: on-failure
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/notifier
+      - SPRING_DATASOURCE_USERNAME=notifier
+      - SPRING_DATASOURCE_PASSWORD=notifier
+      - SPRING_JPA_PROPERTIES_HIBERNATE_JDBC_LOB_NON_CONTEXTUAL_CREATION=true
+      - SPRING_FLYWAY_ENABLED=true
+      - SPRING_RABBITMQ_HOST=rabbit
+      - SPRING_RABBITMQ_USERNAME=notifier
+      - SPRING_RABBITMQ_PASSWORD=notifier
+      - SPRING_RABBITMQ_PORT=5672
+      - NOTIFIER_QUEUE_ENGINE=rabbit
+      - FIREBASE_PUSH_ENABLED=true
+      - PUSH_NOTIFICATION_PROVIDER=FIREBASE_CLOUD_MESSAGING
+      - SMTP_ENABLED=true
+      - SMTP_HOST=smtp
+      - SMTP_PORT=25
+      - SMTP_TIMEOUT=10000
+      - SMTP_USERNAME=john
+      - SMTP_PASSWORD=secret
+      - JAVA_TOOL_OPTIONS="-Dnotification.push.application.arn.test_app.android=test_app -Xmx256m"
+
+  smtp:
+    image: namshi/smtp
+    environment:
+      - SMARTHOST_USER=john
+      - SMARTHOST_PASSWORD=secret
 
   db:
     image: postgres:11.5
@@ -42,7 +74,7 @@ services:
       - "5433:5432"
     volumes:
       - ./../db_init:/docker-entrypoint-initdb.d
-      
+
   rabbit:
     image: rabbitmq:3.7-management
     hostname: rabbit

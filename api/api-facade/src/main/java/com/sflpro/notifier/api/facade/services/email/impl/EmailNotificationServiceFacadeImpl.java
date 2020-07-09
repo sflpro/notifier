@@ -86,7 +86,7 @@ class EmailNotificationServiceFacadeImpl implements EmailNotificationServiceFaca
         return notificationModel;
     }
 
-    private Set<EmailNotificationFileAttachment> mapFileAttachments(final Set<EmailNotificationFileAttachmentRequest> fileAttachmentResource){
+    private Set<EmailNotificationFileAttachment> mapFileAttachments(final Set<EmailNotificationFileAttachmentRequest> fileAttachmentResource) {
         Set<EmailNotificationFileAttachment> destinationAttachments = new HashSet<>();
 
         for (EmailNotificationFileAttachmentRequest attachment : fileAttachmentResource) {

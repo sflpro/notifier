@@ -11,7 +11,6 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-
 /**
  * User: Ruben Dilanyan
  * Company: SFL LLC
@@ -45,7 +44,6 @@ public abstract class NotificationModel extends AbstractApiModel {
 
     @JsonProperty("state")
     private NotificationStateClientType state;
-
 
     /* Constructors */
     public NotificationModel() {
@@ -91,7 +89,6 @@ public abstract class NotificationModel extends AbstractApiModel {
     public void setState(final NotificationStateClientType state) {
         this.state = state;
     }
-
 
     /* Equals, HashCode and ToString */
     @Override

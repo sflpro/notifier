@@ -110,7 +110,7 @@
         <commons.lang3.version>3.4</commons.lang3.version>
         <commons.io.version>2.4</commons.io.version>
         <commons.validator>1.4.1</commons.validator>
-        <commons.beanutils.version>1.9.2</commons.beanutils.version>
+        <commons.beanutils.version>1.9.4</commons.beanutils.version>
         <commons.codec.version>1.10</commons.codec.version>
         <http.client.version>4.5</http.client.version>
         <asm.version>5.0.3</asm.version>

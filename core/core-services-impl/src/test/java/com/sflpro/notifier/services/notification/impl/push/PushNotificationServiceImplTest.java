@@ -10,7 +10,6 @@ import com.sflpro.notifier.db.entities.user.User;
 import com.sflpro.notifier.db.repositories.repositories.notification.AbstractNotificationRepository;
 import com.sflpro.notifier.db.repositories.repositories.notification.push.PushNotificationRepository;
 import com.sflpro.notifier.services.notification.UserNotificationService;
-import com.sflpro.notifier.services.notification.dto.NotificationPropertyDto;
 import com.sflpro.notifier.services.notification.dto.UserNotificationDto;
 import com.sflpro.notifier.services.notification.dto.push.PushNotificationDto;
 import com.sflpro.notifier.services.notification.impl.AbstractNotificationServiceImpl;
@@ -41,7 +40,8 @@ import static org.junit.Assert.*;
  */
 public class PushNotificationServiceImplTest extends AbstractNotificationServiceImplTest<PushNotification> {
 
-    /* Test subject and mocks */
+    //region Test subject and mocks
+
     @TestSubject
     private PushNotificationServiceImpl pushNotificationService = new PushNotificationServiceImpl();
 
@@ -60,17 +60,18 @@ public class PushNotificationServiceImplTest extends AbstractNotificationService
     @Mock
     private UserNotificationService userNotificationService;
 
-    /* Constructors */
     public PushNotificationServiceImplTest() {
     }
 
-    /* Test methods */
+    //endregion
+
+    //region createNotification...
+
     @Test
     public void testCreateNotificationsForUserActiveRecipientsWithInvalidArguments() {
         // Test data
         final Long userId = 1L;
         final PushNotificationDto pushNotificationDto = getServicesImplTestHelper().createPushNotificationDto();
-        final List<NotificationPropertyDto> notificationPropertyDtos = new ArrayList<>();
         // Reset
         resetAll();
         // Replay
@@ -99,7 +100,6 @@ public class PushNotificationServiceImplTest extends AbstractNotificationService
         final User user = getServicesImplTestHelper().createUser();
         user.setId(userId);
         final PushNotificationDto pushNotificationDto = getServicesImplTestHelper().createPushNotificationDto();
-        final List<NotificationPropertyDto> notificationPropertyDtos = new ArrayList<>();
         // Reset
         resetAll();
         // Expectations
@@ -169,12 +169,12 @@ public class PushNotificationServiceImplTest extends AbstractNotificationService
             getServicesImplTestHelper().assertPushNotification(pushNotification, pushNotificationDto);
             assertEquals(recipient, pushNotification.getRecipient());
             assertEquals(pushNotificationDto.getProperties().size(), pushNotification.getProperties().size());
-           assertEquals(pushNotificationDto.getProperties(),
-                   pushNotification.getProperties().stream().collect(Collectors.toMap(
-                           NotificationProperty::getPropertyKey,
-                           NotificationProperty::getPropertyValue
-                   ))
-                   );
+            assertEquals(pushNotificationDto.getProperties(),
+                    pushNotification.getProperties().stream().collect(Collectors.toMap(
+                            NotificationProperty::getPropertyKey,
+                            NotificationProperty::getPropertyValue
+                    ))
+            );
             // Increment counter
             counter.increment();
         });
@@ -187,7 +187,6 @@ public class PushNotificationServiceImplTest extends AbstractNotificationService
         // Test data
         final Long recipientId = 1L;
         final PushNotificationDto notificationDto = getServicesImplTestHelper().createPushNotificationDto();
-        final List<NotificationPropertyDto> notificationPropertyDtos = new ArrayList<>();
         // Reset
         resetAll();
         // Replay
@@ -231,14 +230,15 @@ public class PushNotificationServiceImplTest extends AbstractNotificationService
         assertEquals(notificationDto.getProperties().size(), result.getProperties().size());
         // Create counter
         final MutableInt counter = new MutableInt(0);
-        assertEquals(result.getProperties().stream()
-                        .collect(Collectors.toMap(NotificationProperty::getPropertyKey, NotificationProperty::getPropertyValue)),
-                notificationDto.getProperties());
+        assertEquals(result.getProperties().stream().collect(Collectors.toMap(NotificationProperty::getPropertyKey, NotificationProperty::getPropertyValue)), notificationDto.getProperties());
         // Verify
         verifyAll();
     }
 
-    /* Utility methods */
+    //endregion
+
+    //region Utility methods
+
     @Override
     protected AbstractNotificationRepository<PushNotification> getRepository() {
         return pushNotificationRepository;
@@ -268,5 +268,7 @@ public class PushNotificationServiceImplTest extends AbstractNotificationService
         }
         return recipients;
     }
+
+    //endregion
 
 }

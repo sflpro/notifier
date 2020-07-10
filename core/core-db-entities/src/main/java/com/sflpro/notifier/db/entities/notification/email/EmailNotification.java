@@ -8,6 +8,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.persistence.*;
 import java.util.Locale;
+import java.util.Set;
 
 /**
  * User: Ruben Dilanyan
@@ -33,6 +34,10 @@ public class EmailNotification extends Notification {
 
     @Column(name = "locale")
     private Locale locale;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "notification_email_id", referencedColumnName = "id")
+    private Set<EmailNotificationFileAttachment> fileAttachments;
 
     /* Constructors */
     public EmailNotification() {
@@ -77,6 +82,14 @@ public class EmailNotification extends Notification {
         this.locale = locale;
     }
 
+    public Set<EmailNotificationFileAttachment> getFileAttachments() {
+        return fileAttachments;
+    }
+
+    public void setFileAttachments(final Set<EmailNotificationFileAttachment> fileAttachments) {
+        this.fileAttachments = fileAttachments;
+    }
+
     /* Private utility methods */
     private void initializeDefaults() {
         setType(NotificationType.EMAIL);
@@ -98,6 +111,7 @@ public class EmailNotification extends Notification {
         builder.append(this.getSenderEmail(), that.getSenderEmail());
         builder.append(this.getTemplateName(), that.getTemplateName());
         builder.append(this.getLocale(), that.getLocale());
+        builder.append(this.getFileAttachments(), that.getFileAttachments());
         return builder.isEquals();
     }
 
@@ -109,6 +123,7 @@ public class EmailNotification extends Notification {
         builder.append(this.getSenderEmail());
         builder.append(this.getTemplateName());
         builder.append(this.getLocale());
+        builder.append(this.getFileAttachments());
         return builder.build();
     }
 
@@ -120,6 +135,7 @@ public class EmailNotification extends Notification {
         builder.append("senderEmail", this.getSenderEmail());
         builder.append("templateName", this.getTemplateName());
         builder.append("locale", this.getLocale());
+        builder.append("fileAttachments", this.getFileAttachments());
         return builder.build();
     }
 

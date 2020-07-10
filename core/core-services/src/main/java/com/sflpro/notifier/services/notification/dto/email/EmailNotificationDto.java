@@ -3,12 +3,14 @@ package com.sflpro.notifier.services.notification.dto.email;
 import com.sflpro.notifier.db.entities.notification.NotificationProviderType;
 import com.sflpro.notifier.db.entities.notification.NotificationType;
 import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
+import com.sflpro.notifier.db.entities.notification.email.EmailNotificationFileAttachment;
 import com.sflpro.notifier.services.notification.dto.NotificationDto;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.Locale;
+import java.util.Set;
 
 /**
  * User: Ruben Dilanyan
@@ -28,6 +30,8 @@ public class EmailNotificationDto extends NotificationDto<EmailNotification> {
     private String userUuid;
 
     private Locale locale;
+
+    private Set<EmailNotificationFileAttachment> fileAttachments;
 
     /* Constructors */
     public EmailNotificationDto(final String recipientEmail,
@@ -79,6 +83,14 @@ public class EmailNotificationDto extends NotificationDto<EmailNotification> {
         this.locale = locale;
     }
 
+    public Set<EmailNotificationFileAttachment> getFileAttachments() {
+        return fileAttachments;
+    }
+
+    public void setFileAttachments(final Set<EmailNotificationFileAttachment> fileAttachments) {
+        this.fileAttachments = fileAttachments;
+    }
+
     /* Public interface methods */
     @Override
     public void updateDomainEntityProperties(final EmailNotification notification) {
@@ -104,6 +116,7 @@ public class EmailNotificationDto extends NotificationDto<EmailNotification> {
         builder.append(this.getRecipientEmail(), that.getRecipientEmail());
         builder.append(this.getSenderEmail(), that.getSenderEmail());
         builder.append(this.getTemplateName(), that.getTemplateName());
+        builder.append(this.getFileAttachments(), that.getFileAttachments());
         return builder.isEquals();
     }
 
@@ -114,6 +127,7 @@ public class EmailNotificationDto extends NotificationDto<EmailNotification> {
         builder.append(this.getRecipientEmail());
         builder.append(this.getSenderEmail());
         builder.append(this.getTemplateName());
+        builder.append(this.getFileAttachments());
         return builder.build();
     }
 
@@ -124,6 +138,8 @@ public class EmailNotificationDto extends NotificationDto<EmailNotification> {
         builder.append("recipientEmail", this.getRecipientEmail());
         builder.append("senderEmail", this.getSenderEmail());
         builder.append("templateName", this.getTemplateName());
+        builder.append("fileAttachments", this.getFileAttachments());
         return builder.build();
     }
+
 }

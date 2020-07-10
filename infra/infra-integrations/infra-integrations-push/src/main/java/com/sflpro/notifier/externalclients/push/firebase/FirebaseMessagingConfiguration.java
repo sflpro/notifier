@@ -59,9 +59,7 @@ class FirebaseMessagingConfiguration {
     }
 
     @Bean
-    PushMessageSender firebasePushMessageSender(final FirebaseMessaging firebaseMessaging,
-                                                final Properties defaultAndroidConfig,
-                                                final Properties defaultApnsConfig) {
+    PushMessageSender firebasePushMessageSender(final FirebaseMessaging firebaseMessaging, final Properties defaultAndroidConfig, final Properties defaultApnsConfig) {
         return new FirebasePushMessageSender(firebaseMessaging, defaultAndroidConfig, defaultApnsConfig);
     }
 
@@ -71,8 +69,7 @@ class FirebaseMessagingConfiguration {
     }
 
     @Bean
-    PushMessageServiceRegistry firebasePushMessageServiceRegistry(final PushMessageSender firebasePushMessageSender,
-                                                                  final PushMessageSubscriber firebasePushMessageSubscriber) {
+    PushMessageServiceRegistry firebasePushMessageServiceRegistry(final PushMessageSender firebasePushMessageSender, final PushMessageSubscriber firebasePushMessageSubscriber) {
         return PushMessageServiceRegistry.of("fcm", firebasePushMessageSender, firebasePushMessageSubscriber);
     }
 

@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
  * Time: 7:24 PM
  */
 public abstract class NotificationDto<T extends Notification> extends AbstractDomainEntityModelDto<T> {
+
     private static final long serialVersionUID = -4673477751721337650L;
 
     /* Properties */
@@ -203,7 +204,7 @@ public abstract class NotificationDto<T extends Notification> extends AbstractDo
         builder.append("subject", this.getSubject());
         builder.append("properties", this.getProperties());
         builder.append("providerType", this.getProviderType());
-        builder.append("hasSecureProperties",this.isHasSecureProperties());
+        builder.append("hasSecureProperties", this.isHasSecureProperties());
         return builder.build();
     }
 }

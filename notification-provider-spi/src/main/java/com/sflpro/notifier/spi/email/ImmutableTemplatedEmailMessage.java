@@ -7,6 +7,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * Created by Hayk Mkrtchyan.
@@ -24,8 +25,9 @@ final class ImmutableTemplatedEmailMessage extends AbstractEmailMessage implemen
                                    final String templateId,
                                    final String subject,
                                    final Map<String, ?> variables,
-                                   final Locale locale) {
-        super(from, to, subject);
+                                   final Locale locale,
+                                   final Set<SpiEmailNotificationFileAttachment> fileAttachments) {
+        super(from, to, subject, fileAttachments);
         this.templateId = templateId;
         this.variables = variables;
         this.locale = locale;
@@ -86,4 +88,5 @@ final class ImmutableTemplatedEmailMessage extends AbstractEmailMessage implemen
     public Optional<Locale> locale() {
         return Optional.ofNullable(locale);
     }
+
 }

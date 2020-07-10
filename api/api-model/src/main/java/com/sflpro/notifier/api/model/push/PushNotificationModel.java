@@ -6,8 +6,8 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * User: Ruben Dilanyan
@@ -18,24 +18,32 @@ import java.util.List;
 public class PushNotificationModel extends NotificationModel {
 
     private static final long serialVersionUID = 8466440465666629098L;
-    /* Properties */
+
+    //region Properties
+
     @JsonProperty("properties")
-    private List<PushNotificationPropertyModel> properties;
+    private Map<String, String> properties;
 
     @JsonProperty("recipient")
     private PushNotificationRecipientModel recipient;
 
-    /* Constructors */
+    //endregion
+
+    //region Constants
+
     public PushNotificationModel() {
-        this.properties = new ArrayList<>();
+        this.properties = new HashMap<>();
     }
 
-    /* Properties getters and setters */
-    public List<PushNotificationPropertyModel> getProperties() {
+    //endregion
+
+    //region Getters and Setters
+
+    public Map<String, String> getProperties() {
         return properties;
     }
 
-    public void setProperties(final List<PushNotificationPropertyModel> properties) {
+    public void setProperties(final Map<String, String> properties) {
         this.properties = properties;
     }
 
@@ -47,38 +55,46 @@ public class PushNotificationModel extends NotificationModel {
         this.recipient = recipient;
     }
 
-    /* Equals, HashCode and ToString */
+    //endregion
+
+    //region Equals, HashCode and ToString
+
     @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof PushNotificationModel)) {
+    public boolean equals(Object obj) {
+        if (obj == null) {
             return false;
         }
-        final PushNotificationModel that = (PushNotificationModel) o;
-        final EqualsBuilder builder = new EqualsBuilder();
-        builder.appendSuper(super.equals(o));
-        builder.append(this.getProperties(), that.getProperties());
-        builder.append(this.getRecipient(), that.getRecipient());
-        return builder.isEquals();
+        if (obj == this) {
+            return true;
+        }
+        if (obj.getClass() != getClass()) {
+            return false;
+        }
+        PushNotificationModel rhs = (PushNotificationModel) obj;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(obj))
+                .append(this.properties, rhs.properties)
+                .append(this.recipient, rhs.recipient)
+                .isEquals();
     }
 
     @Override
     public int hashCode() {
-        final HashCodeBuilder builder = new HashCodeBuilder();
-        builder.appendSuper(super.hashCode());
-        builder.append(this.getProperties());
-        builder.append(this.getRecipient());
-        return builder.build();
+        return new HashCodeBuilder()
+                .appendSuper(super.hashCode())
+                .append(properties)
+                .append(recipient)
+                .toHashCode();
     }
 
     @Override
     public String toString() {
-        final ToStringBuilder builder = new ToStringBuilder(this);
-        builder.appendSuper(super.toString());
-        builder.append("properties", this.getProperties());
-        builder.append("recipient", this.getRecipient());
-        return builder.build();
+        return new ToStringBuilder(this)
+                .appendSuper(super.toString())
+                .append("properties", properties)
+                .append("recipient", recipient)
+                .toString();
     }
+
+    //endregion
 }

@@ -19,7 +19,7 @@
 
     <groupId>com.sflpro.notifier</groupId>
     <artifactId>notifier</artifactId>
-    <version>1.8.2</version>
+    <version>1.9.0</version>
     <packaging>pom</packaging>
 
     <!-- Information required by maven central -->
@@ -77,7 +77,7 @@
             <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
     </distributionManagement>
-    <!-- End of nformation required by maven central -->
+    <!-- End of information required by maven central -->
 
     <properties>
         <projectbasedir>${user.dir}</projectbasedir>
@@ -106,11 +106,11 @@
         <logstash-encoder.version>4.7</logstash-encoder.version>
         <logback.logstash.encoder.version>4.5.1</logback.logstash.encoder.version>
 
-        <commons.collections.version>3.2.1</commons.collections.version>
+        <commons.collections.version>3.2.2</commons.collections.version>
         <commons.lang3.version>3.4</commons.lang3.version>
         <commons.io.version>2.4</commons.io.version>
         <commons.validator>1.4.1</commons.validator>
-        <commons.beanutils.version>1.8.3</commons.beanutils.version>
+        <commons.beanutils.version>1.9.2</commons.beanutils.version>
         <commons.codec.version>1.10</commons.codec.version>
         <http.client.version>4.5</http.client.version>
         <asm.version>5.0.3</asm.version>
@@ -154,7 +154,7 @@
         <maven.compiler.plugin.version>2.4</maven.compiler.plugin.version>
         <maven.release.plugin.version>2.5.3</maven.release.plugin.version>
         <maven.site.plugin.version>3.7.1</maven.site.plugin.version>
-        <maven.assembly.plugin.version>2.6</maven.assembly.plugin.version>
+        <maven.asseambly.plugin.version>2.6</maven.asseambly.plugin.version>
         <maven.enforcer.plugin.version>3.0.0-M2</maven.enforcer.plugin.version>
         <maven.javadoc.plugin.version>3.1.0</maven.javadoc.plugin.version>
         <dockerfile.maven.plugin.version>1.4.10</dockerfile.maven.plugin.version>
@@ -234,7 +234,7 @@
                     </gitFlowConfig>
                 </configuration>
             </plugin>
-            
+
             <plugin>
                 <!-- Generates arglines to be used by surefire/failsafe plugins downstream -->
                 <groupId>org.jacoco</groupId>

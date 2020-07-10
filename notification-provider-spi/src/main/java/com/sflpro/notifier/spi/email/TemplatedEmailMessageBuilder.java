@@ -4,6 +4,7 @@ import org.springframework.util.Assert;
 
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 public class TemplatedEmailMessageBuilder {
 
@@ -13,11 +14,13 @@ public class TemplatedEmailMessageBuilder {
     private String subject;
     final Map<String, ?> variables;
     private Locale locale;
+    private Set<SpiEmailNotificationFileAttachment> fileAttachments;
 
     public TemplatedEmailMessageBuilder(final String from,
                                         final String to,
                                         final String templateId,
-                                        final Map<String, ?> variables) {
+                                        final Map<String, ?> variables,
+                                        final Set<SpiEmailNotificationFileAttachment> fileAttachments) {
         Assert.hasText(from, "Null or empty text was passed as an argument for parameter 'from'.");
         Assert.hasText(to, "Null or empty text was passed as an argument for parameter 'to'.");
         Assert.hasText(templateId, "Null or empty text was passed as an argument for parameter 'templateId'.");
@@ -26,7 +29,7 @@ public class TemplatedEmailMessageBuilder {
         this.to = to;
         this.templateId = templateId;
         this.variables = variables;
-
+        this.fileAttachments = fileAttachments;
     }
 
     public TemplatedEmailMessageBuilder withLocale(final Locale locale) {
@@ -48,8 +51,8 @@ public class TemplatedEmailMessageBuilder {
                 templateId,
                 subject,
                 variables,
-                locale
-        );
+                locale,
+                fileAttachments);
     }
 
 

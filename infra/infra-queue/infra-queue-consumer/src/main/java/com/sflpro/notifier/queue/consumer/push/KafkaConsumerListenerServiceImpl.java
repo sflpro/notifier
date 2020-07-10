@@ -23,7 +23,7 @@ public class KafkaConsumerListenerServiceImpl {
     @Autowired
     private RPCQueueMessageHandler amqpRpcQueueMessageHandler;
 
-    @KafkaListener(topics = "${kafka.topic.names}")
+    @KafkaListener(topics = "${kafka.topic.names}", properties = {"${kafka.auto.offset.reset:latest}"})
     public void listen(byte[] model) {
         LOGGER.debug("Listening kafka topic");
         amqpRpcQueueMessageHandler.handleMessage(model);

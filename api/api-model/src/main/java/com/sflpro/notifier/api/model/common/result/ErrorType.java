@@ -9,7 +9,6 @@ package com.sflpro.notifier.api.model.common.result;
 public enum ErrorType {
     /* Notifications */
     NOTIFICATION_BODY_MISSING,
-    NOTIFICATION_EMAIL_SUBJECT_MISSING,
     NOTIFICATION_USER_MISSING,
     NOTIFICATION_EMAIL_RECIPIENT_ADDRESS_MISSING,
     NOTIFICATION_EMAIL_SENDER_ADDRESS_MISSING,

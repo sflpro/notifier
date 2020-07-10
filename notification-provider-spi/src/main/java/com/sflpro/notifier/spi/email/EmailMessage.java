@@ -1,7 +1,6 @@
 package com.sflpro.notifier.spi.email;
 
-import java.util.Locale;
-import java.util.Optional;
+import java.util.Set;
 
 /**
  * Created by Hayk Mkrtchyan.
@@ -13,4 +12,7 @@ public interface EmailMessage {
     String from();
 
     String to();
+
+    Set<SpiEmailNotificationFileAttachment> fileAttachments();
+
 }

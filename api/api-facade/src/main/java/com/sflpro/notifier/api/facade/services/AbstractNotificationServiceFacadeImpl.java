@@ -47,7 +47,7 @@ public abstract class AbstractNotificationServiceFacadeImpl {
         }
     }
 
-    protected void setNotificationCommonProperties(final NotificationModel notificationModel, final Notification notification) {
+    protected static void setNotificationCommonProperties(final NotificationModel notificationModel, final Notification notification) {
         notificationModel.setUuId(notification.getUuId());
         notificationModel.setBody(notification.getContent());
         notificationModel.setSubject(notification.getSubject());

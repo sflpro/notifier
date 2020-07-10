@@ -3,15 +3,16 @@ package com.sflpro.notifier.api.model.email.request;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sflpro.notifier.api.model.common.result.ErrorResponseModel;
 import com.sflpro.notifier.api.model.common.result.ErrorType;
-import com.sflpro.notifier.api.model.notification.request.AbstractTemplatableCreateNotificationRequest;
+import com.sflpro.notifier.api.model.notification.request.AbstractTemplatedCreateNotificationRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.annotation.Nonnull;
+import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
+import java.util.Set;
 
 /**
  * User: Ruben Dilanyan
@@ -19,7 +20,7 @@ import java.util.Locale;
  * Date: 1/12/16
  * Time: 7:36 PM
  */
-public class CreateEmailNotificationRequest extends AbstractTemplatableCreateNotificationRequest {
+public class CreateEmailNotificationRequest extends AbstractTemplatedCreateNotificationRequest {
 
     private static final long serialVersionUID = 8423183227450211673L;
 
@@ -32,6 +33,9 @@ public class CreateEmailNotificationRequest extends AbstractTemplatableCreateNot
 
     @JsonProperty("subject")
     private String subject;
+
+    @JsonProperty("fileAttachments")
+    private Set<EmailNotificationFileAttachmentRequest> fileAttachments = Collections.emptySet();
 
     /* Constructors */
     public CreateEmailNotificationRequest() {
@@ -61,6 +65,15 @@ public class CreateEmailNotificationRequest extends AbstractTemplatableCreateNot
 
     public void setSubject(final String subject) {
         this.subject = subject;
+    }
+
+    public Set<EmailNotificationFileAttachmentRequest> getFileAttachments() {
+        return fileAttachments;
+    }
+
+    public CreateEmailNotificationRequest setFileAttachments(final Set<EmailNotificationFileAttachmentRequest> fileAttachments) {
+        this.fileAttachments = fileAttachments;
+        return this;
     }
 
     /* Validation methods */
@@ -96,6 +109,7 @@ public class CreateEmailNotificationRequest extends AbstractTemplatableCreateNot
         builder.append(this.getProperties(), that.getProperties());
         builder.append(this.getSecureProperties(), that.getSecureProperties());
         builder.append(this.getLocale(), that.getLocale());
+        builder.append(this.fileAttachments, that.getFileAttachments());
         return builder.isEquals();
     }
 
@@ -110,6 +124,7 @@ public class CreateEmailNotificationRequest extends AbstractTemplatableCreateNot
         builder.append(this.getProperties());
         builder.append(this.getSecureProperties());
         builder.append(this.getLocale());
+        builder.append(this.getFileAttachments());
         return builder.build();
     }
 
@@ -124,6 +139,7 @@ public class CreateEmailNotificationRequest extends AbstractTemplatableCreateNot
         builder.append("properties", this.getProperties());
         builder.append("secureProperties", this.getSecureProperties());
         builder.append("language", this.getLocale());
+        builder.append("fileAttachments", this.getFileAttachments());
         return builder.build();
     }
 }

@@ -1,5 +1,6 @@
 package com.sflpro.notifier.externalclients.email.smtp;
 
+import com.sflpro.notifier.spi.email.SpiEmailNotificationFileAttachment;
 import org.apache.commons.lang3.concurrent.ConcurrentException;
 import org.apache.commons.lang3.concurrent.LazyInitializer;
 import org.slf4j.Logger;
@@ -7,10 +8,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.Assert;
 
+import javax.activation.DataHandler;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Properties;
+import java.util.Set;
 
 /**
  * User: Ruben Dilanyan
@@ -67,7 +74,11 @@ public class SmtpTransportServiceImpl implements com.sflpro.notifier.externalcli
     }
 
     @Override
-    public void sendMessageOverSmtp(final String from, final String to, final String subject, final String body) {
+    public void sendMessageOverSmtp(final String from,
+                                    final String to,
+                                    final String subject,
+                                    final String body,
+                                    final Set<SpiEmailNotificationFileAttachment> fileAttachments) {
         Assert.hasText(from, "from should not be null or empty.");
         Assert.hasText(to, "to should not be null or empty.");
         Assert.hasText(subject, "subject should not be null or empty.");
@@ -75,16 +86,34 @@ public class SmtpTransportServiceImpl implements com.sflpro.notifier.externalcli
         try {
             /* Create and configure email message */
             final MimeMessage message = new MimeMessage(getSmtpSession());
+            message.setContent(setEmailContentParts(body, fileAttachments));
             message.setSubject(subject);
             message.setFrom(from);
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
-            message.setContent(body, MAIL_CONTENT_TYPE);
             /* Transport message over smtp */
             Transport.send(message);
-        } catch (final MessagingException ex) {
+        } catch (final MessagingException | MalformedURLException ex) {
             LOGGER.error("Unable to send email from {} to {} with subject {} with body {}", from, to, subject, body);
             throw new com.sflpro.notifier.externalclients.email.smtp.SmtpTransportException(smtpHost, smtpUsername, ex);
         }
+    }
+
+    /* Private methods */
+    private Multipart setEmailContentParts(final String body, final Set<SpiEmailNotificationFileAttachment> attachments)
+            throws MessagingException, MalformedURLException {
+        Multipart multipart = new MimeMultipart();
+        BodyPart textBody = new MimeBodyPart();
+        textBody.setContent(body, MAIL_CONTENT_TYPE);
+        multipart.addBodyPart(textBody);
+        if (!attachments.isEmpty()) {
+            for (SpiEmailNotificationFileAttachment attachment : attachments) {
+                BodyPart attachmentPart = new MimeBodyPart();
+                attachmentPart.setFileName(attachment.getFileName());
+                attachmentPart.setDataHandler(new DataHandler(new URL(attachment.getFileUrl())));
+                multipart.addBodyPart(attachmentPart);
+            }
+        }
+        return multipart;
     }
 
     private Session getSmtpSession() {

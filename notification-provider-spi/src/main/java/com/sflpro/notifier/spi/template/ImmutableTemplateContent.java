@@ -1,4 +1,4 @@
-package com.sflpro.notifier.spi.email;
+package com.sflpro.notifier.spi.template;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -9,34 +9,48 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  * Date: 6/19/19
  * Time: 6:10 PM
  */
-final class ImmutableEmailTemplateContent implements EmailTemplateContent {
+final class ImmutableTemplateContent implements TemplateContent {
 
     private final String subject;
+
     private final String body;
 
-    ImmutableEmailTemplateContent(final String subject, final String body) {
+    ImmutableTemplateContent(final String subject, final String body) {
         this.subject = subject;
         this.body = body;
     }
 
     @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof ImmutableEmailTemplateContent)) {
+    public String subject() {
+        return subject;
+    }
+
+    @Override
+    public String body() {
+        return body;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
             return false;
         }
-        final ImmutableEmailTemplateContent that = (ImmutableEmailTemplateContent) o;
+        if (obj == this) {
+            return true;
+        }
+        if (obj.getClass() != getClass()) {
+            return false;
+        }
+        ImmutableTemplateContent rhs = (ImmutableTemplateContent) obj;
         return new EqualsBuilder()
-                .append(subject, that.subject)
-                .append(body, that.body)
+                .append(this.subject, rhs.subject)
+                .append(this.body, rhs.body)
                 .isEquals();
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder(17, 37)
+        return new HashCodeBuilder()
                 .append(subject)
                 .append(body)
                 .toHashCode();
@@ -48,15 +62,5 @@ final class ImmutableEmailTemplateContent implements EmailTemplateContent {
                 .append("subject", subject)
                 .append("body", body)
                 .toString();
-    }
-
-    @Override
-    public String subject() {
-        return subject;
-    }
-
-    @Override
-    public String body() {
-        return body;
     }
 }

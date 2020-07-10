@@ -95,3 +95,18 @@ docker run -p 8081:8080 -v {NOTIFIER_-_PROPERTIES_PATH}:/etc/notifier/notifier.p
 ```curl
 curl -X POST "localhost:8080/notification/email/create"  -H "accept: application/json" -H "Content-Type: application/json" -d "{\"recipientEmail\":\"recipient-email@example.com\",\"senderEmail\":\"sender-email@example.com\",\"subject\":\"testing-subject\",\"templateName\":\"Email template name\"}"
 ```
+
+# Additional configurations
+
+To externalized application properties add the following command as a program argument
+```properties
+--spring.config.additional-location=/your/location/properties-file.properties
+```
+
+Configure kafka to use SASL_SSL security protocol
+```properties
+kafka.ssl.endpoint.identification.algorithm=https
+kafka.sasl.mechanism=PLAIN
+kafka.sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule required username="<API_KEY>" password="<API_SECRET>";
+kafka.security.protocol=SASL_SSL
+```

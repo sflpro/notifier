@@ -1,9 +1,10 @@
 package com.sflpro.notifier.services.notification.impl.email;
 
+import com.sflpro.notifier.services.notification.impl.template.LocalTemplateContentResolver;
 import com.sflpro.notifier.services.template.TemplatingService;
 import com.sflpro.notifier.services.test.AbstractServicesUnitTest;
-import com.sflpro.notifier.spi.email.EmailTemplateContent;
-import com.sflpro.notifier.spi.email.EmailTemplateContentResolver;
+import com.sflpro.notifier.spi.template.TemplateContent;
+import com.sflpro.notifier.spi.template.TemplateContentResolver;
 import org.easymock.Mock;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,9 +17,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.easymock.EasyMock.expect;
 
-public class LocalEmailTemplateContentResolverTest extends AbstractServicesUnitTest {
+public class LocalTemplateContentResolverTest extends AbstractServicesUnitTest {
 
-    private EmailTemplateContentResolver resolver;
+    private TemplateContentResolver resolver;
 
     @Mock
     private TemplatingService templatingService;
@@ -26,34 +27,15 @@ public class LocalEmailTemplateContentResolverTest extends AbstractServicesUnitT
 
     @Before
     public void prepare() {
-        resolver = new LocalEmailTemplateContentResolver(templatingService);
+        resolver = new LocalTemplateContentResolver(templatingService);
     }
 
     @Test
     public void resolveWithIllegalArguments() {
         replayAll();
-        assertThatThrownBy(() ->
-                resolver.resolve(
-                        null,
-                        Collections.emptyMap()
-                )
-        )
-                .isInstanceOf(IllegalArgumentException.class);
-        assertThatThrownBy(() ->
-                resolver.resolve(
-                        "test",
-                        null
-                )
-        )
-                .isInstanceOf(IllegalArgumentException.class);
-        assertThatThrownBy(() ->
-                resolver.resolve(
-                        "test",
-                        Collections.emptyMap(),
-                        null
-                )
-        )
-                .isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> resolver.resolve(null, Collections.emptyMap())).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> resolver.resolve("test", null)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> resolver.resolve("test", Collections.emptyMap(), null)).isInstanceOf(IllegalArgumentException.class);
         verifyAll();
     }
 
@@ -67,14 +49,8 @@ public class LocalEmailTemplateContentResolverTest extends AbstractServicesUnitT
         expect(templatingService.getContentForTemplate(templateId + "_subject", variables, locale)).andReturn(subject);
         expect(templatingService.getContentForTemplate(templateId + "_content", variables, locale)).andReturn(body);
         replayAll();
-        final EmailTemplateContent content = resolver.resolve(
-                templateId,
-                variables,
-                locale
-        );
-        assertThat(content)
-                .hasFieldOrPropertyWithValue("subject", subject)
-                .hasFieldOrPropertyWithValue("body", body);
+        final TemplateContent content = resolver.resolve(templateId, variables, locale);
+        assertThat(content).hasFieldOrPropertyWithValue("subject", subject).hasFieldOrPropertyWithValue("body", body);
         verifyAll();
     }
 
@@ -87,13 +63,8 @@ public class LocalEmailTemplateContentResolverTest extends AbstractServicesUnitT
         expect(templatingService.getContentForTemplate(templateId + "_subject", variables)).andReturn(subject);
         expect(templatingService.getContentForTemplate(templateId + "_content", variables)).andReturn(body);
         replayAll();
-        final EmailTemplateContent content = resolver.resolve(
-                templateId,
-                variables
-        );
-        assertThat(content)
-                .hasFieldOrPropertyWithValue("subject", subject)
-                .hasFieldOrPropertyWithValue("body", body);
+        final TemplateContent content = resolver.resolve(templateId, variables);
+        assertThat(content).hasFieldOrPropertyWithValue("subject", subject).hasFieldOrPropertyWithValue("body", body);
         verifyAll();
     }
 }

@@ -3,12 +3,12 @@ package com.sflpro.notifier.db.entities;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.joda.time.MutableDateTime;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 /**
  * User: Ruben Dilanyan
@@ -28,18 +28,18 @@ public abstract class AbstractDomainEntityModel implements Serializable {
     private Long id;
 
     @Column(name = "created", nullable = false)
-    private Date created;
+    private LocalDateTime created;
 
     @Column(name = "removed", nullable = true)
-    private Date removed;
+    private LocalDateTime removed;
 
     @Column(name = "updated", nullable = false)
-    private Date updated;
+    private LocalDateTime updated;
 
     /* Constructors */
     public AbstractDomainEntityModel() {
-        setCreated(new Date());
-        setUpdated(getCreated());
+        created = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
+        updated = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
     }
 
     /* Getters and setters */
@@ -51,47 +51,34 @@ public abstract class AbstractDomainEntityModel implements Serializable {
         this.id = id;
     }
 
-    public Date getCreated() {
-        return cloneDateIfNotNull(created);
+    public LocalDateTime getCreated() {
+        return created;
     }
 
-    public void setCreated(final Date created) {
-        this.created = cloneDateIfNotNullAndStripOffMillisOfSecond(created);
+    public AbstractDomainEntityModel setCreated(final LocalDateTime created) {
+        this.created = created;
+        return this;
     }
 
-    public Date getRemoved() {
-        return cloneDateIfNotNull(removed);
+    public LocalDateTime getRemoved() {
+        return removed;
     }
 
-    public void setRemoved(final Date removed) {
-        this.removed = cloneDateIfNotNullAndStripOffMillisOfSecond(removed);
+    public AbstractDomainEntityModel setRemoved(final LocalDateTime removed) {
+        this.removed = removed;
+        return this;
     }
 
-    public Date getUpdated() {
-        return cloneDateIfNotNull(updated);
+    public LocalDateTime getUpdated() {
+        return updated;
     }
 
-    public void setUpdated(final Date updated) {
-        this.updated = cloneDateIfNotNullAndStripOffMillisOfSecond(updated);
+    public AbstractDomainEntityModel setUpdated(final LocalDateTime updated) {
+        this.updated = updated;
+        return this;
     }
 
     /* Static utility methods */
-    public static Date cloneDateIfNotNull(final Date date) {
-        if (date == null) {
-            return null;
-        }
-        return (Date) date.clone();
-    }
-
-    public static Date cloneDateIfNotNullAndStripOffMillisOfSecond(final Date date) {
-        if (date == null) {
-            return null;
-        }
-        final MutableDateTime mutableDateTime = new MutableDateTime(date);
-        mutableDateTime.setMillisOfSecond(0);
-        return mutableDateTime.toDate();
-    }
-
     public static Long getIdOrNull(final AbstractDomainEntityModel entity) {
         return entity != null ? entity.getId() : null;
     }
@@ -103,23 +90,22 @@ public abstract class AbstractDomainEntityModel implements Serializable {
     /* Equals, HashCode and ToString */
     @Override
     public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof AbstractDomainEntityModel)) {
-            return false;
-        }
+        if (this == o) return true;
+
+        if (o == null || getClass() != o.getClass()) return false;
+
         final AbstractDomainEntityModel that = (AbstractDomainEntityModel) o;
-        final EqualsBuilder builder = new EqualsBuilder();
-        builder.append(getId(), that.getId());
-        return builder.isEquals();
+
+        return new EqualsBuilder()
+                .append(getId(), that.getId())
+                .isEquals();
     }
 
     @Override
     public int hashCode() {
-        final HashCodeBuilder builder = new HashCodeBuilder();
-        builder.append(getId());
-        return builder.build();
+        return new HashCodeBuilder(17, 37)
+                .append(getId())
+                .toHashCode();
     }
 
     @Override

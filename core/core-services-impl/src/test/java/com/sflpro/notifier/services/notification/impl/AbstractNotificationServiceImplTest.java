@@ -9,7 +9,7 @@ import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.easymock.EasyMock.*;
@@ -155,7 +155,7 @@ public abstract class AbstractNotificationServiceImplTest<T extends Notification
         final Long notificationId = 1L;
         final T notification = getInstance();
         notification.setId(notificationId);
-        final Date notificationUpdated = notification.getUpdated();
+        final LocalDateTime notificationUpdated = notification.getUpdated();
         final NotificationState state = NotificationState.PROCESSING;
         // Reset
         resetAll();

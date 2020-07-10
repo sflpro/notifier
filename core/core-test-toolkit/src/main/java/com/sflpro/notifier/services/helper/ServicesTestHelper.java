@@ -254,6 +254,7 @@ public class ServicesTestHelper {
         notificationDto.setSubject(YO_YO);
         notificationDto.setTemplateName(YO_YO + "_template");
         notificationDto.setProviderType(NotificationProviderType.SMTP_SERVER);
+        notificationDto.setFileAttachments(Collections.emptySet());
         return notificationDto;
     }
 

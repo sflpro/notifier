@@ -23,6 +23,7 @@ class SmtpSimpleEmailSender implements SimpleEmailSender {
                 message.from(),
                 message.to(),
                 message.subject(),
-                message.body());
+                message.body(),
+                message.fileAttachments());
     }
 }

@@ -21,7 +21,7 @@ import org.easymock.TestSubject;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.easymock.EasyMock.*;
@@ -151,7 +151,7 @@ public class PushNotificationSubscriptionRequestServiceImplTest extends Abstract
         final Long requestId = 1L;
         final PushNotificationSubscriptionRequest request = getServicesImplTestHelper().createPushNotificationSubscriptionRequest();
         request.setId(requestId);
-        final Date requestUpdateDate = request.getUpdated();
+        final LocalDateTime requestUpdateDate = request.getUpdated();
         final Long userId = 3L;
         final User user = getServicesImplTestHelper().createUser();
         user.setId(userId);
@@ -349,7 +349,7 @@ public class PushNotificationSubscriptionRequestServiceImplTest extends Abstract
         final Long requestId = 1L;
         final PushNotificationSubscriptionRequest request = getServicesImplTestHelper().createPushNotificationSubscriptionRequest();
         request.setId(requestId);
-        final Date requestUpdateDate = request.getUpdated();
+        final LocalDateTime requestUpdateDate = request.getUpdated();
         final PushNotificationSubscriptionRequestState state = PushNotificationSubscriptionRequestState.PROCESSED;
         // Reset
         resetAll();

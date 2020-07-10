@@ -25,7 +25,6 @@ public interface PushNotificationService extends AbstractNotificationService<Pus
     @Nonnull
     PushNotification createNotification(@Nonnull final Long pushNotificationRecipientId, @Nonnull final PushNotificationDto pushNotificationDto);
 
-
     /**
      * Create push notifications for active user devices
      *

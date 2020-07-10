@@ -158,4 +158,5 @@ public class MandrillApiCommunicatorImpl implements MandrillApiCommunicator {
         Assert.hasText(message.from(), "Mandrill message from should not be null");
         Assert.hasText(message.to(), "Mandrill message to should not be null");
     }
+
 }

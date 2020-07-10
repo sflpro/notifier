@@ -95,9 +95,9 @@ public class ServicesImplTestHelper {
         notificationDto.setClientIpAddress("127.0.0.1");
         notificationDto.setContent("YoYoYo");
         notificationDto.setSubject("YoYo");
-        notificationDto.setTemplateName("YoTemplate");
         notificationDto.setProperties(Collections.singletonMap("token", UUID.randomUUID().toString()));
         notificationDto.setProviderType(NotificationProviderType.SMTP_SERVER);
+        notificationDto.setFileAttachments(Collections.emptySet());
         return notificationDto;
     }
 
@@ -116,6 +116,7 @@ public class ServicesImplTestHelper {
         notificationDto.updateDomainEntityProperties(notification);
         notification.setProperties(properties);
         notification.setProviderType(NotificationProviderType.SMTP_SERVER);
+        notification.setFileAttachments(notificationDto.getFileAttachments());
         return notification;
     }
 
@@ -198,6 +199,7 @@ public class ServicesImplTestHelper {
         Assert.assertEquals(notificationDto.getSubject(), notification.getSubject());
         Assert.assertEquals(notificationDto.getType(), notification.getType());
         Assert.assertEquals(NotificationState.CREATED, notification.getState());
+
     }
 
     /* Push notification property */

@@ -2,6 +2,7 @@ package com.sflpro.notifier.api.facade.services.email.impl;
 
 import com.sflpro.notifier.api.facade.services.email.EmailNotificationServiceFacade;
 import com.sflpro.notifier.api.model.common.result.ResultResponseModel;
+import com.sflpro.notifier.api.model.email.EmailNotificationFileAttachmentModel;
 import com.sflpro.notifier.api.model.email.EmailNotificationModel;
 import com.sflpro.notifier.api.model.email.request.CreateEmailNotificationRequest;
 import com.sflpro.notifier.api.model.email.request.EmailNotificationFileAttachmentRequest;
@@ -81,6 +82,7 @@ class EmailNotificationServiceFacadeImpl implements EmailNotificationServiceFaca
         notificationModel.setState(NotificationStateClientType.valueOf(emailNotification.getState().name()));
         notificationModel.setSenderEmail(emailNotification.getSenderEmail());
         notificationModel.setRecipientEmail(emailNotification.getRecipientEmail());
+        notificationModel.setFileAttachments(mapFileAttachmentsModel(emailNotification.getFileAttachments()));
         return notificationModel;
     }
 
@@ -89,6 +91,19 @@ class EmailNotificationServiceFacadeImpl implements EmailNotificationServiceFaca
 
         for (EmailNotificationFileAttachmentRequest attachment : fileAttachmentResource) {
             EmailNotificationFileAttachment item = new EmailNotificationFileAttachment();
+            item.setFileName(attachment.getFileName());
+            item.setFileUrl(attachment.getFileUrl());
+            item.setMimeType(attachment.getMimeType());
+            destinationAttachments.add(item);
+        }
+        return destinationAttachments;
+    }
+
+    private Set<EmailNotificationFileAttachmentModel> mapFileAttachmentsModel(final Set<EmailNotificationFileAttachment> fileAttachmentResource){
+        Set<EmailNotificationFileAttachmentModel> destinationAttachments = new HashSet<>();
+
+        for (EmailNotificationFileAttachment attachment : fileAttachmentResource) {
+            EmailNotificationFileAttachmentModel item = new EmailNotificationFileAttachmentModel();
             item.setFileName(attachment.getFileName());
             item.setFileUrl(attachment.getFileUrl());
             item.setMimeType(attachment.getMimeType());

@@ -4,9 +4,12 @@ import com.sflpro.notifier.api.facade.services.AbstractNotificationServiceFacade
 import com.sflpro.notifier.api.facade.services.sms.SmsNotificationServiceFacade;
 import com.sflpro.notifier.api.model.common.result.ErrorResponseModel;
 import com.sflpro.notifier.api.model.common.result.ResultResponseModel;
+import com.sflpro.notifier.api.model.notification.NotificationLabelModel;
+import com.sflpro.notifier.api.model.notification.request.NotificationLabelRequest;
 import com.sflpro.notifier.api.model.sms.SmsNotificationModel;
 import com.sflpro.notifier.api.model.sms.request.CreateSmsNotificationRequest;
 import com.sflpro.notifier.api.model.sms.response.CreateSmsNotificationResponse;
+import com.sflpro.notifier.db.entities.notification.NotificationLabel;
 import com.sflpro.notifier.db.entities.notification.NotificationProviderType;
 import com.sflpro.notifier.db.entities.notification.sms.SmsNotification;
 import com.sflpro.notifier.services.notification.dto.sms.SmsNotificationDto;
@@ -21,7 +24,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 import javax.annotation.Nonnull;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * User: Ruben Dilanyan
@@ -65,6 +70,7 @@ class SmsNotificationServiceFacadeImpl extends AbstractNotificationServiceFacade
         smsNotificationDto.setProperties(request.getProperties());
         smsNotificationDto.setHasSecureProperties(!request.getSecureProperties().isEmpty());
         smsNotificationDto.setLocale(request.getLocale());
+        smsNotificationDto.setLabels(mapLabels(request.getLabels()));
         final SmsNotification smsNotification = smsNotificationService.createSmsNotification(smsNotificationDto);
         associateUserWithNotificationIfRequired(request.getUserUuId(), smsNotification);
         // Publish event
@@ -82,6 +88,29 @@ class SmsNotificationServiceFacadeImpl extends AbstractNotificationServiceFacade
         setNotificationCommonProperties(notificationModel, smsNotification);
         notificationModel.setSubject(smsNotification.getSubject());
         notificationModel.setRecipientNumber(smsNotification.getRecipientMobileNumber());
+        notificationModel.setLabels(mapLabelsModel(smsNotification.getLabels()));
         return notificationModel;
+    }
+
+    private Set<NotificationLabel> mapLabels(final Set<NotificationLabelRequest> labelsResource) {
+        Set<NotificationLabel> destinationLabels = new HashSet<>();
+
+        for (NotificationLabelRequest label : labelsResource) {
+            NotificationLabel item = new NotificationLabel();
+            item.setLabelName(label.getLabelName());
+            destinationLabels.add(item);
+        }
+        return destinationLabels;
+    }
+
+    private Set<NotificationLabelModel> mapLabelsModel(final Set<NotificationLabel> labelsResource){
+        Set<NotificationLabelModel> destinationLabels = new HashSet<>();
+
+        for (NotificationLabel label : labelsResource) {
+            NotificationLabelModel item = new NotificationLabelModel();
+            item.setLabelName(label.getLabelName());
+            destinationLabels.add(item);
+        }
+        return destinationLabels;
     }
 }

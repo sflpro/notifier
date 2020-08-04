@@ -1,6 +1,7 @@
 package com.sflpro.notifier.services.notification.dto;
 
 import com.sflpro.notifier.db.entities.notification.Notification;
+import com.sflpro.notifier.db.entities.notification.NotificationLabel;
 import com.sflpro.notifier.db.entities.notification.NotificationProviderType;
 import com.sflpro.notifier.db.entities.notification.NotificationType;
 import com.sflpro.notifier.db.entities.notification.email.NotificationProperty;
@@ -13,6 +14,7 @@ import org.springframework.util.Assert;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -36,6 +38,8 @@ public abstract class NotificationDto<T extends Notification> extends AbstractDo
 
     private Map<String, String> properties;
 
+    private Set<NotificationLabel> labels;
+
     private String templateName;
 
     private NotificationProviderType providerType;
@@ -49,7 +53,7 @@ public abstract class NotificationDto<T extends Notification> extends AbstractDo
                            final String content,
                            final String subject,
                            final String clientIpAddress,
-                           final NotificationProviderType providerType) {
+                           final NotificationProviderType providerType){
         this.type = type;
         this.content = content;
         this.clientIpAddress = clientIpAddress;
@@ -142,6 +146,14 @@ public abstract class NotificationDto<T extends Notification> extends AbstractDo
         this.locale = locale;
     }
 
+    public Set<NotificationLabel> getLabels() {
+        return labels;
+    }
+
+    public void setLabels(Set<NotificationLabel> labels) {
+        this.labels = labels;
+    }
+
     /* Public interface methods */
     @Override
     public void updateDomainEntityProperties(final T notification) {
@@ -150,6 +162,9 @@ public abstract class NotificationDto<T extends Notification> extends AbstractDo
         notification.setClientIpAddress(getClientIpAddress());
         notification.setSubject(getSubject());
         notification.setProviderType(providerType);
+        notification.setLabels(getLabels().stream()
+                .map(l -> new NotificationLabel(l.getLabelName()))
+                .collect(Collectors.toSet()));
         notification.setProperties(getProperties().entrySet()
                 .stream()
                 .map(entry -> new NotificationProperty(entry.getKey(), entry.getValue()))
@@ -174,6 +189,7 @@ public abstract class NotificationDto<T extends Notification> extends AbstractDo
         builder.append(this.getContent(), that.getContent());
         builder.append(this.getSubject(), that.getSubject());
         builder.append(this.getProperties(), that.getProperties());
+        builder.append(this.getLabels(), that.getLabels());
         builder.append(this.getProviderType(), that.getProviderType());
         builder.append(this.isHasSecureProperties(), that.isHasSecureProperties());
         return builder.isEquals();
@@ -188,6 +204,7 @@ public abstract class NotificationDto<T extends Notification> extends AbstractDo
         builder.append(this.getContent());
         builder.append(this.getSubject());
         builder.append(this.getProperties());
+        builder.append(this.getLabels());
         builder.append(this.getProviderType());
         builder.append(this.isHasSecureProperties());
         return builder.build();
@@ -203,6 +220,7 @@ public abstract class NotificationDto<T extends Notification> extends AbstractDo
         builder.append("content", this.getContent());
         builder.append("subject", this.getSubject());
         builder.append("properties", this.getProperties());
+        builder.append("labels", this.getLabels());
         builder.append("providerType", this.getProviderType());
         builder.append("hasSecureProperties", this.isHasSecureProperties());
         return builder.build();

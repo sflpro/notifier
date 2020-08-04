@@ -9,6 +9,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * User: Ruben Dilanyan
@@ -57,6 +58,10 @@ public abstract class Notification extends AbstractDomainUuIdAwareEntityModel {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "notification_id", referencedColumnName = "id", updatable = false, nullable = false)
     private List<NotificationProperty> properties;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "notification_id", referencedColumnName = "id")
+    private Set<NotificationLabel> labels;
 
     /* Constructors */
     public Notification() {
@@ -142,6 +147,14 @@ public abstract class Notification extends AbstractDomainUuIdAwareEntityModel {
         this.properties = properties;
     }
 
+    public Set<NotificationLabel> getLabels() {
+        return labels;
+    }
+
+    public void setLabels(Set<NotificationLabel> labels) {
+        this.labels = labels;
+    }
+
     /* Private utility methods */
     private void initializeDefaults() {
         this.state = NotificationState.CREATED;
@@ -167,6 +180,7 @@ public abstract class Notification extends AbstractDomainUuIdAwareEntityModel {
         builder.append(this.getSubject(), that.getSubject());
         builder.append(this.getProviderExternalUuId(), that.getProviderExternalUuId());
         builder.append(this.hasSecureProperties(), that.hasSecureProperties());
+        builder.append(this.getLabels(), that.getLabels());
         return builder.isEquals();
     }
 
@@ -182,6 +196,7 @@ public abstract class Notification extends AbstractDomainUuIdAwareEntityModel {
         builder.append(this.getSubject());
         builder.append(this.getProviderExternalUuId());
         builder.append(this.hasSecureProperties());
+        builder.append(this.getLabels());
         return builder.build();
     }
 
@@ -198,6 +213,7 @@ public abstract class Notification extends AbstractDomainUuIdAwareEntityModel {
         builder.append("subject", this.getSubject());
         builder.append("providerExternalUuId", this.getProviderExternalUuId());
         builder.append("has_secure_properties", this.hasSecureProperties());
+        builder.append("labels", this.getLabels());
         return builder.build();
     }
 }

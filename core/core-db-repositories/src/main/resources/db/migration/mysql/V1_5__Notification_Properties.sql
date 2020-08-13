@@ -18,3 +18,5 @@ ALTER TABLE notification_push_property
     DROP FOREIGN KEY fk_notification_push_property_notification_push;
 
 DROP TABLE notification_push_property;
+
+ALTER TABLE notification_property ALTER COLUMN property_value type VARCHAR (65535);

@@ -43,6 +43,16 @@ public class AbstractTemplatedCreateNotificationRequest extends AbstractCreateNo
         if (StringUtils.isBlank(getBody()) && StringUtils.isBlank(getTemplateName())) {
             errors.add(new ErrorResponseModel(ErrorType.NOTIFICATION_BODY_MISSING));
         }
+        for (Map.Entry<String,String> map : getProperties().entrySet()) {
+
+            if (map.getKey().length() > 255)
+                errors.add(new ErrorResponseModel(ErrorType.NOTIFICATION_PROPERTY_KEY_SIZE_VIOLATION));
+
+            if(map.getValue().length() > 65535)
+                errors.add(new ErrorResponseModel(ErrorType.NOTIFICATION_PROPERTY_VALUE_SIZE_VIOLATION));
+
+        }
+
         return errors;
     }
 

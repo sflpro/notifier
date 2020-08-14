@@ -18,4 +18,3 @@ ALTER TABLE notification_push_property
     DROP CONSTRAINT fk_notification_push_property_notification_push;
 
 DROP TABLE notification_push_property;
-

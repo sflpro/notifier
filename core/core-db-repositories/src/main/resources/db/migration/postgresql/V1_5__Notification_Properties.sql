@@ -11,10 +11,10 @@ create table if not exists notification_property (
 
 ALTER TABLE notification_email_property
     DROP CONSTRAINT fk_notif_email_property_notif_email;
-    
+
 DROP TABLE notification_email_property;
 
 ALTER TABLE notification_push_property
     DROP CONSTRAINT fk_notification_push_property_notification_push;
-    
+
 DROP TABLE notification_push_property;

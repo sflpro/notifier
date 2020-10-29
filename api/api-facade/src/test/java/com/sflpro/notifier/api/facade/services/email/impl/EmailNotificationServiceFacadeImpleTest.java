@@ -51,6 +51,7 @@ public class EmailNotificationServiceFacadeImpleTest extends AbstractFacadeUnitT
         emailNotification.setProviderType(providerType);
         emailNotification.setRecipientEmail(request.getRecipientEmail());
         emailNotification.setSenderEmail(request.getSenderEmail());
+        emailNotification.setReplyToEmails(request.getReplyToEmails());
         emailNotification.setContent(request.getBody());
         emailNotification.setSubject(request.getSubject());
         emailNotification.setFileAttachments(Collections.emptySet());

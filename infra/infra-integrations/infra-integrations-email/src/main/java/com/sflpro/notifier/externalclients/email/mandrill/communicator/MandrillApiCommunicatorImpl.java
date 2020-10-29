@@ -35,7 +35,7 @@ public class MandrillApiCommunicatorImpl implements MandrillApiCommunicator {
 
     private static final String MERGE_LANGUAGE_MAILCHIMP = "mailchimp";
     public static final String REPLY_TO_HEADER_KEY = "Reply-To";
-    public static final String EMAIL_ADDRESSES_DELIMITER = ",";
+    public static final String EMAIL_ADDRESSES_DELIMITER = " ";
 
     /* Properties */
     private final MandrillMessagesApi mandrillMessagesApi;
@@ -142,13 +142,18 @@ public class MandrillApiCommunicatorImpl implements MandrillApiCommunicator {
         for (final MandrillMessageStatus mandrillMessageStatus : mandrillMessageStatuses) {
             switch (mandrillMessageStatus.getStatus()) {
                 case "rejected":
-                    LOGGER.debug("Email '{}' was not sent successfully to '{}', due to '{}' rejection reason.", templateId,
-                                 recipientEmail, mandrillMessageStatus.getRejectReason()
+                    LOGGER.debug(
+                            "Email '{}' was not sent successfully to '{}', due to '{}' rejection reason.",
+                            templateId,
+                            recipientEmail,
+                            mandrillMessageStatus.getRejectReason()
                     );
                     throw new MandrillMessageRejectedException(mandrillMessageStatus);
                 case "invalid":
-                    LOGGER.debug("Email '{}' was not sent successfully to '{}', since it was considered invalid.", templateId,
-                                 recipientEmail
+                    LOGGER.debug(
+                            "Email '{}' was not sent successfully to '{}', since it was considered invalid.",
+                            templateId,
+                            recipientEmail
                     );
                     throw new MandrillMessageInvalidException(mandrillMessageStatus);
                 default:

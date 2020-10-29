@@ -77,6 +77,9 @@ public class EmailNotification extends Notification {
     }
 
     public void setReplyToEmails(final Set<String> replyToEmails) {
+        if (replyToEmails == null) {
+            return;
+        }
         this.replyToEmails = replyToEmails.stream().map(EmailNotificationReplyTo::new).collect(Collectors.toSet());
     }
 

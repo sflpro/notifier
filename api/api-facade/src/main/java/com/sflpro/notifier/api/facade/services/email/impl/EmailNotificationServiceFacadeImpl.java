@@ -81,6 +81,7 @@ class EmailNotificationServiceFacadeImpl implements EmailNotificationServiceFaca
         notificationModel.setType(NotificationClientType.valueOf(emailNotification.getType().name()));
         notificationModel.setState(NotificationStateClientType.valueOf(emailNotification.getState().name()));
         notificationModel.setSenderEmail(emailNotification.getSenderEmail());
+        notificationModel.setReplyToEmails(emailNotification.getReplyToEmails());
         notificationModel.setRecipientEmail(emailNotification.getRecipientEmail());
         notificationModel.setFileAttachments(mapFileAttachmentsModel(emailNotification.getFileAttachments()));
         return notificationModel;

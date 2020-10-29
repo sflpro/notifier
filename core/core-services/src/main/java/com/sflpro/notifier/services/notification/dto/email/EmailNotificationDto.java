@@ -36,16 +36,20 @@ public class EmailNotificationDto extends NotificationDto<EmailNotification> {
     private Set<EmailNotificationFileAttachment> fileAttachments;
 
     /* Constructors */
-    public EmailNotificationDto(final String recipientEmail,
-                                final String senderEmail,
-                                final String content,
-                                final String subject,
-                                final String clientIpAddress,
-                                final String templateName,
-                                final NotificationProviderType providerType) {
+    public EmailNotificationDto(
+            final String recipientEmail,
+            final String senderEmail,
+            final Set<String> replyToEmails,
+            final String content,
+            final String subject,
+            final String clientIpAddress,
+            final String templateName,
+            final NotificationProviderType providerType
+    ) {
         super(NotificationType.EMAIL, content, subject, clientIpAddress, templateName, providerType);
         this.recipientEmail = recipientEmail;
         this.senderEmail = senderEmail;
+        this.replyToEmails = replyToEmails;
     }
 
     public EmailNotificationDto() {
@@ -67,6 +71,14 @@ public class EmailNotificationDto extends NotificationDto<EmailNotification> {
 
     public void setSenderEmail(final String senderEmail) {
         this.senderEmail = senderEmail;
+    }
+
+    public Set<String> getReplyToEmails() {
+        return replyToEmails;
+    }
+
+    public void setReplyToEmails(final Set<String> replyToEmails) {
+        this.replyToEmails = replyToEmails;
     }
 
     public String getUserUuid() {
@@ -99,6 +111,7 @@ public class EmailNotificationDto extends NotificationDto<EmailNotification> {
         super.updateDomainEntityProperties(notification);
         notification.setRecipientEmail(getRecipientEmail());
         notification.setSenderEmail(getSenderEmail());
+        notification.setReplyToEmails(getReplyToEmails());
         notification.setTemplateName(getTemplateName());
         notification.setLocale(getLocale());
     }
@@ -117,6 +130,7 @@ public class EmailNotificationDto extends NotificationDto<EmailNotification> {
         builder.appendSuper(super.equals(that));
         builder.append(this.getRecipientEmail(), that.getRecipientEmail());
         builder.append(this.getSenderEmail(), that.getSenderEmail());
+        builder.append(this.getReplyToEmails(), that.getReplyToEmails());
         builder.append(this.getTemplateName(), that.getTemplateName());
         builder.append(this.getFileAttachments(), that.getFileAttachments());
         return builder.isEquals();
@@ -128,6 +142,7 @@ public class EmailNotificationDto extends NotificationDto<EmailNotification> {
         builder.appendSuper(super.hashCode());
         builder.append(this.getRecipientEmail());
         builder.append(this.getSenderEmail());
+        builder.append(this.getReplyToEmails());
         builder.append(this.getTemplateName());
         builder.append(this.getFileAttachments());
         return builder.build();
@@ -139,6 +154,7 @@ public class EmailNotificationDto extends NotificationDto<EmailNotification> {
         builder.appendSuper(super.toString());
         builder.append("recipientEmail", this.getRecipientEmail());
         builder.append("senderEmail", this.getSenderEmail());
+        builder.append("replyToEmails", this.getReplyToEmails());
         builder.append("templateName", this.getTemplateName());
         builder.append("fileAttachments", this.getFileAttachments());
         return builder.build();

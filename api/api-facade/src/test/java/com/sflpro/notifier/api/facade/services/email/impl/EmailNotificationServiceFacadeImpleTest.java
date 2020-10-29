@@ -57,6 +57,7 @@ public class EmailNotificationServiceFacadeImpleTest extends AbstractFacadeUnitT
         final EmailNotificationDto emailNotificationDto = new EmailNotificationDto(
                 request.getRecipientEmail(),
                 request.getSenderEmail(),
+                request.getReplyToEmails(),
                 request.getBody(),
                 request.getSubject(),
                 request.getClientIpAddress(),
@@ -76,6 +77,7 @@ public class EmailNotificationServiceFacadeImpleTest extends AbstractFacadeUnitT
         assertThat(emailNotificationServiceFacade.createEmailNotification(request).getResponse().getNotification())
                 .hasFieldOrPropertyWithValue("senderEmail", request.getSenderEmail())
                 .hasFieldOrPropertyWithValue("recipientEmail", request.getRecipientEmail())
+                .hasFieldOrPropertyWithValue("replyToEmails", request.getReplyToEmails())
                 .hasFieldOrPropertyWithValue("subject", request.getSubject())
                 .hasFieldOrPropertyWithValue("body", request.getBody())
                 .hasFieldOrPropertyWithValue("state", NotificationStateClientType.CREATED)

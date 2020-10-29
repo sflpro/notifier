@@ -73,6 +73,7 @@ public class ServiceFacadeImplTestHelper {
         final CreateEmailNotificationRequest request = new CreateEmailNotificationRequest();
         request.setRecipientEmail("dummy_recipient@dummy.com");
         request.setSenderEmail("dummy_sender@dummy.com");
+        request.setReplyToEmails(Collections.singleton("dummy_sender@dummy.com"));
         request.setSubject("Email subject");
         request.setLocale(Locale.getDefault());
         request.setBody("Email body");

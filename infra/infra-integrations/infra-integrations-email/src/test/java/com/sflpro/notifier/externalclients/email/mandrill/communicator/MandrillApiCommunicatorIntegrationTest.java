@@ -27,7 +27,7 @@ import static org.junit.Assert.fail;
  * @author Davit Harutyunyan
  */
 @ContextConfiguration(value = {"classpath:applicationContext-externalclients-email-integrationtest.xml"})
-@TestPropertySource(properties = {"mandrill.enabled=true","mandrill.service.token=sx3Ielt1VEGrmi_ANXEFcg"})
+@TestPropertySource(properties = {"mandrill.enabled=true", "mandrill.service.token=sx3Ielt1VEGrmi_ANXEFcg"})
 public class MandrillApiCommunicatorIntegrationTest extends AbstractEmailNotificationIntegrationTest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MandrillApiCommunicatorIntegrationTest.class);
@@ -47,8 +47,14 @@ public class MandrillApiCommunicatorIntegrationTest extends AbstractEmailNotific
         final String templateName = "integration-test-template";
         final Map<String, Object> templateContent = new HashMap<>();
         templateContent.put("token", "super-secure-token");
-        final TemplatedEmailMessage message = new TemplatedEmailMessageBuilder("some_dummy_mail_from@weadapt.digital",
-                "some_dummy_mail@weadapt.digital", templateName, templateContent, Collections.emptySet()).build();
+        final TemplatedEmailMessage message = new TemplatedEmailMessageBuilder(
+                "some_dummy_mail_from@weadapt.digital",
+                "some_dummy_mail@weadapt.digital",
+                Collections.emptySet(),
+                templateName,
+                templateContent,
+                Collections.emptySet()
+        ).build();
         // Execute send request
         try {
             mandrillApiCommunicator.sendEmailTemplate(message);
@@ -64,8 +70,14 @@ public class MandrillApiCommunicatorIntegrationTest extends AbstractEmailNotific
         final String templateName = RandomStringUtils.randomAlphanumeric(50) + "MEKA-CHEQ-KARA";
         Map<String, Object> templateContent = new HashMap<>();
         templateContent.put("token", "super-secure-token");
-        final TemplatedEmailMessage message = new TemplatedEmailMessageBuilder("some_dummy_mail_from@weadapt.digital",
-                "some_dummy_mal@weadapt.digital", templateName, templateContent, Collections.emptySet()).build();
+        final TemplatedEmailMessage message = new TemplatedEmailMessageBuilder(
+                "some_dummy_mail_from@weadapt.digital",
+                "some_dummy_mal@weadapt.digital",
+                Collections.emptySet(),
+                templateName,
+                templateContent,
+                Collections.emptySet()
+        ).build();
         // Execute send request
         try {
             mandrillApiCommunicator.sendEmailTemplate(message);

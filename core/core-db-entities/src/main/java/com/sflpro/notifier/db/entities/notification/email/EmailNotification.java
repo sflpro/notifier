@@ -7,8 +7,10 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * User: Ruben Dilanyan
@@ -28,6 +30,10 @@ public class EmailNotification extends Notification {
 
     @Column(name = "sender_email", nullable = true)
     private String senderEmail;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "notification_email_id", referencedColumnName = "id")
+    private Set<EmailNotificationReplyTo> replyToEmails = new HashSet<>();
 
     @Column(name = "template_name", nullable = true)
     private String templateName;
@@ -64,6 +70,14 @@ public class EmailNotification extends Notification {
 
     public void setSenderEmail(final String senderEmail) {
         this.senderEmail = senderEmail;
+    }
+
+    public Set<String> getReplyToEmails() {
+        return replyToEmails.stream().map(EmailNotificationReplyTo::getEmail).collect(Collectors.toSet());
+    }
+
+    public void setReplyToEmails(final Set<String> replyToEmails) {
+        this.replyToEmails = replyToEmails.stream().map(EmailNotificationReplyTo::new).collect(Collectors.toSet());
     }
 
     public String getTemplateName() {
@@ -109,6 +123,7 @@ public class EmailNotification extends Notification {
         builder.appendSuper(super.equals(that));
         builder.append(this.getRecipientEmail(), that.getRecipientEmail());
         builder.append(this.getSenderEmail(), that.getSenderEmail());
+        builder.append(this.getReplyToEmails(), that.getReplyToEmails());
         builder.append(this.getTemplateName(), that.getTemplateName());
         builder.append(this.getLocale(), that.getLocale());
         builder.append(this.getFileAttachments(), that.getFileAttachments());
@@ -121,6 +136,7 @@ public class EmailNotification extends Notification {
         builder.appendSuper(super.hashCode());
         builder.append(this.getRecipientEmail());
         builder.append(this.getSenderEmail());
+        builder.append(this.getReplyToEmails());
         builder.append(this.getTemplateName());
         builder.append(this.getLocale());
         builder.append(this.getFileAttachments());
@@ -133,6 +149,7 @@ public class EmailNotification extends Notification {
         builder.appendSuper(super.toString());
         builder.append("recipientEmail", this.getRecipientEmail());
         builder.append("senderEmail", this.getSenderEmail());
+        builder.append("replyToEmails", this.getReplyToEmails());
         builder.append("templateName", this.getTemplateName());
         builder.append("locale", this.getLocale());
         builder.append("fileAttachments", this.getFileAttachments());

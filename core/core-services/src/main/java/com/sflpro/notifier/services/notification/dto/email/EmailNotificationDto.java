@@ -27,6 +27,8 @@ public class EmailNotificationDto extends NotificationDto<EmailNotification> {
 
     private String senderEmail;
 
+    private Set<String> replyToEmails;
+
     private String userUuid;
 
     private Locale locale;

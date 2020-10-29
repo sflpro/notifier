@@ -9,6 +9,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
@@ -27,7 +28,7 @@ public class EmailNotificationDto extends NotificationDto<EmailNotification> {
 
     private String senderEmail;
 
-    private Set<String> replyToEmails;
+    private Set<String> replyToEmails = new HashSet<>();
 
     private String userUuid;
 

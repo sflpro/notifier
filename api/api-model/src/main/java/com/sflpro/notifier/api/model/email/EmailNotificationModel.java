@@ -7,6 +7,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -27,7 +28,7 @@ public class EmailNotificationModel extends NotificationModel {
     private String recipientEmail;
 
     @JsonProperty("replyToEmails")
-    private Set<String> replyToEmails;
+    private Set<String> replyToEmails = new HashSet<>();
 
     @JsonProperty("fileAttachments")
     private Set<EmailNotificationFileAttachmentModel> fileAttachments = Collections.emptySet();

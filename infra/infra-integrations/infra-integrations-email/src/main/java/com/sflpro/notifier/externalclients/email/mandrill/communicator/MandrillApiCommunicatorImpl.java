@@ -13,6 +13,7 @@ import com.sflpro.notifier.spi.email.TemplatedEmailMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -56,10 +57,12 @@ public class MandrillApiCommunicatorImpl implements MandrillApiCommunicator {
         final MandrillMessage mandrillMessage = new MandrillMessage();
         mandrillMessage.setTo(recipients);
         mandrillMessage.setFromEmail(message.from());
-        mandrillMessage.setHeaders(Collections.singletonMap(
-                REPLY_TO_HEADER_KEY,
-                String.join(EMAIL_ADDRESSES_DELIMITER, message.replyTo())
-        ));
+        if (!CollectionUtils.isEmpty(message.replyTo())) {
+            mandrillMessage.setHeaders(Collections.singletonMap(
+                    REPLY_TO_HEADER_KEY,
+                    String.join(EMAIL_ADDRESSES_DELIMITER, message.replyTo())
+            ));
+        }
         mandrillMessage.setMergeLanguage(MERGE_LANGUAGE_MAILCHIMP);
         return mandrillMessage;
     }
@@ -99,8 +102,11 @@ public class MandrillApiCommunicatorImpl implements MandrillApiCommunicator {
         try {
             LOGGER.debug("Performing send email request with parameters - {}", message);
             // Execute request
-            final MandrillMessageStatus[] mandrillMessageStatuses = mandrillMessagesApi.sendTemplate(message.templateId(),
-                                                                                                     null, mandrillMessage, false
+            final MandrillMessageStatus[] mandrillMessageStatuses = mandrillMessagesApi.sendTemplate(
+                    message.templateId(),
+                    null,
+                    mandrillMessage,
+                    false
             );
             // Handle response
             handleResult(mandrillMessageStatuses, message.templateId(), message.to());

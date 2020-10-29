@@ -10,7 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "email_notification_reply_to")
+@Table(name = "notification_email_reply_to")
 public class EmailNotificationReplyTo extends AbstractDomainEntityModel {
     private static final long serialVersionUID = -3654936373396071600L;
 

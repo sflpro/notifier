@@ -11,6 +11,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.annotation.Nonnull;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -32,7 +33,7 @@ public class CreateEmailNotificationRequest extends AbstractTemplatedCreateNotif
     private String senderEmail;
 
     @JsonProperty("replyToEmails")
-    private Set<String> replyToEmails;
+    private Set<String> replyToEmails = new HashSet<>();
 
     @JsonProperty("subject")
     private String subject;

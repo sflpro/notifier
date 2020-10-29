@@ -26,11 +26,14 @@ class SmtpTemplatedEmailSender implements TemplatedEmailSender {
     public void send(final TemplatedEmailMessage message) {
         Assert.notNull(message, "Null was passed as an argument for parameter 'message'.");
         final TemplateContent content = contentFor(message);
-        smtpTransportService.sendMessageOverSmtp(message.from(),
+        smtpTransportService.sendMessageOverSmtp(
+                message.from(),
                 message.to(),
+                message.replyTo(),
                 content.subject(),
                 content.body(),
-                message.fileAttachments());
+                message.fileAttachments()
+        );
     }
 
     private TemplateContent contentFor(final TemplatedEmailMessage message) {

@@ -61,6 +61,7 @@ class EmailNotificationServiceFacadeImpl implements EmailNotificationServiceFaca
         emailNotificationDto.setLocale(request.getLocale());
         emailNotificationDto.setRecipientEmail(request.getRecipientEmail());
         emailNotificationDto.setSenderEmail(request.getSenderEmail());
+        emailNotificationDto.setReplyToEmails(request.getReplyToEmails());
         emailNotificationDto.setContent(request.getBody());
         emailNotificationDto.setSubject(request.getSubject());
         emailNotificationDto.setProviderType(providerType);
@@ -81,6 +82,7 @@ class EmailNotificationServiceFacadeImpl implements EmailNotificationServiceFaca
         notificationModel.setType(NotificationClientType.valueOf(emailNotification.getType().name()));
         notificationModel.setState(NotificationStateClientType.valueOf(emailNotification.getState().name()));
         notificationModel.setSenderEmail(emailNotification.getSenderEmail());
+        notificationModel.setReplyToEmails(emailNotification.getReplyToEmails());
         notificationModel.setRecipientEmail(emailNotification.getRecipientEmail());
         notificationModel.setFileAttachments(mapFileAttachmentsModel(emailNotification.getFileAttachments()));
         return notificationModel;

@@ -1,5 +1,6 @@
 package com.sflpro.notifier.api.facade.services;
 
+import com.sflpro.notifier.api.model.email.EmailNotificationFileAttachmentModel;
 import com.sflpro.notifier.api.model.email.EmailNotificationModel;
 import com.sflpro.notifier.api.model.notification.NotificationClientType;
 import com.sflpro.notifier.api.model.notification.NotificationModel;
@@ -9,6 +10,7 @@ import com.sflpro.notifier.api.model.push.PushNotificationRecipientModel;
 import com.sflpro.notifier.api.model.sms.SmsNotificationModel;
 import com.sflpro.notifier.db.entities.notification.Notification;
 import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
+import com.sflpro.notifier.db.entities.notification.email.EmailNotificationFileAttachment;
 import com.sflpro.notifier.db.entities.notification.email.NotificationProperty;
 import com.sflpro.notifier.db.entities.notification.push.PushNotification;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipient;
@@ -17,6 +19,7 @@ import com.sflpro.notifier.db.entities.notification.sms.SmsNotification;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -29,10 +32,14 @@ public class NotificationConverterHelper {
 
     public static NotificationModel convert(final Notification notification) {
         switch (notification.getType()) {
-            case SMS:  return convertToSMSNotificationModel((SmsNotification) notification);
-            case PUSH: return convertToPushNotificationModel((PushNotification) notification);
-            case EMAIL: return convertToEmailNotificationModel((EmailNotification) notification);
-            default: throw new IllegalArgumentException(String.format("Can't find converter for type:%s", notification.getType()));
+            case SMS:
+                return convertToSMSNotificationModel((SmsNotification) notification);
+            case PUSH:
+                return convertToPushNotificationModel((PushNotification) notification);
+            case EMAIL:
+                return convertToEmailNotificationModel((EmailNotification) notification);
+            default:
+                throw new IllegalArgumentException(String.format("Can't find converter for type:%s", notification.getType()));
         }
     }
 
@@ -64,6 +71,11 @@ public class NotificationConverterHelper {
         emailNotificationModel.setRecipientEmail(emailNotification.getRecipientEmail());
         emailNotificationModel.setSenderEmail(emailNotification.getSenderEmail());
         emailNotificationModel.setReplyToEmails(emailNotification.getReplyToEmails());
+        final Set<EmailNotificationFileAttachmentModel> fileAttachmentModels =
+                Optional.ofNullable(emailNotification.getFileAttachments()).orElse(Collections.emptySet()).stream()
+                        .map(NotificationConverterHelper::convertFileAttachment)
+                        .collect(Collectors.toSet());
+        emailNotificationModel.setFileAttachments(fileAttachmentModels);
         return emailNotificationModel;
     }
 
@@ -74,5 +86,13 @@ public class NotificationConverterHelper {
         model.setState(NotificationStateClientType.valueOf(notification.getState().name()));
         model.setSubject(notification.getSubject());
         model.setType(NotificationClientType.valueOf(notification.getType().name()));
+    }
+
+    private static EmailNotificationFileAttachmentModel convertFileAttachment(final EmailNotificationFileAttachment attachment) {
+        final EmailNotificationFileAttachmentModel model = new EmailNotificationFileAttachmentModel();
+        model.setFileName(attachment.getFileName());
+        model.setFileUrl(attachment.getFileUrl());
+        model.setMimeType(attachment.getMimeType());
+        return model;
     }
 }

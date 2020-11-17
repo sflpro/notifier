@@ -11,6 +11,8 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import java.util.Set;
+
 /**
  * User: Ruben Dilanyan
  * Company: SFL LLC
@@ -46,6 +48,9 @@ public abstract class NotificationModel extends AbstractApiModel {
 
     @JsonProperty("state")
     private NotificationStateClientType state;
+
+    @JsonProperty("labels")
+    private Set<NotificationLabelModel> labels;
 
     /* Constructors */
     public NotificationModel() {
@@ -100,6 +105,14 @@ public abstract class NotificationModel extends AbstractApiModel {
         this.state = state;
     }
 
+    public Set<NotificationLabelModel> getLabels() {
+        return labels;
+    }
+
+    public void setLabels(Set<NotificationLabelModel> labels) {
+        this.labels = labels;
+    }
+
     /* Equals, HashCode and ToString */
     @Override
     public boolean equals(final Object o) {
@@ -117,6 +130,7 @@ public abstract class NotificationModel extends AbstractApiModel {
         builder.append(this.getSubject(), that.getSubject());
         builder.append(this.getType(), that.getType());
         builder.append(this.getState(), that.getState());
+        builder.append(this.getLabels(), that.getLabels());
         return builder.isEquals();
     }
 
@@ -128,6 +142,8 @@ public abstract class NotificationModel extends AbstractApiModel {
         builder.append(this.getBody());
         builder.append(this.getSubject());
         builder.append(this.getType());
+        builder.append(this.getState());
+        builder.append(this.getLabels());
         return builder.build();
     }
 
@@ -140,6 +156,7 @@ public abstract class NotificationModel extends AbstractApiModel {
         builder.append("subject", this.getSubject());
         builder.append("type", this.getType());
         builder.append("state", this.getState());
+        builder.append("label", this.getLabels());
         return builder.build();
     }
 }

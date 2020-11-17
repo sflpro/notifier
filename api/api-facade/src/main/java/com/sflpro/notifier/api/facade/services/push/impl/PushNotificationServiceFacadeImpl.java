@@ -4,6 +4,8 @@ import com.sflpro.notifier.api.facade.services.AbstractNotificationServiceFacade
 import com.sflpro.notifier.api.facade.services.push.PushNotificationServiceFacade;
 import com.sflpro.notifier.api.model.common.result.ErrorResponseModel;
 import com.sflpro.notifier.api.model.common.result.ResultResponseModel;
+import com.sflpro.notifier.api.model.notification.NotificationLabelModel;
+import com.sflpro.notifier.api.model.notification.request.NotificationLabelRequest;
 import com.sflpro.notifier.api.model.push.PushNotificationModel;
 import com.sflpro.notifier.api.model.push.PushNotificationRecipientModel;
 import com.sflpro.notifier.api.model.push.request.CreatePushNotificationRequest;
@@ -12,6 +14,7 @@ import com.sflpro.notifier.api.model.push.response.CreatePushNotificationRespons
 import com.sflpro.notifier.api.model.push.response.UpdatePushNotificationSubscriptionResponse;
 import com.sflpro.notifier.db.entities.device.UserDevice;
 import com.sflpro.notifier.db.entities.device.mobile.DeviceOperatingSystemType;
+import com.sflpro.notifier.db.entities.notification.NotificationLabel;
 import com.sflpro.notifier.db.entities.notification.NotificationProviderType;
 import com.sflpro.notifier.db.entities.notification.email.NotificationProperty;
 import com.sflpro.notifier.db.entities.notification.push.PushNotification;
@@ -38,6 +41,8 @@ import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -95,6 +100,7 @@ public class PushNotificationServiceFacadeImpl extends AbstractNotificationServi
         pushNotificationDto.setTemplateName(request.getTemplateName());
         pushNotificationDto.setLocale(request.getLocale());
         pushNotificationDto.setProperties(request.getProperties());
+        pushNotificationDto.setLabels(mapLabels(request.getLabels()));
         // Create push notifications
         final List<PushNotification> pushNotifications = pushNotificationService.createNotificationsForUserActiveRecipients(user.getId(), pushNotificationDto);
         // Publish events
@@ -139,6 +145,7 @@ public class PushNotificationServiceFacadeImpl extends AbstractNotificationServi
         setNotificationCommonProperties(pushNotificationModel, pushNotification);
         // Create recipient model
         pushNotificationModel.setRecipient(createPushNotificationRecipientModel(pushNotification.getRecipient()));
+        pushNotificationModel.setLabels(mapLabelsModel(pushNotification.getLabels()));
         // Set properties
 
         final Map<String, String> propertyModels = pushNotification.getProperties().stream().collect(Collectors.toMap(NotificationProperty::getPropertyKey, NotificationProperty::getPropertyValue));
@@ -151,6 +158,28 @@ public class PushNotificationServiceFacadeImpl extends AbstractNotificationServi
         recipientModel.setApplicationType(recipient.getApplicationType());
         recipientModel.setDeviceOperatingSystemType(recipient.getDeviceOperatingSystemType().name());
         return recipientModel;
+    }
+
+    private Set<NotificationLabel> mapLabels(final Set<NotificationLabelRequest> labelsResource) {
+        Set<NotificationLabel> destinationLabels = new HashSet<>();
+
+        for (NotificationLabelRequest label : labelsResource) {
+            NotificationLabel item = new NotificationLabel();
+            item.setLabelName(label.getLabelName());
+            destinationLabels.add(item);
+        }
+        return destinationLabels;
+    }
+
+    private static Set<NotificationLabelModel> mapLabelsModel(final Set<NotificationLabel> labelsResource){
+        Set<NotificationLabelModel> destinationLabels = new HashSet<>();
+
+        for (NotificationLabel label : labelsResource) {
+            NotificationLabelModel item = new NotificationLabelModel();
+            item.setLabelName(label.getLabelName());
+            destinationLabels.add(item);
+        }
+        return destinationLabels;
     }
 
     //endregion

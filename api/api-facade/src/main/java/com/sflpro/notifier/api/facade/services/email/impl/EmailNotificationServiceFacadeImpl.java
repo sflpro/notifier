@@ -9,7 +9,10 @@ import com.sflpro.notifier.api.model.email.request.CreateEmailNotificationReques
 import com.sflpro.notifier.api.model.email.request.EmailNotificationFileAttachmentRequest;
 import com.sflpro.notifier.api.model.email.response.CreateEmailNotificationResponse;
 import com.sflpro.notifier.api.model.notification.NotificationClientType;
+import com.sflpro.notifier.api.model.notification.NotificationLabelModel;
 import com.sflpro.notifier.api.model.notification.NotificationStateClientType;
+import com.sflpro.notifier.api.model.notification.request.NotificationLabelRequest;
+import com.sflpro.notifier.db.entities.notification.NotificationLabel;
 import com.sflpro.notifier.db.entities.notification.NotificationProviderType;
 import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
 import com.sflpro.notifier.db.entities.notification.email.EmailNotificationFileAttachment;
@@ -72,7 +75,44 @@ class EmailNotificationServiceFacadeImpl implements EmailNotificationServiceFaca
         emailNotificationDto.setUserUuid(request.getUserUuId());
         emailNotificationDto.setHasSecureProperties(!request.getSecureProperties().isEmpty());
         emailNotificationDto.setFileAttachments(mapFileAttachments(request.getFileAttachments()));
+        emailNotificationDto.setLabels(mapLabels(request.getLabels()));
         return emailNotificationDto;
+    }
+
+    private EmailNotificationModel buildModel(final EmailNotification emailNotification) {
+        final EmailNotificationModel notificationModel = new EmailNotificationModel();
+        notificationModel.setUuId(emailNotification.getUuId());
+        notificationModel.setBody(emailNotification.getContent());
+        notificationModel.setSubject(emailNotification.getSubject());
+        notificationModel.setType(NotificationClientType.valueOf(emailNotification.getType().name()));
+        notificationModel.setState(NotificationStateClientType.valueOf(emailNotification.getState().name()));
+        notificationModel.setSenderEmail(emailNotification.getSenderEmail());
+        notificationModel.setRecipientEmail(emailNotification.getRecipientEmail());
+        notificationModel.setFileAttachments(mapFileAttachmentsModel(emailNotification.getFileAttachments()));
+        notificationModel.setLabels(mapLabelsModel(emailNotification.getLabels()));
+        return notificationModel;
+    }
+
+    private Set<NotificationLabel> mapLabels(final Set<NotificationLabelRequest> labelsResource) {
+        Set<NotificationLabel> destinationLabels = new HashSet<>();
+
+        for (NotificationLabelRequest label : labelsResource) {
+            NotificationLabel item = new NotificationLabel();
+            item.setLabelName(label.getLabelName());
+            destinationLabels.add(item);
+        }
+        return destinationLabels;
+    }
+
+    private Set<NotificationLabelModel> mapLabelsModel(final Set<NotificationLabel> labelsResource){
+        Set<NotificationLabelModel> destinationLabels = new HashSet<>();
+
+        for (NotificationLabel label : labelsResource) {
+            NotificationLabelModel item = new NotificationLabelModel();
+            item.setLabelName(label.getLabelName());
+            destinationLabels.add(item);
+        }
+        return destinationLabels;
     }
 
     private Set<EmailNotificationFileAttachment> mapFileAttachments(final Set<EmailNotificationFileAttachmentRequest> fileAttachmentResource) {

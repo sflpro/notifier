@@ -90,6 +90,7 @@ class EmailNotificationProcessorImpl implements EmailNotificationProcessor {
             getSimpleEmailSender(emailNotification.getProviderType()).send(SimpleEmailMessage.of(
                     emailNotification.getSenderEmail(),
                     emailNotification.getRecipientEmail(),
+                    emailNotification.getReplyToEmails(),
                     emailNotification.getSubject(),
                     emailNotification.getContent(),
                     mapFileAttachments(emailNotification.getFileAttachments())
@@ -104,6 +105,7 @@ class EmailNotificationProcessorImpl implements EmailNotificationProcessor {
         final TemplatedEmailMessageBuilder messageBuilder = new TemplatedEmailMessageBuilder(
                 emailNotification.getSenderEmail(),
                 emailNotification.getRecipientEmail(),
+                emailNotification.getReplyToEmails(),
                 emailNotification.getTemplateName(),
                 variables,
                 mapFileAttachments(emailNotification.getFileAttachments())

@@ -1,5 +1,6 @@
 package com.sflpro.notifier.api.facade.services.email.impl;
 
+import com.sflpro.notifier.api.facade.services.NotificationConverterHelper;
 import com.sflpro.notifier.api.facade.services.email.EmailNotificationServiceFacade;
 import com.sflpro.notifier.api.model.common.result.ResultResponseModel;
 import com.sflpro.notifier.api.model.email.EmailNotificationFileAttachmentModel;
@@ -51,7 +52,7 @@ class EmailNotificationServiceFacadeImpl implements EmailNotificationServiceFaca
         final EmailNotificationDto emailNotificationDto = buildDto(request);
         final EmailNotification emailNotification = emailNotificationService.createEmailNotification(emailNotificationDto);
         applicationEventDistributionService.publishAsynchronousEvent(new StartSendingNotificationEvent(emailNotification.getId(), request.getSecureProperties()));
-        final EmailNotificationModel emailNotificationModel = buildModel(emailNotification);
+        final EmailNotificationModel emailNotificationModel = (EmailNotificationModel) NotificationConverterHelper.convert(emailNotification);
         return new ResultResponseModel<>(new CreateEmailNotificationResponse(emailNotificationModel));
     }
 
@@ -61,6 +62,7 @@ class EmailNotificationServiceFacadeImpl implements EmailNotificationServiceFaca
         emailNotificationDto.setLocale(request.getLocale());
         emailNotificationDto.setRecipientEmail(request.getRecipientEmail());
         emailNotificationDto.setSenderEmail(request.getSenderEmail());
+        emailNotificationDto.setReplyToEmails(request.getReplyToEmails());
         emailNotificationDto.setContent(request.getBody());
         emailNotificationDto.setSubject(request.getSubject());
         emailNotificationDto.setProviderType(providerType);
@@ -71,19 +73,6 @@ class EmailNotificationServiceFacadeImpl implements EmailNotificationServiceFaca
         emailNotificationDto.setHasSecureProperties(!request.getSecureProperties().isEmpty());
         emailNotificationDto.setFileAttachments(mapFileAttachments(request.getFileAttachments()));
         return emailNotificationDto;
-    }
-
-    private EmailNotificationModel buildModel(final EmailNotification emailNotification) {
-        final EmailNotificationModel notificationModel = new EmailNotificationModel();
-        notificationModel.setUuId(emailNotification.getUuId());
-        notificationModel.setBody(emailNotification.getContent());
-        notificationModel.setSubject(emailNotification.getSubject());
-        notificationModel.setType(NotificationClientType.valueOf(emailNotification.getType().name()));
-        notificationModel.setState(NotificationStateClientType.valueOf(emailNotification.getState().name()));
-        notificationModel.setSenderEmail(emailNotification.getSenderEmail());
-        notificationModel.setRecipientEmail(emailNotification.getRecipientEmail());
-        notificationModel.setFileAttachments(mapFileAttachmentsModel(emailNotification.getFileAttachments()));
-        return notificationModel;
     }
 
     private Set<EmailNotificationFileAttachment> mapFileAttachments(final Set<EmailNotificationFileAttachmentRequest> fileAttachmentResource) {

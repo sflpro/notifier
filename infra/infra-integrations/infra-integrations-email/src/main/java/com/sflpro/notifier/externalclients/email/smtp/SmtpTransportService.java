@@ -16,15 +16,19 @@ interface SmtpTransportService {
 
     /**
      * Perform email over SMTP
+     *
      * @param from
      * @param to
+     * @param replyTo
      * @param subject
      * @param body
      * @param fileAttachments
      */
-    void sendMessageOverSmtp(final String from,
-                             final String to,
-                             final String subject,
-                             final String body,
-                             final Set<SpiEmailNotificationFileAttachment> fileAttachments);
+    void sendMessageOverSmtp(
+            final String from,
+            final String to,
+            final Set<String> replyTo,
+            final String subject,
+            final String body,
+            final Set<SpiEmailNotificationFileAttachment> fileAttachments);
 }

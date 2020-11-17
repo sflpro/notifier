@@ -13,6 +13,8 @@ public interface EmailMessage {
 
     String to();
 
+    Set<String> replyTo();
+
     Set<SpiEmailNotificationFileAttachment> fileAttachments();
 
 }

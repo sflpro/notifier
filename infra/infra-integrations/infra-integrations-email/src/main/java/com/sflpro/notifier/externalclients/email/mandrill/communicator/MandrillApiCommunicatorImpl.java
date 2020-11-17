@@ -13,6 +13,7 @@ import com.sflpro.notifier.spi.email.TemplatedEmailMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -33,6 +34,8 @@ public class MandrillApiCommunicatorImpl implements MandrillApiCommunicator {
     private static final Logger LOGGER = LoggerFactory.getLogger(MandrillApiCommunicatorImpl.class);
 
     private static final String MERGE_LANGUAGE_MAILCHIMP = "mailchimp";
+    public static final String REPLY_TO_HEADER_KEY = "Reply-To";
+    public static final String EMAIL_ADDRESSES_DELIMITER = " ";
 
     /* Properties */
     private final MandrillMessagesApi mandrillMessagesApi;
@@ -54,6 +57,12 @@ public class MandrillApiCommunicatorImpl implements MandrillApiCommunicator {
         final MandrillMessage mandrillMessage = new MandrillMessage();
         mandrillMessage.setTo(recipients);
         mandrillMessage.setFromEmail(message.from());
+        if (!CollectionUtils.isEmpty(message.replyTo())) {
+            mandrillMessage.setHeaders(Collections.singletonMap(
+                    REPLY_TO_HEADER_KEY,
+                    String.join(EMAIL_ADDRESSES_DELIMITER, message.replyTo())
+            ));
+        }
         mandrillMessage.setMergeLanguage(MERGE_LANGUAGE_MAILCHIMP);
         return mandrillMessage;
     }
@@ -93,8 +102,12 @@ public class MandrillApiCommunicatorImpl implements MandrillApiCommunicator {
         try {
             LOGGER.debug("Performing send email request with parameters - {}", message);
             // Execute request
-            final MandrillMessageStatus[] mandrillMessageStatuses = mandrillMessagesApi.sendTemplate(message.templateId(),
-                    null, mandrillMessage, false);
+            final MandrillMessageStatus[] mandrillMessageStatuses = mandrillMessagesApi.sendTemplate(
+                    message.templateId(),
+                    null,
+                    mandrillMessage,
+                    false
+            );
             // Handle response
             handleResult(mandrillMessageStatuses, message.templateId(), message.to());
         } catch (final MandrillApiError | IOException e) {
@@ -122,21 +135,34 @@ public class MandrillApiCommunicatorImpl implements MandrillApiCommunicator {
     }
 
     /* Utility methods */
-    private static void handleResult(final MandrillMessageStatus[] mandrillMessageStatuses,
-                                     @Nullable final String templateId, final String recipientEmail) {
+    private static void handleResult(
+            final MandrillMessageStatus[] mandrillMessageStatuses,
+            @Nullable final String templateId, final String recipientEmail
+    ) {
         for (final MandrillMessageStatus mandrillMessageStatus : mandrillMessageStatuses) {
             switch (mandrillMessageStatus.getStatus()) {
                 case "rejected":
-                    LOGGER.debug("Email '{}' was not sent successfully to '{}', due to '{}' rejection reason.", templateId,
-                            recipientEmail, mandrillMessageStatus.getRejectReason());
+                    LOGGER.debug(
+                            "Email '{}' was not sent successfully to '{}', due to '{}' rejection reason.",
+                            templateId,
+                            recipientEmail,
+                            mandrillMessageStatus.getRejectReason()
+                    );
                     throw new MandrillMessageRejectedException(mandrillMessageStatus);
                 case "invalid":
-                    LOGGER.debug("Email '{}' was not sent successfully to '{}', since it was considered invalid.", templateId,
-                            recipientEmail);
+                    LOGGER.debug(
+                            "Email '{}' was not sent successfully to '{}', since it was considered invalid.",
+                            templateId,
+                            recipientEmail
+                    );
                     throw new MandrillMessageInvalidException(mandrillMessageStatus);
                 default:
-                    LOGGER.info("Email '{}' was sent successfully to '{}' with '{}' reference number.", mandrillMessageStatus.getEmail(), templateId,
-                            mandrillMessageStatus.getId());
+                    LOGGER.info(
+                            "Email '{}' was sent successfully to '{}' with '{}' reference number.",
+                            mandrillMessageStatus.getEmail(),
+                            templateId,
+                            mandrillMessageStatus.getId()
+                    );
                     break;
             }
         }

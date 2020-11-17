@@ -26,19 +26,26 @@ public class MandrillSimpleEmailSenderTest extends AbstractEmailNotificationUnit
     private MandrillApiCommunicator mandrillApiCommunicator;
 
     @Before
-    public void prepare(){
+    public void prepare() {
         mandrillSimpleEmailSender = new MandrillSimpleEmailSender(mandrillApiCommunicator);
     }
 
     @Test
-    public void testSendWithInvalidArguments(){
-       assertThatThrownBy(()-> mandrillSimpleEmailSender.send(null))
-               .isInstanceOf(IllegalArgumentException.class);
+    public void testSendWithInvalidArguments() {
+        assertThatThrownBy(() -> mandrillSimpleEmailSender.send(null))
+                .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
-    public void testSend(){
-        final SimpleEmailMessage message = SimpleEmailMessage.of(uuid(), uuid(), uuid(), uuid(), Collections.emptySet());
+    public void testSend() {
+        final SimpleEmailMessage message = SimpleEmailMessage.of(
+                uuid(),
+                uuid(),
+                Collections.singleton(uuid()),
+                uuid(),
+                uuid(),
+                Collections.emptySet()
+        );
         mandrillSimpleEmailSender.send(message);
         verify(mandrillApiCommunicator).sendEmail(message);
     }

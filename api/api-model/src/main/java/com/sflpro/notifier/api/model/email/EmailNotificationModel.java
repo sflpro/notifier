@@ -7,6 +7,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -25,6 +26,9 @@ public class EmailNotificationModel extends NotificationModel {
 
     @JsonProperty("recipientEmail")
     private String recipientEmail;
+
+    @JsonProperty("replyToEmails")
+    private Set<String> replyToEmails = new HashSet<>();
 
     @JsonProperty("fileAttachments")
     private Set<EmailNotificationFileAttachmentModel> fileAttachments = Collections.emptySet();
@@ -51,6 +55,14 @@ public class EmailNotificationModel extends NotificationModel {
         this.recipientEmail = recipientEmail;
     }
 
+    public Set<String> getReplyToEmails() {
+        return replyToEmails;
+    }
+
+    public void setReplyToEmails(final Set<String> replyToEmails) {
+        this.replyToEmails = replyToEmails;
+    }
+
     public Set<EmailNotificationFileAttachmentModel> getFileAttachments() {
         return fileAttachments;
     }
@@ -73,6 +85,7 @@ public class EmailNotificationModel extends NotificationModel {
         builder.appendSuper(super.equals(o));
         builder.append(this.getRecipientEmail(), that.getRecipientEmail());
         builder.append(this.getSenderEmail(), that.getSenderEmail());
+        builder.append(this.getReplyToEmails(), that.getReplyToEmails());
         builder.append(this.getFileAttachments(), that.getFileAttachments());
         return builder.isEquals();
     }
@@ -83,6 +96,7 @@ public class EmailNotificationModel extends NotificationModel {
         builder.appendSuper(super.hashCode());
         builder.append(this.getRecipientEmail());
         builder.append(this.getSenderEmail());
+        builder.append(this.getReplyToEmails());
         builder.append(this.getFileAttachments());
         return builder.build();
     }
@@ -93,6 +107,7 @@ public class EmailNotificationModel extends NotificationModel {
         builder.appendSuper(super.toString());
         builder.append("recipientEmail", this.getRecipientEmail());
         builder.append("senderEmail", this.getSenderEmail());
+        builder.append("replyToEmails", this.getReplyToEmails());
         builder.append("fileAttachments", this.getFileAttachments());
         return builder.build();
     }

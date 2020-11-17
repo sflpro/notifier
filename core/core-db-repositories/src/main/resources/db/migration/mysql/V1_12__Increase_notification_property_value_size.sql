@@ -1,1 +1,1 @@
-alter table notification_property modify column property_value varchar(16383);
+alter table notification_property modify column property_value text(65535);

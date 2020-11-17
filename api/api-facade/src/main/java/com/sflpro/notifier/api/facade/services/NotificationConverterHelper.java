@@ -79,7 +79,7 @@ public class NotificationConverterHelper {
         return emailNotificationModel;
     }
 
-    public static void convertToNotificationModel(final Notification notification, final NotificationModel model) {
+    private static void convertToNotificationModel(final Notification notification, final NotificationModel model) {
         model.setId(notification.getId());
         model.setUuId(notification.getUuId());
         model.setBody(notification.getContent());

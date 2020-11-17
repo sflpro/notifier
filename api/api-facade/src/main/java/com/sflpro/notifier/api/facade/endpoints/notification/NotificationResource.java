@@ -26,7 +26,7 @@ import javax.ws.rs.core.MediaType;
 @SwaggerDefinition(tags = {@Tag(name = "notification", description = "Notification operations")})
 @Api(tags = {"notification"})
 @Singleton
-@Path("/notification/")
+@Path("/notification")
 @Produces(MediaType.APPLICATION_JSON)
 public class NotificationResource {
 

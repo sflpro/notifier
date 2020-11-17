@@ -19,7 +19,7 @@ public class NotificationResourceClientImpl extends AbstractResourceClient imple
 
     private static final Logger logger = LoggerFactory.getLogger(NotificationResourceClientImpl.class);
 
-    private static final String PATH = "notification/";
+    private static final String PATH = "/notification/";
 
     public NotificationResourceClientImpl(final Client client, final String apiPath) {
         super(client, apiPath);

@@ -11,6 +11,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.annotation.Nonnull;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -30,6 +31,9 @@ public class CreateEmailNotificationRequest extends AbstractTemplatedCreateNotif
 
     @JsonProperty("senderEmail")
     private String senderEmail;
+
+    @JsonProperty("replyToEmails")
+    private Set<String> replyToEmails = new HashSet<>();
 
     @JsonProperty("subject")
     private String subject;
@@ -57,6 +61,14 @@ public class CreateEmailNotificationRequest extends AbstractTemplatedCreateNotif
 
     public void setSenderEmail(final String senderEmail) {
         this.senderEmail = senderEmail;
+    }
+
+    public Set<String> getReplyToEmails() {
+        return replyToEmails;
+    }
+
+    public void setReplyToEmails(final Set<String> replyToEmails) {
+        this.replyToEmails = replyToEmails;
     }
 
     public String getSubject() {
@@ -104,6 +116,7 @@ public class CreateEmailNotificationRequest extends AbstractTemplatedCreateNotif
         builder.appendSuper(super.equals(o));
         builder.append(this.getSenderEmail(), that.getSenderEmail());
         builder.append(this.getRecipientEmail(), that.getRecipientEmail());
+        builder.append(this.getReplyToEmails(), that.getReplyToEmails());
         builder.append(this.getSubject(), that.getSubject());
         builder.append(this.getTemplateName(), that.getTemplateName());
         builder.append(this.getProperties(), that.getProperties());
@@ -119,6 +132,7 @@ public class CreateEmailNotificationRequest extends AbstractTemplatedCreateNotif
         builder.appendSuper(super.hashCode());
         builder.append(this.getSenderEmail());
         builder.append(this.getRecipientEmail());
+        builder.append(this.getReplyToEmails());
         builder.append(this.getSubject());
         builder.append(this.getTemplateName());
         builder.append(this.getProperties());
@@ -134,6 +148,7 @@ public class CreateEmailNotificationRequest extends AbstractTemplatedCreateNotif
         builder.appendSuper(super.toString());
         builder.append("senderEmail", this.getSenderEmail());
         builder.append("recipientEmail", this.getRecipientEmail());
+        builder.append("replyToEmails", this.getReplyToEmails());
         builder.append("subject", this.getSubject());
         builder.append("templateName", this.getTemplateName());
         builder.append("properties", this.getProperties());

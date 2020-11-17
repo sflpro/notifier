@@ -20,14 +20,17 @@ final class ImmutableTemplatedEmailMessage extends AbstractEmailMessage implemen
     private final Map<String, ?> variables;
     private final Locale locale;
 
-    ImmutableTemplatedEmailMessage(final String from,
-                                   final String to,
-                                   final String templateId,
-                                   final String subject,
-                                   final Map<String, ?> variables,
-                                   final Locale locale,
-                                   final Set<SpiEmailNotificationFileAttachment> fileAttachments) {
-        super(from, to, subject, fileAttachments);
+    ImmutableTemplatedEmailMessage(
+            final String from,
+            final String to,
+            final Set<String> replyTo,
+            final String templateId,
+            final String subject,
+            final Map<String, ?> variables,
+            final Locale locale,
+            final Set<SpiEmailNotificationFileAttachment> fileAttachments
+    ) {
+        super(from, to, replyTo, subject, fileAttachments);
         this.templateId = templateId;
         this.variables = variables;
         this.locale = locale;

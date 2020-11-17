@@ -31,6 +31,8 @@ public abstract class NotificationModel extends AbstractApiModel {
 
     private static final long serialVersionUID = 3288267458302047890L;
 
+    private Long id;
+
     /* Properties */
     @JsonProperty("uuId")
     private String uuId;
@@ -52,6 +54,14 @@ public abstract class NotificationModel extends AbstractApiModel {
 
     /* Constructors */
     public NotificationModel() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     /* Properties getters and setters */

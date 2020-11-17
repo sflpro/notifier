@@ -15,17 +15,25 @@ abstract class AbstractEmailMessage implements EmailMessage {
 
     private final String from;
     private final String to;
+    private final Set<String> replyTo;
     private final String subject;
     private final Set<SpiEmailNotificationFileAttachment> fileAttachments;
 
-    AbstractEmailMessage(final String from, final String to) {
-        this(from, to, null, null);
+    AbstractEmailMessage(final String from, final String to, final Set<String> replyTo) {
+        this(from, to, replyTo, null, null);
     }
 
 
-    AbstractEmailMessage(final String from, final String to, final String subject, final Set<SpiEmailNotificationFileAttachment> fileAttachments) {
+    AbstractEmailMessage(
+            final String from,
+            final String to,
+            final Set<String> replyTo,
+            final String subject,
+            final Set<SpiEmailNotificationFileAttachment> fileAttachments
+    ) {
         this.from = from;
         this.to = to;
+        this.replyTo = replyTo;
         this.subject = subject;
         this.fileAttachments = fileAttachments;
     }
@@ -75,6 +83,11 @@ abstract class AbstractEmailMessage implements EmailMessage {
     @Override
     public String to() {
         return to;
+    }
+
+    @Override
+    public Set<String> replyTo() {
+        return replyTo;
     }
 
     @Override

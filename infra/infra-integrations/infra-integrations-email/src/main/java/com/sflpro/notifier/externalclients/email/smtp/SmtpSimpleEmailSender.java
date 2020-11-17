@@ -22,8 +22,10 @@ class SmtpSimpleEmailSender implements SimpleEmailSender {
         smtpTransportService.sendMessageOverSmtp(
                 message.from(),
                 message.to(),
+                message.replyTo(),
                 message.subject(),
                 message.body(),
-                message.fileAttachments());
+                message.fileAttachments()
+        );
     }
 }

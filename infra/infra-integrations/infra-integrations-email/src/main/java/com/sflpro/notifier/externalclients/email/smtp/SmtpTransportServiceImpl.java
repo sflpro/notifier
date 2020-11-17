@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.Assert;
+import org.springframework.util.CollectionUtils;
 
 import javax.activation.DataHandler;
 import javax.mail.*;
@@ -16,6 +17,8 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
@@ -74,11 +77,14 @@ public class SmtpTransportServiceImpl implements com.sflpro.notifier.externalcli
     }
 
     @Override
-    public void sendMessageOverSmtp(final String from,
-                                    final String to,
-                                    final String subject,
-                                    final String body,
-                                    final Set<SpiEmailNotificationFileAttachment> fileAttachments) {
+    public void sendMessageOverSmtp(
+            final String from,
+            final String to,
+            final Set<String> replyTo,
+            final String subject,
+            final String body,
+            final Set<SpiEmailNotificationFileAttachment> fileAttachments
+    ) {
         Assert.hasText(from, "from should not be null or empty.");
         Assert.hasText(to, "to should not be null or empty.");
         Assert.hasText(subject, "subject should not be null or empty.");
@@ -90,6 +96,14 @@ public class SmtpTransportServiceImpl implements com.sflpro.notifier.externalcli
             message.setSubject(subject);
             message.setFrom(from);
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
+            final List<InternetAddress> internetAddresses = new ArrayList<>();
+            if (!CollectionUtils.isEmpty(replyTo)) {
+                for (final String email : replyTo) {
+                    InternetAddress internetAddress = new InternetAddress(email);
+                    internetAddresses.add(internetAddress);
+                }
+                message.setReplyTo(internetAddresses.toArray(new InternetAddress[0]));
+            }
             /* Transport message over smtp */
             Transport.send(message);
         } catch (final MessagingException | MalformedURLException ex) {

@@ -10,23 +10,28 @@ public class TemplatedEmailMessageBuilder {
 
     private final String from;
     private final String to;
+    private final Set<String> replyTo;
     private final String templateId;
     private String subject;
     final Map<String, ?> variables;
     private Locale locale;
     private Set<SpiEmailNotificationFileAttachment> fileAttachments;
 
-    public TemplatedEmailMessageBuilder(final String from,
-                                        final String to,
-                                        final String templateId,
-                                        final Map<String, ?> variables,
-                                        final Set<SpiEmailNotificationFileAttachment> fileAttachments) {
+    public TemplatedEmailMessageBuilder(
+            final String from,
+            final String to,
+            final Set<String> replyTo,
+            final String templateId,
+            final Map<String, ?> variables,
+            final Set<SpiEmailNotificationFileAttachment> fileAttachments
+    ) {
         Assert.hasText(from, "Null or empty text was passed as an argument for parameter 'from'.");
         Assert.hasText(to, "Null or empty text was passed as an argument for parameter 'to'.");
         Assert.hasText(templateId, "Null or empty text was passed as an argument for parameter 'templateId'.");
         Assert.notNull(variables, "Null was passed as an argument for parameter 'variables'.");
         this.from = from;
         this.to = to;
+        this.replyTo = replyTo;
         this.templateId = templateId;
         this.variables = variables;
         this.fileAttachments = fileAttachments;
@@ -48,11 +53,13 @@ public class TemplatedEmailMessageBuilder {
         return new ImmutableTemplatedEmailMessage(
                 from,
                 to,
+                replyTo,
                 templateId,
                 subject,
                 variables,
                 locale,
-                fileAttachments);
+                fileAttachments
+        );
     }
 
 

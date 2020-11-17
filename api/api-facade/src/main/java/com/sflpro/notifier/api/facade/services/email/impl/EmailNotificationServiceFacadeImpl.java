@@ -2,14 +2,13 @@ package com.sflpro.notifier.api.facade.services.email.impl;
 
 import com.sflpro.notifier.api.facade.services.NotificationConverterHelper;
 import com.sflpro.notifier.api.facade.services.email.EmailNotificationServiceFacade;
+import com.sflpro.notifier.api.model.common.result.ErrorResponseModel;
 import com.sflpro.notifier.api.model.common.result.ResultResponseModel;
 import com.sflpro.notifier.api.model.email.EmailNotificationFileAttachmentModel;
 import com.sflpro.notifier.api.model.email.EmailNotificationModel;
 import com.sflpro.notifier.api.model.email.request.CreateEmailNotificationRequest;
 import com.sflpro.notifier.api.model.email.request.EmailNotificationFileAttachmentRequest;
 import com.sflpro.notifier.api.model.email.response.CreateEmailNotificationResponse;
-import com.sflpro.notifier.api.model.notification.NotificationClientType;
-import com.sflpro.notifier.api.model.notification.NotificationStateClientType;
 import com.sflpro.notifier.db.entities.notification.NotificationProviderType;
 import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
 import com.sflpro.notifier.db.entities.notification.email.EmailNotificationFileAttachment;
@@ -22,6 +21,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -49,6 +49,11 @@ class EmailNotificationServiceFacadeImpl implements EmailNotificationServiceFaca
     @Override
     public ResultResponseModel<CreateEmailNotificationResponse> createEmailNotification(final CreateEmailNotificationRequest request) {
         Assert.notNull(request, "Request model should not be null");
+        // Validate request
+        final List<ErrorResponseModel> errors = request.validateRequiredFields();
+        if (!errors.isEmpty()) {
+            return new ResultResponseModel<>(errors);
+        }
         final EmailNotificationDto emailNotificationDto = buildDto(request);
         final EmailNotification emailNotification = emailNotificationService.createEmailNotification(emailNotificationDto);
         applicationEventDistributionService.publishAsynchronousEvent(new StartSendingNotificationEvent(emailNotification.getId(), request.getSecureProperties()));
@@ -88,7 +93,7 @@ class EmailNotificationServiceFacadeImpl implements EmailNotificationServiceFaca
         return destinationAttachments;
     }
 
-    private Set<EmailNotificationFileAttachmentModel> mapFileAttachmentsModel(final Set<EmailNotificationFileAttachment> fileAttachmentResource){
+    private Set<EmailNotificationFileAttachmentModel> mapFileAttachmentsModel(final Set<EmailNotificationFileAttachment> fileAttachmentResource) {
         Set<EmailNotificationFileAttachmentModel> destinationAttachments = new HashSet<>();
 
         for (EmailNotificationFileAttachment attachment : fileAttachmentResource) {

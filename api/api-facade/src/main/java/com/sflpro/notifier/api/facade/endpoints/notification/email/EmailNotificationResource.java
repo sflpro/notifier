@@ -55,11 +55,6 @@ public class EmailNotificationResource {
         LOGGER.debug("Processing create email notification request - {}", request);
         Assert.notNull(request, "Request model should not be null");
         LOGGER.debug("Creating email notification, request - {}", request);
-        // Validate request
-        final List<ErrorResponseModel> errors = request.validateRequiredFields();
-        if (!errors.isEmpty()) {
-            return Response.ok(new ResultResponseModel<CreateEmailNotificationResponse>(errors)).build();
-        }
         final ResultResponseModel<CreateEmailNotificationResponse> response = emailNotificationServiceFacade.createEmailNotification(request);
         LOGGER.debug("Processed create email notification request - {}, response - {}", request, response);
         return Response.ok(response).build();

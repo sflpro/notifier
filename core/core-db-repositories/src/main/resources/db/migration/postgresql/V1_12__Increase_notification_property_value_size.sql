@@ -1,0 +1,1 @@
+alter table notification_property alter column property_value type varchar(65535) using property_value::varchar(65535);

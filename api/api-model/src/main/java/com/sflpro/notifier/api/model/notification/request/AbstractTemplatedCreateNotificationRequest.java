@@ -49,7 +49,7 @@ public class AbstractTemplatedCreateNotificationRequest extends AbstractCreateNo
             if(map.getKey().length() > 255)
                 errors.add(new ErrorResponseModel(ErrorType.NOTIFICATION_PROPERTY_KEY_SIZE_VIOLATION));
 
-            if(map.getValue().length() > 21845)
+            if(map.getValue().length() > 16383)
                 errors.add(new ErrorResponseModel(ErrorType.NOTIFICATION_PROPERTY_VALUE_SIZE_VIOLATION));
         }
         return errors;

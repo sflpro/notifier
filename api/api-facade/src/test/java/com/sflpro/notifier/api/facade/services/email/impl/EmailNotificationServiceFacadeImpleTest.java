@@ -122,7 +122,7 @@ public class EmailNotificationServiceFacadeImpleTest extends AbstractFacadeUnitT
         // Test data
         final CreateEmailNotificationRequest request = getServiceFacadeImplTestHelper().createCreateEmailNotificationRequest();
         final Map<String, String> properties =  new HashMap<>();
-        properties.put(RandomStringUtils.randomAlphanumeric(256), RandomStringUtils.randomAlphanumeric(21846));
+        properties.put(RandomStringUtils.randomAlphanumeric(256), RandomStringUtils.randomAlphanumeric(16384));
         request.setProperties(properties);
         // Reset
         resetAll();

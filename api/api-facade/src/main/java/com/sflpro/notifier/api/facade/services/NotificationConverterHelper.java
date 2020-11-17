@@ -63,6 +63,7 @@ public class NotificationConverterHelper {
         convertToNotificationModel(emailNotification, emailNotificationModel);
         emailNotificationModel.setRecipientEmail(emailNotification.getRecipientEmail());
         emailNotificationModel.setSenderEmail(emailNotification.getSenderEmail());
+        emailNotificationModel.setReplyToEmails(emailNotification.getReplyToEmails());
         return emailNotificationModel;
     }
 

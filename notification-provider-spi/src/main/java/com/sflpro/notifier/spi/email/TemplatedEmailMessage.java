@@ -24,12 +24,30 @@ public interface TemplatedEmailMessage extends EmailMessage {
 
     default TemplatedEmailMessage withSubject(final String subject) {
         Assert.notNull(subject, "Null was passed as an argument for parameter 'subject'.");
-        return new ImmutableTemplatedEmailMessage(from(), to(), templateId(), subject, variables(), locale().orElse(null), null);
+        return new ImmutableTemplatedEmailMessage(
+                from(),
+                to(),
+                replyTo(),
+                templateId(),
+                subject,
+                variables(),
+                locale().orElse(null),
+                null
+        );
     }
 
     default TemplatedEmailMessage withLocale(final Locale locale) {
         Assert.notNull(locale, "Null was passed as an argument for parameter 'locale'.");
-        return new ImmutableTemplatedEmailMessage(from(), to(), templateId(), subject().orElse(null), variables(), locale, null);
+        return new ImmutableTemplatedEmailMessage(
+                from(),
+                to(),
+                replyTo(),
+                templateId(),
+                subject().orElse(null),
+                variables(),
+                locale,
+                null
+        );
     }
 
     default Optional<Locale> locale() {

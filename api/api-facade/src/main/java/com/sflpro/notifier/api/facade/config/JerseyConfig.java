@@ -1,6 +1,7 @@
 package com.sflpro.notifier.api.facade.config;
 
 import com.sflpro.notifier.api.facade.endpoints.maintanance.HeartBeatResource;
+import com.sflpro.notifier.api.facade.endpoints.notification.NotificationResource;
 import com.sflpro.notifier.api.facade.endpoints.notification.email.EmailNotificationResource;
 import com.sflpro.notifier.api.facade.endpoints.notification.push.PushNotificationResource;
 import com.sflpro.notifier.api.facade.endpoints.notification.sms.SmsNotificationResource;
@@ -47,6 +48,7 @@ public class JerseyConfig extends ResourceConfig {
         register(EmailNotificationResource.class);
         register(SmsNotificationResource.class);
         register(PushNotificationResource.class);
+        register(NotificationResource.class);
         // Features
         register(LoggingFeature.class);
         register(PermissionDeniedExceptionMapper.class);

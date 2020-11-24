@@ -13,8 +13,15 @@ import java.util.Set;
 final class ImmutableSimpleEmailMessage extends AbstractEmailMessage implements SimpleEmailMessage {
     private final String body;
 
-    ImmutableSimpleEmailMessage(final String from, final String to, final String subject, final String body, final Set<SpiEmailNotificationFileAttachment> fileAttachments) {
-        super(from, to, subject, fileAttachments);
+    ImmutableSimpleEmailMessage(
+            final String from,
+            final String to,
+            final Set<String> replyTo,
+            final String subject,
+            final String body,
+            final Set<SpiEmailNotificationFileAttachment> fileAttachments
+    ) {
+        super(from, to, replyTo, subject, fileAttachments);
         this.body = body;
     }
 

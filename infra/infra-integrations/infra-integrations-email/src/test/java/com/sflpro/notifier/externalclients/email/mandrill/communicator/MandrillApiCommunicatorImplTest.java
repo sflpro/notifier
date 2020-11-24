@@ -80,9 +80,11 @@ public class MandrillApiCommunicatorImplTest extends AbstractEmailNotificationUn
                 new TemplatedEmailMessageBuilder(
                         uuid(),
                         uuid(),
+                        Collections.singleton(uuid()),
                         uuid(),
                         Collections.singletonMap(uuid(), uuid()),
-                        Collections.emptySet())
+                        Collections.emptySet()
+                )
                         .build();
         when(mandrillMessageStatus.getStatus()).thenReturn("rejected");
         when(mandrillMessageStatus.getRejectReason()).thenReturn("Something went wrong.");
@@ -90,7 +92,8 @@ public class MandrillApiCommunicatorImplTest extends AbstractEmailNotificationUn
                 eq(templatedEmailMessage.templateId()),
                 isNull(),
                 isA(MandrillMessage.class),
-                eq(Boolean.FALSE))
+                eq(Boolean.FALSE)
+             )
         ).thenReturn(new MandrillMessageStatus[]{mandrillMessageStatus});
         assertThatThrownBy(() -> mandrillApiCommunicator.sendEmailTemplate(templatedEmailMessage))
                 .isInstanceOf(MandrillMessageRejectedException.class);
@@ -110,6 +113,7 @@ public class MandrillApiCommunicatorImplTest extends AbstractEmailNotificationUn
                 new TemplatedEmailMessageBuilder(
                         uuid(),
                         uuid(),
+                        Collections.singleton(uuid()),
                         uuid(),
                         Collections.singletonMap(uuid(), uuid()),
                         Collections.emptySet()
@@ -119,7 +123,8 @@ public class MandrillApiCommunicatorImplTest extends AbstractEmailNotificationUn
                 eq(templatedEmailMessage.templateId()),
                 isNull(),
                 isA(MandrillMessage.class),
-                eq(Boolean.FALSE))
+                eq(Boolean.FALSE)
+             )
         ).thenReturn(new MandrillMessageStatus[]{mandrillMessageStatus});
         assertThatThrownBy(() -> mandrillApiCommunicator.sendEmailTemplate(templatedEmailMessage))
                 .isInstanceOf(MandrillMessageInvalidException.class);
@@ -138,6 +143,7 @@ public class MandrillApiCommunicatorImplTest extends AbstractEmailNotificationUn
         final TemplatedEmailMessage templatedEmailMessage = new TemplatedEmailMessageBuilder(
                 uuid(),
                 uuid(),
+                Collections.singleton(uuid()),
                 uuid(),
                 Collections.singletonMap(variableName, uuid()),
                 Collections.emptySet()
@@ -149,20 +155,21 @@ public class MandrillApiCommunicatorImplTest extends AbstractEmailNotificationUn
                 eq(templatedEmailMessage.templateId()),
                 isNull(),
                 isA(MandrillMessage.class),
-                eq(Boolean.FALSE))
+                eq(Boolean.FALSE)
+             )
         ).thenAnswer(invocation -> {
             final MandrillMessage mandrillMessage = invocation.getArgument(2);
             assertThat(mandrillMessage)
                     .hasFieldOrPropertyWithValue("fromEmail", templatedEmailMessage.from());
             assertThat(mandrillMessage.getTo().stream()
-                    .map(MandrillMessage.Recipient::getEmail)
-                    .anyMatch(templatedEmailMessage.to()::equals)
+                               .map(MandrillMessage.Recipient::getEmail)
+                               .anyMatch(templatedEmailMessage.to()::equals)
             ).isTrue();
             assertThat(mandrillMessage.getMergeVars().stream()
-                    .map(MandrillMessage.MergeVarBucket::getVars)
-                    .flatMap(Arrays::stream)
-                    .collect(Collectors.toMap(MandrillMessage.MergeVar::getName, MandrillMessage.MergeVar::getContent))
-                    .get(variableName)
+                               .map(MandrillMessage.MergeVarBucket::getVars)
+                               .flatMap(Arrays::stream)
+                               .collect(Collectors.toMap(MandrillMessage.MergeVar::getName, MandrillMessage.MergeVar::getContent))
+                               .get(variableName)
             ).isEqualTo(templatedEmailMessage.variables().get(variableName));
             return new MandrillMessageStatus[]{mandrillMessageStatus};
         });
@@ -180,7 +187,14 @@ public class MandrillApiCommunicatorImplTest extends AbstractEmailNotificationUn
 
     @Test
     public void testSendEmailStatusRejected() throws IOException, MandrillApiError {
-        final SimpleEmailMessage message = SimpleEmailMessage.of(uuid(), uuid(), uuid(), uuid(), Collections.emptySet());
+        final SimpleEmailMessage message = SimpleEmailMessage.of(
+                uuid(),
+                uuid(),
+                Collections.singleton(uuid()),
+                uuid(),
+                uuid(),
+                Collections.emptySet()
+        );
         when(mandrillMessageStatus.getStatus()).thenReturn("rejected");
         when(mandrillMessagesApi.send(
                 isA(MandrillMessage.class),
@@ -197,7 +211,14 @@ public class MandrillApiCommunicatorImplTest extends AbstractEmailNotificationUn
 
     @Test
     public void testSendEmailStatusInvalid() throws IOException, MandrillApiError {
-        final SimpleEmailMessage message = SimpleEmailMessage.of(uuid(), uuid(), uuid(), uuid(), Collections.emptySet());
+        final SimpleEmailMessage message = SimpleEmailMessage.of(
+                uuid(),
+                uuid(),
+                Collections.singleton(uuid()),
+                uuid(),
+                uuid(),
+                Collections.emptySet()
+        );
         when(mandrillMessageStatus.getStatus()).thenReturn("invalid");
         when(mandrillMessagesApi.send(
                 isA(MandrillMessage.class),
@@ -214,7 +235,14 @@ public class MandrillApiCommunicatorImplTest extends AbstractEmailNotificationUn
 
     @Test
     public void testSendEmailStatusSuccess() throws IOException, MandrillApiError {
-        final SimpleEmailMessage message = SimpleEmailMessage.of(uuid(), uuid(), uuid(), uuid(), Collections.emptySet());
+        final SimpleEmailMessage message = SimpleEmailMessage.of(
+                uuid(),
+                uuid(),
+                Collections.singleton(uuid()),
+                uuid(),
+                uuid(),
+                Collections.emptySet()
+        );
         when(mandrillMessageStatus.getStatus()).thenReturn("invalid");
         when(mandrillMessagesApi.send(
                 isA(MandrillMessage.class),
@@ -226,8 +254,8 @@ public class MandrillApiCommunicatorImplTest extends AbstractEmailNotificationUn
                     .hasFieldOrPropertyWithValue("subject", message.subject())
                     .hasFieldOrPropertyWithValue("html", message.body());
             assertThat(mandrillMessage.getTo().stream()
-                    .map(MandrillMessage.Recipient::getEmail)
-                    .anyMatch(message.to()::equals)
+                               .map(MandrillMessage.Recipient::getEmail)
+                               .anyMatch(message.to()::equals)
             ).isTrue();
             return new MandrillMessageStatus[]{mandrillMessageStatus};
         });
@@ -247,18 +275,22 @@ public class MandrillApiCommunicatorImplTest extends AbstractEmailNotificationUn
     private static final class InvalidSimpleEmailMessage implements SimpleEmailMessage {
         private final String from;
         private final String to;
+        private final Set<String> replyTo;
         private final String subject;
         private final String body;
         private final Set<SpiEmailNotificationFileAttachment> fileAttachments;
 
-        private InvalidSimpleEmailMessage(final String from,
-                                          final String to,
-                                          final String subject,
-                                          final String body,
-                                          final Set<SpiEmailNotificationFileAttachment> fileAttachments
+        private InvalidSimpleEmailMessage(
+                final String from,
+                final String to,
+                final Set<String> replyTo,
+                final String subject,
+                final String body,
+                final Set<SpiEmailNotificationFileAttachment> fileAttachments
         ) {
             this.from = from;
             this.to = to;
+            this.replyTo = replyTo;
             this.subject = subject;
             this.body = body;
             this.fileAttachments = fileAttachments;
@@ -266,19 +298,19 @@ public class MandrillApiCommunicatorImplTest extends AbstractEmailNotificationUn
 
 
         static SimpleEmailMessage withoutFrom() {
-            return new InvalidSimpleEmailMessage(null, uuid(), uuid(), uuid(), Collections.emptySet());
+            return new InvalidSimpleEmailMessage(null, uuid(), Collections.emptySet(), uuid(), uuid(), Collections.emptySet());
         }
 
         static SimpleEmailMessage withoutTo() {
-            return new InvalidSimpleEmailMessage(uuid(), null, uuid(), uuid(), Collections.emptySet());
+            return new InvalidSimpleEmailMessage(uuid(), null, Collections.emptySet(), uuid(), uuid(), Collections.emptySet());
         }
 
         static SimpleEmailMessage withoutSubject() {
-            return new InvalidSimpleEmailMessage(uuid(), uuid(), null, uuid(), Collections.emptySet());
+            return new InvalidSimpleEmailMessage(uuid(), uuid(), Collections.emptySet(), null, uuid(), Collections.emptySet());
         }
 
         static SimpleEmailMessage withoutBody() {
-            return new InvalidSimpleEmailMessage(uuid(), uuid(), uuid(), null, Collections.emptySet());
+            return new InvalidSimpleEmailMessage(uuid(), uuid(), Collections.emptySet(), uuid(), null, Collections.emptySet());
         }
 
         @Override
@@ -302,6 +334,11 @@ public class MandrillApiCommunicatorImplTest extends AbstractEmailNotificationUn
         }
 
         @Override
+        public Set<String> replyTo() {
+            return replyTo;
+        }
+
+        @Override
         public Set<SpiEmailNotificationFileAttachment> fileAttachments() {
             return fileAttachments;
         }
@@ -310,25 +347,32 @@ public class MandrillApiCommunicatorImplTest extends AbstractEmailNotificationUn
     private static final class InvalidTemplatedEmailMessage implements TemplatedEmailMessage {
         private final String from;
         private final String to;
+        private final Set<String> replyTo;
         private final String templateId;
 
-        private InvalidTemplatedEmailMessage(final String from, final String to, final String templateId) {
+        private InvalidTemplatedEmailMessage(
+                final String from,
+                final String to,
+                final Set<String> replyTo,
+                final String templateId
+        ) {
             this.from = from;
             this.to = to;
+            this.replyTo = replyTo;
             this.templateId = templateId;
         }
 
 
         static TemplatedEmailMessage withoutFrom() {
-            return new InvalidTemplatedEmailMessage(null, uuid(), uuid());
+            return new InvalidTemplatedEmailMessage(null, uuid(), Collections.emptySet(), uuid());
         }
 
         static TemplatedEmailMessage withoutTo() {
-            return new InvalidTemplatedEmailMessage(uuid(), null, uuid());
+            return new InvalidTemplatedEmailMessage(uuid(), null, Collections.emptySet(), uuid());
         }
 
         static TemplatedEmailMessage withoutTemplateId() {
-            return new InvalidTemplatedEmailMessage(uuid(), uuid(), null);
+            return new InvalidTemplatedEmailMessage(uuid(), uuid(), Collections.emptySet(), null);
         }
 
         @Override
@@ -354,6 +398,11 @@ public class MandrillApiCommunicatorImplTest extends AbstractEmailNotificationUn
         @Override
         public String to() {
             return to;
+        }
+
+        @Override
+        public Set<String> replyTo() {
+            return replyTo;
         }
     }
 }

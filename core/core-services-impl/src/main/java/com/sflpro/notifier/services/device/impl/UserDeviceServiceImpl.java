@@ -12,11 +12,14 @@ import com.sflpro.notifier.services.user.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.support.JdbcUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import javax.annotation.Nonnull;
+import javax.persistence.EntityManager;
+import java.sql.DatabaseMetaData;
 
 /**
  * User: Ruben Dilanyan
@@ -50,6 +53,9 @@ public class UserDeviceServiceImpl implements UserDeviceService {
         LOGGER.debug("Successfully retrieved user device for id - {}, user device - {}", userDeviceId, userDevice);
         return userDevice;
     }
+
+    @Autowired
+    private EntityManager entityManager;
 
     @Transactional
     @Nonnull

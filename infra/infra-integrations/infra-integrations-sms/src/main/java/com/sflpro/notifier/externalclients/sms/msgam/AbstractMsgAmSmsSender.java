@@ -26,14 +26,14 @@ abstract class AbstractMsgAmSmsSender<M extends SmsMessage> implements SmsSender
 
     @Override
     public SmsMessageSendingResult send(final M message) {
-        logger.debug("Sending sms message with request model - {}", message);
+        logger.debug("Sending sms message with request model - {}", message.internalId());
         final SendMessagesResponse sendMessagesResponse = msgAmApiCommunicator.sendMessage(new SendMessagesRequest(
                 message.internalId(),
                 message.sender(),
                 message.recipientNumber(),
                 bodyFor(message))
         );
-        logger.debug("Successfully sent sms message, response - {}", sendMessagesResponse);
+        logger.debug("Successfully sent sms message, response - {}", sendMessagesResponse.getSid());
         return SmsMessageSendingResult.of(sendMessagesResponse.getSid());
     }
 

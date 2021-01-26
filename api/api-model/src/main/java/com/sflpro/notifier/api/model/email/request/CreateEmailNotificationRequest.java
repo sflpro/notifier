@@ -152,7 +152,7 @@ public class CreateEmailNotificationRequest extends AbstractTemplatedCreateNotif
         builder.append("subject", this.getSubject());
         builder.append("templateName", this.getTemplateName());
         builder.append("properties", this.getProperties());
-        builder.append("secureProperties", this.getSecureProperties());
+        builder.append("secureProperties", this.getSecureProperties().keySet());
         builder.append("language", this.getLocale());
         builder.append("fileAttachments", this.getFileAttachments());
         return builder.build();

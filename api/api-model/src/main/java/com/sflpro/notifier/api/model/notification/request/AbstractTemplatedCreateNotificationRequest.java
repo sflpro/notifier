@@ -122,7 +122,7 @@ public class AbstractTemplatedCreateNotificationRequest extends AbstractCreateNo
                 .append("templateName", templateName)
                 .append("locale", locale)
                 .append("properties", properties)
-                .append("secureProperties", secureProperties)
+                .append("secureProperties", secureProperties.keySet())
                 .toString();
     }
 }

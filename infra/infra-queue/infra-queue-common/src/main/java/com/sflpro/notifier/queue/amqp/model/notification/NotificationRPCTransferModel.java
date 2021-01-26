@@ -82,7 +82,7 @@ public class NotificationRPCTransferModel extends AbstractRPCTransferModel {
     public String toString() {
         final ToStringBuilder builder = new ToStringBuilder(this);
         builder.append("notificationId", getNotificationId());
-        builder.append("secureProperties", getSecureProperties());
+        builder.append("secureProperties", getSecureProperties().keySet());
         return builder.build();
     }
 }

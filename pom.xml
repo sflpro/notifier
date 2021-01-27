@@ -110,7 +110,7 @@
         <commons.lang3.version>3.4</commons.lang3.version>
         <commons.io.version>2.4</commons.io.version>
         <commons.validator>1.4.1</commons.validator>
-        <commons.beanutils.version>1.9.4</commons.beanutils.version>
+        <commons.beanutils.version>1.9.2</commons.beanutils.version>
         <commons.codec.version>1.10</commons.codec.version>
         <http.client.version>4.5</http.client.version>
         <asm.version>5.0.3</asm.version>
@@ -132,7 +132,7 @@
         <google.guave.version>18.0</google.guave.version>
         <google.java.cloud.version>0.37.0-alpha</google.java.cloud.version>
 
-        <apache.tika.version>1.22</apache.tika.version>
+        <apache.tika.version>1.20</apache.tika.version>
 
         <!--Infrasturcture third party libs-->
         <mandrillapp.wrapper.lutung.version>0.0.8</mandrillapp.wrapper.lutung.version>

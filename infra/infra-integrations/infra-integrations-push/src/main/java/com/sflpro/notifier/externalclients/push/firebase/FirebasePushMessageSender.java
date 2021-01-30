@@ -27,19 +27,31 @@ class FirebasePushMessageSender implements PushMessageSender {
 
     private static final Logger logger = LoggerFactory.getLogger(FirebasePushMessageSender.class);
 
-    private static final String TITLE = "title";
-
-    private static final String BODY = "body";
-
     private final FirebaseMessaging firebaseMessaging;
 
     private final Map<PlatformType, BiConsumer<PushMessage, Message.Builder>> platformConfigurationHandlers;
 
-    FirebasePushMessageSender(final FirebaseMessaging firebaseMessaging, final Properties defaultAndroidConfig, final Properties defaultApnsConfig) {
+    FirebasePushMessageSender(
+            final FirebaseMessaging firebaseMessaging,
+            final Properties defaultAndroidConfig,
+            final Properties defaultApnsConfig
+    ) {
         this.firebaseMessaging = firebaseMessaging;
         this.platformConfigurationHandlers = Stream.of(
-                platformConfigurationHandlerMapping(PlatformType.GCM, (message, builder) -> builder.setAndroidConfig(configForAndroidMessage(message, defaultAndroidConfig))),
-                platformConfigurationHandlerMapping(PlatformType.APNS, (message, builder) -> builder.setApnsConfig(configForApnsMessage(message, defaultApnsConfig)))
+                platformConfigurationHandlerMapping(
+                        PlatformType.GCM,
+                        (message, builder) -> builder.setAndroidConfig(configForAndroidMessage(
+                                message,
+                                defaultAndroidConfig
+                        ))
+                ),
+                platformConfigurationHandlerMapping(
+                        PlatformType.APNS,
+                        (message, builder) -> builder.setApnsConfig(configForApnsMessage(
+                                message,
+                                defaultApnsConfig
+                        ))
+                )
         ).collect(Collectors.toMap(Pair::getKey, Pair::getValue));
     }
 
@@ -50,16 +62,19 @@ class FirebasePushMessageSender implements PushMessageSender {
             final Message.Builder builder = Message.builder()
                     .setToken(message.destinationRouteToken())
                     .putAllData(message.properties());
-            switch (message.platformType()) {
+            final PlatformType platformType = message.platformType();
+            switch (platformType) {
                 case GCM:
-                    builder.putData(TITLE, message.subject());
-                    builder.putData(BODY, message.body());
-                    break;
                 case APNS:
                     builder.setNotification(Notification.builder().setTitle(message.subject()).setBody(message.body()).build());
                     break;
+                default:
+                    throw new IllegalArgumentException(String.format(
+                            "FirebasePushMessageSender#send: The PlatformType:%s switch case is not implemented.",
+                            platformType
+                    ));
             }
-            platformConfigurationHandler(message.platformType()).ifPresent(handler -> handler.accept(message, builder));
+            platformConfigurationHandler(platformType).ifPresent(handler -> handler.accept(message, builder));
             return PushMessageSendingResult.of(firebaseMessaging.send(builder.build()));
         } catch (final FirebaseMessagingException ex) {
             logger.error("Unable to send message with subject {}.", message.subject());
@@ -77,7 +92,8 @@ class FirebasePushMessageSender implements PushMessageSender {
         final Function<String, String> propertyValueFnc = message.properties()::get;
         final Function<String, String> propertyValueFncDefault = defaultAndroidConfig::getProperty;
         valueFor(propertyValueFnc, propertyValueFncDefault, "ttl").map(Long::valueOf).ifPresent(builder::setTtl);
-        valueFor(propertyValueFnc, propertyValueFncDefault, "priority").map(AndroidConfig.Priority::valueOf).ifPresent(builder::setPriority);
+        valueFor(propertyValueFnc, propertyValueFncDefault, "priority").map(AndroidConfig.Priority::valueOf)
+                .ifPresent(builder::setPriority);
         valueFor(propertyValueFnc, propertyValueFncDefault, "collapseKey").ifPresent(builder::setCollapseKey);
         valueFor(propertyValueFnc, propertyValueFncDefault, "restrictedPackageName").ifPresent(builder::setRestrictedPackageName);
         return builder.build();
@@ -95,7 +111,11 @@ class FirebasePushMessageSender implements PushMessageSender {
         return ApnsConfig.builder().setAps(apsBuilder.build()).build();
     }
 
-    private static Optional<String> valueFor(final Function<String, String> propertyValueFnc, final Function<String, String> propertyValueFncDefault, final String key) {
+    private static Optional<String> valueFor(
+            final Function<String, String> propertyValueFnc,
+            final Function<String, String> propertyValueFncDefault,
+            final String key
+    ) {
         final String value = propertyValueFnc.apply(key);
         if (value == null) {
             return Optional.ofNullable(propertyValueFncDefault.apply(key));
@@ -103,7 +123,10 @@ class FirebasePushMessageSender implements PushMessageSender {
         return Optional.of(value);
     }
 
-    private static Pair<PlatformType, BiConsumer<PushMessage, Message.Builder>> platformConfigurationHandlerMapping(final PlatformType platformType, BiConsumer<PushMessage, Message.Builder> platformConfigurationHandler) {
+    private static Pair<PlatformType, BiConsumer<PushMessage, Message.Builder>> platformConfigurationHandlerMapping(
+            final PlatformType platformType,
+            BiConsumer<PushMessage, Message.Builder> platformConfigurationHandler
+    ) {
         return Pair.of(platformType, platformConfigurationHandler);
     }
 }

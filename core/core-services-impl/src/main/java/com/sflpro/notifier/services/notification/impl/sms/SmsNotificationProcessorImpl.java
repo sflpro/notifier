@@ -38,7 +38,6 @@ class SmsNotificationProcessorImpl implements SmsNotificationProcessor {
     /* Dependencies */
     private final SmsNotificationService smsNotificationService;
     private final SmsSenderProvider smsSenderProvider;
-
     /* Properties */
     private final String senderName;
 
@@ -64,7 +63,7 @@ class SmsNotificationProcessorImpl implements SmsNotificationProcessor {
         final SmsNotification smsNotification =
                 smsNotificationService.getSmsNotificationForProcessing(notificationId);
         assertNotificationStateIsCreated(smsNotification);
-        logger.debug("Successfully retrieved sms notification - {}", smsNotification);
+        logger.debug("Successfully retrieved sms notification id - {}", smsNotification.getId());
         /* Update notification state to PROCESSING */
         updateSmsNotificationState(smsNotification.getId(), NotificationState.PROCESSING);
         /* Start processing external sms service operation */
@@ -181,9 +180,9 @@ class SmsNotificationProcessorImpl implements SmsNotificationProcessor {
         @Override
         public String sendMessage(@Nonnull final M message) {
             /* Send message request model */
-            logger.debug("Sending sms message - {}", message);
+            logger.debug("Sending sms message internal id - {}", message.internalId());
             final SmsMessageSendingResult sendingResult = smsSender.send(message);
-            logger.debug("Successfully sent sms message, response - {}", sendingResult);
+            logger.debug("Successfully sent sms message, response sid - {}", sendingResult.sid());
             return sendingResult.sid();
         }
     }

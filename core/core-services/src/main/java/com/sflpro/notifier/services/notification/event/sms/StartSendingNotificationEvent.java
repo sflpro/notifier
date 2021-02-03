@@ -74,7 +74,9 @@ public class StartSendingNotificationEvent implements ApplicationEvent {
     public String toString() {
         final ToStringBuilder builder = new ToStringBuilder(this);
         builder.append("notificationId", getNotificationId());
-        builder.append("secureProperties", getSecureProperties());
+        if (this.getSecureProperties() != null) {
+            builder.append("secureProperties", getSecureProperties().keySet());
+        }
         return builder.build();
     }
 }

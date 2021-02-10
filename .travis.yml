@@ -5,7 +5,7 @@ git:
 services:
 - docker
 jdk:
-- oraclejdk9
+- oraclejdk8
 script: ".travis/build.sh"
 cache:
   directories:

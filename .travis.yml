@@ -1,11 +1,11 @@
 language: java
-sudo: required
+os: linux
 git:
   depth: false
 services:
 - docker
 jdk:
-- oraclejdk8
+- oraclejdk9
 script: ".travis/build.sh"
 cache:
   directories:

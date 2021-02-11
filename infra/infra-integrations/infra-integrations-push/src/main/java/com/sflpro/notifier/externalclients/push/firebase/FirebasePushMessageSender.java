@@ -50,16 +50,19 @@ class FirebasePushMessageSender implements PushMessageSender {
             final Message.Builder builder = Message.builder()
                     .setToken(message.destinationRouteToken())
                     .putAllData(message.properties());
-            switch (message.platformType()) {
+            final PlatformType platformType = message.platformType();
+            switch (platformType) {
                 case GCM:
-                    builder.putData(TITLE, message.subject());
-                    builder.putData(BODY, message.body());
-                    break;
                 case APNS:
                     builder.setNotification(Notification.builder().setTitle(message.subject()).setBody(message.body()).build());
                     break;
+                default:
+                    throw new IllegalArgumentException(String.format(
+                            "FirebasePushMessageSender#send: The PlatformType:%s switch case is not implemented.",
+                            platformType
+                    ));
             }
-            platformConfigurationHandler(message.platformType()).ifPresent(handler -> handler.accept(message, builder));
+            platformConfigurationHandler(platformType).ifPresent(handler -> handler.accept(message, builder));
             return PushMessageSendingResult.of(firebaseMessaging.send(builder.build()));
         } catch (final FirebaseMessagingException ex) {
             logger.error("Unable to send message with subject {}.", message.subject());

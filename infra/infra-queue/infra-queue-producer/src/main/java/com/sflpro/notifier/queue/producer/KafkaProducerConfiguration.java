@@ -76,8 +76,8 @@ public class KafkaProducerConfiguration {
         props.put(ProducerConfig.LINGER_MS_CONFIG, 1);
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, ByteArraySerializer.class);
-        props.put(ConsumerConfig.REQUEST_TIMEOUT_MS_CONFIG, StringUtils.defaultIfBlank(requestTimeoutMs, "20000"));
-        props.put(ConsumerConfig.RETRY_BACKOFF_MS_CONFIG, StringUtils.defaultIfBlank(retryBackoffMs, "500"));
+        props.put(ProducerConfig.REQUEST_TIMEOUT_MS_CONFIG, StringUtils.defaultIfBlank(requestTimeoutMs, "20000"));
+        props.put(ProducerConfig.RETRY_BACKOFF_MS_CONFIG, StringUtils.defaultIfBlank(retryBackoffMs, "500"));
         // Security
         if (StringUtils.isNoneBlank(sslEndpointIdentificationAlgorithm)) {
             props.put("ssl.endpoint.identification.algorithm", sslEndpointIdentificationAlgorithm);

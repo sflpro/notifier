@@ -75,7 +75,7 @@ public class AmazonSnsApiCommunicatorImpl implements AmazonSnsApiCommunicator {
         try {
             final PublishResult publishResult = amazonSNSClient.publish(publishRequest);
             final SendPushNotificationResponse response = new SendPushNotificationResponse(publishResult.getMessageId());
-            LOGGER.debug("Got following result - {} when publishing push notification - {} to ARN - {}, returning result - {}", publishRequest, messageInformation, deviceEndpointArn, response);
+            LOGGER.debug("Got following result - {} when publishing push notification - {} to ARN - {}, returning result - {}", publishRequest, messageInformation, deviceEndpointArn, response.getMessageId());
             return response;
         } catch (final Exception ex) {
             final String message = "Error occurred while sending push notification with information - " + messageInformation + ", ARN - " + deviceEndpointArn;

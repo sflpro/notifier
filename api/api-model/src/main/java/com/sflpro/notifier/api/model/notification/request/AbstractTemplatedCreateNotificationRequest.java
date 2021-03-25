@@ -118,11 +118,13 @@ public class AbstractTemplatedCreateNotificationRequest extends AbstractCreateNo
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this)
-                .append("templateName", templateName)
-                .append("locale", locale)
-                .append("properties", properties)
-                .append("secureProperties", secureProperties)
-                .toString();
+        final ToStringBuilder builder = new ToStringBuilder(this);
+        builder.append("templateName", this.templateName);
+        builder.append("locale", this.locale);
+        builder.append("properties", this.properties);
+        if (this.getSecureProperties() != null) {
+            builder.append("secureProperties", this.getSecureProperties().keySet());
+        }
+        return builder.build();
     }
 }

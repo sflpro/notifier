@@ -19,7 +19,7 @@
 
     <groupId>com.sflpro.notifier</groupId>
     <artifactId>notifier</artifactId>
-    <version>1.9.1</version>
+    <version>1.10.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <!-- Information required by maven central -->
@@ -143,6 +143,7 @@
         <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
         <sonar.jacoco.includes>com.sflpro.*</sonar.jacoco.includes>
         <sonar.jacoco.version>1.0.1</sonar.jacoco.version>
+        <sonar.scanner.force-deprecated-java-version-grace-period>true</sonar.scanner.force-deprecated-java-version-grace-period>
         <sonar.coverage.jacoco.xmlReportPaths>${user.dir}/report/target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
         <jacoco.plugin.version>0.8.4</jacoco.plugin.version>
 

@@ -14,13 +14,13 @@ import org.slf4j.LoggerFactory;
  * Date: 6/24/21
  * Time: 4:05 PM
  */
-public abstract class AbstractWebhookSmsSender<M extends SmsMessage> implements SmsSender<M> {
+abstract class AbstractWebhookSmsSender<M extends SmsMessage> implements SmsSender<M> {
 
     private static final Logger logger = LoggerFactory.getLogger(AbstractWebhookSmsSender.class);
 
     private final WebhookApiRestClient apiRestClient;
 
-    public AbstractWebhookSmsSender(final WebhookApiRestClient apiRestClient) {
+    AbstractWebhookSmsSender(final WebhookApiRestClient apiRestClient) {
         this.apiRestClient = apiRestClient;
     }
 

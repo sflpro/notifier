@@ -23,7 +23,7 @@ import org.springframework.web.client.RestTemplate;
  */
 @Configuration
 @ConditionalOnProperty(name = "webhook.enabled", havingValue = "true")
-public class WebhookSmsSenderConfiguration {
+class WebhookSmsSenderConfiguration {
 
     private static final String WEBHOOK_PROVIDER_REGISTRY_NAME = "webhook";
 
@@ -32,8 +32,7 @@ public class WebhookSmsSenderConfiguration {
         final ObjectMapper objectMapper = Jackson2ObjectMapperBuilder.json()
                 .build();
         final RestTemplate restTemplate = new RestTemplateBuilder()
-                .messageConverters(
-                        new MappingJackson2HttpMessageConverter(objectMapper)).build();
+                .messageConverters(new MappingJackson2HttpMessageConverter(objectMapper)).build();
         return new RestClientImpl(restTemplate);
     }
 

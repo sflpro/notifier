@@ -11,7 +11,7 @@ import com.sflpro.notifier.spi.sms.SimpleSmsSender;
  */
 class WebhookSimpleSmsSender extends AbstractWebhookSmsSender<SimpleSmsMessage> implements SimpleSmsSender {
 
-    public WebhookSimpleSmsSender(final WebhookApiRestClient apiRestClient) {
+    WebhookSimpleSmsSender(final WebhookApiRestClient apiRestClient) {
         super(apiRestClient);
     }
 

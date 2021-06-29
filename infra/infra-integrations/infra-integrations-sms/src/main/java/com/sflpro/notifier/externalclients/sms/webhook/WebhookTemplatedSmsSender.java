@@ -11,11 +11,11 @@ import com.sflpro.notifier.spi.sms.TemplatedSmsSender;
  * Date: 6/24/21
  * Time: 4:06 PM
  */
-public class WebhookTemplatedSmsSender extends AbstractWebhookSmsSender<TemplatedSmsMessage> implements TemplatedSmsSender {
+class WebhookTemplatedSmsSender extends AbstractWebhookSmsSender<TemplatedSmsMessage> implements TemplatedSmsSender {
 
     private final SmsTemplateContentResolver smsTemplateContentResolver;
 
-    public WebhookTemplatedSmsSender(final WebhookApiRestClient apiRestClient,
+    WebhookTemplatedSmsSender(final WebhookApiRestClient apiRestClient,
                                      final SmsTemplateContentResolver smsTemplateContentResolver) {
         super(apiRestClient);
         this.smsTemplateContentResolver = smsTemplateContentResolver;

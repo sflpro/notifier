@@ -1,5 +1,6 @@
 package com.sflpro.notifier.queue.producer.notification.common.impl;
 
+import com.sflpro.notifier.db.entities.notification.NotificationSendingPriority;
 import com.sflpro.notifier.queue.amqp.model.notification.NotificationRPCTransferModel;
 import com.sflpro.notifier.queue.amqp.rpc.RPCCallType;
 import com.sflpro.notifier.queue.producer.connector.AmqpConnectorService;
@@ -48,11 +49,17 @@ public class NotificationQueueProducerServiceImpl implements NotificationQueuePr
 
     /* Public methods */
     @Override
-    public void processStartSendingNotificationEvent(@Nonnull final Long notificationId, @Nonnull final Map<String, String> secureProperties) {
+    public void processStartSendingNotificationEvent(@Nonnull final Long notificationId, @Nonnull final NotificationSendingPriority sendingPriority, @Nonnull final Map<String, String> secureProperties) {
         Assert.notNull(notificationId, "Notification id should not be null.");
         Assert.notNull(secureProperties, "Secure properties should not be null.");
         logger.debug("Processing notification sending event for notification by id - {}", notificationId);
-        amqpConnectorService.publishMessage(RPCCallType.START_NOTIFICATION_PROCESSING, new NotificationRPCTransferModel(notificationId, secureProperties), NotificationRPCTransferModel.class, new NotificationMessageSendingEventListenerRPCResponseHandler());
+        amqpConnectorService.publishMessage(
+                RPCCallType.START_NOTIFICATION_PROCESSING,
+                new NotificationRPCTransferModel(notificationId, secureProperties),
+                sendingPriority,
+                NotificationRPCTransferModel.class,
+                new NotificationMessageSendingEventListenerRPCResponseHandler()
+        );
     }
 
     /* Inner classes */
@@ -65,7 +72,7 @@ public class NotificationQueueProducerServiceImpl implements NotificationQueuePr
 
         @Override
         protected void processStartSendingNotificationEvent(final StartSendingNotificationEvent event) {
-            NotificationQueueProducerServiceImpl.this.processStartSendingNotificationEvent(event.getNotificationId(), event.getSecureProperties());
+            NotificationQueueProducerServiceImpl.this.processStartSendingNotificationEvent(event.getNotificationId(), event.getSendingPriority(), event.getSecureProperties());
         }
     }
 

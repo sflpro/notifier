@@ -70,7 +70,7 @@ class SmsNotificationServiceFacadeImpl extends AbstractNotificationServiceFacade
         final SmsNotification smsNotification = smsNotificationService.createSmsNotification(smsNotificationDto);
         associateUserWithNotificationIfRequired(request.getUserUuId(), smsNotification);
         // Publish event
-        applicationEventDistributionService.publishAsynchronousEvent(new StartSendingNotificationEvent(smsNotification.getId(), request.getSecureProperties()));
+        applicationEventDistributionService.publishAsynchronousEvent(new StartSendingNotificationEvent(smsNotification.getId(), request.getSecureProperties(), smsNotification.getSendingPriority()));
         // Create response model
         final SmsNotificationModel smsNotificationModel = createSmsNotificationModel(smsNotification);
         final CreateSmsNotificationResponse response = new CreateSmsNotificationResponse(smsNotificationModel);

@@ -37,6 +37,7 @@ import org.springframework.util.Assert;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -100,7 +101,7 @@ public class PushNotificationServiceFacadeImpl extends AbstractNotificationServi
         // Create push notifications
         final List<PushNotification> pushNotifications = pushNotificationService.createNotificationsForUserActiveRecipients(user.getId(), pushNotificationDto);
         // Publish events
-        pushNotifications.forEach(pushNotification -> applicationEventDistributionService.publishAsynchronousEvent(new StartSendingNotificationEvent(pushNotification.getId())));
+        pushNotifications.forEach(pushNotification -> applicationEventDistributionService.publishAsynchronousEvent(new StartSendingNotificationEvent(pushNotification.getId(), Collections.emptyMap(), pushNotification.getSendingPriority())));
         // Convert to notification models
         final List<PushNotificationModel> pushNotificationModels = pushNotifications.stream().map(PushNotificationServiceFacadeImpl::createPushNotificationModel).collect(Collectors.toCollection(ArrayList::new));
         // Create response model

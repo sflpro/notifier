@@ -57,7 +57,7 @@ class EmailNotificationServiceFacadeImpl implements EmailNotificationServiceFaca
         }
         final EmailNotificationDto emailNotificationDto = buildDto(request);
         final EmailNotification emailNotification = emailNotificationService.createEmailNotification(emailNotificationDto);
-        applicationEventDistributionService.publishAsynchronousEvent(new StartSendingNotificationEvent(emailNotification.getId(), request.getSecureProperties()));
+        applicationEventDistributionService.publishAsynchronousEvent(new StartSendingNotificationEvent(emailNotification.getId(), request.getSecureProperties(), emailNotification.getSendingPriority()));
         final EmailNotificationModel emailNotificationModel = (EmailNotificationModel) NotificationConverterHelper.convert(emailNotification);
         return new ResultResponseModel<>(new CreateEmailNotificationResponse(emailNotificationModel));
     }

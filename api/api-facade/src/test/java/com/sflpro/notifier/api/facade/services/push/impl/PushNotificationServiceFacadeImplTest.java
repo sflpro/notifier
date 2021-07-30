@@ -3,12 +3,14 @@ package com.sflpro.notifier.api.facade.services.push.impl;
 import com.sflpro.notifier.api.internal.facade.test.AbstractFacadeUnitTest;
 import com.sflpro.notifier.api.model.common.result.ErrorType;
 import com.sflpro.notifier.api.model.common.result.ResultResponseModel;
+import com.sflpro.notifier.api.model.notification.NotificationSendingPriorityClientType;
 import com.sflpro.notifier.api.model.push.request.CreatePushNotificationRequest;
 import com.sflpro.notifier.api.model.push.request.UpdatePushNotificationSubscriptionRequest;
 import com.sflpro.notifier.api.model.push.response.CreatePushNotificationResponse;
 import com.sflpro.notifier.api.model.push.response.UpdatePushNotificationSubscriptionResponse;
 import com.sflpro.notifier.db.entities.device.UserDevice;
 import com.sflpro.notifier.db.entities.device.mobile.DeviceOperatingSystemType;
+import com.sflpro.notifier.db.entities.notification.NotificationSendingPriority;
 import com.sflpro.notifier.db.entities.notification.email.NotificationProperty;
 import com.sflpro.notifier.db.entities.notification.push.PushNotification;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipient;
@@ -189,6 +191,7 @@ public class PushNotificationServiceFacadeImplTest extends AbstractFacadeUnitTes
     public void testCreatePushNotifications() {
         // Test data
         final CreatePushNotificationRequest request = getServiceFacadeImplTestHelper().createCreatePushNotificationRequest();
+        request.setSendingPriority(NotificationSendingPriorityClientType.NORMAL);
         // Create user
         final Long userId = 1L;
         final User user = getServiceFacadeImplTestHelper().createUser();
@@ -197,6 +200,7 @@ public class PushNotificationServiceFacadeImplTest extends AbstractFacadeUnitTes
         // Expected push notification DTO
         final PushNotificationDto pushNotificationDto = new PushNotificationDto(request.getBody(), request.getSubject(), request.getClientIpAddress());
         pushNotificationDto.setProperties(request.getProperties());
+        pushNotificationDto.setSendingPriority(NotificationSendingPriority.NORMAL);
         final List<PushNotification> pushNotifications = createPushNotifications(10);
         // Reset
         resetAll();

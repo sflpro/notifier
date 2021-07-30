@@ -13,6 +13,7 @@ import com.sflpro.notifier.api.model.push.response.UpdatePushNotificationSubscri
 import com.sflpro.notifier.db.entities.device.UserDevice;
 import com.sflpro.notifier.db.entities.device.mobile.DeviceOperatingSystemType;
 import com.sflpro.notifier.db.entities.notification.NotificationProviderType;
+import com.sflpro.notifier.db.entities.notification.NotificationSendingPriority;
 import com.sflpro.notifier.db.entities.notification.email.NotificationProperty;
 import com.sflpro.notifier.db.entities.notification.push.PushNotification;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipient;
@@ -95,6 +96,7 @@ public class PushNotificationServiceFacadeImpl extends AbstractNotificationServi
         pushNotificationDto.setTemplateName(request.getTemplateName());
         pushNotificationDto.setLocale(request.getLocale());
         pushNotificationDto.setProperties(request.getProperties());
+        pushNotificationDto.setSendingPriority(NotificationSendingPriority.valueOf(request.getSendingPriority().name()));
         // Create push notifications
         final List<PushNotification> pushNotifications = pushNotificationService.createNotificationsForUserActiveRecipients(user.getId(), pushNotificationDto);
         // Publish events

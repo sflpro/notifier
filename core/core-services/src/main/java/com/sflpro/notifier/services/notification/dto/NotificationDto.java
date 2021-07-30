@@ -2,6 +2,7 @@ package com.sflpro.notifier.services.notification.dto;
 
 import com.sflpro.notifier.db.entities.notification.Notification;
 import com.sflpro.notifier.db.entities.notification.NotificationProviderType;
+import com.sflpro.notifier.db.entities.notification.NotificationSendingPriority;
 import com.sflpro.notifier.db.entities.notification.NotificationType;
 import com.sflpro.notifier.db.entities.notification.email.NotificationProperty;
 import com.sflpro.notifier.services.common.dto.AbstractDomainEntityModelDto;
@@ -43,6 +44,8 @@ public abstract class NotificationDto<T extends Notification> extends AbstractDo
     private boolean hasSecureProperties;
 
     private Locale locale;
+
+    private NotificationSendingPriority sendingPriority;
 
     /* Constructors */
     public NotificationDto(final NotificationType type,
@@ -142,6 +145,14 @@ public abstract class NotificationDto<T extends Notification> extends AbstractDo
         this.locale = locale;
     }
 
+    public NotificationSendingPriority getSendingPriority() {
+        return sendingPriority;
+    }
+
+    public void setSendingPriority(final NotificationSendingPriority sendingPriority) {
+        this.sendingPriority = sendingPriority;
+    }
+
     /* Public interface methods */
     @Override
     public void updateDomainEntityProperties(final T notification) {
@@ -155,6 +166,7 @@ public abstract class NotificationDto<T extends Notification> extends AbstractDo
                 .map(entry -> new NotificationProperty(entry.getKey(), entry.getValue()))
                 .collect(Collectors.toList()));
         notification.setHasSecureProperties(isHasSecureProperties());
+        notification.setSendingPriority(getSendingPriority());
     }
 
     /* Equals, HashCode and ToString */
@@ -176,6 +188,7 @@ public abstract class NotificationDto<T extends Notification> extends AbstractDo
         builder.append(this.getProperties(), that.getProperties());
         builder.append(this.getProviderType(), that.getProviderType());
         builder.append(this.isHasSecureProperties(), that.isHasSecureProperties());
+        builder.append(this.getSendingPriority(), that.getSendingPriority());
         return builder.isEquals();
     }
 
@@ -190,6 +203,7 @@ public abstract class NotificationDto<T extends Notification> extends AbstractDo
         builder.append(this.getProperties());
         builder.append(this.getProviderType());
         builder.append(this.isHasSecureProperties());
+        builder.append(this.getSendingPriority());
         return builder.build();
     }
 
@@ -205,6 +219,7 @@ public abstract class NotificationDto<T extends Notification> extends AbstractDo
         builder.append("properties", this.getProperties());
         builder.append("providerType", this.getProviderType());
         builder.append("hasSecureProperties", this.isHasSecureProperties());
+        builder.append("sendingPriority", this.getSendingPriority());
         return builder.build();
     }
 }

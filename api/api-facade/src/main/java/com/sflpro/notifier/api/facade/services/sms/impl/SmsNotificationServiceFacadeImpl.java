@@ -8,6 +8,7 @@ import com.sflpro.notifier.api.model.sms.SmsNotificationModel;
 import com.sflpro.notifier.api.model.sms.request.CreateSmsNotificationRequest;
 import com.sflpro.notifier.api.model.sms.response.CreateSmsNotificationResponse;
 import com.sflpro.notifier.db.entities.notification.NotificationProviderType;
+import com.sflpro.notifier.db.entities.notification.NotificationSendingPriority;
 import com.sflpro.notifier.db.entities.notification.sms.SmsNotification;
 import com.sflpro.notifier.services.notification.dto.sms.SmsNotificationDto;
 import com.sflpro.notifier.services.notification.event.sms.StartSendingNotificationEvent;
@@ -65,6 +66,7 @@ class SmsNotificationServiceFacadeImpl extends AbstractNotificationServiceFacade
         smsNotificationDto.setProperties(request.getProperties());
         smsNotificationDto.setHasSecureProperties(!request.getSecureProperties().isEmpty());
         smsNotificationDto.setLocale(request.getLocale());
+        smsNotificationDto.setSendingPriority(NotificationSendingPriority.valueOf(request.getSendingPriority().name()));
         final SmsNotification smsNotification = smsNotificationService.createSmsNotification(smsNotificationDto);
         associateUserWithNotificationIfRequired(request.getUserUuId(), smsNotification);
         // Publish event

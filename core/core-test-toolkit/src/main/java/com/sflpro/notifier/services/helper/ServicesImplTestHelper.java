@@ -2,10 +2,7 @@ package com.sflpro.notifier.services.helper;
 
 import com.sflpro.notifier.db.entities.device.UserDevice;
 import com.sflpro.notifier.db.entities.device.mobile.DeviceOperatingSystemType;
-import com.sflpro.notifier.db.entities.notification.Notification;
-import com.sflpro.notifier.db.entities.notification.NotificationProviderType;
-import com.sflpro.notifier.db.entities.notification.NotificationState;
-import com.sflpro.notifier.db.entities.notification.UserNotification;
+import com.sflpro.notifier.db.entities.notification.*;
 import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
 import com.sflpro.notifier.db.entities.notification.email.NotificationProperty;
 import com.sflpro.notifier.db.entities.notification.push.*;
@@ -98,6 +95,7 @@ public class ServicesImplTestHelper {
         notificationDto.setProperties(Collections.singletonMap("token", UUID.randomUUID().toString()));
         notificationDto.setProviderType(NotificationProviderType.SMTP_SERVER);
         notificationDto.setFileAttachments(Collections.emptySet());
+        notificationDto.setSendingPriority(NotificationSendingPriority.LOW);
         return notificationDto;
     }
 
@@ -198,8 +196,8 @@ public class ServicesImplTestHelper {
         Assert.assertEquals(notificationDto.getContent(), notification.getContent());
         Assert.assertEquals(notificationDto.getSubject(), notification.getSubject());
         Assert.assertEquals(notificationDto.getType(), notification.getType());
+        Assert.assertEquals(notificationDto.getSendingPriority(), notification.getSendingPriority());
         Assert.assertEquals(NotificationState.CREATED, notification.getState());
-
     }
 
     /* Push notification property */

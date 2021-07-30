@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sflpro.notifier.api.model.common.AbstractRequestModel;
 import com.sflpro.notifier.api.model.common.result.ErrorResponseModel;
 import com.sflpro.notifier.api.model.common.result.ErrorType;
+import com.sflpro.notifier.api.model.notification.NotificationSendingPriorityClientType;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -32,6 +33,12 @@ public abstract class AbstractCreateNotificationRequest extends AbstractRequestM
     @JsonProperty("clientIpAddress")
     private String clientIpAddress;
 
+    @JsonProperty("sendingPriority")
+    private NotificationSendingPriorityClientType sendingPriority;
+
+    public AbstractCreateNotificationRequest() {
+        sendingPriority = NotificationSendingPriorityClientType.NORMAL;
+    }
 
     /* Properties getters and setters */
     public String getUserUuId() {
@@ -56,6 +63,14 @@ public abstract class AbstractCreateNotificationRequest extends AbstractRequestM
 
     public void setClientIpAddress(final String clientIpAddress) {
         this.clientIpAddress = clientIpAddress;
+    }
+
+    public NotificationSendingPriorityClientType getSendingPriority() {
+        return sendingPriority;
+    }
+
+    public void setSendingPriority(final NotificationSendingPriorityClientType sendingPriority) {
+        this.sendingPriority = sendingPriority;
     }
 
     /* Validation methods */
@@ -84,6 +99,7 @@ public abstract class AbstractCreateNotificationRequest extends AbstractRequestM
         builder.append(this.getUserUuId(), that.getUserUuId());
         builder.append(this.getBody(), that.getBody());
         builder.append(this.getClientIpAddress(), that.getClientIpAddress());
+        builder.append(this.getSendingPriority(), that.getSendingPriority());
         return builder.isEquals();
     }
 
@@ -94,6 +110,7 @@ public abstract class AbstractCreateNotificationRequest extends AbstractRequestM
         builder.append(this.getUserUuId());
         builder.append(this.getBody());
         builder.append(this.getClientIpAddress());
+        builder.append(this.getSendingPriority());
         return builder.build();
     }
 
@@ -104,6 +121,7 @@ public abstract class AbstractCreateNotificationRequest extends AbstractRequestM
         builder.append("userUuId", this.getUserUuId());
         builder.append("body", this.getBody());
         builder.append("clientIpAddress", this.getClientIpAddress());
+        builder.append("sendingPriority", this.getSendingPriority());
         return builder.build();
     }
 }

@@ -59,6 +59,7 @@ public abstract class NotificationDto<T extends Notification> extends AbstractDo
         this.subject = subject;
         this.providerType = providerType;
         this.properties = new HashMap<>();
+        this.sendingPriority = NotificationSendingPriority.NORMAL;
     }
 
     public NotificationDto(final NotificationType type, final String content, final String subject, final String clientIpAddress, final String templateName, final NotificationProviderType providerType) {
@@ -69,11 +70,13 @@ public abstract class NotificationDto<T extends Notification> extends AbstractDo
         this.templateName = templateName;
         this.providerType = providerType;
         this.properties = new HashMap<>();
+        this.sendingPriority = NotificationSendingPriority.NORMAL;
     }
 
     public NotificationDto(final NotificationType type) {
         this.type = type;
         this.properties = new HashMap<>();
+        this.sendingPriority = NotificationSendingPriority.NORMAL;
     }
 
     /* Properties getters and setters */

@@ -84,7 +84,7 @@ public class EmailNotificationServiceFacadeImpleTest extends AbstractFacadeUnitT
         emailNotificationDto.setSendingPriority(NotificationSendingPriority.LOW);
         // Expectations
         expect(emailNotificationService.createEmailNotification(emailNotificationDto)).andReturn(emailNotification);
-        applicationEventDistributionService.publishAsynchronousEvent(new StartSendingNotificationEvent(emailNotification.getId(), request.getSecureProperties()));
+        applicationEventDistributionService.publishAsynchronousEvent(new StartSendingNotificationEvent(emailNotification.getId(), request.getSecureProperties(), NotificationSendingPriority.LOW));
         expectLastCall();
         // Replay
         replayAll();

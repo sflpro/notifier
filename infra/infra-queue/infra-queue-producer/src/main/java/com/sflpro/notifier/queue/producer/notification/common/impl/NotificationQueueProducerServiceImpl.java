@@ -52,6 +52,7 @@ public class NotificationQueueProducerServiceImpl implements NotificationQueuePr
     public void processStartSendingNotificationEvent(@Nonnull final Long notificationId, @Nonnull final NotificationSendingPriority sendingPriority, @Nonnull final Map<String, String> secureProperties) {
         Assert.notNull(notificationId, "Notification id should not be null.");
         Assert.notNull(secureProperties, "Secure properties should not be null.");
+        Assert.notNull(sendingPriority, "Notification sending priority should not be null");
         logger.debug("Processing notification sending event for notification by id - {}", notificationId);
         amqpConnectorService.publishMessage(
                 RPCCallType.START_NOTIFICATION_PROCESSING,

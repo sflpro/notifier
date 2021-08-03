@@ -10,7 +10,6 @@ import com.sflpro.notifier.queue.producer.connector.AmqpResponseHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Message;
-import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.core.MessagePropertiesBuilder;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.util.Assert;
@@ -19,7 +18,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.PreDestroy;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
-import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -51,7 +49,7 @@ public class RabbitConnectorServiceImpl implements AmqpConnectorService {
     static {
         final Map<NotificationSendingPriority, Integer> priorityValues = new HashMap<>();
         priorityValues.put(NotificationSendingPriority.LOW, 0);
-        priorityValues.put(NotificationSendingPriority.NORMAL, 1);
+        priorityValues.put(NotificationSendingPriority.MEDIUM, 1);
         priorityValues.put(NotificationSendingPriority.HIGH, 2);
         NOTIFICATION_SENDING_PRIORITIES_MAP = Collections.unmodifiableMap(priorityValues);
     }

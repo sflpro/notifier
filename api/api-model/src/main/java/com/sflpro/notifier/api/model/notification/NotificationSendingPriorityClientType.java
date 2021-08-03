@@ -8,6 +8,6 @@ package com.sflpro.notifier.api.model.notification;
  */
 public enum NotificationSendingPriorityClientType {
     LOW,
-    NORMAL,
+    MEDIUM,
     HIGH
 }

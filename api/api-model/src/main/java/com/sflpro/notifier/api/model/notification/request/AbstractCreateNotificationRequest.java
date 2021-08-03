@@ -36,8 +36,8 @@ public abstract class AbstractCreateNotificationRequest extends AbstractRequestM
     @JsonProperty("sendingPriority")
     private NotificationSendingPriorityClientType sendingPriority;
 
-    public AbstractCreateNotificationRequest() {
-        sendingPriority = NotificationSendingPriorityClientType.NORMAL;
+    protected AbstractCreateNotificationRequest() {
+        sendingPriority = NotificationSendingPriorityClientType.MEDIUM;
     }
 
     /* Properties getters and setters */

@@ -8,6 +8,6 @@ package com.sflpro.notifier.db.entities.notification;
  */
 public enum NotificationSendingPriority {
     LOW,
-    NORMAL,
+    MEDIUM,
     HIGH
 }

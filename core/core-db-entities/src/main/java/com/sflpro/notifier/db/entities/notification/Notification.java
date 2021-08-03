@@ -157,7 +157,7 @@ public abstract class Notification extends AbstractDomainUuIdAwareEntityModel {
     /* Private utility methods */
     private void initializeDefaults() {
         this.state = NotificationState.CREATED;
-        this.sendingPriority = NotificationSendingPriority.NORMAL;
+        this.sendingPriority = NotificationSendingPriority.MEDIUM;
     }
 
     /* Equals, HashCode and ToString */

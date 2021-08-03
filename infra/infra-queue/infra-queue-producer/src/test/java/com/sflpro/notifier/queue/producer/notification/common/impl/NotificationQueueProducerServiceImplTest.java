@@ -44,14 +44,14 @@ public class NotificationQueueProducerServiceImplTest extends AbstractQueueProdu
         replayAll();
         /* Test cases */
         try {
-            smsNotificationQueueProducerService.processStartSendingNotificationEvent(null, NotificationSendingPriority.NORMAL, Collections.emptyMap());
+            smsNotificationQueueProducerService.processStartSendingNotificationEvent(null, NotificationSendingPriority.MEDIUM, Collections.emptyMap());
             fail("Exception will be thrown");
         } catch (final IllegalArgumentException e) {
             // Exception
         }
         try {
             final Long notificationId = 1L;
-            smsNotificationQueueProducerService.processStartSendingNotificationEvent(notificationId, NotificationSendingPriority.NORMAL, null);
+            smsNotificationQueueProducerService.processStartSendingNotificationEvent(notificationId, NotificationSendingPriority.MEDIUM, null);
             fail("Exception will be thrown");
         } catch (final IllegalArgumentException e) {
             // Exception

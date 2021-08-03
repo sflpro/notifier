@@ -54,7 +54,7 @@ public class KafkaConnectorServiceImpl implements AmqpConnectorService {
         Assert.notNull(responseModelClass, "Response model class should not be null");
         Assert.notNull(responseHandler, "Response handler should not be null");
         try {
-            if(!NotificationSendingPriority.NORMAL.equals(sendingPriority)) {
+            if(!NotificationSendingPriority.MEDIUM.equals(sendingPriority)) {
                 LOGGER.warn("Notification sending priorities not supported for kafka but non-default priority({}) received", sendingPriority);
             }
             final RPCMessage rpcMessage = new RPCMessage();

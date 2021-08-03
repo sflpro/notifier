@@ -191,7 +191,7 @@ public class PushNotificationServiceFacadeImplTest extends AbstractFacadeUnitTes
     public void testCreatePushNotifications() {
         // Test data
         final CreatePushNotificationRequest request = getServiceFacadeImplTestHelper().createCreatePushNotificationRequest();
-        request.setSendingPriority(NotificationSendingPriorityClientType.NORMAL);
+        request.setSendingPriority(NotificationSendingPriorityClientType.MEDIUM);
         // Create user
         final Long userId = 1L;
         final User user = getServiceFacadeImplTestHelper().createUser();
@@ -200,7 +200,7 @@ public class PushNotificationServiceFacadeImplTest extends AbstractFacadeUnitTes
         // Expected push notification DTO
         final PushNotificationDto pushNotificationDto = new PushNotificationDto(request.getBody(), request.getSubject(), request.getClientIpAddress());
         pushNotificationDto.setProperties(request.getProperties());
-        pushNotificationDto.setSendingPriority(NotificationSendingPriority.NORMAL);
+        pushNotificationDto.setSendingPriority(NotificationSendingPriority.MEDIUM);
         final List<PushNotification> pushNotifications = createPushNotifications(10);
         // Reset
         resetAll();

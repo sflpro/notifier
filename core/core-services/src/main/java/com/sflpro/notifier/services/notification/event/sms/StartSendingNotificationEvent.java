@@ -27,22 +27,22 @@ public class StartSendingNotificationEvent implements ApplicationEvent {
 
     /* Constructors */
     public StartSendingNotificationEvent(final Long notificationId) {
-        Assert.notNull(notificationId, "Notification id should not be null");
+        assertNotificationId(notificationId);
         this.notificationId = notificationId;
         this.secureProperties = new HashMap<>();
-        this.sendingPriority = NotificationSendingPriority.NORMAL;
+        this.sendingPriority = NotificationSendingPriority.MEDIUM;
     }
 
     public StartSendingNotificationEvent(final Long notificationId, final Map<String, String> secureProperties) {
-        Assert.notNull(notificationId, "Notification id should not be null");
+        assertNotificationId(notificationId);
         Assert.notNull(secureProperties, "Secure properties map should not be null");
         this.notificationId = notificationId;
         this.secureProperties = secureProperties;
-        this.sendingPriority = NotificationSendingPriority.NORMAL;
+        this.sendingPriority = NotificationSendingPriority.MEDIUM;
     }
 
     public StartSendingNotificationEvent(final Long notificationId, final Map<String, String> secureProperties, final NotificationSendingPriority sendingPriority) {
-        Assert.notNull(notificationId, "Notification id should not be null");
+        assertNotificationId(notificationId);
         Assert.notNull(secureProperties, "Secure properties map should not be null");
         Assert.notNull(sendingPriority, "Sending priority should not be null");
         this.notificationId = notificationId;
@@ -99,6 +99,10 @@ public class StartSendingNotificationEvent implements ApplicationEvent {
         }
         builder.append("sendingPriority", getSendingPriority());
         return builder.build();
+    }
+
+    private static void assertNotificationId(final Long notificationId) {
+        Assert.notNull(notificationId, "Notification id should not be null");
     }
 }
 

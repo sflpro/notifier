@@ -59,6 +59,7 @@ public class EmailNotificationServiceFacadeImpleTest extends AbstractFacadeUnitT
     public void testCreateEmailNotification() {
         final EmailNotification emailNotification = new EmailNotification();
         final CreateEmailNotificationRequest request = getServiceFacadeImplTestHelper().createCreateEmailNotificationRequest();
+        request.setSendingPriority(NotificationSendingPriorityClientType.LOW);
         emailNotification.setId(1L);
         emailNotification.setProviderType(providerType);
         emailNotification.setRecipientEmail(request.getRecipientEmail());

@@ -103,7 +103,7 @@ public class SmsNotificationServiceFacadeImplTest extends AbstractFacadeUnitTest
         resetAll();
         // Expectations
         expect(smsNotificationService.createSmsNotification(smsNotificationDto)).andReturn(smsNotification).once();
-        applicationEventDistributionService.publishAsynchronousEvent(new StartSendingNotificationEvent(notificationId));
+        applicationEventDistributionService.publishAsynchronousEvent(new StartSendingNotificationEvent(notificationId, request.getSecureProperties(), smsNotification.getSendingPriority()));
         expectLastCall().once();
         // Replay
         replayAll();
@@ -142,7 +142,7 @@ public class SmsNotificationServiceFacadeImplTest extends AbstractFacadeUnitTest
         expect(smsNotificationService.createSmsNotification(smsNotificationDto)).andReturn(smsNotification).once();
         expect(userService.getOrCreateUserForUuId(eq(request.getUserUuId()))).andReturn(user).once();
         expect(userNotificationService.createUserNotification(userId, notificationId, new UserNotificationDto())).andReturn(userNotification).once();
-        applicationEventDistributionService.publishAsynchronousEvent(new StartSendingNotificationEvent(notificationId));
+        applicationEventDistributionService.publishAsynchronousEvent(new StartSendingNotificationEvent(notificationId, request.getSecureProperties(), smsNotification.getSendingPriority()));
         expectLastCall().once();
         // Replay
         replayAll();

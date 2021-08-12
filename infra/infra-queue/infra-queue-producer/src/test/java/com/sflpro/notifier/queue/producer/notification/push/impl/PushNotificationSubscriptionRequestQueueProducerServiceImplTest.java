@@ -1,5 +1,6 @@
 package com.sflpro.notifier.queue.producer.notification.push.impl;
 
+import com.sflpro.notifier.db.entities.notification.NotificationSendingPriority;
 import com.sflpro.notifier.queue.amqp.model.notification.push.PushNotificationSubscriptionRequestRPCTransferModel;
 import com.sflpro.notifier.queue.amqp.rpc.RPCCallType;
 import com.sflpro.notifier.queue.producer.AbstractQueueProducerUnitTest;
@@ -56,7 +57,7 @@ public class PushNotificationSubscriptionRequestQueueProducerServiceImplTest ext
         /* Reset mocks */
         resetAll();
         /* Register expectations */
-        amqpConnectorService.publishMessage(eq(RPCCallType.START_PUSH_NOTIFICATION_SUBSCRIPTION_PROCESSING), isA(PushNotificationSubscriptionRequestRPCTransferModel.class), eq(PushNotificationSubscriptionRequestRPCTransferModel.class), isA(AmqpResponseHandler.class));
+        amqpConnectorService.publishMessage(eq(RPCCallType.START_PUSH_NOTIFICATION_SUBSCRIPTION_PROCESSING), isA(PushNotificationSubscriptionRequestRPCTransferModel.class), eq(NotificationSendingPriority.HIGH), eq(PushNotificationSubscriptionRequestRPCTransferModel.class), isA(AmqpResponseHandler.class));
         expectLastCall().once();
         /* Replay mocks */
         replayAll();

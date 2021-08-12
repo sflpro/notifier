@@ -1,5 +1,6 @@
 package com.sflpro.notifier.queue.producer.notification.push.impl;
 
+import com.sflpro.notifier.db.entities.notification.NotificationSendingPriority;
 import com.sflpro.notifier.queue.amqp.model.notification.push.PushNotificationSubscriptionRequestRPCTransferModel;
 import com.sflpro.notifier.queue.amqp.rpc.RPCCallType;
 import com.sflpro.notifier.queue.producer.connector.AmqpConnectorService;
@@ -48,7 +49,7 @@ public class PushNotificationSubscriptionRequestQueueProducerServiceImpl impleme
     public void processPushNotificationSubscriptionRequest(@Nonnull final Long requestId) {
         Assert.notNull(requestId, "Push notification subscription request should not be null");
         logger.debug("Processing push notification subscription request with id - {}", requestId);
-        amqpConnectorService.publishMessage(RPCCallType.START_PUSH_NOTIFICATION_SUBSCRIPTION_PROCESSING, new PushNotificationSubscriptionRequestRPCTransferModel(requestId), PushNotificationSubscriptionRequestRPCTransferModel.class, new PushNotificationSubscriptionRPCResponseHandler());
+        amqpConnectorService.publishMessage(RPCCallType.START_PUSH_NOTIFICATION_SUBSCRIPTION_PROCESSING, new PushNotificationSubscriptionRequestRPCTransferModel(requestId), NotificationSendingPriority.HIGH, PushNotificationSubscriptionRequestRPCTransferModel.class, new PushNotificationSubscriptionRPCResponseHandler());
     }
 
     /* Properties getters and setters */

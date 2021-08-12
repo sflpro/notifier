@@ -7,6 +7,7 @@ import com.sflpro.notifier.api.model.sms.SmsNotificationModel;
 import com.sflpro.notifier.api.model.sms.request.CreateSmsNotificationRequest;
 import com.sflpro.notifier.api.model.sms.response.CreateSmsNotificationResponse;
 import com.sflpro.notifier.db.entities.notification.NotificationProviderType;
+import com.sflpro.notifier.db.entities.notification.NotificationSendingPriority;
 import com.sflpro.notifier.db.entities.notification.UserNotification;
 import com.sflpro.notifier.db.entities.notification.sms.SmsNotification;
 import com.sflpro.notifier.db.entities.user.User;
@@ -91,15 +92,18 @@ public class SmsNotificationServiceFacadeImplTest extends AbstractFacadeUnitTest
         // Test data
         final CreateSmsNotificationRequest request = getServiceFacadeImplTestHelper().createCreateSmsNotificationRequest();
         request.setUserUuId(null);
+        final NotificationSendingPriority sendingPriority = NotificationSendingPriority.valueOf(request.getSendingPriority().name());
         final SmsNotificationDto smsNotificationDto = new SmsNotificationDto(request.getRecipientNumber(), request.getBody(), request.getClientIpAddress(), NotificationProviderType.MSG_AM);
+        smsNotificationDto.setSendingPriority(sendingPriority);
         final Long notificationId = 1L;
         final SmsNotification smsNotification = getServiceFacadeImplTestHelper().createSmsNotification();
         smsNotification.setId(notificationId);
+        smsNotification.setSendingPriority(sendingPriority);
         // Reset
         resetAll();
         // Expectations
         expect(smsNotificationService.createSmsNotification(smsNotificationDto)).andReturn(smsNotification).once();
-        applicationEventDistributionService.publishAsynchronousEvent(new StartSendingNotificationEvent(notificationId));
+        applicationEventDistributionService.publishAsynchronousEvent(new StartSendingNotificationEvent(notificationId, request.getSecureProperties(), smsNotification.getSendingPriority()));
         expectLastCall().once();
         // Replay
         replayAll();
@@ -119,10 +123,13 @@ public class SmsNotificationServiceFacadeImplTest extends AbstractFacadeUnitTest
     public void testCreateSmsNotificationWithUser() {
         // Test data
         final CreateSmsNotificationRequest request = getServiceFacadeImplTestHelper().createCreateSmsNotificationRequest();
+        final NotificationSendingPriority sendingPriority = NotificationSendingPriority.valueOf(request.getSendingPriority().name());
         final SmsNotificationDto smsNotificationDto = new SmsNotificationDto(request.getRecipientNumber(), request.getBody(), request.getClientIpAddress(),NotificationProviderType.MSG_AM);
+        smsNotificationDto.setSendingPriority(sendingPriority);
         final Long notificationId = 1L;
         final SmsNotification smsNotification = getServiceFacadeImplTestHelper().createSmsNotification();
         smsNotification.setId(notificationId);
+        smsNotification.setSendingPriority(sendingPriority);
         final Long userId = 2L;
         final User user = getServiceFacadeImplTestHelper().createUser();
         user.setId(userId);
@@ -135,7 +142,7 @@ public class SmsNotificationServiceFacadeImplTest extends AbstractFacadeUnitTest
         expect(smsNotificationService.createSmsNotification(smsNotificationDto)).andReturn(smsNotification).once();
         expect(userService.getOrCreateUserForUuId(eq(request.getUserUuId()))).andReturn(user).once();
         expect(userNotificationService.createUserNotification(userId, notificationId, new UserNotificationDto())).andReturn(userNotification).once();
-        applicationEventDistributionService.publishAsynchronousEvent(new StartSendingNotificationEvent(notificationId));
+        applicationEventDistributionService.publishAsynchronousEvent(new StartSendingNotificationEvent(notificationId, request.getSecureProperties(), smsNotification.getSendingPriority()));
         expectLastCall().once();
         // Replay
         replayAll();

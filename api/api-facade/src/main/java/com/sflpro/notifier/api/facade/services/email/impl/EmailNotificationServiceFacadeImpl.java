@@ -10,6 +10,7 @@ import com.sflpro.notifier.api.model.email.request.CreateEmailNotificationReques
 import com.sflpro.notifier.api.model.email.request.EmailNotificationFileAttachmentRequest;
 import com.sflpro.notifier.api.model.email.response.CreateEmailNotificationResponse;
 import com.sflpro.notifier.db.entities.notification.NotificationProviderType;
+import com.sflpro.notifier.db.entities.notification.NotificationSendingPriority;
 import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
 import com.sflpro.notifier.db.entities.notification.email.EmailNotificationFileAttachment;
 import com.sflpro.notifier.services.notification.dto.email.EmailNotificationDto;
@@ -56,7 +57,7 @@ class EmailNotificationServiceFacadeImpl implements EmailNotificationServiceFaca
         }
         final EmailNotificationDto emailNotificationDto = buildDto(request);
         final EmailNotification emailNotification = emailNotificationService.createEmailNotification(emailNotificationDto);
-        applicationEventDistributionService.publishAsynchronousEvent(new StartSendingNotificationEvent(emailNotification.getId(), request.getSecureProperties()));
+        applicationEventDistributionService.publishAsynchronousEvent(new StartSendingNotificationEvent(emailNotification.getId(), request.getSecureProperties(), emailNotification.getSendingPriority()));
         final EmailNotificationModel emailNotificationModel = (EmailNotificationModel) NotificationConverterHelper.convert(emailNotification);
         return new ResultResponseModel<>(new CreateEmailNotificationResponse(emailNotificationModel));
     }
@@ -77,6 +78,7 @@ class EmailNotificationServiceFacadeImpl implements EmailNotificationServiceFaca
         emailNotificationDto.setUserUuid(request.getUserUuId());
         emailNotificationDto.setHasSecureProperties(!request.getSecureProperties().isEmpty());
         emailNotificationDto.setFileAttachments(mapFileAttachments(request.getFileAttachments()));
+        emailNotificationDto.setSendingPriority(NotificationSendingPriority.valueOf(request.getSendingPriority().name()));
         return emailNotificationDto;
     }
 

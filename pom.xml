@@ -421,7 +421,7 @@
                                                 <port>5432</port>
                                             </ports>
                                         </tcp>
-                                        <log>(?s)database system is ready to accept connections.*database system is ready to accept connections</log>
+                                        <log>(?s)database system is ready to accept connections.*</log>
                                         <time>60000</time>
                                     </wait>
                                     <network>
@@ -444,7 +444,7 @@
                                         <MYSQL_DATABASE>notifier</MYSQL_DATABASE>
                                     </env>
                                     <wait>
-                                        <log>^.*/usr/sbin/mysqld: ready for connections. Version: '8(.*)'  socket: '/var/run/mysqld/mysqld.sock'  port: 3306.*$</log>
+                                        <log>^.*/usr/sbin/mysqld: ready for connections. Version: '8.*$</log>
                                         <time>30000</time>
                                     </wait>
                                     <network>

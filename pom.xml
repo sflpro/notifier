@@ -111,7 +111,7 @@
         <commons.validator>1.4.1</commons.validator>
         <commons.beanutils.version>1.9.4</commons.beanutils.version>
         <commons.codec.version>1.10</commons.codec.version>
-        <http.client.version>4.5</http.client.version>
+        <http.client.version>4.5.13</http.client.version>
         <asm.version>5.0.3</asm.version>
         <vavr.version>0.9.3</vavr.version>
 

@@ -30,7 +30,7 @@ public class TemplatingConfigurationImplTest extends AbstractServicesUnitTest {
             localizedTempFile = new File(tempFile.getAbsolutePath().replace(extension, "_" + locale.toString() + extension));
             localizedTempFile.createNewFile();
             final TemplatingConfiguration configuration = new TemplatingConfigurationImpl(
-                    "file://" + tempFile.getParent(),
+                    "file:///" + tempFile.getParent(),
                     extension
             );
             assertThat(configuration.getFreemarkerConfiguration(true).getTemplate(

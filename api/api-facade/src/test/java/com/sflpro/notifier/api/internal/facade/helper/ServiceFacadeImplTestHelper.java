@@ -5,6 +5,7 @@ import com.sflpro.notifier.api.model.email.EmailNotificationModel;
 import com.sflpro.notifier.api.model.email.request.CreateEmailNotificationRequest;
 import com.sflpro.notifier.api.model.notification.NotificationClientType;
 import com.sflpro.notifier.api.model.notification.NotificationModel;
+import com.sflpro.notifier.api.model.notification.NotificationSendingPriorityClientType;
 import com.sflpro.notifier.api.model.notification.NotificationStateClientType;
 import com.sflpro.notifier.api.model.push.PushNotificationModel;
 import com.sflpro.notifier.api.model.push.PushNotificationRecipientModel;
@@ -96,6 +97,7 @@ public class ServiceFacadeImplTestHelper {
         request.setBody("SMS body");
         request.setClientIpAddress("127.0.0.1");
         request.setUserUuId("UGITYDTGUIGFITYDTDTFYKTYCL");
+        request.setSendingPriority(NotificationSendingPriorityClientType.HIGH);
         return request;
     }
 
@@ -247,6 +249,7 @@ public class ServiceFacadeImplTestHelper {
         assertEquals(notification.getContent(), notificationModel.getBody());
         assertEquals(notification.getSubject(), notificationModel.getSubject());
         assertEquals(NotificationStateClientType.valueOf(notification.getState().name()), notificationModel.getState());
+        assertEquals(notification.getSendingPriority().name(), notificationModel.getSendingPriority().name());
     }
 
     /* Push notification recipient */

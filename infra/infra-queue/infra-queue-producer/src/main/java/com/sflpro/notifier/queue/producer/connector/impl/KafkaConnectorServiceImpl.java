@@ -1,6 +1,7 @@
 package com.sflpro.notifier.queue.producer.connector.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sflpro.notifier.db.entities.notification.NotificationSendingPriority;
 import com.sflpro.notifier.queue.amqp.model.AbstractRPCTransferModel;
 import com.sflpro.notifier.queue.amqp.rpc.RPCCallType;
 import com.sflpro.notifier.queue.amqp.rpc.message.RPCMessage;
@@ -41,12 +42,21 @@ public class KafkaConnectorServiceImpl implements AmqpConnectorService {
     }
 
     @Override
-    public <T extends AbstractRPCTransferModel> void publishMessage(@Nonnull RPCCallType callType, @Nonnull AbstractRPCTransferModel requestModel, @Nonnull Class<T> responseModelClass, @Nonnull AmqpResponseHandler<T> responseHandler) {
+    public <T extends AbstractRPCTransferModel> void publishMessage(
+            @Nonnull RPCCallType callType,
+            @Nonnull AbstractRPCTransferModel requestModel,
+            @Nonnull NotificationSendingPriority sendingPriority,
+            @Nonnull Class<T> responseModelClass,
+            @Nonnull AmqpResponseHandler<T> responseHandler
+    ) {
         Assert.notNull(callType, "Call type should not be null");
         Assert.notNull(requestModel, "Request model should not be null");
         Assert.notNull(responseModelClass, "Response model class should not be null");
         Assert.notNull(responseHandler, "Response handler should not be null");
         try {
+            if(!NotificationSendingPriority.MEDIUM.equals(sendingPriority)) {
+                LOGGER.warn("Notification sending priorities not supported for kafka but non-default priority({}) received", sendingPriority);
+            }
             final RPCMessage rpcMessage = new RPCMessage();
             rpcMessage.setCallIdentifier(callType.getCallIdentifier());
             rpcMessage.setPayload(objectMapper.writeValueAsString(requestModel));

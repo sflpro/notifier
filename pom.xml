@@ -19,7 +19,7 @@
 
     <groupId>com.sflpro.notifier</groupId>
     <artifactId>notifier</artifactId>
-    <version>1.9.1</version>
+    <version>1.10.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <!-- Information required by maven central -->
@@ -82,8 +82,7 @@
     <properties>
         <projectbasedir>${user.dir}</projectbasedir>
 
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.release>11</maven.compiler.release>
 
         <sonatype.profile.id>212802eb2635d2</sonatype.profile.id>
 
@@ -112,7 +111,7 @@
         <commons.validator>1.4.1</commons.validator>
         <commons.beanutils.version>1.9.4</commons.beanutils.version>
         <commons.codec.version>1.10</commons.codec.version>
-        <http.client.version>4.5</http.client.version>
+        <http.client.version>4.5.13</http.client.version>
         <asm.version>5.0.3</asm.version>
         <vavr.version>0.9.3</vavr.version>
 
@@ -143,6 +142,7 @@
         <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
         <sonar.jacoco.includes>com.sflpro.*</sonar.jacoco.includes>
         <sonar.jacoco.version>1.0.1</sonar.jacoco.version>
+        <sonar.scanner.force-deprecated-java-version-grace-period>true</sonar.scanner.force-deprecated-java-version-grace-period>
         <sonar.coverage.jacoco.xmlReportPaths>${user.dir}/report/target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
         <jacoco.plugin.version>0.8.4</jacoco.plugin.version>
 
@@ -421,7 +421,7 @@
                                                 <port>5432</port>
                                             </ports>
                                         </tcp>
-                                        <log>(?s)database system is ready to accept connections.*database system is ready to accept connections</log>
+                                        <log>(?s)database system is ready to accept connections.*</log>
                                         <time>60000</time>
                                     </wait>
                                     <network>
@@ -444,7 +444,7 @@
                                         <MYSQL_DATABASE>notifier</MYSQL_DATABASE>
                                     </env>
                                     <wait>
-                                        <log>^.*/usr/sbin/mysqld: ready for connections. Version: '8(.*)'  socket: '/var/run/mysqld/mysqld.sock'  port: 3306.*$</log>
+                                        <log>^.*/usr/sbin/mysqld: ready for connections. Version: '8.*$</log>
                                         <time>30000</time>
                                     </wait>
                                     <network>

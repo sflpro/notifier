@@ -1,5 +1,7 @@
 package com.sflpro.notifier.queue.producer.notification.common;
 
+import com.sflpro.notifier.db.entities.notification.NotificationSendingPriority;
+
 import javax.annotation.Nonnull;
 import java.util.Map;
 
@@ -16,5 +18,5 @@ public interface NotificationQueueProducerService {
      *
      * @param notificationId
      */
-    void processStartSendingNotificationEvent(@Nonnull final Long notificationId, @Nonnull final Map<String, String> secureProperties);
+    void processStartSendingNotificationEvent(@Nonnull final Long notificationId, @Nonnull final NotificationSendingPriority sendingPriority, @Nonnull final Map<String, String> secureProperties);
 }

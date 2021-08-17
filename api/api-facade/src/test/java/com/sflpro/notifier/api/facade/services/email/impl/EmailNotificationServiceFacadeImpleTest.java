@@ -7,10 +7,12 @@ import com.sflpro.notifier.api.model.common.result.ResultResponseModel;
 import com.sflpro.notifier.api.model.email.request.CreateEmailNotificationRequest;
 import com.sflpro.notifier.api.model.email.response.CreateEmailNotificationResponse;
 import com.sflpro.notifier.api.model.notification.NotificationClientType;
+import com.sflpro.notifier.api.model.notification.NotificationSendingPriorityClientType;
 import com.sflpro.notifier.api.model.notification.NotificationStateClientType;
 import com.sflpro.notifier.api.model.sms.request.CreateSmsNotificationRequest;
 import com.sflpro.notifier.api.model.sms.response.CreateSmsNotificationResponse;
 import com.sflpro.notifier.db.entities.notification.NotificationProviderType;
+import com.sflpro.notifier.db.entities.notification.NotificationSendingPriority;
 import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
 import com.sflpro.notifier.services.notification.dto.email.EmailNotificationDto;
 import com.sflpro.notifier.services.notification.email.EmailNotificationService;
@@ -57,6 +59,7 @@ public class EmailNotificationServiceFacadeImpleTest extends AbstractFacadeUnitT
     public void testCreateEmailNotification() {
         final EmailNotification emailNotification = new EmailNotification();
         final CreateEmailNotificationRequest request = getServiceFacadeImplTestHelper().createCreateEmailNotificationRequest();
+        request.setSendingPriority(NotificationSendingPriorityClientType.LOW);
         emailNotification.setId(1L);
         emailNotification.setProviderType(providerType);
         emailNotification.setRecipientEmail(request.getRecipientEmail());
@@ -65,6 +68,7 @@ public class EmailNotificationServiceFacadeImpleTest extends AbstractFacadeUnitT
         emailNotification.setContent(request.getBody());
         emailNotification.setSubject(request.getSubject());
         emailNotification.setFileAttachments(Collections.emptySet());
+        emailNotification.setSendingPriority(NotificationSendingPriority.LOW);
         final EmailNotificationDto emailNotificationDto = new EmailNotificationDto(
                 request.getRecipientEmail(),
                 request.getSenderEmail(),
@@ -78,9 +82,10 @@ public class EmailNotificationServiceFacadeImpleTest extends AbstractFacadeUnitT
         emailNotificationDto.setUserUuid(request.getUserUuId());
         emailNotificationDto.setProperties(request.getProperties());
         emailNotificationDto.setFileAttachments(Collections.emptySet());
+        emailNotificationDto.setSendingPriority(NotificationSendingPriority.LOW);
         // Expectations
         expect(emailNotificationService.createEmailNotification(emailNotificationDto)).andReturn(emailNotification);
-        applicationEventDistributionService.publishAsynchronousEvent(new StartSendingNotificationEvent(emailNotification.getId(), request.getSecureProperties()));
+        applicationEventDistributionService.publishAsynchronousEvent(new StartSendingNotificationEvent(emailNotification.getId(), request.getSecureProperties(), NotificationSendingPriority.LOW));
         expectLastCall();
         // Replay
         replayAll();
@@ -92,7 +97,8 @@ public class EmailNotificationServiceFacadeImpleTest extends AbstractFacadeUnitT
                 .hasFieldOrPropertyWithValue("subject", request.getSubject())
                 .hasFieldOrPropertyWithValue("body", request.getBody())
                 .hasFieldOrPropertyWithValue("state", NotificationStateClientType.CREATED)
-                .hasFieldOrPropertyWithValue("type", NotificationClientType.EMAIL);
+                .hasFieldOrPropertyWithValue("type", NotificationClientType.EMAIL)
+                .hasFieldOrPropertyWithValue("sendingPriority", NotificationSendingPriorityClientType.LOW);
         verifyAll();
     }
 

@@ -2,10 +2,7 @@ package com.sflpro.notifier.services.helper;
 
 import com.sflpro.notifier.db.entities.device.UserDevice;
 import com.sflpro.notifier.db.entities.device.mobile.DeviceOperatingSystemType;
-import com.sflpro.notifier.db.entities.notification.Notification;
-import com.sflpro.notifier.db.entities.notification.NotificationProviderType;
-import com.sflpro.notifier.db.entities.notification.NotificationState;
-import com.sflpro.notifier.db.entities.notification.UserNotification;
+import com.sflpro.notifier.db.entities.notification.*;
 import com.sflpro.notifier.db.entities.notification.email.EmailNotification;
 import com.sflpro.notifier.db.entities.notification.email.NotificationProperty;
 import com.sflpro.notifier.db.entities.notification.push.*;
@@ -303,6 +300,7 @@ public class ServicesTestHelper {
         notificationDto.setContent(YO_YO + YO_YO);
         notificationDto.setSubject(YO_YO);
         notificationDto.setProviderType(NotificationProviderType.TWILLIO);
+        notificationDto.setSendingPriority(NotificationSendingPriority.HIGH);
         return notificationDto;
     }
 

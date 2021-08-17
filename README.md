@@ -46,7 +46,7 @@ once the notifier microservice has been started.
 ## Deployment
 
 Notifier is dockerized and is easy to deploy as a docker container. For more details, see the images on docker hub:  
-https://hub.docker.com/r/sflpro/notifier & https://hub.docker.com/r/sflpro/notifier-worker
+https://hub.docker.com/r/sflpro/notifier-api & https://hub.docker.com/r/sflpro/notifier-worker
 
 ## Running the application locally
 

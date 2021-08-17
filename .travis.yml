@@ -1,11 +1,11 @@
 language: java
-sudo: required
+os: linux
 git:
   depth: false
 services:
 - docker
 jdk:
-- oraclejdk8
+- oraclejdk11
 script: ".travis/build.sh"
 cache:
   directories:
@@ -24,9 +24,7 @@ env:
   - secure: RdpwVqHPxKqmeb+5/7fechEE9SoVSmy5bU97DDzrV/m74mXw+FbBrWKl5AVAbjwipm02/Oub5OaCA4bg6VEGp4w9/sgoZZr6AzuLsyUDd68mfcDQ75t3aSmfgysQEqK8hFhDTFwk3qMZmr4VjNVssATUVFCVnZEs/OOD2a4sQc2DYUQB1px2NNYhJCxKYYugUJrSTIjkkTt1EaWnepCj2YNoPUYUo/4HTjgUYOpsnrPN7iLO5Sf3SLofOkNnGGHbhs9UTKHeN4tx1MZ4ypcQtv9csliaanK4tu6WWjupkJBJWEW1IBsYxATUhi9APgHp2MG6rxbeamDSMHHjS7xn1sKPqfcEGpxslaxvQU9zAhyaC/s3Fz/Ytwetv3gBDvZdxS4rYhXYJXtSlK9fhDjGmzE4Gns3ycoANwgA+3axQKH/CURCXl+upNXHNwwvxwOVhITBE9eid/IsH4yP9UDh+23eJMwRMpBp5DLXRwoV/Rf73tBN9l+u0NUXSMob9N9Btpr6fvT7mZ+VwWEw1Vy83+O8O1ThkZ/X2PXLD/sV/kM4YTNQ1Sjof5Z4Lha+Vd7OGEgpShgQhjsrnXGB+LzQdmZiwfH7rA2RBM4OoKD4PzggsT/FTw45ueUpER0zqsY/EHCnuDqwpFLgYYbkDdvQnKWlMglhUjD17DvVlxNxBBo=
   - secure: Zf+eG4IT/irrYdKrwoyjxq9zIxXNPzV61j9gAyLIGlHLpvHtr9v2kiZAXbS5cxT9QSjnAinq+b2zbWMeNkzIOujGc44RSJ+/DcmexfE2505HbiwzQnl5BDictj3FgJMS4TNzCYRWS5StoL1wP3kGm3lwYBOSpfa1nzSUBiAJgT2zB+QeZTKMdlDFV/XmMUURJs3bQNxZUTTvYwqgIUoLXcQteOs7F1DKKwoUApz1BiDkjpf/bn9ZCdTM1IXjRe0QX5aCP8OQU3YSCPc8/5T/dyJBjPIzUoYIdpV98BZlTyF4peeIPM6wAspttgzOU7GYzedQ/Cun7ngV8A8b0dNtcswNeA8gxxzq7Tb1MRmfTx0sWydq/KnQj+m7cKzKbip0u6+rnusVtcSTMp18rip4fa4UODWT0xW+O7pN33ukLNsV1qBuSg5PLAvMjdwp2gppmRpJC1R9U6buXrdtGF5SD74sXscQ0OlY1eE/ofA8Ak2X8gPXneAXm7OO23OrYz6f1/DA/E54CyIfKv+7H7RjAVJJFlpgn7cLgltbhFd+ASAcH/kf0nfReUKjzGoR/D0jcb7Imceu1FiUCdUWyZPOGC5LHpJ6KdvnEYxWJ9LwI+aA8EcFwWmJNG35FobK2Qo425jT2xUjJAgV9KGwNNqZ+EN8qq2ir/XIpiDYR9iNw34=
 before_script:
-- openssl aes-256-cbc -K $encrypted_49fa1606db88_key -iv $encrypted_49fa1606db88_iv
-  -in secret.tar.bz2.enc -out secret.tar.bz2 -d
 - docker login --username $DOCKER_USER --password $DOCKERHUB_PASS
 before_install:
-- openssl aes-256-cbc -K $encrypted_49fa1606db88_key -iv $encrypted_49fa1606db88_iv
+- openssl aes-256-cbc -K $encrypted_2f71a228d264_key -iv $encrypted_2f71a228d264_iv
   -in secret.tar.bz2.enc -out secret.tar.bz2 -d

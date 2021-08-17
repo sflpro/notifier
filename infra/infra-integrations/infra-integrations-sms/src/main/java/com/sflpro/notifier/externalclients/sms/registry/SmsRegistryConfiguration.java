@@ -15,6 +15,7 @@ import org.springframework.context.annotation.PropertySource;
         "com.sflpro.notifier.externalclients.sms.twillio",
         "com.sflpro.notifier.externalclients.sms.msgam",
         "com.sflpro.notifier.externalclients.sms.nikitamobile",
+        "com.sflpro.notifier.externalclients.sms.external",
         "com.sflpro.notifier.externalclients.sms.provider.autoconfiguration"
 })
 class SmsRegistryConfiguration {

@@ -4,6 +4,7 @@ import com.sflpro.notifier.api.model.email.EmailNotificationFileAttachmentModel;
 import com.sflpro.notifier.api.model.email.EmailNotificationModel;
 import com.sflpro.notifier.api.model.notification.NotificationClientType;
 import com.sflpro.notifier.api.model.notification.NotificationModel;
+import com.sflpro.notifier.api.model.notification.NotificationSendingPriorityClientType;
 import com.sflpro.notifier.api.model.notification.NotificationStateClientType;
 import com.sflpro.notifier.api.model.push.PushNotificationModel;
 import com.sflpro.notifier.api.model.push.PushNotificationRecipientModel;
@@ -86,6 +87,7 @@ public class NotificationConverterHelper {
         model.setState(NotificationStateClientType.valueOf(notification.getState().name()));
         model.setSubject(notification.getSubject());
         model.setType(NotificationClientType.valueOf(notification.getType().name()));
+        model.setSendingPriority(NotificationSendingPriorityClientType.valueOf(notification.getSendingPriority().name()));
     }
 
     private static EmailNotificationFileAttachmentModel convertFileAttachment(final EmailNotificationFileAttachment attachment) {

@@ -103,7 +103,7 @@ public class PushNotificationProcessorImpl implements PushNotificationProcessor 
             pushMessage = buildPushMessageForTemplate(pushNotification, recipient, secureProperties);
         }
         final PushMessageSendingResult pushMessageSendingResult = pushMessageSender.send(pushMessage);
-        logger.debug("Sending SNS push notification - {} , recipient - {}", pushNotification, recipient);
+        logger.debug("Sending SNS push notification id - {} , recipient - {}", pushNotification.getId(), recipient);
         return pushMessageSendingResult.messageId();
     }
 

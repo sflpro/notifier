@@ -82,8 +82,7 @@
     <properties>
         <projectbasedir>${user.dir}</projectbasedir>
 
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.release>11</maven.compiler.release>
 
         <sonatype.profile.id>212802eb2635d2</sonatype.profile.id>
 
@@ -143,6 +142,7 @@
         <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
         <sonar.jacoco.includes>com.sflpro.*</sonar.jacoco.includes>
         <sonar.jacoco.version>1.0.1</sonar.jacoco.version>
+        <sonar.scanner.force-deprecated-java-version-grace-period>true</sonar.scanner.force-deprecated-java-version-grace-period>
         <sonar.coverage.jacoco.xmlReportPaths>${user.dir}/report/target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
         <jacoco.plugin.version>0.8.4</jacoco.plugin.version>
 

@@ -2,6 +2,7 @@ package com.sflpro.notifier.api.facade.services;
 
 import com.sflpro.notifier.api.model.notification.NotificationClientType;
 import com.sflpro.notifier.api.model.notification.NotificationModel;
+import com.sflpro.notifier.api.model.notification.NotificationSendingPriorityClientType;
 import com.sflpro.notifier.api.model.notification.NotificationStateClientType;
 import com.sflpro.notifier.db.entities.notification.Notification;
 import com.sflpro.notifier.db.entities.notification.UserNotification;
@@ -53,6 +54,7 @@ public abstract class AbstractNotificationServiceFacadeImpl {
         notificationModel.setSubject(notification.getSubject());
         notificationModel.setType(NotificationClientType.valueOf(notification.getType().name()));
         notificationModel.setState(NotificationStateClientType.valueOf(notification.getState().name()));
+        notificationModel.setSendingPriority(NotificationSendingPriorityClientType.valueOf(notification.getSendingPriority().name()));
     }
 
     /* Properties getters and setters */

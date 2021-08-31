@@ -82,7 +82,7 @@
     <properties>
         <projectbasedir>${user.dir}</projectbasedir>
 
-        <maven.compiler.release>11</maven.compiler.release>
+        <maven.compiler.release>8</maven.compiler.release>
 
         <sonatype.profile.id>212802eb2635d2</sonatype.profile.id>
 

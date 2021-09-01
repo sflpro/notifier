@@ -5,11 +5,11 @@
     <parent>
         <groupId>com.sflpro.notifier</groupId>
         <artifactId>api</artifactId>
-        <version>1.10.0</version>
+        <version>1.10.1</version>
     </parent>
 
     <artifactId>api-model</artifactId>
-    <version>1.10.0</version>
+    <version>1.10.1</version>
     <packaging>jar</packaging>
 
     <profiles>

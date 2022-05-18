@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/sflpro/notifier.svg?branch=master)](https://travis-ci.org/sflpro/notifier)
+[![Build Status](https://app.travis-ci.com/sflpro/notifier.svg?branch=master)](https://app.travis-ci.com/sflpro/notifier)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=com.sflpro.notifier%3Anotifier&metric=alert_status)](https://sonarcloud.io/dashboard?id=com.sflpro.notifier%3Anotifier)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.sflpro.notifier/notifier/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.sflpro.notifier/notifier/)
 [![License: APACHE](https://img.shields.io/badge/license-Apache%20License%202.0-b)](https://opensource.org/licenses/Apache-2.0)
@@ -36,7 +36,7 @@ following maven dependency:
 <dependency>
     <groupId>com.sflpro.notifier</groupId>
     <artifactId>api-client-library</artifactId>
-    <version>1.7.0</version>
+    <version>1.10.1</version>
 </dependency>
 ```
 
@@ -46,7 +46,7 @@ once the notifier microservice has been started.
 ## Deployment
 
 Notifier is dockerized and is easy to deploy as a docker container. For more details, see the images on docker hub:  
-https://hub.docker.com/r/sflpro/notifier & https://hub.docker.com/r/sflpro/notifier-worker
+https://hub.docker.com/r/sflpro/notifier-api & https://hub.docker.com/r/sflpro/notifier-worker
 
 ## Running the application locally
 

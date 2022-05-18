@@ -1,5 +1,6 @@
 package com.sflpro.notifier.queue.producer.connector;
 
+import com.sflpro.notifier.db.entities.notification.NotificationSendingPriority;
 import com.sflpro.notifier.queue.amqp.model.AbstractRPCTransferModel;
 import com.sflpro.notifier.queue.amqp.rpc.RPCCallType;
 
@@ -18,5 +19,11 @@ public interface AmqpConnectorService {
      *
      * @param callType
      */
-    <T extends AbstractRPCTransferModel> void publishMessage(@Nonnull final RPCCallType callType, @Nonnull final AbstractRPCTransferModel requestModel, @Nonnull final Class<T> responseModelClass, @Nonnull final AmqpResponseHandler<T> responseHandler);
+    <T extends AbstractRPCTransferModel> void publishMessage(
+            @Nonnull final RPCCallType callType,
+            @Nonnull final AbstractRPCTransferModel requestModel,
+            @Nonnull final NotificationSendingPriority sendingPriority,
+            @Nonnull final Class<T> responseModelClass,
+            @Nonnull final AmqpResponseHandler<T> responseHandler
+    );
 }

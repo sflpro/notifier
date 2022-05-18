@@ -58,6 +58,10 @@ public abstract class Notification extends AbstractDomainUuIdAwareEntityModel {
     @JoinColumn(name = "notification_id", referencedColumnName = "id", updatable = false, nullable = false)
     private List<NotificationProperty> properties;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "sending_priority", nullable = false, updatable = false)
+    private NotificationSendingPriority sendingPriority;
+
     /* Constructors */
     public Notification() {
         initializeDefaults();
@@ -142,9 +146,18 @@ public abstract class Notification extends AbstractDomainUuIdAwareEntityModel {
         this.properties = properties;
     }
 
+    public NotificationSendingPriority getSendingPriority() {
+        return sendingPriority;
+    }
+
+    public void setSendingPriority(final NotificationSendingPriority sendingPriority) {
+        this.sendingPriority = sendingPriority;
+    }
+
     /* Private utility methods */
     private void initializeDefaults() {
         this.state = NotificationState.CREATED;
+        this.sendingPriority = NotificationSendingPriority.MEDIUM;
     }
 
     /* Equals, HashCode and ToString */
@@ -167,6 +180,7 @@ public abstract class Notification extends AbstractDomainUuIdAwareEntityModel {
         builder.append(this.getSubject(), that.getSubject());
         builder.append(this.getProviderExternalUuId(), that.getProviderExternalUuId());
         builder.append(this.hasSecureProperties(), that.hasSecureProperties());
+        builder.append(this.getSendingPriority(), that.getSendingPriority());
         return builder.isEquals();
     }
 
@@ -182,6 +196,7 @@ public abstract class Notification extends AbstractDomainUuIdAwareEntityModel {
         builder.append(this.getSubject());
         builder.append(this.getProviderExternalUuId());
         builder.append(this.hasSecureProperties());
+        builder.append(this.getSendingPriority());
         return builder.build();
     }
 
@@ -197,7 +212,8 @@ public abstract class Notification extends AbstractDomainUuIdAwareEntityModel {
         builder.append("content", this.getContent());
         builder.append("subject", this.getSubject());
         builder.append("providerExternalUuId", this.getProviderExternalUuId());
-        builder.append("has_secure_properties", this.hasSecureProperties());
+        builder.append("hasSecureProperties", this.hasSecureProperties());
+        builder.append("sendingPriority", this.getSendingPriority());
         return builder.build();
     }
 }

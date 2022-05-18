@@ -19,7 +19,7 @@
 
     <groupId>com.sflpro.notifier</groupId>
     <artifactId>notifier</artifactId>
-    <version>1.10.0-SNAPSHOT</version>
+    <version>1.11.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <!-- Information required by maven central -->
@@ -82,8 +82,7 @@
     <properties>
         <projectbasedir>${user.dir}</projectbasedir>
 
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.release>8</maven.compiler.release>
 
         <sonatype.profile.id>212802eb2635d2</sonatype.profile.id>
 
@@ -108,11 +107,11 @@
 
         <commons.collections.version>3.2.2</commons.collections.version>
         <commons.lang3.version>3.4</commons.lang3.version>
-        <commons.io.version>2.4</commons.io.version>
+        <commons.io.version>2.7</commons.io.version>
         <commons.validator>1.4.1</commons.validator>
         <commons.beanutils.version>1.9.4</commons.beanutils.version>
         <commons.codec.version>1.10</commons.codec.version>
-        <http.client.version>4.5</http.client.version>
+        <http.client.version>4.5.13</http.client.version>
         <asm.version>5.0.3</asm.version>
         <vavr.version>0.9.3</vavr.version>
 
@@ -422,7 +421,7 @@
                                                 <port>5432</port>
                                             </ports>
                                         </tcp>
-                                        <log>(?s)database system is ready to accept connections.*database system is ready to accept connections</log>
+                                        <log>(?s)database system is ready to accept connections.*</log>
                                         <time>60000</time>
                                     </wait>
                                     <network>
@@ -445,7 +444,7 @@
                                         <MYSQL_DATABASE>notifier</MYSQL_DATABASE>
                                     </env>
                                     <wait>
-                                        <log>^.*/usr/sbin/mysqld: ready for connections. Version: '8(.*)'  socket: '/var/run/mysqld/mysqld.sock'  port: 3306.*$</log>
+                                        <log>^.*/usr/sbin/mysqld: ready for connections. Version: '8.*$</log>
                                         <time>30000</time>
                                     </wait>
                                     <network>

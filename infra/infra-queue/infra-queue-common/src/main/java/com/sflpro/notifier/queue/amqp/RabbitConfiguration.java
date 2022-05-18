@@ -11,6 +11,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Company: SFL LLC
  * Created on 2019, June 3
@@ -34,7 +37,9 @@ public class RabbitConfiguration {
 
     @Bean
     public Queue notificationQueue() {
-        return new Queue(topic, true);
+        final Map<String, Object> arguments = new HashMap<>();
+        arguments.put("x-max-priority", 2);
+        return new Queue(topic, true, false, false, arguments);
     }
 
     @Bean

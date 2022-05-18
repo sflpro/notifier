@@ -21,14 +21,17 @@ public class TemplatingConfigurationImpl implements TemplatingConfiguration {
 
     private String templatesPath = "/";
     private String templateExtension = ".ftl";
+    private Boolean externalUrl = false;
 
     private final ResourceLoader resourceLoader = new DefaultResourceLoader();
 
     TemplatingConfigurationImpl(
             @Value("${notifier.templates.path}") final String templatesPath,
-            @Value("${notifier.templates.extension:.ftl}") final String templateExtension) {
+            @Value("${notifier.templates.extension:.ftl}") final String templateExtension,
+            @Value("${notifier.templates.externalUrl:false}") final Boolean externalUrl) {
         this.templatesPath = templatesPath;
         this.templateExtension = templateExtension;
+        this.externalUrl = externalUrl;
     }
 
 
@@ -38,9 +41,14 @@ public class TemplatingConfigurationImpl implements TemplatingConfiguration {
             @Override
             protected URL getURL(final String resourceName) {
                 try {
-                    final Resource resource = getResource(resourceName);
-                    return resource.exists() ? resource.getURL() : null;
-                } catch (final IOException ex) {
+                    final String fullPath = getFullPath(resourceName);
+                    if (externalUrl) {
+                        return new URL(fullPath);
+                    } else {
+                        final Resource resource = getResource(fullPath);
+                        return resource.exists() ? resource.getURL() : null;
+                    }
+                } catch (IOException ex) {
                     throw new TemplateLookupFailedException(resourceName, templatesPath, ex);
                 }
             }
@@ -53,14 +61,17 @@ public class TemplatingConfigurationImpl implements TemplatingConfiguration {
         return cfg;
     }
 
-    private Resource getResource(final String resourceName) throws IOException {
-        if (!resourceName.endsWith(templateExtension)) {
-            return resourceLoader.getResource(templatesPath + "/" + resourceName + templateExtension);
-        } else {
-            return resourceLoader.getResource(templatesPath + "/" + resourceName);
-        }
+    private Resource getResource(final String fullPath) throws IOException {
+        return resourceLoader.getResource(fullPath);
     }
 
+    private String getFullPath(final String resourceName) {
+        if (!resourceName.endsWith(templateExtension)) {
+            return templatesPath + "/" + resourceName + templateExtension;
+        } else {
+            return templatesPath + "/" + resourceName;
+        }
+    }
 
     private static final class TemplateLookupFailedException extends RuntimeException {
 

@@ -6,9 +6,13 @@ General intro
 
 Description of this approach
 
-Configuration
+Configuration example
 ```yaml
-path: sfdsfsdf
+notifier:
+  templates:
+    externalUrl: false
+    path: file:/templates
+    extension: .ftl
 ```
 
 ### File naming
@@ -25,16 +29,18 @@ Description of this approach
 
 Configuration example 
 ```yaml
-configuration:
-    example:
-        url: true
+notifier:
+  templates:
+    externalUrl: true
+    path: https://example.com
+    extension: .ftl
 ```
 
 ### External Service API Specification
 
-Implement the following API endpoints:
+Implement the following API endpoints, assuming .ftl template extension:
 
-    GET /templates/<template_name>
+    GET /<template_name>.ftl
         Returns the template content.
 
 Endpoints should return the following responses:

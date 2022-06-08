@@ -25,7 +25,7 @@ public class CreatePushNotificationRequest extends AbstractTemplatedCreateNotifi
     @JsonProperty("subject")
     private String subject;
 
-    @JsonProperty("deviceUuid")
+    @JsonProperty("deviceUuId")
     private String deviceUuId;
 
     public CreatePushNotificationRequest() {

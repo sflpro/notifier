@@ -25,6 +25,9 @@ public class CreatePushNotificationRequest extends AbstractTemplatedCreateNotifi
     @JsonProperty("subject")
     private String subject;
 
+    @JsonProperty("deviceUuid")
+    private String deviceUuId;
+
     public CreatePushNotificationRequest() {
     }
 
@@ -34,6 +37,14 @@ public class CreatePushNotificationRequest extends AbstractTemplatedCreateNotifi
 
     public void setSubject(final String subject) {
         this.subject = subject;
+    }
+
+    public String getDeviceUuId() {
+        return deviceUuId;
+    }
+
+    public void setDeviceUuId(final String deviceUuId) {
+        this.deviceUuId = deviceUuId;
     }
 
     @Nonnull
@@ -61,6 +72,7 @@ public class CreatePushNotificationRequest extends AbstractTemplatedCreateNotifi
         return new EqualsBuilder()
                 .appendSuper(super.equals(obj))
                 .append(this.subject, rhs.subject)
+                .append(this.deviceUuId, rhs.deviceUuId)
                 .isEquals();
     }
 
@@ -69,6 +81,7 @@ public class CreatePushNotificationRequest extends AbstractTemplatedCreateNotifi
         return new HashCodeBuilder()
                 .appendSuper(super.hashCode())
                 .append(subject)
+                .append(deviceUuId)
                 .toHashCode();
     }
 
@@ -77,6 +90,7 @@ public class CreatePushNotificationRequest extends AbstractTemplatedCreateNotifi
         return new ToStringBuilder(this)
                 .appendSuper(super.toString())
                 .append("subject", subject)
+                .append("deviceUuId", deviceUuId)
                 .toString();
     }
 }

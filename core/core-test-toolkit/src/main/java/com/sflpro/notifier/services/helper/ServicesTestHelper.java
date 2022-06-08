@@ -211,6 +211,10 @@ public class ServicesTestHelper {
         return recipient;
     }
 
+    public PushNotificationRecipient updatePushNotificationRecipientUserDevice(final Long recipientId, final Long userDeviceId) {
+        return pushNotificationRecipientService.updatePushNotificationRecipientUserDevice(recipientId, userDeviceId);
+    }
+
     /* Push notification request request */
     public PushNotificationSubscriptionRequestDto createPushNotificationSubscriptionRequestDto() {
         final PushNotificationSubscriptionRequestDto subscriptionDto = new PushNotificationSubscriptionRequestDto();

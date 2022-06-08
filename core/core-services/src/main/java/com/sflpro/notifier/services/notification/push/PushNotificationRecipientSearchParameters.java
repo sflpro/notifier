@@ -32,6 +32,8 @@ public class PushNotificationRecipientSearchParameters implements Serializable {
 
     private String applicationType;
 
+    private String deviceUuId;
+
     /* Constructors */
     public PushNotificationRecipientSearchParameters() {
         super();
@@ -92,6 +94,15 @@ public class PushNotificationRecipientSearchParameters implements Serializable {
         return this;
     }
 
+    public String getDeviceUuId() {
+        return deviceUuId;
+    }
+
+    public PushNotificationRecipientSearchParameters setDeviceUuId(final String deviceUuId) {
+        this.deviceUuId = deviceUuId;
+        return this;
+    }
+
     /* Equals, HashCode and ToString */
     @Override
     public boolean equals(final Object o) {
@@ -109,6 +120,7 @@ public class PushNotificationRecipientSearchParameters implements Serializable {
         builder.append(this.getSubscriptionId(), that.getSubscriptionId());
         builder.append(this.getDeviceOperatingSystemType(), that.getDeviceOperatingSystemType());
         builder.append(this.getApplicationType(), that.getApplicationType());
+        builder.append(this.getDeviceUuId(), that.getDeviceUuId());
         return builder.isEquals();
     }
 
@@ -121,6 +133,7 @@ public class PushNotificationRecipientSearchParameters implements Serializable {
         builder.append(this.getSubscriptionId());
         builder.append(this.getDeviceOperatingSystemType());
         builder.append(this.getApplicationType());
+        builder.append(this.getDeviceUuId());
         return builder.build();
     }
 
@@ -134,6 +147,7 @@ public class PushNotificationRecipientSearchParameters implements Serializable {
         builder.append("subscriptionId", this.getSubscriptionId());
         builder.append("deviceOperatingSystemType", this.getDeviceOperatingSystemType());
         builder.append("applicationType", this.getApplicationType());
+        builder.append("deviceUuId", this.getDeviceUuId());
         return builder.build();
     }
 }

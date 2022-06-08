@@ -22,6 +22,7 @@ import com.sflpro.notifier.db.entities.user.User;
 import com.sflpro.notifier.services.device.UserDeviceService;
 import com.sflpro.notifier.services.device.dto.UserDeviceDto;
 import com.sflpro.notifier.services.notification.dto.push.PushNotificationDto;
+import com.sflpro.notifier.services.notification.dto.push.PushNotificationRecipientsParameters;
 import com.sflpro.notifier.services.notification.dto.push.PushNotificationSubscriptionRequestDto;
 import com.sflpro.notifier.services.notification.event.push.StartPushNotificationSubscriptionRequestProcessingEvent;
 import com.sflpro.notifier.services.notification.event.sms.StartSendingNotificationEvent;
@@ -99,7 +100,9 @@ public class PushNotificationServiceFacadeImpl extends AbstractNotificationServi
         pushNotificationDto.setProperties(request.getProperties());
         pushNotificationDto.setSendingPriority(NotificationSendingPriority.valueOf(request.getSendingPriority().name()));
         // Create push notifications
-        final List<PushNotification> pushNotifications = pushNotificationService.createNotificationsForUserActiveRecipients(user.getId(), pushNotificationDto);
+        final List<PushNotification> pushNotifications = pushNotificationService.createNotificationsForRecipients(
+                new PushNotificationRecipientsParameters(user.getId(), request.getDeviceUuId()), pushNotificationDto
+        );
         // Publish events
         pushNotifications.forEach(pushNotification -> applicationEventDistributionService.publishAsynchronousEvent(new StartSendingNotificationEvent(pushNotification.getId(), Collections.emptyMap(), pushNotification.getSendingPriority())));
         // Convert to notification models

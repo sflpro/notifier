@@ -27,6 +27,8 @@ public class PushNotificationRecipientSearchFilter {
 
     private String applicationType;
 
+    private String deviceUuId;
+
     /* Constructors */
     public PushNotificationRecipientSearchFilter() {
         super();
@@ -87,6 +89,15 @@ public class PushNotificationRecipientSearchFilter {
         return this;
     }
 
+    public String getDeviceUuId() {
+        return deviceUuId;
+    }
+
+    public PushNotificationRecipientSearchFilter setDeviceUuId(final String deviceUuId) {
+        this.deviceUuId = deviceUuId;
+        return this;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -102,6 +113,7 @@ public class PushNotificationRecipientSearchFilter {
                 .append(providerType, that.providerType)
                 .append(deviceOperatingSystemType, that.deviceOperatingSystemType)
                 .append(applicationType, that.applicationType)
+                .append(deviceUuId, that.deviceUuId)
                 .isEquals();
     }
 
@@ -114,6 +126,7 @@ public class PushNotificationRecipientSearchFilter {
                 .append(providerType)
                 .append(deviceOperatingSystemType)
                 .append(applicationType)
+                .append(deviceUuId)
                 .toHashCode();
     }
 }

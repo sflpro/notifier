@@ -6,14 +6,12 @@ import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipie
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipientStatus;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationSubscription;
 import com.sflpro.notifier.db.entities.user.User;
+import com.sflpro.notifier.services.device.dto.UserDeviceDto;
 import com.sflpro.notifier.services.notification.dto.push.PushNotificationRecipientDto;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Arrays;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -346,6 +344,88 @@ public class PushNotificationRecipientServiceIntegrationTest extends AbstractPus
         // Execute search with second recipient
         parameters = new PushNotificationRecipientSearchParameters();
         parameters.setDestinationRouteToken(secondRecipient.getDestinationRouteToken());
+        result = pushNotificationRecipientService.getPushNotificationRecipientsCountForSearchParameters(parameters);
+        assertPushNotificationRecipientsCount(result, new LinkedHashSet<>(Arrays.asList(secondRecipient.getId())));
+    }
+
+    @Test
+    public void testGetPushNotificationRecipientsForSearchParametersWithDeviceUuId() {
+        // Prepare data
+        final PushNotificationRecipientDto firstSnsRecipientDto = getServicesTestHelper().createPushNotificationSnsRecipientDto();
+        final PushNotificationRecipientDto secondSnsRecipientDto = getServicesTestHelper().createPushNotificationSnsRecipientDto();
+        secondSnsRecipientDto.setDestinationRouteToken(firstSnsRecipientDto.getDestinationRouteToken() + "_second");
+        final PushNotificationSubscription subscription = getServicesTestHelper().createPushNotificationSubscription();
+        final PushNotificationRecipient firstRecipient = getServicesTestHelper().createPushNotificationSnsRecipient(subscription, firstSnsRecipientDto);
+        final PushNotificationRecipient secondRecipient = getServicesTestHelper().createPushNotificationSnsRecipient(subscription, secondSnsRecipientDto);
+        final UserDeviceDto firstUserDevice = new UserDeviceDto();
+        firstUserDevice.setUuId(UUID.randomUUID().toString());
+        firstUserDevice.setOsType(DeviceOperatingSystemType.IOS);
+        getServicesTestHelper().updatePushNotificationRecipientUserDevice(
+                firstRecipient.getId(),
+                getServicesTestHelper().createUserDevice(subscription.getUser(), firstUserDevice).getId()
+        );
+        final UserDeviceDto secondUserDevice = new UserDeviceDto();
+        secondUserDevice.setUuId(UUID.randomUUID().toString());
+        secondUserDevice.setOsType(DeviceOperatingSystemType.IOS);
+        getServicesTestHelper().updatePushNotificationRecipientUserDevice(
+                secondRecipient.getId(),
+                getServicesTestHelper().createUserDevice(subscription.getUser(), secondUserDevice).getId()
+        );
+        flushAndClear();
+        // Load recipients and assert
+        PushNotificationRecipientSearchParameters parameters = new PushNotificationRecipientSearchParameters();
+        // Execute search with all recipients
+        List<PushNotificationRecipient> result = pushNotificationRecipientService.getPushNotificationRecipientsForSearchParameters(parameters, 0L, Integer.MAX_VALUE);
+        assertPushNotificationRecipients(result, new LinkedHashSet<>(Arrays.asList(firstRecipient.getId(), secondRecipient.getId())));
+        // Execute search with first recipient
+        parameters = new PushNotificationRecipientSearchParameters();
+        parameters.setDeviceUuId(firstUserDevice.getUuId());
+        result = pushNotificationRecipientService.getPushNotificationRecipientsForSearchParameters(parameters, 0L, Integer.MAX_VALUE);
+        assertPushNotificationRecipients(result, new LinkedHashSet<>(Arrays.asList(firstRecipient.getId())));
+        // Execute search with second recipient
+        parameters = new PushNotificationRecipientSearchParameters();
+        parameters.setDeviceUuId(secondUserDevice.getUuId());
+        result = pushNotificationRecipientService.getPushNotificationRecipientsForSearchParameters(parameters, 0L, Integer.MAX_VALUE);
+        assertPushNotificationRecipients(result, new LinkedHashSet<>(Arrays.asList(secondRecipient.getId())));
+    }
+
+    @Test
+    public void testGetPushNotificationRecipientsCountForSearchParametersWithDeviceUuId() {
+        // Prepare data
+        final PushNotificationRecipientDto firstSnsRecipientDto = getServicesTestHelper().createPushNotificationSnsRecipientDto();
+        final PushNotificationRecipientDto secondSnsRecipientDto = getServicesTestHelper().createPushNotificationSnsRecipientDto();
+        secondSnsRecipientDto.setDestinationRouteToken(firstSnsRecipientDto.getDestinationRouteToken() + "_second");
+        final PushNotificationSubscription subscription = getServicesTestHelper().createPushNotificationSubscription();
+        final PushNotificationRecipient firstRecipient = getServicesTestHelper().createPushNotificationSnsRecipient(subscription, firstSnsRecipientDto);
+        final PushNotificationRecipient secondRecipient = getServicesTestHelper().createPushNotificationSnsRecipient(subscription, secondSnsRecipientDto);
+        final UserDeviceDto firstUserDevice = new UserDeviceDto();
+        firstUserDevice.setUuId(UUID.randomUUID().toString());
+        firstUserDevice.setOsType(DeviceOperatingSystemType.IOS);
+        getServicesTestHelper().updatePushNotificationRecipientUserDevice(
+                firstRecipient.getId(),
+                getServicesTestHelper().createUserDevice(subscription.getUser(), firstUserDevice).getId()
+        );
+        final UserDeviceDto secondUserDevice = new UserDeviceDto();
+        secondUserDevice.setUuId(UUID.randomUUID().toString());
+        secondUserDevice.setOsType(DeviceOperatingSystemType.IOS);
+        getServicesTestHelper().updatePushNotificationRecipientUserDevice(
+                secondRecipient.getId(),
+                getServicesTestHelper().createUserDevice(subscription.getUser(), secondUserDevice).getId()
+        );
+        flushAndClear();
+        // Load recipients and assert
+        PushNotificationRecipientSearchParameters parameters = new PushNotificationRecipientSearchParameters();
+        // Execute search with all recipients
+        Long result = pushNotificationRecipientService.getPushNotificationRecipientsCountForSearchParameters(parameters);
+        assertPushNotificationRecipientsCount(result, new LinkedHashSet<>(Arrays.asList(firstRecipient.getId(), secondRecipient.getId())));
+        // Execute search with first recipient
+        parameters = new PushNotificationRecipientSearchParameters();
+        parameters.setDeviceUuId(firstUserDevice.getUuId());
+        result = pushNotificationRecipientService.getPushNotificationRecipientsCountForSearchParameters(parameters);
+        assertPushNotificationRecipientsCount(result, new LinkedHashSet<>(Arrays.asList(firstRecipient.getId())));
+        // Execute search with second recipient
+        parameters = new PushNotificationRecipientSearchParameters();
+        parameters.setDeviceUuId(secondUserDevice.getUuId());
         result = pushNotificationRecipientService.getPushNotificationRecipientsCountForSearchParameters(parameters);
         assertPushNotificationRecipientsCount(result, new LinkedHashSet<>(Arrays.asList(secondRecipient.getId())));
     }

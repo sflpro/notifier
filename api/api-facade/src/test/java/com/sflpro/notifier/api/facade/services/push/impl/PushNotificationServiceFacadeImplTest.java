@@ -19,6 +19,7 @@ import com.sflpro.notifier.db.entities.user.User;
 import com.sflpro.notifier.services.device.UserDeviceService;
 import com.sflpro.notifier.services.device.dto.UserDeviceDto;
 import com.sflpro.notifier.services.notification.dto.push.PushNotificationDto;
+import com.sflpro.notifier.services.notification.dto.push.PushNotificationRecipientsParameters;
 import com.sflpro.notifier.services.notification.dto.push.PushNotificationSubscriptionRequestDto;
 import com.sflpro.notifier.services.notification.event.push.StartPushNotificationSubscriptionRequestProcessingEvent;
 import com.sflpro.notifier.services.notification.event.sms.StartSendingNotificationEvent;
@@ -206,7 +207,7 @@ public class PushNotificationServiceFacadeImplTest extends AbstractFacadeUnitTes
         resetAll();
         // Expectations
         expect(userService.getOrCreateUserForUuId(eq(user.getUuId()))).andReturn(user).once();
-        expect(pushNotificationService.createNotificationsForUserActiveRecipients(eq(user.getId()), eq(pushNotificationDto))).andReturn(pushNotifications).once();
+        expect(pushNotificationService.createNotificationsForRecipients(eq(new PushNotificationRecipientsParameters(user.getId())), eq(pushNotificationDto))).andReturn(pushNotifications).once();
         pushNotifications.forEach(pushNotification -> {
             applicationEventDistributionService.publishAsynchronousEvent(eq(new StartSendingNotificationEvent(pushNotification.getId())));
             expectLastCall().once();

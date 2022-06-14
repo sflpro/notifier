@@ -17,6 +17,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.assertEquals;
@@ -271,6 +272,7 @@ public class PushNotificationRecipientServiceImplTest extends AbstractPushNotifi
         parameters.setDestinationRouteToken("GGFTF%*^D(RD*RDFXR58drS&D*");
         parameters.setProviderType(PushNotificationProviderType.SNS);
         parameters.setSubscriptionId(1L);
+        parameters.setDeviceUuId(UUID.randomUUID().toString());
         return parameters;
     }
 
@@ -281,6 +283,7 @@ public class PushNotificationRecipientServiceImplTest extends AbstractPushNotifi
         filter.setDestinationRouteToken(parameters.getDestinationRouteToken());
         filter.setProviderType(parameters.getProviderType());
         filter.setSubscriptionId(parameters.getSubscriptionId());
+        filter.setDeviceUuId(parameters.getDeviceUuId());
         return filter;
     }
 

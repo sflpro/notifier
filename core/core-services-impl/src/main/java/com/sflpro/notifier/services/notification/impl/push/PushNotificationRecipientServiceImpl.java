@@ -105,6 +105,7 @@ public class PushNotificationRecipientServiceImpl extends AbstractPushNotificati
         filter.setProviderType(parameters.getProviderType());
         filter.setStatus(parameters.getStatus());
         filter.setSubscriptionId(parameters.getSubscriptionId());
+        filter.setDeviceUuId(parameters.getDeviceUuId());
         return filter;
     }
 

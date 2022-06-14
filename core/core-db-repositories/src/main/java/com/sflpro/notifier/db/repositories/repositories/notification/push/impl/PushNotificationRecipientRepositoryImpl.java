@@ -36,6 +36,8 @@ public class PushNotificationRecipientRepositoryImpl implements PushNotification
 
     private static final String PARAMETER_NAME_APPLICATION_TYPE = "applicationType";
 
+    private static final String PARAMETER_NAME_DEVICE_UUID = "deviceUuId";
+
     /* Dependencies */
     @PersistenceContext
     private EntityManager entityManager;
@@ -91,6 +93,7 @@ public class PushNotificationRecipientRepositoryImpl implements PushNotification
         typedQuery.setParameter(PARAMETER_NAME_DESTINATION_ROUTE_TOKEN, parameters.getDestinationRouteToken());
         typedQuery.setParameter(PARAMETER_NAME_STATUS, parameters.getStatus());
         typedQuery.setParameter(PARAMETER_NAME_APPLICATION_TYPE, parameters.getApplicationType());
+        typedQuery.setParameter(PARAMETER_NAME_DEVICE_UUID, parameters.getDeviceUuId());
         return typedQuery;
     }
 
@@ -103,6 +106,7 @@ public class PushNotificationRecipientRepositoryImpl implements PushNotification
             queryBuilder.append(" select pnr ");
         }
         queryBuilder.append(" from PushNotificationRecipient pnr ");
+        queryBuilder.append(" left join UserDevice ud on ud.id = pnr.lastDevice.id");
         queryBuilder.append(" where ");
         queryBuilder.append("( :" + PARAMETER_NAME_DESTINATION_ROUTE_TOKEN + " is null or pnr.destinationRouteToken=:" + PARAMETER_NAME_DESTINATION_ROUTE_TOKEN + ") ");
         queryBuilder.append(" and ( :" + PARAMETER_NAME_STATUS + " is null or pnr.status=:" + PARAMETER_NAME_STATUS + ") ");
@@ -110,6 +114,7 @@ public class PushNotificationRecipientRepositoryImpl implements PushNotification
         queryBuilder.append(" and ( :" + PARAMETER_NAME_PROVIDER_TYPE + " is null or pnr.type=:" + PARAMETER_NAME_PROVIDER_TYPE + ") ");
         queryBuilder.append(" and ( :" + PARAMETER_NAME_APPLICATION_TYPE + " is null or pnr.applicationType=:" + PARAMETER_NAME_APPLICATION_TYPE + ") ");
         queryBuilder.append(" and ( :" + PARAMETER_NAME_SUBSCRIPTION_ID + " is null or pnr.subscription.id=:" + PARAMETER_NAME_SUBSCRIPTION_ID + ") ");
+        queryBuilder.append(" and ( :" + PARAMETER_NAME_DEVICE_UUID + " is null or ud.uuId=:" + PARAMETER_NAME_DEVICE_UUID + ") ");
         // Append order by query
         if (!countQuery) {
             queryBuilder.append(" order by pnr.id asc ");

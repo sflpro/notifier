@@ -5,7 +5,7 @@
     <parent>
         <artifactId>infra-integrations</artifactId>
         <groupId>com.sflpro.notifier</groupId>
-        <version>1.10.1</version>
+        <version>1.10.2</version>
     </parent>
 
     <artifactId>infra-integrations-email</artifactId>

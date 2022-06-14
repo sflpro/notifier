@@ -11,6 +11,7 @@ import com.sflpro.notifier.db.repositories.repositories.notification.push.PushNo
 import com.sflpro.notifier.services.notification.UserNotificationService;
 import com.sflpro.notifier.services.notification.dto.UserNotificationDto;
 import com.sflpro.notifier.services.notification.dto.push.PushNotificationDto;
+import com.sflpro.notifier.services.notification.dto.push.PushNotificationRecipientsParameters;
 import com.sflpro.notifier.services.notification.impl.AbstractNotificationServiceImpl;
 import com.sflpro.notifier.services.notification.push.PushNotificationRecipientSearchParameters;
 import com.sflpro.notifier.services.notification.push.PushNotificationRecipientService;
@@ -97,12 +98,13 @@ public class PushNotificationServiceImpl extends AbstractNotificationServiceImpl
     @Transactional
     @Nonnull
     @Override
-    public List<PushNotification> createNotificationsForUserActiveRecipients(@Nonnull final Long userId, @Nonnull final PushNotificationDto pushNotificationDto) {
-        Assert.notNull(userId, "User id should not be null");
+    public List<PushNotification> createNotificationsForRecipients(@Nonnull final PushNotificationRecipientsParameters recipientsParameters, @Nonnull final PushNotificationDto pushNotificationDto) {
+        Assert.notNull(recipientsParameters, "Recipients parameters should not be null");
+        Assert.notNull(recipientsParameters.getUserId(), "User id should not be null");
         assertPushNotificationDto(pushNotificationDto);
-        logger.debug("Creating push notifications for all active recipients of user with id - {}, push notification DTO - {}", userId, pushNotificationDto);
+        logger.debug("Creating push notifications for recipients with parameters - {}, push notification DTO - {}", recipientsParameters, pushNotificationDto);
         // Grab user and check if subscription exists
-        final User user = userService.getUserById(userId);
+        final User user = userService.getUserById(recipientsParameters.getUserId());
         // Check if subscription exists for users
         final boolean subscriptionExists = pushNotificationSubscriptionService.checkIfPushNotificationSubscriptionExistsForUser(user.getId());
         if (!subscriptionExists) {
@@ -110,11 +112,11 @@ public class PushNotificationServiceImpl extends AbstractNotificationServiceImpl
             return Collections.emptyList();
         }
         // Grab subscription and search for recipients
-        final PushNotificationSubscription subscription = pushNotificationSubscriptionService.getPushNotificationSubscriptionForUser(userId);
-        final List<PushNotificationRecipient> recipients = getPushNotificationActiveRecipientsForSubscription(subscription);
+        final PushNotificationSubscription subscription = pushNotificationSubscriptionService.getPushNotificationSubscriptionForUser(recipientsParameters.getUserId());
+        final List<PushNotificationRecipient> recipients = getPushNotificationRecipientsForSubscription(subscription, recipientsParameters);
         // Create push notifications
         final List<PushNotification> pushNotifications = createPushNotificationsForRecipients(recipients, user, pushNotificationDto);
-        logger.debug("{} push notifications were created for user with id - {}, push notification DTO - {}", pushNotifications.size(), userId, pushNotificationDto);
+        logger.debug("{} push notifications were created for recipients - {}, push notification DTO - {}", pushNotifications.size(), recipientsParameters, pushNotificationDto);
         return pushNotifications;
     }
 
@@ -139,10 +141,11 @@ public class PushNotificationServiceImpl extends AbstractNotificationServiceImpl
         return pushNotifications;
     }
 
-    private List<PushNotificationRecipient> getPushNotificationActiveRecipientsForSubscription(final PushNotificationSubscription subscription) {
+    private List<PushNotificationRecipient> getPushNotificationRecipientsForSubscription(final PushNotificationSubscription subscription, final PushNotificationRecipientsParameters recipientsParameters) {
         // Build search parameters
         final PushNotificationRecipientSearchParameters searchParameters = new PushNotificationRecipientSearchParameters();
         searchParameters.setSubscriptionId(subscription.getId());
+        searchParameters.setDeviceUuId(recipientsParameters.getDeviceUuId());
         searchParameters.setStatus(PushNotificationRecipientStatus.ENABLED);
         // Execute search
         final List<PushNotificationRecipient> recipients = pushNotificationRecipientService.getPushNotificationRecipientsForSearchParameters(searchParameters, 0L, Integer.MAX_VALUE);

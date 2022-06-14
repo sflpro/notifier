@@ -12,6 +12,7 @@ import com.sflpro.notifier.db.repositories.repositories.notification.push.PushNo
 import com.sflpro.notifier.services.notification.UserNotificationService;
 import com.sflpro.notifier.services.notification.dto.UserNotificationDto;
 import com.sflpro.notifier.services.notification.dto.push.PushNotificationDto;
+import com.sflpro.notifier.services.notification.dto.push.PushNotificationRecipientsParameters;
 import com.sflpro.notifier.services.notification.impl.AbstractNotificationServiceImpl;
 import com.sflpro.notifier.services.notification.impl.AbstractNotificationServiceImplTest;
 import com.sflpro.notifier.services.notification.push.PushNotificationRecipientSearchParameters;
@@ -27,6 +28,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static org.easymock.EasyMock.*;
@@ -68,7 +70,7 @@ public class PushNotificationServiceImplTest extends AbstractNotificationService
     //region createNotification...
 
     @Test
-    public void testCreateNotificationsForUserActiveRecipientsWithInvalidArguments() {
+    public void testCreateNotificationsForRecipientsWithInvalidArguments() {
         // Test data
         final Long userId = 1L;
         final PushNotificationDto pushNotificationDto = getServicesImplTestHelper().createPushNotificationDto();
@@ -78,13 +80,19 @@ public class PushNotificationServiceImplTest extends AbstractNotificationService
         replayAll();
         // Run test scenario
         try {
-            pushNotificationService.createNotificationsForUserActiveRecipients(null, pushNotificationDto);
+            pushNotificationService.createNotificationsForRecipients(null, pushNotificationDto);
             fail("Exception should be thrown");
         } catch (final IllegalArgumentException ex) {
             // Expected
         }
         try {
-            pushNotificationService.createNotificationsForUserActiveRecipients(userId, null);
+            pushNotificationService.createNotificationsForRecipients(new PushNotificationRecipientsParameters(null), pushNotificationDto);
+            fail("Exception should be thrown");
+        } catch (final IllegalArgumentException ex) {
+            // Expected
+        }
+        try {
+            pushNotificationService.createNotificationsForRecipients(new PushNotificationRecipientsParameters(userId), null);
             fail("Exception should be thrown");
         } catch (final IllegalArgumentException ex) {
             // Expected
@@ -94,7 +102,7 @@ public class PushNotificationServiceImplTest extends AbstractNotificationService
     }
 
     @Test
-    public void testCreateNotificationsForUserActiveRecipientsWhenNoSubscriptionExistsForUser() {
+    public void testCreateNotificationsForRecipientsWhenNoSubscriptionExistsForUser() {
         // Test data
         final Long userId = 1L;
         final User user = getServicesImplTestHelper().createUser();
@@ -108,7 +116,7 @@ public class PushNotificationServiceImplTest extends AbstractNotificationService
         // Replay
         replayAll();
         // Run test scenario
-        final List<PushNotification> pushNotifications = pushNotificationService.createNotificationsForUserActiveRecipients(userId, pushNotificationDto);
+        final List<PushNotification> pushNotifications = pushNotificationService.createNotificationsForRecipients(new PushNotificationRecipientsParameters(userId), pushNotificationDto);
         assertNotNull(pushNotifications);
         assertEquals(0, pushNotifications.size());
         // Verify
@@ -116,7 +124,7 @@ public class PushNotificationServiceImplTest extends AbstractNotificationService
     }
 
     @Test
-    public void testCreateNotificationsForUserActiveRecipients() {
+    public void testCreateNotificationsForRecipients() {
         // Test data
         // Create user
         final Long userId = 1L;
@@ -128,10 +136,13 @@ public class PushNotificationServiceImplTest extends AbstractNotificationService
         final Long subscriptionId = 2L;
         final PushNotificationSubscription subscription = getServicesImplTestHelper().createPushNotificationSubscription();
         subscription.setId(subscriptionId);
+        // Device
+        final String deviceUuId = UUID.randomUUID().toString();
         // Expected recipients search parameters
         final PushNotificationRecipientSearchParameters searchParameters = new PushNotificationRecipientSearchParameters();
         searchParameters.setStatus(PushNotificationRecipientStatus.ENABLED);
         searchParameters.setSubscriptionId(subscriptionId);
+        searchParameters.setDeviceUuId(deviceUuId);
         // Expected list of recipients
         final List<PushNotificationRecipient> recipients = createPushNotificationsRecipients(10);
         // Reset
@@ -158,7 +169,7 @@ public class PushNotificationServiceImplTest extends AbstractNotificationService
         // Replay
         replayAll();
         // Run test scenario
-        final List<PushNotification> pushNotifications = pushNotificationService.createNotificationsForUserActiveRecipients(userId, pushNotificationDto);
+        final List<PushNotification> pushNotifications = pushNotificationService.createNotificationsForRecipients(new PushNotificationRecipientsParameters(userId, deviceUuId), pushNotificationDto);
         assertNotNull(pushNotifications);
         assertEquals(recipients.size(), pushNotifications.size());
         // Create counter

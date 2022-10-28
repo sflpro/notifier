@@ -110,3 +110,5 @@ kafka.sasl.mechanism=PLAIN
 kafka.sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule required username="<API_KEY>" password="<API_SECRET>";
 kafka.security.protocol=SASL_SSL
 ```
+
+For detailed configuration of templating and i18n please see [Template resolution documentation](/docs/template-resolution.md)

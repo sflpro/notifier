@@ -27,11 +27,12 @@ public class TemplatingConfigurationImplTest extends AbstractServicesUnitTest {
             final String prefix = "dummy";
             final String extension = ".ftl";
             tempFile = File.createTempFile(prefix, extension);
-            localizedTempFile = new File(tempFile.getAbsolutePath().replace(extension, "_" + locale.toString() + extension));
+            localizedTempFile = new File(tempFile.getAbsolutePath().replace(extension, "_" + locale + extension));
             localizedTempFile.createNewFile();
             final TemplatingConfiguration configuration = new TemplatingConfigurationImpl(
                     "file:///" + tempFile.getParent(),
-                    extension
+                    extension,
+                    false
             );
             assertThat(configuration.getFreemarkerConfiguration(true).getTemplate(
                     tempFile.getName(),

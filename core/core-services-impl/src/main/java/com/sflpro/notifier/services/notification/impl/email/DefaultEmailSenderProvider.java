@@ -44,6 +44,6 @@ class DefaultEmailSenderProvider implements EmailSenderProvider {
     }
 
     private static void assertValidProviderTypeArgument(final String providerType) {
-        Assert.hasText(providerType, "Null or empty text was passed as ana rgument for parameter 'providerType'.");
+        Assert.hasText(providerType, "Null or empty text was passed as an argument for parameter 'providerType'.");
     }
 }

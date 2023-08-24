@@ -131,7 +131,7 @@
         <google.guave.version>18.0</google.guave.version>
         <google.java.cloud.version>0.37.0-alpha</google.java.cloud.version>
 
-        <apache.tika.version>1.22</apache.tika.version>
+        <apache.tika.version>1.28.3</apache.tika.version>
 
         <!--Infrasturcture third party libs-->
         <mandrillapp.wrapper.lutung.version>0.0.8</mandrillapp.wrapper.lutung.version>

@@ -3,9 +3,12 @@ package com.sflpro.notifier.services.notification.impl.push;
 import com.sflpro.notifier.db.entities.notification.NotificationState;
 import com.sflpro.notifier.db.entities.notification.push.PushNotification;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipient;
+import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipientStatus;
 import com.sflpro.notifier.services.notification.exception.NotificationInvalidStateException;
+import com.sflpro.notifier.services.notification.push.PushNotificationRecipientService;
 import com.sflpro.notifier.services.notification.push.PushNotificationService;
 import com.sflpro.notifier.services.test.AbstractServicesUnitTest;
+import com.sflpro.notifier.spi.exception.PushNotificationInvalidRouteTokenException;
 import com.sflpro.notifier.spi.push.PushMessage;
 import com.sflpro.notifier.spi.push.PushMessageSender;
 import com.sflpro.notifier.spi.push.PushMessageSendingResult;
@@ -41,6 +44,8 @@ public class PushNotificationProcessorImplTest extends AbstractServicesUnitTest 
     @Mock
     private PushMessageSender pushMessageSender;
 
+    @Mock
+    private PushNotificationRecipientService pushNotificationRecipientService;
 
     /* Constructors */
     public PushNotificationProcessorImplTest() {
@@ -122,6 +127,37 @@ public class PushNotificationProcessorImplTest extends AbstractServicesUnitTest 
         // Run test scenario
         assertThatThrownBy(() -> pushNotificationProcessingService.processNotification(notificationId, Collections.emptyMap()))
                 .hasFieldOrPropertyWithValue("cause", exceptionDuringSending);
+        // Verify
+        verifyAll();
+    }
+
+    public void testProcessPushNotificationWhenInvalidTokenExceptionOccursDuringProcessing() {
+        // Test data
+        final Long notificationId = 1L;
+        final PushNotification notification = getServicesImplTestHelper().createPushNotification();
+        notification.setId(notificationId);
+        notification.setState(NotificationState.CREATED);
+        final Long recipientId = 2L;
+        final PushNotificationRecipient recipient = getServicesImplTestHelper().createPushNotificationSnsRecipient();
+        recipient.setId(recipientId);
+        notification.setRecipient(recipient);
+        final PushNotificationInvalidRouteTokenException exceptionDuringSending = new PushNotificationInvalidRouteTokenException(
+                UUID.randomUUID().toString(), "Exception for testing error flow", null
+        );
+        // Reset
+        resetAll();
+        // Expectations
+        expect(pushNotificationService.getPushNotificationForProcessing(eq(notificationId))).andReturn(notification).once();
+        expect(pushNotificationService.updateNotificationState(notificationId, NotificationState.PROCESSING)).andReturn(notification).once();
+        expect(pushMessageServiceProvider.lookupPushMessageSender(notification.getRecipient().getType()))
+                .andReturn(Optional.of(pushMessageSender));
+        expect(pushMessageSender.send(isA(PushMessage.class))).andThrow(exceptionDuringSending);
+        expect(pushNotificationService.updateNotificationState(notificationId, NotificationState.FAILED)).andReturn(notification).once();
+        expect(pushNotificationRecipientService.updatePushNotificationRecipientStatus(notification.getRecipient().getId(), PushNotificationRecipientStatus.DISABLED));
+        // Replay
+        replayAll();
+        // Run test scenario
+        pushNotificationProcessingService.processNotification(notificationId, Collections.emptyMap());
         // Verify
         verifyAll();
     }

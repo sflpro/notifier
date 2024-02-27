@@ -4,19 +4,20 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Message;
 import com.sflpro.notifier.externalclients.push.test.AbstractPushNotificationUnitTest;
+import com.sflpro.notifier.spi.exception.PushNotificationInvalidRouteTokenException;
 import com.sflpro.notifier.spi.push.PlatformType;
 import com.sflpro.notifier.spi.push.PushMessage;
 import com.sflpro.notifier.spi.push.PushMessageSender;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.*;
 
@@ -175,6 +176,43 @@ public class FirebasePushMessageSenderTest extends AbstractPushNotificationUnitT
         assertThat(pushMessageSender.send(pushMessage).messageId()).isEqualTo(messageId);
         verify(firebaseMessaging).send(isA(Message.class));
         verifyZeroInteractions(defaultAndroidConfig, defaultApnsConfig);
+    }
+
+    @Test
+    public void testSendWithUnregisteredTokenThrowsException() throws FirebaseMessagingException {
+        final Map<String, String> properties = new HashMap<>();
+        properties.put(uuid(), uuid());
+        final FirebaseMessagingException firebaseException = mock(FirebaseMessagingException.class);
+        final PushMessage message = PushMessage.of(
+                uuid(),
+                uuid(),
+                uuid(),
+                PlatformType.GCM,
+                properties
+        );
+        properties.put("title", message.subject());
+        properties.put("body", message.body());
+        final String messageId = uuid();
+        final String ttlKey = "ttl";
+        final String priorityKey = "priority";
+        final String collapseKey = "collapseKey";
+        final String restrictedPackageNameKey = "restrictedPackageName";
+        when(defaultAndroidConfig.getProperty(ttlKey)).thenReturn("10");
+        when(defaultAndroidConfig.getProperty(priorityKey)).thenReturn("HIGH");
+        when(defaultAndroidConfig.getProperty(collapseKey)).thenReturn(uuid());
+        when(defaultAndroidConfig.getProperty(restrictedPackageNameKey)).thenReturn(uuid());
+        when(firebaseMessaging.send(isA(Message.class))).thenThrow(firebaseException);
+        when(firebaseException.getErrorCode()).thenReturn("UNREGISTERED");
+        assertThatThrownBy(() -> pushMessageSender.send(message))
+                .isInstanceOf(PushNotificationInvalidRouteTokenException.class)
+                .hasFieldOrPropertyWithValue("routeToken", message.destinationRouteToken())
+                .hasFieldOrPropertyWithValue("cause", firebaseException);
+        verify(firebaseMessaging).send(isA(Message.class));
+        verify(defaultAndroidConfig).getProperty(ttlKey);
+        verify(defaultAndroidConfig).getProperty(priorityKey);
+        verify(defaultAndroidConfig).getProperty(collapseKey);
+        verify(defaultAndroidConfig).getProperty(restrictedPackageNameKey);
+        verifyZeroInteractions(defaultApnsConfig);
     }
 
     private static void checkProperties(final PushMessage pushMessage, final Message message) {

@@ -1,6 +1,7 @@
 package com.sflpro.notifier.externalclients.push.firebase;
 
 import com.google.firebase.messaging.*;
+import com.sflpro.notifier.spi.exception.PushNotificationInvalidRouteTokenException;
 import com.sflpro.notifier.spi.push.PlatformType;
 import com.sflpro.notifier.spi.push.PushMessage;
 import com.sflpro.notifier.spi.push.PushMessageSender;
@@ -26,6 +27,8 @@ import java.util.stream.Stream;
 class FirebasePushMessageSender implements PushMessageSender {
 
     private static final Logger logger = LoggerFactory.getLogger(FirebasePushMessageSender.class);
+
+    private static final String UNREGISTERED_ERROR_CODE = "UNREGISTERED";
 
     private static final String TITLE = "title";
 
@@ -62,6 +65,15 @@ class FirebasePushMessageSender implements PushMessageSender {
             platformConfigurationHandler(message.platformType()).ifPresent(handler -> handler.accept(message, builder));
             return PushMessageSendingResult.of(firebaseMessaging.send(builder.build()));
         } catch (final FirebaseMessagingException ex) {
+            final String errorCode = ex.getErrorCode();
+            if(UNREGISTERED_ERROR_CODE.equals(errorCode)) {
+                logger.debug("Unable to send message with subject {}, firebase route token is not registered", message.subject());
+                throw new PushNotificationInvalidRouteTokenException(
+                        message.destinationRouteToken(),
+                        "Firebase notification sender failed to send message with subject " + message.subject() + " with error" + errorCode,
+                        ex
+                );
+            }
             logger.error("Unable to send message with subject {}.", message.subject());
             throw new MessageSendingFaildException("Filed to send message using firebase cloud messaging.", ex);
         }

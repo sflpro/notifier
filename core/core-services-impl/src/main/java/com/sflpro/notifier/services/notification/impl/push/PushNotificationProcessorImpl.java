@@ -6,10 +6,13 @@ import com.sflpro.notifier.db.entities.notification.email.NotificationProperty;
 import com.sflpro.notifier.db.entities.notification.push.PushNotification;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationProviderType;
 import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipient;
+import com.sflpro.notifier.db.entities.notification.push.PushNotificationRecipientStatus;
 import com.sflpro.notifier.services.common.exception.ServicesRuntimeException;
 import com.sflpro.notifier.services.notification.exception.NotificationInvalidStateException;
 import com.sflpro.notifier.services.notification.push.PushNotificationProcessor;
+import com.sflpro.notifier.services.notification.push.PushNotificationRecipientService;
 import com.sflpro.notifier.services.notification.push.PushNotificationService;
+import com.sflpro.notifier.spi.exception.PushNotificationInvalidRouteTokenException;
 import com.sflpro.notifier.spi.push.PlatformType;
 import com.sflpro.notifier.spi.push.PushMessage;
 import com.sflpro.notifier.spi.push.PushMessageSender;
@@ -55,6 +58,9 @@ public class PushNotificationProcessorImpl implements PushNotificationProcessor 
     @Autowired
     private TemplateContentResolver templateContentResolver;
 
+    @Autowired
+    private PushNotificationRecipientService pushNotificationRecipientService;
+
     PushNotificationProcessorImpl() {
         logger.debug("Initializing push notification processing service");
     }
@@ -80,7 +86,16 @@ public class PushNotificationProcessorImpl implements PushNotificationProcessor 
             }
             // Mark push notification as processed
             updatePushNotificationState(notificationId, NotificationState.SENT);
-        } catch (final Exception ex) {
+        }
+        catch (final PushNotificationInvalidRouteTokenException ex) {
+            logger.warn("Failed to process push notification with id - {}, because of invalid token of recipient with id - {}", notificationId, pushNotification.getRecipient().getId());
+            updatePushNotificationState(notificationId, NotificationState.FAILED);
+            pushNotificationRecipientService.updatePushNotificationRecipientStatus(
+                    pushNotification.getRecipient().getId(),
+                    PushNotificationRecipientStatus.DISABLED
+            );
+        }
+        catch (final Exception ex) {
             final String message = "Error occurred while processing push notification with id - " + notificationId;
             updatePushNotificationState(notificationId, NotificationState.FAILED);
             throw new ServicesRuntimeException(message, ex);
